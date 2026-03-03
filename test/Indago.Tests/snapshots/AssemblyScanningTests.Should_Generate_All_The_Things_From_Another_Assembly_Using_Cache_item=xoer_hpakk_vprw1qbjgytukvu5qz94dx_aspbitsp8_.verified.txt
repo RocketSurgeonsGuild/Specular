@@ -1,0 +1,2048 @@
+﻿{
+  EmptyAssemblies: [
+    mscorlib,
+    netstandard,
+    System,
+    System.ComponentModel,
+    System.Core,
+    System.Private.CoreLib,
+    System.Runtime,
+    TestAssembly
+  ],
+  FinalDiagnostics: [],
+  GeneratedCache: {
+    Indago: {
+      InternalServiceDescriptorRequests: [
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 20,
+              ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
+              FileName: IndagoProviderServiceCollectionExtensions.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        }
+      ],
+      ExcludeFromResolution: false,
+      CacheVersion: {Scrubbed},
+      IsEmpty: false
+    },
+    OtherProject: {
+      InternalAssemblyRequests: [
+        {
+          Assembly: {
+            Location: {
+              LineNumber: 16,
+              ExpressionHash: 8IGLe4J/MYHkM0PrcVVuwg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Type: GetAssemblyConfiguration
+        },
+        {
+          Assembly: {
+            Location: {
+              LineNumber: 17,
+              ExpressionHash: Z9rFHKTvVtL4pjKVS65ieA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Type: GetAssemblyConfiguration
+        },
+        {
+          Assembly: {
+            Location: {
+              LineNumber: 18,
+              ExpressionHash: EroujZtERsWBDGh52iQ5LQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Type: GetAssemblyConfiguration
+        },
+        {
+          Assembly: {
+            Location: {
+              LineNumber: 19,
+              ExpressionHash: LyqSv6vMcdITU/VUyq5Gfg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Type: GetAssemblyConfiguration
+        },
+        {
+          Assembly: {
+            Location: {
+              LineNumber: 20,
+              ExpressionHash: ugfaFnP+kRqgwoQVip7fpQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Type: GetAssemblyConfiguration
+        },
+        {
+          Assembly: {
+            Location: {
+              LineNumber: 21,
+              ExpressionHash: r7EAhFclBVT54DTDSLqJjw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Type: GetAssemblyConfiguration
+        }
+      ],
+      InternalReflectionRequests: [
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 22,
+              ExpressionHash: bKhVPtwmtNPU4oAyExjo+A==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 32,
+              ExpressionHash: /VBJuhyt3B9JZh0hvnXCgQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 42,
+              ExpressionHash: h7YOdRK4kWM8suq9w5jcEA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 52,
+              ExpressionHash: K7KxgHvx+EGwwlQkuemT3A==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 62,
+              ExpressionHash: /9IHLslt+gQ8+YOvZs9dwA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 72,
+              ExpressionHash: vC7jRGImSIqrxk4mTImeWA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 82,
+              ExpressionHash: FZejBoVN5/sP3GKMlJ/eVg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 92,
+              ExpressionHash: AkSQC22LryNlbH2i5Itc6g==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 102,
+              ExpressionHash: IEL5ckPWEXd/Ak5gZ5DdEg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 112,
+              ExpressionHash: icamNGQlbhR5fqnsVbNH4A==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 122,
+              ExpressionHash: yMvGbByGNy7UnkUU8zAHhg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 132,
+              ExpressionHash: V1zz0pHDKJ/BSBrqm8jiAQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 143,
+              ExpressionHash: 2Hf8WmukWlQ1eJgIolCIQw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 147,
+              ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 158,
+              ExpressionHash: amdUsVIuVJ6Z9uFUw2siUA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 169,
+              ExpressionHash: L+7TFBSI3dH5VV4rukSWKg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 180,
+              ExpressionHash: oMLt/17IrkYji1+jqei7NQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 190,
+              ExpressionHash: +H5FB77BY9RWCbY+SBdYNQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 200,
+              ExpressionHash: ebF1x94ZPF9KfIUWiOTH9w==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 211,
+              ExpressionHash: 9qYq//oeCy0F7tWGcEnCUw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 222,
+              ExpressionHash: YB3/Ynqn0NWUmu6z0jlr/Q==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 232,
+              ExpressionHash: Sr9M5Q0STe4qUAezOT5Wfw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 242,
+              ExpressionHash: +uDmCz7SsixBeXj3o6Grdw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 252,
+              ExpressionHash: QmnB+zKdWqffTt1vZpunVg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: null,
+              TypeInfoFilters: null,
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        }
+      ],
+      InternalServiceDescriptorRequests: [
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 262,
+              ExpressionHash: lk0ALym+V2W6xQDXO/AkYw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 268,
+              ExpressionHash: CSc+6hElAjxc8UqHDR2nGg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 274,
+              ExpressionHash: fKfq36ZCDNfEou+qyyLEbw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 279,
+              ExpressionHash: RF0U3ve7NmkBVhOpOoW7bQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 285,
+              ExpressionHash: H/jKai1h1B6jnFlFcyi7Tg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 291,
+              ExpressionHash: Cig2XJLApDe8z9wMh/IDUA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 296,
+              ExpressionHash: GC4f7Eu/9wIch8wpSP2wyQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 302,
+              ExpressionHash: a8a5Us+LBXHvnbZedXasXw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 307,
+              ExpressionHash: xbYAbKX/QnnClXoKl6q/Aw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 313,
+              ExpressionHash: e8KAWIaBqxCKvrQ5PGf0qg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 319,
+              ExpressionHash: QR7ilMUHdBOqlpGLxKKLDQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 325,
+              ExpressionHash: nNzkffztFbvyPeXlZPkOkQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 331,
+              ExpressionHash: HH9aVmBgFQ5bSAugUwbZsw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 336,
+              ExpressionHash: nGdrAptlVCEX9H6kHx0auw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 341,
+              ExpressionHash: iOVNY6dfLzra3vCDdW4AxA==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 347,
+              ExpressionHash: jm/nkIDlrjpFn5pT15jCnw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 352,
+              ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 366,
+              ExpressionHash: MeX+mF+ej5803TONO0SaMw==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        },
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 372,
+              ExpressionHash: NS4L/okk/PoVEOMIBVficg==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: false,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: null,
+              Lifetime: 2
+            },
+            Lifetime: 2
+          },
+          Type: GetServiceDescriptorCollectionData
+        }
+      ],
+      ExcludeFromResolution: false,
+      CacheVersion: {Scrubbed},
+      IsEmpty: false
+    }
+  },
+  GeneratorDiagnostics: {
+    Indago.Analyzers.IndagoProviderGenerator: []
+  },
+  GlobalOptions: {
+    build_property.ExcludeAssemblyFromCTP: Microsoft.Extensions.DependencyInjection,
+    build_property.IntermediateOutputPath: obj/net9.0,
+    build_property.ProjectDir: {TempPath}/test
+  },
+  References: [
+    <in-memory assembly>,
+    Indago.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    mscorlib.dll,
+    netstandard.dll,
+    System.ComponentModel.dll,
+    System.Core.dll,
+    System.dll,
+    System.Private.CoreLib.dll,
+    System.Runtime.dll,
+    TestAssembly.dll
+  ]
+}

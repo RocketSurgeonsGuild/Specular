@@ -1,0 +1,13 @@
+<Project>
+    <Target Name="CleanAssemblyCache" BeforeTargets="Clean">
+        <Delete
+            Files="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson"
+            Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
+    </Target>
+    <ItemGroup>
+        <AdditionalFiles
+            Visible="false"
+            Include="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson"
+            Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
+    </ItemGroup>
+</Project>

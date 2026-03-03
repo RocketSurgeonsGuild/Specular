@@ -1,0 +1,42 @@
+﻿{
+  FinalDiagnostics: [
+    {
+      Id: CS1061,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Input0.cs: (13,48)-(13,65),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
+      MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
+      Message: 'Assembly' does not contain a definition for 'GetIndagoProvider' and no accessible extension method 'GetIndagoProvider' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    }
+  ],
+  GeneratorDiagnostics: {
+    Indago.Analyzers.IndagoProviderGenerator: []
+  },
+  GlobalOptions: {
+    build_property.IntermediateOutputPath: obj/net9.0,
+    build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2
+  },
+  References: [
+    Indago.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    mscorlib.dll,
+    netstandard.dll,
+    System.ComponentModel.dll,
+    System.Core.dll,
+    System.dll,
+    System.Private.CoreLib.dll,
+    System.Private.CoreLib.dll,
+    System.Private.CoreLib.dll,
+    System.Runtime.dll
+  ]
+}
