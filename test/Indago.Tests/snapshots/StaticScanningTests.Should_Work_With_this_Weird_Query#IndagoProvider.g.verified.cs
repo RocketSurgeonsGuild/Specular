@@ -1,4 +1,4 @@
-﻿//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
+//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
 #nullable enable
 #pragma warning disable CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
 using System;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Indago;
 using Indago.Abstractions;
 
+[assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ReflectionTypes","{scrubbed}")]
 [assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
 [System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 file class IndagoProvider : IIndagoProvider
@@ -21,6 +22,20 @@ file class IndagoProvider : IIndagoProvider
     IEnumerable<Type> IIndagoProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
+        switch (lineNumber)
+        {
+            // FilePath: Input1.cs Expression: 1KAkG8FuvhSzyjSjAEZH3A==
+            case 12:
+                items.Add(typeof(global::OptionsA));
+                items.Add(typeof(global::OptionsB));
+                break;
+            // FilePath: Input0.cs Expression: 1KAkG8FuvhSzyjSjAEZH3A==
+            case 25:
+                items.Add(typeof(global::OptionsA));
+                items.Add(typeof(global::OptionsB));
+                break;
+        }
+
         return items;
     }
 

@@ -1,4 +1,4 @@
-﻿{
+{
   EmptyAssemblies: [
     mscorlib,
     netstandard,
@@ -17,12 +17,12 @@
           Assembly: {
             Location: {
               Kind: ServiceDescriptor,
-              LineNumber: 20,
+              LineNumber: 19,
               ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
-              AllAssembly: false,
+              AllAssembly: true,
               IncludeSystem: false,
               Assembly: null,
               NotAssembly: null,
@@ -53,7 +53,32 @@
               ],
               WithAttributeFilters: null,
               WithAttributeStringFilters: null,
-              WithAnyAttributeFilters: null,
+              WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                }
+              ],
               WithAnyAttributeStringFilters: null,
               AssignableToTypeFilters: null,
               AssignableToAnyTypeFilters: null
@@ -61,10 +86,12 @@
           },
           ServiceDescriptor: {
             ServiceDescriptor: {
-              ServiceTypeDescriptors: null,
-              Lifetime: 2
-            },
-            Lifetime: 2
+              ServiceTypeDescriptors: [
+                {
+                  Identifier: s
+                }
+              ]
+            }
           },
           Type: GetServiceDescriptorCollectionData
         }
@@ -84,7 +111,7 @@
               FileName: Input0.cs
             },
             Assembly: {
-              AllAssembly: false,
+              AllAssembly: true,
               IncludeSystem: false,
               Assembly: null,
               NotAssembly: null,
@@ -117,16 +144,25 @@
               WithAttributeStringFilters: null,
               WithAnyAttributeFilters: null,
               WithAnyAttributeStringFilters: null,
-              AssignableToTypeFilters: null,
+              AssignableToTypeFilters: [
+                {
+                  Include: true,
+                  Assembly: TestAssembly,
+                  Type: TestAssembly.IRequestHandler`2,
+                  UnboundGenericType: true
+                }
+              ],
               AssignableToAnyTypeFilters: null
             }
           },
           ServiceDescriptor: {
             ServiceDescriptor: {
-              ServiceTypeDescriptors: null,
-              Lifetime: 2
-            },
-            Lifetime: 2
+              ServiceTypeDescriptors: [
+                {
+                  Identifier: i
+                }
+              ]
+            }
           },
           Type: GetServiceDescriptorCollectionData
         }
@@ -143,6 +179,28 @@
     build_property.ExcludeAssemblyFromCTP: Microsoft.Extensions.DependencyInjection,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempPath}/test
+  },
+  PartialsCached: {
+    NLrl8el0rGmZbzFJNDqIXw==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 16,
+            ExpressionHash: a8a5Us+LBXHvnbZedXasXw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    }
   },
   References: [
     <in-memory assembly>,

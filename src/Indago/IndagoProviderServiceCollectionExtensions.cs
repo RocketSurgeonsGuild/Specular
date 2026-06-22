@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Indago;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Indago;
 
@@ -31,8 +30,8 @@ public static class IndagoProviderServiceCollectionExtensions
                              typeof(ServiceRegistrationAttribute<,,,>)
                          )
                  )
-                .AsSelf()
-                .WithSingletonLifetime()
+                 .AsSelf()
+                 .WithSingletonLifetime()
         );
     }
 }

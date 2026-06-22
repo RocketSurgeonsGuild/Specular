@@ -1,4 +1,4 @@
-﻿{
+{
   FinalDiagnostics: [],
   GeneratorDiagnostics: {
     Indago.Analyzers.IndagoProviderGenerator: []

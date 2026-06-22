@@ -1,7 +1,49 @@
-﻿{
-  FinalDiagnostics: [],
+{
+  FinalDiagnostics: [
+    {
+      Id: RSGD0005,
+      Title: Duplicate service descriptor attribute,
+      Severity: Warning,
+      WarningLevel: 1,
+      Location: Input0.cs: (6,17)-(6,25),
+      MessageFormat: Cannot have more than one service descriptor attribute for a given type,
+      Message: Cannot have more than one service descriptor attribute for a given type,
+      Category: Dependency Injection
+    },
+    {
+      Id: RSGD0005,
+      Title: Duplicate service descriptor attribute,
+      Severity: Warning,
+      WarningLevel: 1,
+      Location: Input0.cs: (9,13)-(9,20),
+      MessageFormat: Cannot have more than one service descriptor attribute for a given type,
+      Message: Cannot have more than one service descriptor attribute for a given type,
+      Category: Dependency Injection
+    }
+  ],
   GeneratorDiagnostics: {
-    Indago.Analyzers.IndagoProviderGenerator: []
+    Indago.Analyzers.IndagoProviderGenerator: [
+      {
+        Id: RSGD0005,
+        Title: Duplicate service descriptor attribute,
+        Severity: Warning,
+        WarningLevel: 1,
+        Location: Input0.cs: (6,17)-(6,25),
+        MessageFormat: Cannot have more than one service descriptor attribute for a given type,
+        Message: Cannot have more than one service descriptor attribute for a given type,
+        Category: Dependency Injection
+      },
+      {
+        Id: RSGD0005,
+        Title: Duplicate service descriptor attribute,
+        Severity: Warning,
+        WarningLevel: 1,
+        Location: Input0.cs: (9,13)-(9,20),
+        MessageFormat: Cannot have more than one service descriptor attribute for a given type,
+        Message: Cannot have more than one service descriptor attribute for a given type,
+        Category: Dependency Injection
+      }
+    ]
   },
   GlobalOptions: {
     build_property.IntermediateOutputPath: obj/net9.0,

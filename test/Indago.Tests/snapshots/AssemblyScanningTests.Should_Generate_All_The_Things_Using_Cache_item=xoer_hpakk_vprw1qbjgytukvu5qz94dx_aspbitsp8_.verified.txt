@@ -1,4 +1,4 @@
-﻿{
+{
   EmptyAssemblies: [
     mscorlib,
     netstandard,
@@ -17,12 +17,12 @@
           Assembly: {
             Location: {
               Kind: ServiceDescriptor,
-              LineNumber: 20,
+              LineNumber: 19,
               ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
-              AllAssembly: false,
+              AllAssembly: true,
               IncludeSystem: false,
               Assembly: null,
               NotAssembly: null,
@@ -53,7 +53,32 @@
               ],
               WithAttributeFilters: null,
               WithAttributeStringFilters: null,
-              WithAnyAttributeFilters: null,
+              WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                }
+              ],
               WithAnyAttributeStringFilters: null,
               AssignableToTypeFilters: null,
               AssignableToAnyTypeFilters: null
@@ -61,10 +86,12 @@
           },
           ServiceDescriptor: {
             ServiceDescriptor: {
-              ServiceTypeDescriptors: null,
-              Lifetime: 2
-            },
-            Lifetime: 2
+              ServiceTypeDescriptors: [
+                {
+                  Identifier: s
+                }
+              ]
+            }
           },
           Type: GetServiceDescriptorCollectionData
         }
@@ -81,6 +108,1441 @@
     build_property.ExcludeAssemblyFromCTP: Microsoft,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempPath}
+  },
+  PartialsCached: {
+    3QW98bNr0DxxltppxzwMWg==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 268,
+            ExpressionHash: CSc+6hElAjxc8UqHDR2nGg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.Nested.ServiceA, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Nested.ServiceA>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.ServiceB")!, TestAssembly.GetType("TestAssembly.ServiceB")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IService>(a => (global::TestAssembly.IService)a.GetRequiredService(TestAssembly.GetType("TestAssembly.ServiceB")!)));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    556HQ8bJ4mz+eb2rZk6hNQ==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 82,
+            ExpressionHash: FZejBoVN5/sP3GKMlJ/eVg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+    items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 82,
+            ExpressionHash: FZejBoVN5/sP3GKMlJ/eVg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    80NVAAk/PXSVHvOrqpbY4g==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 336,
+            ExpressionHash: nGdrAptlVCEX9H6kHx0auw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IService), TestAssembly.GetType("TestAssembly.ServiceB")!));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    81xnw9LpvkwaL1qHx3DkzQ==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 347,
+            ExpressionHash: jm/nkIDlrjpFn5pT15jCnw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IGenericService<global::System.Int32>), TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>, global::TestAssembly.Nested.GenericServiceA>());
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    8rSSq0Bqye6hcR32l1PWlQ==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 331,
+            ExpressionHash: HH9aVmBgFQ5bSAugUwbZsw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IValidator<>).MakeGenericType(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!)!, TestAssembly.GetType("TestAssembly.Nested+Validator")!));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    9kfX4ho0tGerCzhR8y2Vhw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 102,
+            ExpressionHash: IEL5ckPWEXd/Ak5gZ5DdEg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+    items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 102,
+            ExpressionHash: IEL5ckPWEXd/Ak5gZ5DdEg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    AuKVPC4eV0/Ddisx2WHq7A==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 274,
+            ExpressionHash: fKfq36ZCDNfEou+qyyLEbw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IService), TestAssembly.GetType("TestAssembly.ServiceB")!));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    cbDulGe0z63U1oc9oqyFzQ==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 325,
+            ExpressionHash: nNzkffztFbvyPeXlZPkOkQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    fI6/pGaAZVdS/q2QBhqVpw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 92,
+            ExpressionHash: AkSQC22LryNlbH2i5Itc6g==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 92,
+            ExpressionHash: AkSQC22LryNlbH2i5Itc6g==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(typeof(global::TestAssembly.Nested));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    hgNc+6kwdcx8UobVZDrD5A==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 302,
+            ExpressionHash: a8a5Us+LBXHvnbZedXasXw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    J67g8Sm3esAF0orTBES5+w==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 341,
+            ExpressionHash: iOVNY6dfLzra3vCDdW4AxA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    KFjR2ZCjezUWtArQrRx1wg==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 132,
+            ExpressionHash: V1zz0pHDKJ/BSBrqm8jiAQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 132,
+            ExpressionHash: V1zz0pHDKJ/BSBrqm8jiAQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    kWDqMna+svM2YzXv7m9rEQ==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 200,
+            ExpressionHash: ebF1x94ZPF9KfIUWiOTH9w==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 200,
+            ExpressionHash: ebF1x94ZPF9KfIUWiOTH9w==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    LovUVVJwzOj48F2xN62RoA==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 279,
+            ExpressionHash: RF0U3ve7NmkBVhOpOoW7bQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.Nested.ServiceA, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Nested.ServiceA>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.ServiceB")!, TestAssembly.GetType("TestAssembly.ServiceB")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IService>(a => (global::TestAssembly.IService)a.GetRequiredService(TestAssembly.GetType("TestAssembly.ServiceB")!)));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    lVncfSpb/NgLOMNc4/4XLg==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 122,
+            ExpressionHash: yMvGbByGNy7UnkUU8zAHhg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+    items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 122,
+            ExpressionHash: yMvGbByGNy7UnkUU8zAHhg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    m/ELDgWFwZzv+dsQDV1Oig==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 313,
+            ExpressionHash: e8KAWIaBqxCKvrQ5PGf0qg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.ServiceA, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Nested.ServiceA>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.ServiceB")!, TestAssembly.GetType("TestAssembly.ServiceB")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => (global::TestAssembly.IService)a.GetRequiredService(TestAssembly.GetType("TestAssembly.ServiceB")!)));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    m1YnTtRZ+wrBJze7gx73rw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 147,
+            ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 147,
+            ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    n+pXzqcAIboeOgXB1njCsA==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 62,
+            ExpressionHash: /9IHLslt+gQ8+YOvZs9dwA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 62,
+            ExpressionHash: /9IHLslt+gQ8+YOvZs9dwA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(typeof(global::TestAssembly.Service));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    NIvNnYDkYdcYvSX/39cuDw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 52,
+            ExpressionHash: K7KxgHvx+EGwwlQkuemT3A==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 52,
+            ExpressionHash: K7KxgHvx+EGwwlQkuemT3A==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    qAEcPgfdFFzIIWd7wy2lmA==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 158,
+            ExpressionHash: amdUsVIuVJ6Z9uFUw2siUA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 158,
+            ExpressionHash: amdUsVIuVJ6Z9uFUw2siUA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    qBwlZz7Wz8BhSkBfAhXLKw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 42,
+            ExpressionHash: h7YOdRK4kWM8suq9w5jcEA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+    items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 42,
+            ExpressionHash: h7YOdRK4kWM8suq9w5jcEA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    Qs1NdcQoWM7VH1OSjMvWeQ==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 262,
+            ExpressionHash: lk0ALym+V2W6xQDXO/AkYw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    RZ+PeiQ1r0+3dM/P6mL/0w==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 307,
+            ExpressionHash: xbYAbKX/QnnClXoKl6q/Aw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    skFJ13MeCJeBK9F0SThvug==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 366,
+            ExpressionHash: MeX+mF+ej5803TONO0SaMw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!, TestAssembly.GetType("TestAssembly.Nested+MyRecord")!));
+    services.Add(ServiceDescriptor.Scoped(typeof(global::System.IEquatable<>).MakeGenericType(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.ServiceA, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Nested.ServiceA>()));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.Nested+Validator")!, TestAssembly.GetType("TestAssembly.Nested+Validator")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IValidator>(a => (global::TestAssembly.IValidator)a.GetRequiredService(TestAssembly.GetType("TestAssembly.Nested+Validator")!)));
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IValidator<>).MakeGenericType(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.Nested+Validator")!)));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Request")!));
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IRequest<>).MakeGenericType(TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.Request")!)));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.RequestHandler")!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
+    services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.RequestHandler")!)));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.Response")!, TestAssembly.GetType("TestAssembly.Response")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.ServiceB")!, TestAssembly.GetType("TestAssembly.ServiceB")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => (global::TestAssembly.IService)a.GetRequiredService(TestAssembly.GetType("TestAssembly.ServiceB")!)));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    sp7+Ctg9OoLwf/dAtPC1yw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 112,
+            ExpressionHash: icamNGQlbhR5fqnsVbNH4A==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 112,
+            ExpressionHash: icamNGQlbhR5fqnsVbNH4A==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    TjoEHYtzpkakXbJ8noaeuw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 22,
+            ExpressionHash: bKhVPtwmtNPU4oAyExjo+A==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 22,
+            ExpressionHash: bKhVPtwmtNPU4oAyExjo+A==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    UdNi6gS7cqy/Kxy21YgmCw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 72,
+            ExpressionHash: vC7jRGImSIqrxk4mTImeWA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    VlcjTvGSAGqOb5jb0EAYwQ==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 169,
+            ExpressionHash: L+7TFBSI3dH5VV4rukSWKg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 169,
+            ExpressionHash: L+7TFBSI3dH5VV4rukSWKg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    wAL4RRuiNJPFjxkTcudYRA==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 285,
+            ExpressionHash: H/jKai1h1B6jnFlFcyi7Tg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.ServiceA, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Nested.ServiceA>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.ServiceB")!, TestAssembly.GetType("TestAssembly.ServiceB")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => (global::TestAssembly.IService)a.GetRequiredService(TestAssembly.GetType("TestAssembly.ServiceB")!)));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    WBYDLO4i5Ece4Q2ZHsuMPw==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 296,
+            ExpressionHash: GC4f7Eu/9wIch8wpSP2wyQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    XMx8ND4ed8SRLcuUopsO1Q==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 252,
+            ExpressionHash: QmnB+zKdWqffTt1vZpunVg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 252,
+            ExpressionHash: QmnB+zKdWqffTt1vZpunVg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(typeof(global::TestAssembly.Service));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    xQkf4u4B1KuD3VDOpe3gmg==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 291,
+            ExpressionHash: Cig2XJLApDe8z9wMh/IDUA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    xT+GrQgmRqnWAog8sLIN/Q==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 319,
+            ExpressionHash: QR7ilMUHdBOqlpGLxKKLDQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.ServiceA, global::TestAssembly.Nested.ServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Service, global::TestAssembly.Service>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.ServiceB")!, TestAssembly.GetType("TestAssembly.ServiceB")!));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    yxnCDzw7YKX1WYZSzAMxTg==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 211,
+            ExpressionHash: 9qYq//oeCy0F7tWGcEnCUw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+    items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+    items.Add(typeof(global::Indago.IndagoProviderExtensions));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 211,
+            ExpressionHash: 9qYq//oeCy0F7tWGcEnCUw==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    },
+    zsUgZO5lYk7jzSN+TsxzJw==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 32,
+            ExpressionHash: /VBJuhyt3B9JZh0hvnXCgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 32,
+            ExpressionHash: /VBJuhyt3B9JZh0hvnXCgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    }
   },
   References: [
     Indago.dll,

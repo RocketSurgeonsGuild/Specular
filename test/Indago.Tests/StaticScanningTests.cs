@@ -15,6 +15,7 @@ public class StaticScanningTests : GeneratorTest
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -62,6 +63,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -108,6 +110,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -154,6 +157,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -200,6 +204,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -247,6 +252,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -294,6 +300,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -341,6 +348,7 @@ public static class Program {
                           .AddSources(
                                // ReSharper disable once HeapView.ObjectAllocation
                                """
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -388,6 +396,7 @@ public static class Program {
                           .AddSources(
                                // ReSharper disable once HeapView.ObjectAllocation
                                """
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -435,6 +444,7 @@ public static class Program {
                           .AddSources(
                                // ReSharper disable once HeapView.ObjectAllocation
                                """
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -482,6 +492,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -529,6 +540,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -582,6 +594,7 @@ public static class Program {
                           .AddSources(
                                $$"""
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -663,6 +676,7 @@ public static class Program {
                           .AddSources(
                                $$"""
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -735,6 +749,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -784,6 +799,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -833,6 +849,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -882,6 +899,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -931,6 +949,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -980,6 +999,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -1031,6 +1051,7 @@ public static class Program {
                                $$"""
 
                                using System;
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -1085,6 +1106,7 @@ public static class Program {
                                $$"""
 
                                using System;
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -1189,6 +1211,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using RootDependencyProject;
@@ -1250,6 +1273,7 @@ namespace DependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using DependencyProject;
@@ -1318,6 +1342,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using RootDependencyProject;
@@ -1418,6 +1443,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using RootDependencyProject;
@@ -1482,6 +1508,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using RootDependencyProject;
@@ -1542,6 +1569,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using RootDependencyProject;
@@ -1609,6 +1637,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using RootDependencyProject;
@@ -1651,6 +1680,7 @@ namespace TestProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -1698,6 +1728,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -1752,6 +1783,7 @@ public static class Program {
                           .AddSources(
                                $$"""
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -1806,6 +1838,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -1873,6 +1906,7 @@ public class Service : IService { }
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -1913,6 +1947,7 @@ public static class Program {
                           .AddSources(
                                """
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
@@ -1953,6 +1988,7 @@ public static class Program {
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -2114,6 +2150,7 @@ namespace RootDependencyProject
                                $$"""
 
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
                                using RootDependencyProject;
@@ -2225,6 +2262,7 @@ namespace RootDependencyProject
                           .AddSources(
                                $$"""
 
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
                                using DependencyProjectA;
@@ -2274,6 +2312,7 @@ namespace RootDependencyProject
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -2283,6 +2322,7 @@ public interface IServiceB;
 public class ServiceB : IServiceB;
 ",
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -2307,6 +2347,7 @@ public static class Program {
 }
 ",
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -2423,6 +2464,7 @@ public class ServiceB : IService, IServiceB { }
         var result = await Builder
                           .AddSources(
                                @"
+using Indago;
 using Indago.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -2522,6 +2564,7 @@ public static class Program {
                           .AddSources(
                                """
                                using System;
+                               using Indago;
                                using Indago.Abstractions;
                                using Microsoft.Extensions.DependencyInjection;
 
