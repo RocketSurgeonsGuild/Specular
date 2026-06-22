@@ -1,4 +1,4 @@
-﻿//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
+//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
 #nullable enable
 #pragma warning disable CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
 using System;
@@ -21,6 +21,28 @@ file class IndagoProvider : IIndagoProvider
     IEnumerable<Type> IIndagoProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
+        switch (lineNumber)
+        {
+            // FilePath: Input0.cs Expression: K7KxgHvx+EGwwlQkuemT3A==
+            case 16:
+                items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+                items.Add(typeof(global::TestAssembly.IGenericService<>));
+                items.Add(typeof(global::TestAssembly.IOther));
+                items.Add(typeof(global::TestAssembly.IRequest<>));
+                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                items.Add(typeof(global::TestAssembly.IService));
+                items.Add(typeof(global::TestAssembly.IServiceB));
+                items.Add(typeof(global::TestAssembly.IValidator));
+                items.Add(typeof(global::TestAssembly.IValidator<>));
+                break;
+        }
+
         return items;
     }
 

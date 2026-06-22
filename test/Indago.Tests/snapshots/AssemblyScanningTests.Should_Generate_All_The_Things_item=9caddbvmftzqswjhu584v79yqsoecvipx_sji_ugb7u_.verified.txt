@@ -1,4 +1,4 @@
-﻿{
+{
   EmptyAssemblies: [
     mscorlib,
     netstandard,
@@ -17,12 +17,12 @@
           Assembly: {
             Location: {
               Kind: ServiceDescriptor,
-              LineNumber: 20,
+              LineNumber: 19,
               ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
-              AllAssembly: false,
+              AllAssembly: true,
               IncludeSystem: false,
               Assembly: null,
               NotAssembly: null,
@@ -53,7 +53,32 @@
               ],
               WithAttributeFilters: null,
               WithAttributeStringFilters: null,
-              WithAnyAttributeFilters: null,
+              WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                }
+              ],
               WithAnyAttributeStringFilters: null,
               AssignableToTypeFilters: null,
               AssignableToAnyTypeFilters: null
@@ -61,10 +86,12 @@
           },
           ServiceDescriptor: {
             ServiceDescriptor: {
-              ServiceTypeDescriptors: null,
-              Lifetime: 2
-            },
-            Lifetime: 2
+              ServiceTypeDescriptors: [
+                {
+                  Identifier: s
+                }
+              ]
+            }
           },
           Type: GetServiceDescriptorCollectionData
         }
@@ -81,6 +108,51 @@
     build_property.ExcludeAssemblyFromCTP: Microsoft,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempPath}
+  },
+  PartialsCached: {
+    NHuxnGr9YVOVTcW1DglGEg==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: /VBJuhyt3B9JZh0hvnXCgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+},
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: /VBJuhyt3B9JZh0hvnXCgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    }
   },
   References: [
     Indago.dll,

@@ -1,8 +1,8 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
+using Indago.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Indago.Analyzers.Descriptors;
 
 namespace Indago.Analyzers.AssemblyProviders;
 
@@ -36,7 +36,9 @@ internal static class DataHelpers
 
         if (expression.Expression is not MemberAccessExpressionSyntax memberAccessExpressionSyntax
          || !memberAccessExpressionSyntax.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+        {
             return;
+        }
 
         if (memberAccessExpressionSyntax.Expression is InvocationExpressionSyntax childExpression)
         {
@@ -57,16 +59,16 @@ internal static class DataHelpers
         var type = ModelExtensions.GetTypeInfo(semanticModel, memberAccessExpressionSyntax.Expression, cancellationToken);
         if (type.Type is null) return;
         var typeName = type.Type.ToDisplayString();
-        if (typeName is "Rocket.Surgery.DependencyInjection.Compiled.IReflectionAssemblySelector"
-                     or "Rocket.Surgery.DependencyInjection.Compiled.IServiceDescriptorAssemblySelector")
+        if (typeName is "Indago.Abstractions.IReflectionAssemblySelector"
+                     or "Indago.Abstractions.IServiceDescriptorAssemblySelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
             var selector = HandleCompiledAssemblySelector(semanticModel, expression, memberAccessExpressionSyntax.Name);
             if (selector is { }) assemblies.Add(selector);
         }
 
-        if (typeName is "Rocket.Surgery.DependencyInjection.Compiled.IReflectionTypeSelector"
-                     or "Rocket.Surgery.DependencyInjection.Compiled.IServiceDescriptorTypeSelector")
+        if (typeName is "Indago.Abstractions.IReflectionTypeSelector"
+                     or "Indago.Abstractions.IServiceDescriptorTypeSelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
             var selector = HandleCompiledAssemblySelector(semanticModel, expression, memberAccessExpressionSyntax.Name);
@@ -76,21 +78,21 @@ internal static class DataHelpers
                 classFilter = HandleCompiledImplementationTypeSelector(expression, memberAccessExpressionSyntax.Name);
         }
 
-        if (typeName == "Rocket.Surgery.DependencyInjection.Compiled.ITypeFilter")
+        if (typeName == "Indago.Abstractions.ITypeFilter")
         {
             if (cancellationToken.IsCancellationRequested) return;
             if (HandleCompiledTypeFilter(diagnostics, semanticModel, expression, memberAccessExpressionSyntax.Name) is { } filter)
                 typeFilters.Add(filter);
         }
 
-        if (typeName is "Rocket.Surgery.DependencyInjection.Compiled.IServiceTypeSelector"
-                     or "Rocket.Surgery.DependencyInjection.Compiled.IServiceLifetimeSelector")
+        if (typeName is "Indago.Abstractions.IServiceTypeSelector"
+                     or "Indago.Abstractions.IServiceLifetimeSelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
             serviceTypeFilters.AddRange(HandleCompiledServiceTypeFilter(diagnostics, semanticModel, expression, memberAccessExpressionSyntax.Name, cancellationToken));
         }
 
-        if (typeName is "Rocket.Surgery.DependencyInjection.Compiled.IServiceLifetimeSelector")
+        if (typeName is "Indago.Abstractions.IServiceLifetimeSelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
             if (HandleCompiledServiceLifetimeFilter(expression, memberAccessExpressionSyntax.Name) is { } filter)
@@ -120,33 +122,33 @@ internal static class DataHelpers
         NameSyntax name
     )
     {
-        return ( name, expression ) switch
-               {
-                   (GenericNameSyntax { TypeArgumentList.Arguments: [var syntax] }, _) => syntax,
-                   (SimpleNameSyntax, InvocationExpressionSyntax
-                   {
-                       ArgumentList.Arguments: [{ Expression: TypeOfExpressionSyntax typeOfExpression }, ..],
-                   }) => typeOfExpression.Type,
-                   // lambda's are methods to be handled.
-                   (_, TypeOfExpressionSyntax typeOfExpression)                                                                   => typeOfExpression.Type,
-                   (_, InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: LambdaExpressionSyntax }, ..] })       => null,
-                   (_, InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: LiteralExpressionSyntax }, ..] })      => null,
-                   (_, InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: MemberAccessExpressionSyntax }, ..] }) => null,
-                   (_, InvocationExpressionSyntax
-                   {
-                       ArgumentList.Arguments:
-                       [
-                           {
-                               Expression: InvocationExpressionSyntax
-                               {
-                                   Expression: IdentifierNameSyntax { Identifier.Value: "nameof" },
-                               } nameofName,
-                           },
-                           ..,
-                       ],
-                   }) => nameofName,
-                   _ => throw new MustBeAnExpressionException(expression.GetLocation(), string.Join(", ", expression.ToFullString())),
-               };
+        return (name, expression) switch
+        {
+            (GenericNameSyntax { TypeArgumentList.Arguments: [var syntax] }, _) => syntax,
+            (SimpleNameSyntax, InvocationExpressionSyntax
+            {
+                ArgumentList.Arguments: [{ Expression: TypeOfExpressionSyntax typeOfExpression }, ..],
+            }) => typeOfExpression.Type,
+            // lambda's are methods to be handled.
+            (_, TypeOfExpressionSyntax typeOfExpression) => typeOfExpression.Type,
+            (_, InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: LambdaExpressionSyntax }, ..] }) => null,
+            (_, InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: LiteralExpressionSyntax }, ..] }) => null,
+            (_, InvocationExpressionSyntax { ArgumentList.Arguments: [{ Expression: MemberAccessExpressionSyntax }, ..] }) => null,
+            (_, InvocationExpressionSyntax
+            {
+                ArgumentList.Arguments:
+                [
+                {
+                    Expression: InvocationExpressionSyntax
+                    {
+                        Expression: IdentifierNameSyntax { Identifier.Value: "nameof" },
+                    } nameofName,
+                },
+                    ..,
+                ],
+            }) => nameofName,
+            _ => throw new MustBeAnExpressionException(expression.GetLocation(), string.Join(", ", expression.ToFullString())),
+        };
     }
 
     private static IAssemblyDescriptor? HandleCompiledAssemblySelector(
@@ -167,18 +169,18 @@ internal static class DataHelpers
             return null;
 
         var typeInfo = ModelExtensions.GetTypeInfo(semanticModel, typeSyntax).Type;
-        if (typeInfo is null)
-            return null;
-        return typeInfo switch
-               {
-                   INamedTypeSymbol nts when name is { Identifier.Text: "FromAssemblyDependenciesOf" } =>
-                       new AssemblyDependenciesDescriptor(nts.ContainingAssembly),
-                   INamedTypeSymbol namedType when name is { Identifier.Text: "FromAssemblyOf" or "NotFromAssemblyOf" } =>
-                       name.Identifier.Text.StartsWith("Not")
-                           ? new NotAssemblyDescriptor(namedType.ContainingAssembly)
-                           : new AssemblyDescriptor(namedType.ContainingAssembly),
-                   _ => null,
-               };
+        return typeInfo is null
+            ? null
+            : typeInfo switch
+            {
+                INamedTypeSymbol nts when name is { Identifier.Text: "FromAssemblyDependenciesOf" } =>
+                    new AssemblyDependenciesDescriptor(nts.ContainingAssembly),
+                INamedTypeSymbol namedType when name is { Identifier.Text: "FromAssemblyOf" or "NotFromAssemblyOf" } =>
+                    name.Identifier.Text.StartsWith("Not")
+                        ? new NotAssemblyDescriptor(namedType.ContainingAssembly)
+                        : new AssemblyDescriptor(namedType.ContainingAssembly),
+                _ => null,
+            };
     }
 
     private static ClassFilter HandleCompiledImplementationTypeSelector(
@@ -187,11 +189,13 @@ internal static class DataHelpers
     )
     {
         if (name.ToFullString() is "GetTypes" && expression.ArgumentList.Arguments.Count is >= 2 and <= 2)
+        {
             foreach (var argument in expression.ArgumentList.Arguments)
             {
                 if (argument.Expression is LiteralExpressionSyntax literalExpressionSyntax && literalExpressionSyntax.Token.IsKind(SyntaxKind.TrueKeyword))
                     return ClassFilter.PublicOnly;
             }
+        }
 
         return ClassFilter.All;
     }
@@ -203,33 +207,33 @@ internal static class DataHelpers
         SimpleNameSyntax name
     )
     {
-        return ( name, GetSyntaxTypeInfo(semanticModel, expression, name) ) switch
-               {
-                   ({ Identifier.Text: "AssignableToAny" or "NotAssignableToAny" }, _) =>
-                       createAssignableToAnyTypeFilterDescriptor(name, expression, semanticModel),
-                   ({ Identifier.Text: "AssignableTo" or "NotAssignableTo" }, { } namedType) =>
-                       createAssignableToTypeFilterDescriptor(name, namedType),
-                   ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, { } namedType) =>
-                       createWithAttributeFilterDescriptor(name, namedType),
-                   ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, _) =>
-                       createWithAttributeStringFilterDescriptor(diagnostics, name, expression, semanticModel),
-                   ({ Identifier.Text: "WithAnyAttribute" }, { } namedType) =>
-                       createWithAnyAttributeFilterDescriptor(name, expression, semanticModel),
-                   ({ Identifier.Text: "WithAnyAttribute" }, _) =>
-                       createWithAnyAttributeStringFilterDescriptor(name, expression, semanticModel),
-                   ({ Identifier.Text: "InExactNamespaceOf" or "InNamespaceOf" or "NotInNamespaceOf" }, _) =>
-                       createNamespaceTypeFilterDescriptor(diagnostics, name, expression, semanticModel),
-                   ({ Identifier.Text: "InExactNamespaces" or "InNamespaces" or "NotInNamespaces" }, _) =>
-                       createNamespaceStringFilterDescriptor(diagnostics, name, expression, semanticModel),
-                   ({ Identifier.Text: "EndsWith" or "StartsWith" or "Contains" or "NotEndsWith" or "NotStartsWith" or "NotContains" }, _) =>
-                       createNameFilterDescriptor(diagnostics, name, expression),
-                   ({ Identifier.Text: "KindOf" or "NotKindOf" }, _) =>
-                       createTypeKindFilterDescriptor(diagnostics, name, expression),
-                   ({ Identifier.Text: "InfoOf" or "NotInfoOf" }, _) =>
-                       createTypeInfoFilterDescriptor(diagnostics, name, expression),
-                   _ => null,
-//                   _ => throw new NotSupportedException($"Not supported type filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."),
-               };
+        return (name, GetSyntaxTypeInfo(semanticModel, expression, name)) switch
+        {
+            ({ Identifier.Text: "AssignableToAny" or "NotAssignableToAny" }, _) =>
+                createAssignableToAnyTypeFilterDescriptor(name, expression, semanticModel),
+            ({ Identifier.Text: "AssignableTo" or "NotAssignableTo" }, { } namedType) =>
+                createAssignableToTypeFilterDescriptor(name, namedType),
+            ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, { } namedType) =>
+                createWithAttributeFilterDescriptor(name, namedType),
+            ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, _) =>
+                createWithAttributeStringFilterDescriptor(diagnostics, name, expression, semanticModel),
+            ({ Identifier.Text: "WithAnyAttribute" }, { } namedType) =>
+                createWithAnyAttributeFilterDescriptor(name, expression, semanticModel),
+            ({ Identifier.Text: "WithAnyAttribute" }, _) =>
+                createWithAnyAttributeStringFilterDescriptor(name, expression, semanticModel),
+            ({ Identifier.Text: "InExactNamespaceOf" or "InNamespaceOf" or "NotInNamespaceOf" }, _) =>
+                createNamespaceTypeFilterDescriptor(diagnostics, name, expression, semanticModel),
+            ({ Identifier.Text: "InExactNamespaces" or "InNamespaces" or "NotInNamespaces" }, _) =>
+                createNamespaceStringFilterDescriptor(diagnostics, name, expression, semanticModel),
+            ({ Identifier.Text: "EndsWith" or "StartsWith" or "Contains" or "NotEndsWith" or "NotStartsWith" or "NotContains" }, _) =>
+                createNameFilterDescriptor(diagnostics, name, expression),
+            ({ Identifier.Text: "KindOf" or "NotKindOf" }, _) =>
+                createTypeKindFilterDescriptor(diagnostics, name, expression),
+            ({ Identifier.Text: "InfoOf" or "NotInfoOf" }, _) =>
+                createTypeInfoFilterDescriptor(diagnostics, name, expression),
+            _ => null,
+            //                   _ => throw new NotSupportedException($"Not supported type filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."),
+        };
 
         static ITypeFilterDescriptor createAssignableToTypeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType)
         {
@@ -238,10 +242,7 @@ internal static class DataHelpers
                 : new AssignableToTypeFilterDescriptor(namedType);
         }
 
-        static ITypeFilterDescriptor createWithAttributeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType)
-        {
-            return name.Identifier.Text.StartsWith("Without") ? new WithoutAttributeFilterDescriptor(namedType) : new WithAttributeFilterDescriptor(namedType);
-        }
+        static ITypeFilterDescriptor createWithAttributeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType) => name.Identifier.Text.StartsWith("Without") ? new WithoutAttributeFilterDescriptor(namedType) : new WithAttributeFilterDescriptor(namedType);
 
         static ITypeFilterDescriptor createWithAnyAttributeFilterDescriptor(
             SimpleNameSyntax name,
@@ -280,14 +281,14 @@ internal static class DataHelpers
         )
         {
             var filter = name.Identifier.Text switch
-                         {
-                             "EndsWith" or "NotEndsWith"     => TextDirectionFilter.EndsWith,
-                             "StartsWith" or "NotStartsWith" => TextDirectionFilter.StartsWith,
-                             "Contains" or "NotContains"     => TextDirectionFilter.Contains,
-                             _ => throw new NotSupportedException(
-                                 $"Not supported name filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."
-                             ),
-                         };
+            {
+                "EndsWith" or "NotEndsWith" => TextDirectionFilter.EndsWith,
+                "StartsWith" or "NotStartsWith" => TextDirectionFilter.StartsWith,
+                "Contains" or "NotContains" => TextDirectionFilter.Contains,
+                _ => throw new NotSupportedException(
+                    $"Not supported name filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."
+                ),
+            };
             var stringValues = ImmutableHashSet.CreateBuilder<string>();
             foreach (var argument in expression.ArgumentList.Arguments)
             {
@@ -311,14 +312,14 @@ internal static class DataHelpers
         )
         {
             var filter = name.Identifier.Text switch
-                         {
-                             "InExactNamespaceOf" => NamespaceFilter.Exact,
-                             "InNamespaceOf"      => NamespaceFilter.In,
-                             "NotInNamespaceOf"   => NamespaceFilter.NotIn,
-                             _ => throw new NotSupportedException(
-                                 $"Not supported namespace filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."
-                             ),
-                         };
+            {
+                "InExactNamespaceOf" => NamespaceFilter.Exact,
+                "InNamespaceOf" => NamespaceFilter.In,
+                "NotInNamespaceOf" => NamespaceFilter.NotIn,
+                _ => throw new NotSupportedException(
+                    $"Not supported namespace filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."
+                ),
+            };
 
             var namespaces = ImmutableHashSet.CreateBuilder<string>();
             foreach (var argument in expression.ArgumentList.Arguments)
@@ -335,7 +336,9 @@ internal static class DataHelpers
 
             if (expression.Expression is MemberAccessExpressionSyntax { Name: GenericNameSyntax { TypeArgumentList.Arguments: [var arg] } }
              && ModelExtensions.GetTypeInfo(semanticModel, arg).Type is { } type2)
+            {
                 namespaces.Add(type2.ContainingNamespace.ToDisplayString());
+            }
 
             return new(filter, namespaces.ToImmutable());
         }
@@ -348,14 +351,14 @@ internal static class DataHelpers
         )
         {
             var filter = name.Identifier.Text switch
-                         {
-                             "InExactNamespaces" => NamespaceFilter.Exact,
-                             "InNamespaces"      => NamespaceFilter.In,
-                             "NotInNamespaces"   => NamespaceFilter.NotIn,
-                             _ => throw new NotSupportedException(
-                                 $"Not supported namespace filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."
-                             ),
-                         };
+            {
+                "InExactNamespaces" => NamespaceFilter.Exact,
+                "InNamespaces" => NamespaceFilter.In,
+                "NotInNamespaces" => NamespaceFilter.NotIn,
+                _ => throw new NotSupportedException(
+                    $"Not supported namespace filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."
+                ),
+            };
 
             var namespaces = ImmutableHashSet.CreateBuilder<string>();
             foreach (var argument in expression.ArgumentList.Arguments)
@@ -395,14 +398,18 @@ internal static class DataHelpers
                     Name.Identifier.Text: "FullName", Expression: TypeOfExpressionSyntax typeOfExpressionSyntax,
                 }
              && GetSyntaxTypeInfo(semanticModel, typeOfExpressionSyntax, name) is { } type)
+            {
                 return name.Identifier.Text.StartsWith("Without")
                     ? new WithoutAttributeStringFilterDescriptor(Helpers.GetFullMetadataName(type))
                     : new WithAttributeStringFilterDescriptor(Helpers.GetFullMetadataName(type));
+            }
 
             if (getStringValue(argument) is { Length: > 0 } item)
+            {
                 return name.Identifier.Text.StartsWith("Without")
                     ? new WithoutAttributeStringFilterDescriptor(item)
                     : new WithAttributeStringFilterDescriptor(item);
+            }
 
             diagnostics.Add(Diagnostic.Create(Diagnostics.MustBeAString, argument.GetLocation()));
             return null;
@@ -484,16 +491,16 @@ internal static class DataHelpers
         static string? getStringValue(ArgumentSyntax argument)
         {
             return argument.Expression switch
-                   {
-                       LiteralExpressionSyntax { Token.RawKind: (int)SyntaxKind.StringLiteralToken, Token.ValueText: { Length: > 0 } result } => result,
-                       MemberAccessExpressionSyntax { Name.Identifier.Text: var text }                                                        => text,
-                       InvocationExpressionSyntax
-                       {
-                           Expression: IdentifierNameSyntax { Identifier: { Text: "nameof" } },
-                           ArgumentList.Arguments: [{ Expression: IdentifierNameSyntax { Identifier.Text: { Length: > 0 } text } }],
-                       } => text,
-                       _ => null,
-                   };
+            {
+                LiteralExpressionSyntax { Token.RawKind: (int)SyntaxKind.StringLiteralToken, Token.ValueText: { Length: > 0 } result } => result,
+                MemberAccessExpressionSyntax { Name.Identifier.Text: var text } => text,
+                InvocationExpressionSyntax
+                {
+                    Expression: IdentifierNameSyntax { Identifier.Text: "nameof" },
+                    ArgumentList.Arguments: [{ Expression: IdentifierNameSyntax { Identifier.Text: { Length: > 0 } text } }],
+                } => text,
+                _ => null,
+            };
         }
     }
 
@@ -539,7 +546,7 @@ internal static class DataHelpers
                     cancellationToken
                 );
                 // ReSharper disable once UseCollectionExpression
-                interfaceFilter = new(classFilter, interfaceFilters.ToImmutableList());
+                interfaceFilter = new(classFilter, [.. interfaceFilters]);
             }
 
             yield return new ImplementedInterfacesServiceTypeDescriptor(interfaceFilter);
@@ -592,19 +599,16 @@ internal static class DataHelpers
         NameSyntax name
     )
     {
-        if (name.ToFullString() == "WithLifetime"
-         && expression is { ArgumentList.Arguments: [{ Expression: MemberAccessExpressionSyntax { Name: { } lifetimeName } }] })
-        {
-            return lifetimeName.Identifier.Text switch { "Scoped" => 1, "Transient" => 2, "Singleton" => 0, _ => throw new ArgumentOutOfRangeException() };
-        }
-
-        return name.ToFullString() switch
-               {
-                   "WithSingletonLifetime" => 0, // Singleton
-                   "WithScopedLifetime"    => 1, // Scoped
-                   "WithTransientLifetime" => 2, // Transient
-                   _                       => null,
-               };
+        return name.ToFullString() == "WithLifetime"
+         && expression is { ArgumentList.Arguments: [{ Expression: MemberAccessExpressionSyntax { Name: { } lifetimeName } }] }
+            ? lifetimeName.Identifier.Text switch { "Scoped" => 1, "Transient" => 2, "Singleton" => 0, _ => throw new ArgumentOutOfRangeException() }
+            : name.ToFullString() switch
+            {
+                "WithSingletonLifetime" => 0, // Singleton
+                "WithScopedLifetime" => 1, // Scoped
+                "WithTransientLifetime" => 2, // Transient
+                _ => null,
+            };
     }
 
     private static INamedTypeSymbol? GetSyntaxTypeInfo(
@@ -618,7 +622,9 @@ internal static class DataHelpers
             : nts;
 }
 
+#pragma warning disable RCS1194 // Implement exception constructors
 internal class MustBeAnExpressionException(Location location, string expression) : Exception($"The expression {expression} must be a constant expression.")
+#pragma warning restore RCS1194 // Implement exception constructors
 {
     public Location Location { get; } = location;
 }

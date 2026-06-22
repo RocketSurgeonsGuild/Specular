@@ -1,4 +1,4 @@
-﻿{
+{
   EmptyAssemblies: [
     mscorlib,
     netstandard,
@@ -17,12 +17,12 @@
           Assembly: {
             Location: {
               Kind: ServiceDescriptor,
-              LineNumber: 20,
+              LineNumber: 19,
               ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
-              AllAssembly: false,
+              AllAssembly: true,
               IncludeSystem: false,
               Assembly: null,
               NotAssembly: null,
@@ -53,7 +53,32 @@
               ],
               WithAttributeFilters: null,
               WithAttributeStringFilters: null,
-              WithAnyAttributeFilters: null,
+              WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                }
+              ],
               WithAnyAttributeStringFilters: null,
               AssignableToTypeFilters: null,
               AssignableToAnyTypeFilters: null
@@ -61,10 +86,12 @@
           },
           ServiceDescriptor: {
             ServiceDescriptor: {
-              ServiceTypeDescriptors: null,
-              Lifetime: 2
-            },
-            Lifetime: 2
+              ServiceTypeDescriptors: [
+                {
+                  Identifier: s
+                }
+              ]
+            }
           },
           Type: GetServiceDescriptorCollectionData
         }
@@ -81,6 +108,33 @@
     build_property.ExcludeAssemblyFromCTP: Microsoft,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempPath}
+  },
+  PartialsCached: {
+    IEbIKNXcuJxkRzLXJy/GkQ==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 16,
+            ExpressionHash: iOVNY6dfLzra3vCDdW4AxA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
+    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    }
   },
   References: [
     Indago.dll,

@@ -1,13 +1,15 @@
 <Project>
     <Target Name="CleanAssemblyCache" BeforeTargets="Clean">
-        <Delete
-            Files="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson"
-            Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
+        <Delete Files="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson" Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
     </Target>
+    <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
+        <Using Include="Indago" />
+    </ItemGroup>
     <ItemGroup>
         <AdditionalFiles
             Visible="false"
             Include="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson"
-            Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
+            Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')"
+        />
     </ItemGroup>
 </Project>

@@ -1,22 +1,5 @@
-﻿{
-  FinalDiagnostics: [
-    {
-      Id: CS1061,
-      Title: ,
-      Severity: Error,
-      WarningLevel: 0,
-      Location: Input0.cs: (30,48)-(30,65),
-      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
-      MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
-      Message: 'Assembly' does not contain a definition for 'GetIndagoProvider' and no accessible extension method 'GetIndagoProvider' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
-      Category: Compiler,
-      CustomTags: [
-        Compiler,
-        Telemetry,
-        NotConfigurable
-      ]
-    }
-  ],
+{
+  FinalDiagnostics: [],
   GeneratorDiagnostics: {
     Indago.Analyzers.IndagoProviderGenerator: []
   },
@@ -34,5 +17,52 @@
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
+  ],
+  Services: [
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.C.ServiceC,
+      ImplementationType: TestProject.A.C.ServiceC
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.IService,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,TestProject.A.IService]
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.Nested+ServiceA,
+      ImplementationType: TestProject.A.Nested+ServiceA
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.IService,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,TestProject.A.IService]
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.Service,
+      ImplementationType: TestProject.A.Service
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.IService,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,TestProject.A.IService]
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.B.IServiceB,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,TestProject.B.IServiceB]
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.B.ServiceB,
+      ImplementationType: TestProject.B.ServiceB
+    },
+    {
+      Lifetime: Scoped,
+      ServiceType: TestProject.A.IService,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,TestProject.A.IService]
+    }
   ]
 }
