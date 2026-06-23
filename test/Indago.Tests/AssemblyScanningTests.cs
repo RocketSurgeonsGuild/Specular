@@ -85,7 +85,6 @@ public partial class AssemblyScanningTests : GeneratorTest
     }
 
     [Test]
-    [Skip("This test is flaky")]
     [MethodDataSource(typeof(AssemblyScanningTestData), nameof(AssemblyScanningTestData.GetTestData))]
     public async Task Should_Generate_All_The_Things_From_Self_And_Another_Assembly(TestSource item, CancellationToken cancellationToken)
     {
@@ -117,7 +116,6 @@ public partial class AssemblyScanningTests : GeneratorTest
     }
 
     [Test]
-    [Skip("This test is flaky")]
     [DependsOn(nameof(Should_Generate_All_The_Things_From_Self_And_Another_Assembly), ProceedOnFailure = true)]
     [MethodDataSource(typeof(AssemblyScanningTestData), nameof(AssemblyScanningTestData.GetTestData))]
     public async Task Should_Generate_All_The_Things_From_Self_And_Another_Assembly_Using_Cache(TestSource item, CancellationToken cancellationToken)
