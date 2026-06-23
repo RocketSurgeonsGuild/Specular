@@ -36,7 +36,7 @@
         <PackageVersion Include="Microsoft.Testing.Extensions.CrashDump" Version="2.1.0" />
         <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.1.0" />
 
-        <PackageVersion Include="Polyfill" Version="9.13.0" />
+        <PackageVersion Include="Polyfill" Version="9.24.1" />
 
         <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.3" />
