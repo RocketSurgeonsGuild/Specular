@@ -50,8 +50,8 @@ jobs:
               run: |
                   hk fix --from-ref $DEFAULT_BRANCH --to-ref $HEAD
               env:
-                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref }}
-                  HEAD: ${{ github.event.pull_request.head.ref }}
+                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
             - name: Add & Commit
               env:
                   GITHUB_TOKEN: ${{ secrets.RSG_BOT_TOKEN }}
