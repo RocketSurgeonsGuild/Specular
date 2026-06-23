@@ -3,9 +3,9 @@ name: lint
 on:
     pull_request_target:
         branches:
-            - master
             - main
             - next
+
 permissions:
     actions: read
     checks: write
