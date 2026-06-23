@@ -1,4 +1,4 @@
-name: lint
+name: Lint
 
 on:
     pull_request_target:
@@ -48,7 +48,7 @@ jobs:
                   cache: true
             - name: 🧹 Lint (hk fix)
               run: |
-                  hk fix --all
+                  hk fix --pr
             - name: Add & Commit
               env:
                   GITHUB_TOKEN: ${{ secrets.RSG_BOT_TOKEN }}
