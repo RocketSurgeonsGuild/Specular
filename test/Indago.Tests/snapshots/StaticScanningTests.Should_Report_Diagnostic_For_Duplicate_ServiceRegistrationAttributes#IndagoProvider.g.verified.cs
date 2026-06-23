@@ -28,7 +28,7 @@ file class IndagoProvider : IIndagoProvider
     {
         switch (lineNumber)
         {
-            // FilePath: {SolutionDirectory}src/Indago/IndagoProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
+            // FilePath: {CurrentDirectory}src/Indago/IndagoProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
             case 19:
                 break;
         }

@@ -39,7 +39,7 @@ file class IndagoProvider : IIndagoProvider
                 services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::ServiceB>()));
                 services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
                 break;
-            // FilePath: {SolutionDirectory}src/Indago/IndagoProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
+            // FilePath: {CurrentDirectory}src/Indago/IndagoProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
             case 19:
                 services.Add(ServiceDescriptor.Transient<global::Nested.ServiceA, global::Nested.ServiceA>());
                 services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Nested.ServiceA>()));
