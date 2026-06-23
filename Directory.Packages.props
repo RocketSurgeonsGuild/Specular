@@ -29,7 +29,7 @@
         <!-- <PackageVersion Include="Rocket.Surgery.DependencyInjection.Analyzers" Version="14.0.1" /> -->
     </ItemGroup>
     <ItemGroup>
-        <PackageVersion Include="JetBrains.Annotations.Sources" Version="2025.2.4" />
+        <PackageVersion Include="JetBrains.Annotations.Sources" Version="2026.2.0" />
 
         <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
         <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.0.0" />
