@@ -48,7 +48,10 @@ jobs:
                   cache: true
             - name: 🧹 Lint (hk fix)
               run: |
-                  hk fix --pr
+                  hk fix --from-ref $DEFAULT_BRANCH --to-ref $HEAD
+              env:
+                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref }}
+                  HEAD: ${{ github.event.pull_request.head.ref }}
             - name: Add & Commit
               env:
                   GITHUB_TOKEN: ${{ secrets.RSG_BOT_TOKEN }}
