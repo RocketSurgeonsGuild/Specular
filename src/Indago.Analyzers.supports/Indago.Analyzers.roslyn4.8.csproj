@@ -4,10 +4,4 @@
         <PackageReference Include="System.Collections.Immutable" VersionOverride="7.0.0" />
         <PackageReference Include="System.Text.Json" VersionOverride="9.0.9" PrivateAssets="all" GeneratePathProperty="true" />
     </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="PolySharp" PrivateAssets="all" />
-        <Compile Include="$(MSBuildThisFileDirectory)..\Indago.Analyzers\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\Indago.Analyzers\obj\**\*.cs" />
-        <Compile Remove="$(MSBuildThisFileDirectory)obj/**/*.cs" />
-        <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
 </Project>

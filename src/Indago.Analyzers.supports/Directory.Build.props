@@ -12,5 +12,6 @@
         <NoPackageAnalysis>true</NoPackageAnalysis>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     </PropertyGroup>
 </Project>
