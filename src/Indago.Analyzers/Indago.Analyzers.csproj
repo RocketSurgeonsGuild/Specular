@@ -14,18 +14,46 @@
         <PackageReference Include="System.Text.Json" PrivateAssets="all" />
         <ProjectReference Include="../Indago.Analyzers.supports/Indago.Analyzers.roslyn4.8.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
         <ProjectReference Include="../Indago.Analyzers.supports/Indago.Analyzers.roslyn4.14.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="../Indago.Analyzers.supports/Indago.Analyzers.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
         <None Include="bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/roslyn5.3/cs" Visible="false" />
-        <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/roslyn5.3/cs" Visible="false" />
-        <None Include="bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/roslyn4.14/cs" Visible="false" />
-        <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/roslyn4.14/cs" Visible="false" />
+        <None Include="bin\$(Configuration)\netstandard2.0\System.Text.Json.dll" Pack="true" PackagePath="analyzers/dotnet/roslyn5.3/cs" Visible="false" />
         <None
-            Include="..\Indago.Analyzers.roslyn4.8\bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll"
+            Include="../Indago.Analyzers.supports/bin/roslyn5.0/$(Configuration)/netstandard2.0/Indago.Analyzers.dll.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn5.0/cs"
+            Visible="false"
+        />
+        <None
+            Include="./Indago.Analyzers.supports/bin/roslyn5.0/$(Configuration)/netstandard2.0/System.Text.Json.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn5.0/cs"
+            Visible="false"
+        />
+        <None
+            Include="../Indago.Analyzers.supports/bin/roslyn4.14/$(Configuration)/netstandard2.0/Indago.Analyzers.dll.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn4.14/cs"
+            Visible="false"
+        />
+        <None
+            Include="./Indago.Analyzers.supports/bin/roslyn4.14/$(Configuration)/netstandard2.0/System.Text.Json.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn4.14/cs"
+            Visible="false"
+        />
+        <None
+            Include="../Indago.Analyzers.supports/bin/roslyn4.8/$(Configuration)/netstandard2.0/Indago.Analyzers.dll.dll"
             Pack="true"
             PackagePath="analyzers/dotnet/roslyn4.8/cs"
             Visible="false"
         />
-        <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/roslyn4.8/cs" Visible="false" />
+        <None
+            Include="./Indago.Analyzers.supports/bin/roslyn4.8/$(Configuration)/netstandard2.0/System.Text.Json.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn4.8/cs"
+            Visible="false"
+        />
     </ItemGroup>
 </Project>

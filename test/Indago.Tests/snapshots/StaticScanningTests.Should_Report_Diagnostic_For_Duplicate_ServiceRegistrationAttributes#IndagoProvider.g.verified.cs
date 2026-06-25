@@ -28,8 +28,10 @@ file class IndagoProvider : IIndagoProvider
     {
         switch (lineNumber)
         {
-            // FilePath: {CurrentDirectory}src/Indago/IndagoProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
+            // FilePath: {CurrentDirectory}src/Indago/IndagoProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
             case 19:
+                services.Add(ServiceDescriptor.Scoped<global::Service, global::Service>());
+                services.Add(ServiceDescriptor.Scoped<global::IService>(a => a.GetRequiredService<global::Service>()));
                 break;
         }
 

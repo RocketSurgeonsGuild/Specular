@@ -29,12 +29,14 @@ file class IndagoProvider : IIndagoProvider
             case 16:
                 items.Add(typeof(global::Indago.IndagoProviderExtensions));
                 items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
                 items.Add(Indago.GetType("MyAssembly")!);
                 items.Add(Indago.GetType("MyAssembly+Info")!);
                 items.Add(Indago.GetType("MyAssembly+Metadata")!);
                 items.Add(Indago.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Indago.IndagoProviderExtensions));
                 items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
                 items.Add(Indago.GetType("MyAssembly")!);
                 items.Add(Indago.GetType("MyAssembly+Info")!);
                 items.Add(Indago.GetType("MyAssembly+Metadata")!);

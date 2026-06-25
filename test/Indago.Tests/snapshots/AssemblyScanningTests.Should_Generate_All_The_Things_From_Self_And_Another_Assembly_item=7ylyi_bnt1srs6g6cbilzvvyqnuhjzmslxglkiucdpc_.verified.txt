@@ -18,7 +18,7 @@
             Location: {
               Kind: ServiceDescriptor,
               LineNumber: 19,
-              ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
+              ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -76,6 +76,30 @@
                   Include: true,
                   Assembly: Indago,
                   Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`5,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`6,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`7,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`8,
                   UnboundGenericType: true
                 }
               ],
@@ -199,9 +223,14 @@
     items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
     items.Add(typeof(global::Indago.IndagoProviderExtensions));
     items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.IndagoSupport));
     items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
     items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
     items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+    items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
     items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
     items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));

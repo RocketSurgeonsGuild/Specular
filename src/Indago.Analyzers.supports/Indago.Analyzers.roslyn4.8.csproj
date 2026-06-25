@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <_Analyzer_Roslyn_Version_>roslyn4.8</_Analyzer_Roslyn_Version_>
+        <DefineConstants>$(DefineConstants);ROSLYN4_8</DefineConstants>
+        <BaseOutputPath>bin/$(_Analyzer_Roslyn_Version_)/</BaseOutputPath>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IsPackable>true</IsPackable>
+        <NoWarn>NU5105;$(NoWarn)</NoWarn>
+        <AssemblyName>Indago.Analyzers</AssemblyName>
+        <IsPackable>false</IsPackable>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <NoPackageAnalysis>true</NoPackageAnalysis>
-        <_Analyzer_Roslyn_Version_>$(MSBuildProjectName.Replace("Indago.Analyzers.",""))</_Analyzer_Roslyn_Version_>
-        <DefineConstants>$(DefineConstants);ROSLYN4_8</DefineConstants>
-        <IsPackable>false</IsPackable>
-        <AssemblyName>Indago.Analyzers</AssemblyName>
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="4.8.0" PrivateAssets="all" />

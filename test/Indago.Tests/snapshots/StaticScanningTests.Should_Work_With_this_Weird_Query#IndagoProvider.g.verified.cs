@@ -24,12 +24,12 @@ file class IndagoProvider : IIndagoProvider
         var items = new List<Type>();
         switch (lineNumber)
         {
-            // FilePath: Input1.cs Expression: 1KAkG8FuvhSzyjSjAEZH3A==
+            // FilePath: Input1.cs Expression: armR1QgiZ2G1A+DABQEIyw==
             case 12:
                 items.Add(typeof(global::OptionsA));
                 items.Add(typeof(global::OptionsB));
                 break;
-            // FilePath: Input0.cs Expression: 1KAkG8FuvhSzyjSjAEZH3A==
+            // FilePath: Input0.cs Expression: armR1QgiZ2G1A+DABQEIyw==
             case 25:
                 items.Add(typeof(global::OptionsA));
                 items.Add(typeof(global::OptionsB));

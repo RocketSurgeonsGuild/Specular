@@ -18,7 +18,7 @@
             Location: {
               Kind: ServiceDescriptor,
               LineNumber: 19,
-              ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
+              ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -77,6 +77,30 @@
                   Assembly: Indago,
                   Attribute: Indago.ServiceRegistrationAttribute`4,
                   UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`5,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`6,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`7,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`8,
+                  UnboundGenericType: true
                 }
               ],
               WithAnyAttributeStringFilters: null,
@@ -130,6 +154,7 @@
     items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
     items.Add(typeof(global::Indago.IndagoProviderExtensions));
     items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.IndagoSupport));
     items.Add(Indago.GetType("MyAssembly")!);
     items.Add(Indago.GetType("MyAssembly+Info")!);
     items.Add(Indago.GetType("MyAssembly+Metadata")!);

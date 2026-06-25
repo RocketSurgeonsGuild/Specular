@@ -18,7 +18,7 @@
             Location: {
               Kind: ServiceDescriptor,
               LineNumber: 19,
-              ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
+              ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
               FileName: IndagoProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -76,6 +76,30 @@
                   Include: true,
                   Assembly: Indago,
                   Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`5,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`6,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`7,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`8,
                   UnboundGenericType: true
                 }
               ],
@@ -180,6 +204,25 @@
     build_property.ExcludeAssemblyFromCTP: Microsoft.Extensions.DependencyInjection.Abstractions,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempPath}/test
+  },
+  PartialsCached: {
+    Nz2pi15pDS4u7ehGXCSPKA==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: +H5FB77BY9RWCbY+SBdYNQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.IndagoSupport));
+},
+          CacheVersion: {Scrubbed}
+        }
+      }
+    }
   },
   References: [
     <in-memory assembly>,

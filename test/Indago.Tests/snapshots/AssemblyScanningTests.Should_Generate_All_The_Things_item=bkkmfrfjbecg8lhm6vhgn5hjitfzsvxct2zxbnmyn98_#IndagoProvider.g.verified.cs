@@ -27,6 +27,10 @@ file class IndagoProvider : IIndagoProvider
             // FilePath: Input0.cs Expression: icamNGQlbhR5fqnsVbNH4A==
             case 16:
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
