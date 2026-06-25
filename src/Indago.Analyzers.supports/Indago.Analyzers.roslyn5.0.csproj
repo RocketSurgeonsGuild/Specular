@@ -1,26 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <_Analyzer_Roslyn_Version_>roslyn5.0</_Analyzer_Roslyn_Version_>
-        <DefineConstants>$(DefineConstants);ROSLYN5_0</DefineConstants>
-        <BaseOutputPath>bin/$(_Analyzer_Roslyn_Version_)/</BaseOutputPath>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <IsPackable>true</IsPackable>
-        <NoWarn>NU5105;$(NoWarn)</NoWarn>
-        <AssemblyName>Indago.Analyzers</AssemblyName>
-        <IsPackable>false</IsPackable>
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-        <NoPackageAnalysis>true</NoPackageAnalysis>
-        <GenerateDocumentationFile>false</GenerateDocumentationFile>
-        <TargetFramework>netstandard2.0</TargetFramework>
-    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.0.0" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.0" />
         <PackageReference Include="System.Text.Json" VersionOverride="9.0.9" PrivateAssets="all" GeneratePathProperty="true" />
-        <PackageReference Include="PolySharp" PrivateAssets="all" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\Indago.Analyzers\**\*.cs" Exclude="..\Indago.Analyzers\obj\**\*.cs" />
-        <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 </Project>

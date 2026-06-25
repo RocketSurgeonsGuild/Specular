@@ -1,0 +1,16 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <PropertyGroup>
+        <_Analyzer_Roslyn_Version_>$(MSBuildProjectName.Replace('Indago.Analyzers.', ''))</_Analyzer_Roslyn_Version_>
+        <DefineConstants>$(DefineConstants);$(_Analyzer_Roslyn_Version_.Replace('.', '_').ToUpper())</DefineConstants>
+        <BaseOutputPath>bin/$(_Analyzer_Roslyn_Version_)/</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj/$(_Analyzer_Roslyn_Version_)/</BaseIntermediateOutputPath>
+        <NoWarn>NU5105;$(NoWarn)</NoWarn>
+        <AssemblyName>Indago.Analyzers</AssemblyName>
+        <IsPackable>false</IsPackable>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+</Project>
