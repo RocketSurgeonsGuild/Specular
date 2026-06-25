@@ -131,7 +131,6 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
     typeof(TService2),
     typeof(TService3),
     typeof(TService4),
-    typeof(TService4),
     typeof(TService5)
 );
 
@@ -154,7 +153,6 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
     typeof(TService1),
     typeof(TService2),
     typeof(TService3),
-    typeof(TService4),
     typeof(TService4),
     typeof(TService5),
     typeof(TService6)
@@ -180,7 +178,6 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
     typeof(TService1),
     typeof(TService2),
     typeof(TService3),
-    typeof(TService4),
     typeof(TService4),
     typeof(TService5),
     typeof(TService6),
@@ -208,7 +205,6 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
     typeof(TService1),
     typeof(TService2),
     typeof(TService3),
-    typeof(TService4),
     typeof(TService4),
     typeof(TService5),
     typeof(TService6),
