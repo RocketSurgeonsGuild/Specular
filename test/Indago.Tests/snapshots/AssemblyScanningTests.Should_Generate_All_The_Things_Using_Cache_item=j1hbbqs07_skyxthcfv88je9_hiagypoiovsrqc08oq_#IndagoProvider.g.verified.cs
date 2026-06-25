@@ -31,6 +31,10 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));

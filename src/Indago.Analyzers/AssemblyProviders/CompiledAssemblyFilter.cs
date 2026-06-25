@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
 using Indago.Analyzers.Descriptors;
+using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.AssemblyProviders;
 
-internal class CompiledAssemblyFilter(ImmutableList<IAssemblyDescriptor> assemblyDescriptors, SourceLocation? sourceLocation = null): ICompiledTypeFilter<IAssemblySymbol>
+internal class CompiledAssemblyFilter(ImmutableList<IAssemblyDescriptor> assemblyDescriptors, SourceLocation? sourceLocation = null) : ICompiledTypeFilter<IAssemblySymbol>
 {
     public ImmutableList<IAssemblyDescriptor> AssemblyDescriptors { get; } = assemblyDescriptors;
 
@@ -28,19 +28,14 @@ internal class CompiledAssemblyFilter(ImmutableList<IAssemblyDescriptor> assembl
         if (!_includeSystemAssemblies && coreAssemblies.Contains(targetType.Name)) return false;
         if (_allAssemblies) return true;
 
-        return AssemblyDescriptors
-           .Any(
-                filter => filter switch
+        var referencedAssemblySymbols = targetType.Modules
+            .SelectMany(z => z.ReferencedAssemblySymbols)
+            .ToImmutableHashSet(SymbolEqualityComparer.Default);
+
+        return AssemblyDescriptors.Any(filter => filter switch
                           {
                               AssemblyDescriptor { Assembly: var assembly, } => SymbolEqualityComparer.Default.Equals(assembly, targetType),
-                              AssemblyDependenciesDescriptor { Assembly: var assembly, } => targetType
-                                                                                           .Modules.SelectMany(z => z.ReferencedAssemblySymbols)
-                                                                                           .Any(
-                                                                                                reference => SymbolEqualityComparer.Default.Equals(
-                                                                                                    assembly,
-                                                                                                    reference
-                                                                                                )
-                                                                                            ),
+                              AssemblyDependenciesDescriptor { Assembly: var assembly, } => referencedAssemblySymbols.Contains(assembly),
                               _ => false,
                           }
             );

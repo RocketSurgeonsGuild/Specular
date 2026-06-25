@@ -42,6 +42,10 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));

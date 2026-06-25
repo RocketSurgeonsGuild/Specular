@@ -157,7 +157,7 @@ internal static class DataHelpers
         SimpleNameSyntax name
     )
     {
-        if (name.ToFullString() == "FromAssembly")
+        if (name.ToFullString() == "EntryAssembly")
             return new AssemblyDescriptor(semanticModel.Compilation.Assembly);
         if (name.ToFullString() == "FromAssemblies")
             return new AllAssemblyDescriptor();
@@ -173,7 +173,7 @@ internal static class DataHelpers
             ? null
             : typeInfo switch
             {
-                INamedTypeSymbol nts when name is { Identifier.Text: "FromAssemblyDependenciesOf" } =>
+                INamedTypeSymbol nts when name is { Identifier.Text: "DependenciesFromAssemblyOf" } =>
                     new AssemblyDependenciesDescriptor(nts.ContainingAssembly),
                 INamedTypeSymbol namedType when name is { Identifier.Text: "FromAssemblyOf" or "NotFromAssemblyOf" } =>
                     name.Identifier.Text.StartsWith("Not")
@@ -546,7 +546,7 @@ internal static class DataHelpers
                     cancellationToken
                 );
                 // ReSharper disable once UseCollectionExpression
-                interfaceFilter = new(classFilter, [.. interfaceFilters]);
+                interfaceFilter = new(classFilter, interfaceFilters.ToImmutableList());
             }
 
             yield return new ImplementedInterfacesServiceTypeDescriptor(interfaceFilter);

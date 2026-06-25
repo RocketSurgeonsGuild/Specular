@@ -18,17 +18,17 @@ public partial class AssemblyScanningTestData
         var reflectionRequests = GetReflectionRequests().ToHashSet();
         var serviceDescriptorRequests = GetServiceDescriptorRequests().ToHashSet();
 
-        foreach (( var Expression, var TypeName ) in assemblyRequests)
+        foreach ((var Expression, var TypeName) in assemblyRequests)
         {
             items.Add(CreateTest($"assembly: {TypeName}", [$"provider.GetAssemblies({Expression});"]));
         }
 
-        foreach (( var Expression, var TypeName ) in reflectionRequests)
+        foreach ((var Expression, var TypeName) in reflectionRequests)
         {
             items.Add(CreateTest($"reflection: {TypeName}", [$"provider.GetTypes({Expression});"]));
         }
 
-        foreach (( var Expression, var TypeName ) in serviceDescriptorRequests)
+        foreach ((var Expression, var TypeName) in serviceDescriptorRequests)
         {
             items.Add(CreateTest($"services: {TypeName}", [$"provider.Scan(services, {Expression});"]));
         }
@@ -77,9 +77,9 @@ public partial class AssemblyScanningTestData
         ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies()),
         ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>()),
         ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies().NotFromAssemblyOf<IService>()),
-        ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssembly()),
-        ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblyDependenciesOf<ServiceRegistrationAttribute>()),
-        ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblyDependenciesOf<IService>()),
+        ToExpression<Action<IReflectionTypeSelector>>(z => z.EntryAssembly()),
+        ToExpression<Action<IReflectionTypeSelector>>(z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()),
+        ToExpression<Action<IReflectionTypeSelector>>(z => z.DependenciesFromAssemblyOf<IService>()),
         //yield return TestMethod(z => z.IncludeSystemAssemblies().FromAssemblies());
     ];
 
@@ -247,7 +247,7 @@ public partial class AssemblyScanningTestData
         ToExpression<Func<IReflectionTypeSelector, IEnumerable<Type>>>(
             z => z
                 .FromAssemblies()
-                .FromAssemblyDependenciesOf<ServiceRegistrationAttribute>()
+                .DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()
                 .GetTypes(x => x.WithAnyAttribute(typeof(ServiceRegistrationAttribute)))
         ),
 
@@ -617,7 +617,7 @@ public partial class AssemblyScanningTestData
                       .Select(z => MyRegex().Replace(z, "$1").Trim())
                       .Aggregate("", (x, y) => x + y)
                       .Trim();
-        return ( expression, typeName );
+        return (expression, typeName);
     }
 
 

@@ -9,6 +9,7 @@ local excludeDiagnostics = new Listing<String> {
   "CA2255"
   "CS0103"
   "CS0108"
+  "CS1061"
   "CS0246"
   "CS1591"
   "CS8602"

@@ -2025,7 +2025,7 @@ public static class Program {
 
     [Test]
     [MatrixDataSource]
-    public async Task Should_Select_Specific_Assemblies_Using_FromAssemblyDependenciesOf(
+    public async Task Should_Select_Specific_Assemblies_Using_DependenciesFromAssemblyOf(
         [Matrix("ServiceA", "ServiceB", "ServiceC")]
         string className,
         [Matrix(true, false)]
@@ -2171,7 +2171,7 @@ namespace RootDependencyProject
                                	            provider.Scan(
                                                services,
                                                z => z
-                               			        .FromAssemblyDependenciesOf{{( useTypeof ? $"(typeof({className}))" : $"<{className}>()" )}}
+                               			        .DependenciesFromAssemblyOf{{( useTypeof ? $"(typeof({className}))" : $"<{className}>()" )}}
                                                    .AddClasses(x => x.AssignableTo(typeof(IService)), true)
                                                    .AsSelf()
                                                    .AsImplementedInterfaces()
@@ -2532,7 +2532,7 @@ public static class Program {
                                               var services = new ServiceCollection();
                                               var provider = typeof(Program).Assembly.GetIndagoProvider();
                                               var classes = provider.GetTypes(
-                                                  s => s.FromAssemblyDependenciesOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())
+                                                  s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())
                                               );
 
                                               return services;
@@ -2575,7 +2575,7 @@ public static class Program {
                                        var services = new ServiceCollection();
                                        var provider = typeof(Program).Assembly.GetIndagoProvider();
                                        var classes = provider.GetTypes(
-                                           s => s.FromAssemblyDependenciesOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())
+                                           s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())
                                        );
 
                                        return services;

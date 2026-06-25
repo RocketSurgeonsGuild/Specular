@@ -53,7 +53,7 @@ internal static class SwitchGenerator
         if (blocks is [var localBlock])
         {
             return SwitchSection()
-                  .AddStatements([.. ParseStatements(localBlock.Expression)])
+                  .AddStatements(ParseStatements(localBlock.Expression).ToArray())
                   .AddStatements(BreakStatement());
         }
 
@@ -85,7 +85,7 @@ internal static class SwitchGenerator
         InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName("IIndagoProvider"),
+                    IdentifierName("IndagoSupport"),
                     IdentifierName("GetArgumentExpressionHash")
                 )
             )
@@ -100,7 +100,7 @@ internal static class SwitchGenerator
     );
 
     private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IGrouping<string, ResolvedSourceLocation> innerGroup) => SwitchSection()
-       .AddStatements([.. ParseStatements(innerGroup.FirstOrDefault()?.Expression ?? "")])
+       .AddStatements(ParseStatements(innerGroup.FirstOrDefault()?.Expression ?? "").ToArray())
        .AddStatements(BreakStatement());
 
     private static IEnumerable<StatementSyntax> ParseStatements(string expression)

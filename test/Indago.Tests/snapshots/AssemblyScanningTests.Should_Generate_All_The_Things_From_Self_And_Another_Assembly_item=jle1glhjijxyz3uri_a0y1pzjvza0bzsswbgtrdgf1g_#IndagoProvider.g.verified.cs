@@ -38,6 +38,7 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
                 items.Add(typeof(global::Indago.IndagoProviderExtensions));
                 items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
                 items.Add(Indago.GetType("MyAssembly")!);
                 items.Add(Indago.GetType("MyAssembly+Info")!);
                 items.Add(Indago.GetType("MyAssembly+Metadata")!);
@@ -51,6 +52,7 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
                 items.Add(typeof(global::Indago.IndagoProviderExtensions));
                 items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
                 items.Add(Indago.GetType("MyAssembly")!);
                 items.Add(Indago.GetType("MyAssembly+Info")!);
                 items.Add(Indago.GetType("MyAssembly+Metadata")!);

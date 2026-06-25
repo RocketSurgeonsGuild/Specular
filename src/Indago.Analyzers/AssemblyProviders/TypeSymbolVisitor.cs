@@ -8,7 +8,7 @@ internal class TypeSymbolVisitor
     (Compilation compilation, ICompiledTypeFilter<IAssemblySymbol> assemblyFilter, ICompiledTypeFilter<INamedTypeSymbol> typeFilter)
     : TypeSymbolVisitorBase(compilation, assemblyFilter, typeFilter)
 {
-    public ImmutableList<INamedTypeSymbol> GetTypes() => [.. _types];
+    public ImmutableList<INamedTypeSymbol> GetTypes() => _types.ToImmutableList();
 
     protected override bool FoundNamedType(INamedTypeSymbol symbol)
     {
@@ -16,7 +16,7 @@ internal class TypeSymbolVisitor
         return false;
     }
 
-    private readonly HashSet<INamedTypeSymbol> _types = new(SymbolEqualityComparer.Default);
+    private readonly HashSet<INamedTypeSymbol> _types = [with(SymbolEqualityComparer.Default)];
 }
 
 internal static class TypeSymbolVisitorExtensions

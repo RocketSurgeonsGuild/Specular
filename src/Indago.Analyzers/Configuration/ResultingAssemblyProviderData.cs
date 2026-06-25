@@ -26,7 +26,7 @@ public class ResultingAssemblyProviderData
 
     public GeneratedAssemblyProviderData ToGeneratedAssemblyProviderData() => new(
         _assemblyData.ToImmutableDictionary(),
-        [.. _expressionlessAssemblies],
+        _expressionlessAssemblies.ToImmutableHashSet(),
         _sourceLocations.ToImmutableDictionary(
             x => x.Key,
             x => new GeneratedLocationAssemblyResolvedSourceCollection(x.Value.SourceLocation, x.Value.ResolvedSources.ToImmutableDictionary())
@@ -50,6 +50,6 @@ public class ResultingAssemblyProviderData
     }
 
     private readonly Dictionary<string, CompiledAssemblyProviderData> _assemblyData = [];
-    private readonly HashSet<string> _expressionlessAssemblies = new(StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _expressionlessAssemblies = [with(StringComparer.OrdinalIgnoreCase)];
     private readonly Dictionary<string, ResultingLocationAssemblyResolvedSourceCollection> _sourceLocations = [];
 }

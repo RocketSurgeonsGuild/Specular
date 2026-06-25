@@ -1,12 +1,10 @@
 using System.Collections.Immutable;
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Indago.Analyzers.AssemblyProviders;
 using Indago.Analyzers.Configuration;
 using Indago.Analyzers.Descriptors;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
@@ -80,7 +78,7 @@ internal static class ServiceDescriptorCollection
         IAssemblySymbol targetAssembly
     )
     {
-        if (!items.Any()) return [];
+        if (!items.Any()) return ImmutableList<ResolvedSourceLocation>.Empty;
 
         var results = new List<ResolvedSourceLocation>();
         foreach (var item in items)
@@ -90,7 +88,7 @@ internal static class ServiceDescriptorCollection
             results.Add(location);
         }
 
-        return [.. results];
+        return results.ToImmutableList();
     }
 
     public record Item
@@ -118,8 +116,8 @@ internal static class ServiceDescriptorCollection
                 List<IAssemblyDescriptor> assemblies = [];
                 List<ITypeFilterDescriptor> typeFilters =
                 [
-                    new TypeKindFilterDescriptor(true, [TypeKind.Class]),
-                    new TypeInfoFilterDescriptor(false, [TypeInfoFilter.Abstract, TypeInfoFilter.Static]),
+                    new TypeKindFilterDescriptor(true, ImmutableHashSet.Create(TypeKind.Class)),
+                    new TypeInfoFilterDescriptor(false, ImmutableHashSet.Create(TypeInfoFilter.Abstract, TypeInfoFilter.Static)),
                 ];
                 List<IServiceTypeDescriptor> serviceDescriptors = [];
                 var classFilter = ClassFilter.All;
@@ -138,9 +136,9 @@ internal static class ServiceDescriptorCollection
                 );
 
                 var source = Helpers.CreateSourceLocation(SourceLocationKind.ServiceDescriptor, methodCallSyntax, cancellationToken);
-                var assemblyFilter = new CompiledAssemblyFilter([.. assemblies], source);
-                var typeFilter = new CompiledTypeFilter(classFilter, [.. typeFilters], source);
-                var serviceDescriptorFilter = new CompiledServiceTypeDescriptors([.. serviceDescriptors], lifetime);
+                var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList(), source);
+                var typeFilter = new CompiledTypeFilter(classFilter, typeFilters.ToImmutableList(), source);
+                var serviceDescriptorFilter = new CompiledServiceTypeDescriptors(serviceDescriptors.ToImmutableArray(), lifetime);
 
                 var i = new Item(source, assemblyFilter, typeFilter, serviceDescriptorFilter, lifetime);
                 items.Add(i);
@@ -180,6 +178,7 @@ internal static class ServiceDescriptorCollection
         var asMatchingInterface = serviceTypes.ServiceTypeDescriptors.OfType<MatchingInterfaceServiceTypeDescriptor>().Any();
         var asSpecificTypes = serviceTypes.ServiceTypeDescriptors.OfType<CompiledServiceTypeDescriptor>().Select(z => z.Type).Where(z => z is { }).ToArray();
         var registrationLifetimeAttribute = compilation.GetTypeByMetadataName("Indago.RegistrationLifetimeAttribute")!;
+        var serviceRegistrationAttribute = compilation.GetTypeByMetadataName("Indago.ServiceRegistrationAttribute")!;
 
         var services = new List<InvocationExpressionSyntax>();
 
@@ -202,7 +201,9 @@ internal static class ServiceDescriptorCollection
             var serviceRegistrationAttributes =
                 type
                    .GetAttributes()
-                   .Where(attribute => attribute.AttributeClass is { Name: "ServiceRegistrationAttribute" or "ServiceRegistration" })
+                   .Where(
+                        attribute => attribute.AttributeClass is { }
+                         && SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, serviceRegistrationAttribute))
                    .ToArray();
 
             // attribute priority for discovered services

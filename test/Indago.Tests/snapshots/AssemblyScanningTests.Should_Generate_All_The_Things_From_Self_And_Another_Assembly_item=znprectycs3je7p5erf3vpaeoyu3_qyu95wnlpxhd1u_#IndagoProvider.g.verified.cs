@@ -22,6 +22,15 @@ file class IndagoProvider : IIndagoProvider
     IEnumerable<Type> IIndagoProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
+        switch (lineNumber)
+        {
+            // FilePath: Input0.cs Expression: +H5FB77BY9RWCbY+SBdYNQ==
+            case 16:
+                items.Add(typeof(global::Indago.IndagoSupport));
+                items.Add(typeof(global::Indago.IndagoSupport));
+                break;
+        }
+
         return items;
     }
 
