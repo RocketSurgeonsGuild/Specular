@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Indago.Analyzers.Configuration;
 
+#pragma warning disable CS9113
 internal partial class AssemblyProviderConfiguration
 (
     SourceProductionContext context,
@@ -17,6 +18,7 @@ internal partial class AssemblyProviderConfiguration
     GeneratedAssemblyProviderData generatedJson,
     ResultingAssemblyProviderData resultingJson
 )
+#pragma warning restore CS9113
 {
     public (
         ImmutableList<AssemblyCollection.Item> InternalAssemblyRequests,
@@ -144,7 +146,6 @@ internal partial class AssemblyProviderConfiguration
             yield return Helpers.AddAssemblyAttribute(ServiceDescriptorTypesKey, GetServiceDescriptorToString(context, request));
         }
     }
-#pragma warning disable RS1035
     internal ResolvedSourceLocation? CacheSourceLocation(SourceLocation location, IAssemblySymbol assemblySymbol, Func<ResolvedSourceLocation?> factory)
     {
         if (generatedJson.GetSourceLocation(assemblySymbol, location, factory) is not { } savedLocation) return null;
@@ -152,7 +153,6 @@ internal partial class AssemblyProviderConfiguration
         resultingJson.AddSourceLocation(assemblySymbol, savedLocation);
         return savedLocation;
     }
-#pragma warning restore RS1035
 
     private static string CompressString(byte[] bytes) => Convert.ToBase64String(bytes);
 
@@ -199,7 +199,6 @@ internal partial class AssemblyProviderConfiguration
         return data;
     }
 
-#pragma warning disable RS1035
     private void GetAssemblyExpressionData(
         IAssemblySymbol assembly,
         out ImmutableList<AssemblyCollection.Item> assemblyItems,
@@ -212,9 +211,9 @@ internal partial class AssemblyProviderConfiguration
         if (generatedJson.DoesAssemblyContainExpressions(assembly))
         {
             resultingJson.NoExpressions(assembly);
-            assemblyItems = [];
-            reflection = [];
-            serviceDescriptor = [];
+            assemblyItems = ImmutableList<AssemblyCollection.Item>.Empty;
+            reflection = ImmutableList<ReflectionCollection.Item>.Empty;
+            serviceDescriptor = ImmutableList<ServiceDescriptorCollection.Item>.Empty;
             excludeFromResolution = false;
             return;
         }
@@ -222,9 +221,9 @@ internal partial class AssemblyProviderConfiguration
         if (generatedJson.GetAssemblyData(assembly) is { } generatedData)
         {
             resultingJson.AddExpressionData(assembly, generatedData);
-            assemblyItems = [.. generatedData.InternalAssemblyRequests.Select(z => GetAssembliesFromData(assemblySymbols, z))];
-            reflection = [.. generatedData.InternalReflectionRequests.Select(z => GetReflectionFromData(compilation, assemblySymbols, z))];
-            serviceDescriptor = [.. generatedData.InternalServiceDescriptorRequests.Select(z => GetServiceDescriptorFromData(compilation, assemblySymbols, z))];
+            assemblyItems = generatedData.InternalAssemblyRequests.Select(z => GetAssembliesFromData(assemblySymbols, z)).ToImmutableList();
+            reflection = generatedData.InternalReflectionRequests.Select(z => GetReflectionFromData(compilation, assemblySymbols, z)).ToImmutableList();
+            serviceDescriptor = generatedData.InternalServiceDescriptorRequests.Select(z => GetServiceDescriptorFromData(compilation, assemblySymbols, z)).ToImmutableList();
             excludeFromResolution = generatedData.ExcludeFromResolution;
             return;
         }
@@ -290,9 +289,9 @@ internal partial class AssemblyProviderConfiguration
         serviceDescriptor = serviceDescriptorBuilder.ToImmutable();
 
         var result = new CompiledAssemblyProviderData(
-            [.. assemblyBuilder.Select(GetAssemblyCollectionData)],
-            [.. reflectionBuilder.Select(GetReflectionCollectionData)],
-            [.. serviceDescriptorBuilder.Select(z => GetServiceDescriptorCollectionData(context, z))],
+            assemblyBuilder.Select(GetAssemblyCollectionData).ToImmutableList(),
+            reflectionBuilder.Select(GetReflectionCollectionData).ToImmutableList(),
+            serviceDescriptorBuilder.Select(z => GetServiceDescriptorCollectionData(context, z)).ToImmutableList(),
             excludeFromResolution,
             assembly.GetCachedVersion()
         );
@@ -302,7 +301,6 @@ internal partial class AssemblyProviderConfiguration
         else
             resultingJson.AddExpressionData(assembly, result);
     }
-#pragma warning restore RS1035
 
     private static GetReflectionCollectionData GetReflectionCollectionData(ReflectionCollection.Item item)
     {
@@ -425,9 +423,9 @@ internal partial class AssemblyProviderConfiguration
     private static AssemblyFilterData LoadAssemblyFilterData(CompiledAssemblyFilter filter) => new(
         filter.AssemblyDescriptors.OfType<AllAssemblyDescriptor>().Any(),
         filter.AssemblyDescriptors.OfType<IncludeSystemAssembliesDescriptor>().Any(),
-        [.. filter.AssemblyDescriptors.OfType<AssemblyDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z)],
-        [.. filter.AssemblyDescriptors.OfType<NotAssemblyDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z)],
-        [.. filter.AssemblyDescriptors.OfType<AssemblyDependenciesDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z)]
+    filter.AssemblyDescriptors.OfType<AssemblyDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z).ToImmutableArray(),
+        filter.AssemblyDescriptors.OfType<NotAssemblyDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z).ToImmutableArray(),
+        filter.AssemblyDescriptors.OfType<AssemblyDependenciesDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z).ToImmutableArray()
     );
 
     private static CompiledServiceTypeDescriptors LoadServiceDescriptorFilter(
@@ -495,7 +493,7 @@ internal partial class AssemblyProviderConfiguration
                                                           _ => throw new ArgumentOutOfRangeException(nameof(descriptor), descriptor, $"The type name was {descriptor.GetType().FullName}"),
                                                       }
                                  );
-        return new([.. serviceDescriptors], serviceTypeDescriptors.Lifetime);
+        return new(serviceDescriptors.ToImmutableArray(), serviceTypeDescriptors.Lifetime);
     }
 
     private static CompiledTypeFilter LoadTypeFilter(
@@ -508,22 +506,22 @@ internal partial class AssemblyProviderConfiguration
         var descriptors = ImmutableList.CreateBuilder<ITypeFilterDescriptor>();
         foreach (var item in data.NamespaceFilters)
         {
-            descriptors.Add(new NamespaceFilterDescriptor(item.Filter, [.. item.Namespaces]));
+            descriptors.Add(new NamespaceFilterDescriptor(item.Filter, item.Namespaces.ToImmutableHashSet()));
         }
 
         foreach (var item in data.NameFilters)
         {
-            descriptors.Add(new NameFilterDescriptor(item.Include, item.Filter, [.. item.Names]));
+            descriptors.Add(new NameFilterDescriptor(item.Include, item.Filter, item.Names.ToImmutableHashSet()));
         }
 
         foreach (var item in data.TypeKindFilters)
         {
-            descriptors.Add(new TypeKindFilterDescriptor(item.Include, [.. item.TypeKinds]));
+            descriptors.Add(new TypeKindFilterDescriptor(item.Include, item.TypeKinds.ToImmutableHashSet()));
         }
 
         foreach (var item in data.TypeInfoFilters)
         {
-            descriptors.Add(new TypeInfoFilterDescriptor(item.Include, [.. item.TypeInfos]));
+            descriptors.Add(new TypeInfoFilterDescriptor(item.Include, item.TypeInfos.ToImmutableHashSet()));
         }
 
         foreach (var item in data.WithAttributeFilters)
@@ -562,7 +560,7 @@ internal partial class AssemblyProviderConfiguration
             withAnyAttributeStringFilter.Add(item.Attribute);
         }
 
-        if (withAnyAttributeStringFilter.Any()) descriptors.Add(new WithAnyAttributeStringFilterDescriptor([.. withAnyAttributeStringFilter]));
+        if (withAnyAttributeStringFilter.Any()) descriptors.Add(new WithAnyAttributeStringFilterDescriptor(withAnyAttributeStringFilter.ToImmutableHashSet()));
 
         foreach (var item in data.AssignableToTypeFilters)
         {
@@ -597,36 +595,32 @@ internal partial class AssemblyProviderConfiguration
 
     private static TypeFilterData LoadTypeFilterData(CompiledTypeFilter typeFilter) => new(
         typeFilter.ClassFilter,
-        [.. typeFilter
+        typeFilter
            .TypeFilterDescriptors
            .OfType<NamespaceFilterDescriptor>()
-           .Select(static z => new NamespaceFilterData(z.Filter, [.. z.Namespaces.OrderBy(z => z)]))
+           .Select(static z => new NamespaceFilterData(z.Filter, z.Namespaces.OrderBy(z => z).ToImmutableArray()))
            .OrderBy(static z => string.Join(",", z.Namespaces.OrderBy(static z => z)))
            .ThenBy(static z => z.Filter)
-           .Select(static z => z with { Namespaces = [.. z.Namespaces.OrderBy(z => z)] })],
-        [
-            .. typeFilter
+           .Select(static z => z with { Namespaces = z.Namespaces.OrderBy(z => z).ToImmutableArray() }).ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors.OfType<NameFilterDescriptor>()
-              .Select(static z => new NameFilterData(z.Include, z.Filter, [.. z.Names.OrderBy(z => z)]))
+              .Select(static z => new NameFilterData(z.Include, z.Filter, z.Names.OrderBy(z => z).ToImmutableArray()))
               .OrderBy(static z => string.Join(",", z.Names.OrderBy(static z => z)))
-              .ThenBy(static z => z.Filter),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(static z => z.Filter)
+        .ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors.OfType<TypeKindFilterDescriptor>()
-              .Select(static z => new TypeKindFilterData(z.Include, [.. z.TypeKinds.OrderBy(z => z)]))
+              .Select(static z => new TypeKindFilterData(z.Include, z.TypeKinds.OrderBy(z => z).ToImmutableArray()))
               .OrderBy(static z => string.Join(",", z.TypeKinds.OrderBy(static z => z)))
-              .ThenBy(static z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(static z => z.Include)
+        .ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors.OfType<TypeInfoFilterDescriptor>()
-              .Select(static z => new TypeInfoFilterData(z.Include, [.. z.TypeInfos.OrderBy(z => z)]))
+              .Select(static z => new TypeInfoFilterData(z.Include, z.TypeInfos.OrderBy(z => z).ToImmutableArray()))
               .OrderBy(static z => string.Join(",", z.TypeInfos.OrderBy(static z => z)))
-              .ThenBy(static z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(static z => z.Include)
+        .ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors
               .Select(f => f switch
                            {
@@ -648,24 +642,22 @@ internal partial class AssemblyProviderConfiguration
               .Where(z => z is { })
               .OrderBy(z => z.Assembly)
               .ThenBy(z => z.Attribute)
-              .ThenBy(z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(z => z.Include)
+        .ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors
               .Select(f => f switch
                            {
-                               WithAttributeStringFilterDescriptor descriptor    => new(true, descriptor.AttributeClassName),
+                               WithAttributeStringFilterDescriptor descriptor => new(true, descriptor.AttributeClassName),
                                WithoutAttributeStringFilterDescriptor descriptor => new WithAttributeStringData(false, descriptor.AttributeClassName),
-                               _                                                 => null!,
+                               _ => null!,
                            }
                )
               .Where(z => z is { })
               .OrderBy(z => z.Attribute)
-              .ThenBy(z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(z => z.Include)
+        .ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors
               .SelectMany(f => f switch
                                {
@@ -678,31 +670,30 @@ internal partial class AssemblyProviderConfiguration
                                                              attribute.IsUnboundGenericType
                                                          )
                                                   ),
-                                   _ => [],
+                                   _ => ImmutableArray<WithAttributeData>.Empty,
                                }
                )
               .Where(z => z is { })
               .OrderBy(z => z.Assembly)
               .ThenBy(z => z.Attribute)
-              .ThenBy(z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(z => z.Include)
+              .ToImmutableArray()
+        ,
+typeFilter
               .TypeFilterDescriptors
               .SelectMany(f =>
                               f switch
                               {
                                   WithAnyAttributeStringFilterDescriptor descriptor => descriptor.AttributeClassNames.Select(z => new WithAttributeStringData(true, z)
                                   ),
-                                  _ => [],
+                                  _ => ImmutableArray<WithAttributeStringData>.Empty,
                               }
                )
               .Where(z => z is { })
               .OrderBy(z => z.Attribute)
-              .ThenBy(z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(z => z.Include)
+              .ToImmutableArray(),
+typeFilter
               .TypeFilterDescriptors
               .Select(f => f switch
                            {
@@ -724,40 +715,38 @@ internal partial class AssemblyProviderConfiguration
               .Where(z => z is { })
               .OrderBy(z => z.Assembly)
               .ThenBy(z => z.Type)
-              .ThenBy(z => z.Include),
-        ],
-        [
-            .. typeFilter
+              .ThenBy(z => z.Include)
+        .ToImmutableArray(),
+        typeFilter
               .TypeFilterDescriptors
               .Select(f => f switch
                            {
                                AssignableToAnyTypeFilterDescriptor descriptor => new(
                                    true,
-                                   [
-                                       .. descriptor
+                                   descriptor
                                          .Types.Select(z => new AnyTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z), z.IsUnboundGenericType)
                                           )
                                          .OrderBy(z => z.Assembly)
-                                         .ThenBy(z => z.Type),
-                                   ]
+                                         .ThenBy(z => z.Type)
+                                         .ToImmutableArray()
                                ),
                                NotAssignableToAnyTypeFilterDescriptor descriptor => new AssignableToAnyTypeData(
                                    false,
-                                   [
-                                       .. descriptor
+                                   descriptor
                                          .Types
                                          .Select(z => new AnyTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z), z.IsUnboundGenericType))
                                          .OrderBy(z => z.Assembly)
-                                         .ThenBy(z => z.Type),
-                                   ]
+                                         .ThenBy(z => z.Type)
+                                         .ToImmutableArray()
+
                                ),
                                _ => null!,
                            }
                )
               .Where(z => z is { })
               .OrderBy(z => string.Join(",", z.Types))
-              .ThenBy(z => z.Include),
-        ]
+              .ThenBy(z => z.Include)
+              .ToImmutableArray()
     );
 
     private const string AssembliesKey = "AssemblyProvider.GetAssemblies";

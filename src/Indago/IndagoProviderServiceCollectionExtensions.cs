@@ -27,7 +27,11 @@ public static class IndagoProviderServiceCollectionExtensions
                              typeof(ServiceRegistrationAttribute<,>),
                              typeof(ServiceRegistrationAttribute<,,>),
                              typeof(ServiceRegistrationAttribute<,,>),
-                             typeof(ServiceRegistrationAttribute<,,,>)
+                             typeof(ServiceRegistrationAttribute<,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,,>)
                          )
                  )
                  .AsSelf()

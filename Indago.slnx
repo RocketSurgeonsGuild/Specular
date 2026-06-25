@@ -49,6 +49,11 @@
     <Project Path="src/Indago.Analyzers/Indago.Analyzers.csproj" />
     <Project Path="src/Indago/Indago.csproj" />
   </Folder>
+  <Folder Name="/src/Indago.Analyzers.supports/">
+    <File Path=".editorconfig" />
+    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.8.csproj" />
+    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.14.csproj" />
+  </Folder>
   <Folder Name="/test/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />

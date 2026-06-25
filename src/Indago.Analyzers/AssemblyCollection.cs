@@ -1,12 +1,10 @@
 using System.Collections.Immutable;
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Indago.Analyzers.AssemblyProviders;
 using Indago.Analyzers.Configuration;
 using Indago.Analyzers.Descriptors;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Indago.Analyzers;
@@ -55,7 +53,7 @@ internal static class AssemblyCollection
                     cancellationToken
                 );
 
-                var assemblyFilter = new CompiledAssemblyFilter([.. assemblies]);
+                var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList());
 
                 var source = Helpers.CreateSourceLocation(SourceLocationKind.Assembly, methodCallSyntax, cancellationToken);
                 // disallow list?
@@ -132,7 +130,7 @@ internal static class AssemblyCollection
                 if (filterAssemblies.Length == 0) continue;
 
                 var descriptors = GenerateDescriptors(compilation, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                results.Add(new(item.Location, descriptors, [.. pa.Select(z => z.MetadataName)], ""));
+                results.Add(new(item.Location, descriptors, pa.Select(z => z.MetadataName).ToImmutableHashSet(), ""));
             }
             catch (Exception e)
             {
@@ -149,7 +147,7 @@ internal static class AssemblyCollection
             }
         }
 
-        return [.. results];
+        return results.ToImmutableList();
         //        .WithBody(Block(SwitchGenerator.GenerateSwitchStatement(results)));
     }
 

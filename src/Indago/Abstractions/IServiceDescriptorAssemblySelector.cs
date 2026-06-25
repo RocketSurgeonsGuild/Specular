@@ -9,7 +9,7 @@ public interface IServiceDescriptorAssemblySelector
     /// <summary>
     ///     Will scan for types from this assembly at compile time.
     /// </summary>
-    IServiceDescriptorTypeSelector FromAssembly();
+    IServiceDescriptorTypeSelector EntryAssembly();
 
     /// <summary>
     ///     Will scan for types from all metadata assembly at compile time.
@@ -19,12 +19,12 @@ public interface IServiceDescriptorAssemblySelector
     /// <summary>
     ///     Will load and scan from given types assembly
     /// </summary>
-    IServiceDescriptorTypeSelector FromAssemblyDependenciesOf<T>();
+    IServiceDescriptorTypeSelector DependenciesFromAssemblyOf<T>();
 
     /// <summary>
     ///     Will load and scan from given types assembly
     /// </summary>
-    IServiceDescriptorTypeSelector FromAssemblyDependenciesOf(Type type);
+    IServiceDescriptorTypeSelector DependenciesFromAssemblyOf(Type type);
 
     /// <summary>
     ///     Will scan for types from the assembly of type <typeparamref name="T" />.

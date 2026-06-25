@@ -110,41 +110,40 @@ internal static class AssemblyProviderBuilder
               .WithModifiers(TokenList(Token(SyntaxKind.FileKeyword)))
               .WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName("IIndagoProvider")))))
               .AddMembers(resolvedAssemblyDetails, resolvedReflectionDetails, resolvedServiceDescriptorDetails)
-              .AddMembers([.. privateMembers]);
+              .AddMembers(privateMembers.ToArray());
     }
 
     private static MethodDeclarationSyntax GenerateMethodBody(MethodDeclarationSyntax baseMethod, IEnumerable<ResolvedSourceLocation> locations)
     {
-        StatementSyntax[] item = [.. baseMethod.Body?.Statements ?? []];
-        var returnStatement = item.OfType<ReturnStatementSyntax>().Single();
+        var item = baseMethod.Body?.Statements.ToArray() ?? Array.Empty<StatementSyntax>();
+        var returnStatement = item.OfType<ReturnStatementSyntax>().Take(1).Cast<StatementSyntax>();
 
         return baseMethod
            .WithBody(
                 Block(
-                    SyntaxList.Create(
-                        [
-                            ..item.Except([returnStatement]),
-                            SwitchGenerator.GenerateSwitchStatement(
-                                [
-                                    ..locations
+                    ImmutableList.CreateRange(item.Except(returnStatement))
+                    .Add(
+                        SwitchGenerator.GenerateSwitchStatement(
+                                locations
                                      .GroupBy(z => z.Location)
                                      .Select(
                                           z => z.Aggregate(
-                                              new ResolvedSourceLocation(z.First().Location, "", [], null),
+                                              new ResolvedSourceLocation(z.First().Location, "", ImmutableHashSet<string>.Empty, null),
                                               (location, sourceLocation) => new(
                                                   location.Location,
                                                   location.Expression + "\n" + sourceLocation.Expression,
-                                                  [..location.PrivateAssemblies, ..sourceLocation.PrivateAssemblies],
+                                                  location.PrivateAssemblies.Concat(sourceLocation.PrivateAssemblies).ToImmutableHashSet(),
                                                   null
                                               )
                                           )
-                                      ),
-                                ]
-                            ),
-                            returnStatement,
-                        ]
+                                      )
+                                      .ToImmutableList()
+
+                            ))
+                            .AddRange(returnStatement)
                     )
-                )
+
+
             );
     }
 

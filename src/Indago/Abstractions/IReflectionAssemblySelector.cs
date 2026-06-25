@@ -9,7 +9,7 @@ public interface IReflectionAssemblySelector
     /// <summary>
     ///     Will scan for types from this assembly at compile time.
     /// </summary>
-    IReflectionTypeSelector FromAssembly();
+    IReflectionTypeSelector EntryAssembly();
 
     /// <summary>
     ///     Will scan for types from all metadata assembly at compile time.
@@ -19,12 +19,12 @@ public interface IReflectionAssemblySelector
     /// <summary>
     ///     Will load and scan from given types assembly
     /// </summary>
-    IReflectionTypeSelector FromAssemblyDependenciesOf<T>();
+    IReflectionTypeSelector DependenciesFromAssemblyOf<T>();
 
     /// <summary>
     ///     Will load and scan from given types assembly
     /// </summary>
-    IReflectionTypeSelector FromAssemblyDependenciesOf(Type type);
+    IReflectionTypeSelector DependenciesFromAssemblyOf(Type type);
 
     /// <summary>
     ///     Will scan for types from the assembly of type <typeparamref name="T" />.

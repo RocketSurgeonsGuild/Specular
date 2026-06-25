@@ -42,12 +42,12 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                                             return source is not { Length: > 100 }
                                                 ? new(
                                                     ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
-                                                    [],
+                                                    ImmutableHashSet<string>.Empty,
                                                     ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
                                                 )
                                                 : JsonSerializer.Deserialize(
                                                     source,
-                                                    Configuration.JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData
+                                                    JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData
                                                 );
                                         }
                                     )
@@ -56,7 +56,7 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                                         (z, _) => z.SingleOrDefault()
                                          ?? new(
                                                 ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
-                                                [],
+                                                ImmutableHashSet<string>.Empty,
                                                 ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
                                             )
                                     );
@@ -241,7 +241,7 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                 {
                     using var streamWriter = new StreamWriter(writer);
                     var generatedData = resultingData.ToGeneratedAssemblyProviderData();
-                    streamWriter.Write(JsonSerializer.Serialize(generatedData, Configuration.JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData));
+                    streamWriter.Write(JsonSerializer.Serialize(generatedData, JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData));
                     streamWriter.Flush();
                     streamWriter.Close();
                 }
