@@ -51,9 +51,9 @@
   </Folder>
   <Folder Name="/src/Indago.Analyzers.supports/">
     <File Path=".editorconfig" />
-    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.8.csproj" />
-    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.14.csproj" />
-    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn5.0.csproj" />
+    <Project Path="src/Indago.Analyzers.supports/roslyn4.8/Indago.Analyzers.roslyn4.8.csproj" />
+    <Project Path="src/Indago.Analyzers.supports/roslyn4.14/Indago.Analyzers.roslyn4.14.csproj" />
+    <Project Path="src/Indago.Analyzers.supports/roslyn5.0/Indago.Analyzers.roslyn5.0.csproj" />
   </Folder>
   <Folder Name="/test/">
     <File Path=".editorconfig" />
