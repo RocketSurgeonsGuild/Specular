@@ -8,9 +8,6 @@
         <IsPackable>false</IsPackable>
         <NoPackageAnalysis>true</NoPackageAnalysis>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     </PropertyGroup>
 </Project>

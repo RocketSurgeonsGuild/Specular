@@ -30,7 +30,18 @@
         />
     </ItemGroup>
     <ItemGroup>
-        <None Include="bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/roslyn5.3/cs" Visible="false" />
+        <None
+            Include="bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll;$(PkgSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn5.3/cs"
+            Visible="false"
+        />
+        <None
+            Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll"
+            Pack="true"
+            PackagePath="analyzers/dotnet/roslyn5.3/cs"
+            Visible="false"
+        />
         <None
             Include="$(_AnalyzersLocation)roslyn5.0/bin/$(Configuration)/netstandard2.0/Indago.Analyzers.dll;$(_AnalyzersLocation)roslyn5.0/bin/$(Configuration)/netstandard2.0/System.Text.Json.dll"
             Pack="true"
