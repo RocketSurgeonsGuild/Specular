@@ -67,57 +67,29 @@ export default defineConfig({
 
 ---
 
-# Contract: ESLint Flat Configuration
+# Contract: oxlint Configuration
 
-**File**: `eslint.config.mjs` (repo root)
+**File**: `oxlintrc.json` (repo root)
 
-```javascript
-// @ts-check
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import pluginVue from 'eslint-plugin-vue';
-import pluginMarkdown from 'eslint-plugin-markdown';
-
-export default tseslint.config(
-    // Global ignores
-    { ignores: ['node_modules', 'docs/.vitepress/dist', 'docs/.vitepress/cache', '**/*.generated.*'] },
-
-    // TypeScript files
-    {
-        files: ['**/*.{ts,mts,cts}'],
-        extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked],
-        languageOptions: {
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
+```json
+{
+    "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+    "plugins": ["vue", "typescript"],
+    "env": {
+        "browser": true,
+        "es2022": true
     },
-
-    // Vue SFCs (docs theme components)
-    {
-        files: ['**/*.vue'],
-        extends: [...pluginVue.configs['flat/vue3-recommended'], ...tseslint.configs.recommended],
-        languageOptions: {
-            parserOptions: { parser: tseslint.parser },
-        },
-    },
-
-    // Markdown fenced code blocks
-    {
-        files: ['**/*.md'],
-        plugins: { markdown: pluginMarkdown },
-        processor: pluginMarkdown.processors.markdown,
-    }
-);
+    "ignorePatterns": ["node_modules", "docs/.vitepress/dist", "docs/.vitepress/cache", "apm_modules", ".apm"],
+    "rules": {}
+}
 ```
 
 ## Validation rules
 
-- No ESLint errors on `**/*.vue` files in `docs/.vitepress/theme/`.
-- No ESLint errors on `docs/.vitepress/config.mts`.
-- Markdown fenced blocks tagged `typescript` or `javascript` must be syntactically valid.
-- `eslint .` exits 0 in CI.
+- No oxlint errors on `**/*.vue` files in `docs/.vitepress/theme/`.
+- No oxlint errors on `docs/.vitepress/config.mts`.
+- `oxlint --plugin vue --plugin typescript docs/.vitepress` exits 0 in CI.
+- Markdown files are **not** linted by oxlint (out of scope).
 
 ---
 

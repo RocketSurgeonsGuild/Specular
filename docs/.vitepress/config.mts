@@ -1,117 +1,27 @@
 import { defineConfig } from 'vitepress';
-import { TypesenseSearchPlugin } from 'vitepress-plugin-typesense';
 
+// https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: 'Indago',
-    description: 'Compile-time assembly scanning for .NET — AOT safe, zero reflection',
-    lang: 'en-US',
-    base: '/Indago/',
-    cleanUrls: true,
-    lastUpdated: true,
-
-    vite: {
-        plugins: [
-            TypesenseSearchPlugin({
-                // Collection name in your Typesense instance
-                typesenseCollectionName: process.env.TYPESENSE_COLLECTION_NAME ?? 'indago-docs',
-                typesenseServerConfig: {
-                    // Search-only API key (safe to expose in the browser)
-                    apiKey: process.env.TYPESENSE_SEARCH_API_KEY ?? 'xyz',
-                    nodes: [
-                        {
-                            url: process.env.TYPESENSE_HOST ?? 'https://search.example.com',
-                        },
-                    ],
-                },
-                typesenseSearchParameters: {},
-                indexing: {
-                    // Set to true during CI/deploy to index pages into Typesense
-                    enabled: process.env.TYPESENSE_INDEX === 'true',
-                    hostname: process.env.DOCS_HOSTNAME ?? 'https://rocketsurgeonsguild.github.io/Indago/',
-                    typesenseServerConfig: {
-                        // Admin API key with write permissions — keep in .env, never commit
-                        apiKey: process.env.TYPESENSE_ADMIN_API_KEY ?? '',
-                        nodes: [
-                            {
-                                url: process.env.TYPESENSE_HOST ?? 'https://search.example.com',
-                            },
-                        ],
-                    },
-                },
-            }),
-        ],
-    },
-
+    title: 'Indago - Static Assembly Scanning',
+    description:
+        'Indago is a compile-time assembly/type-scanning library for .NET. It replaces runtime reflection-based DI scanning (like Scrutor) with a Roslyn **source generator** that resolves the scan at build time and emits a strongly-typed `IIndagoProvider`. This makes scanning AOT/trimming-friendly and removes runtime reflection.',
     themeConfig: {
+        // https://vitepress.dev/reference/default-theme-config
         nav: [
-            { text: 'Guide', link: '/guide/' },
-            { text: 'Reference', link: '/reference/iindago-provider' },
-            { text: 'Architecture', link: '/architecture/how-it-works' },
+            { text: 'Home', link: '/' },
+            { text: 'Examples', link: '/markdown-examples' },
+        ],
+
+        sidebar: [
             {
-                text: 'GitHub',
-                link: 'https://github.com/RocketSurgeonsGuild/Indago',
-                rel: 'external',
-            },
-            {
-                text: 'NuGet',
-                link: 'https://www.nuget.org/packages/Indago',
-                rel: 'external',
+                text: 'Examples',
+                items: [
+                    { text: 'Markdown Examples', link: '/markdown-examples' },
+                    { text: 'Runtime API Examples', link: '/api-examples' },
+                ],
             },
         ],
 
-        sidebar: {
-            '/guide/': [
-                {
-                    text: 'Guide',
-                    items: [
-                        { text: 'What is Indago?', link: '/guide/' },
-                        { text: 'Installation', link: '/guide/installation' },
-                        { text: 'Quickstart', link: '/guide/quickstart' },
-                        { text: 'AOT Publishing', link: '/guide/aot-publishing' },
-                    ],
-                },
-            ],
-            '/reference/': [
-                {
-                    text: 'Reference',
-                    items: [
-                        { text: 'IIndagoProvider', link: '/reference/iindago-provider' },
-                        { text: 'Type Filters', link: '/reference/type-filters' },
-                        {
-                            text: 'ServiceRegistrationAttribute',
-                            link: '/reference/service-registration',
-                        },
-                        {
-                            text: 'ExcludeFromIndagoAttribute',
-                            link: '/reference/exclude-from-indago',
-                        },
-                    ],
-                },
-            ],
-            '/architecture/': [
-                {
-                    text: 'Architecture',
-                    items: [
-                        { text: 'How It Works', link: '/architecture/how-it-works' },
-                        {
-                            text: 'Cross-Assembly Caching',
-                            link: '/architecture/cross-assembly-caching',
-                        },
-                    ],
-                },
-            ],
-        },
-
-        editLink: {
-            pattern: 'https://github.com/RocketSurgeonsGuild/Indago/edit/main/docs/:path',
-            text: 'Edit this page on GitHub',
-        },
-
-        socialLinks: [{ icon: 'github', link: 'https://github.com/RocketSurgeonsGuild/Indago' }],
-
-        footer: {
-            message: 'Released under the MIT License.',
-            copyright: 'Copyright © Rocket Surgeons Guild',
-        },
+        socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }],
     },
 });

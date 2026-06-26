@@ -64,10 +64,10 @@ infra/
 
 [tools]
 python = "<version>"
-uv     = "latest"
+uv = "latest"
 
 [env]
-PROJECT_NAME  = "my-project"
+PROJECT_NAME = "my-project"
 _.python.venv = { path = ".venv", create = true }
 
 # Orchestration: delegate to spokes
@@ -88,17 +88,17 @@ run = "cd packages/api && mise run build"
 
 [env]
 EXPERIMENT_NAME = "baseline"
-EPOCHS          = "<num>"    # e.g., 100
-LEARNING_RATE   = "<float>"  # e.g., 0.001
+EPOCHS = "<num>"           # e.g., 100
+LEARNING_RATE = "<float>"  # e.g., 0.001
 
 [tasks.train]
-run     = "uv run python train.py"
+run = "uv run python train.py"
 sources = ["*.py", "config.yaml"]
 outputs = ["checkpoints/*.pt"]
 
 [tasks.evaluate]
 depends = ["train"]
-run     = "uv run python evaluate.py"
+run = "uv run python evaluate.py"
 ```
 
 ## Inheritance Rules

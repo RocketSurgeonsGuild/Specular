@@ -20,7 +20,7 @@
 ```toml
 # mise.toml — tasks only, no secrets in [env]
 [env]
-DATABASE_NAME = "mydb" # OK: non-secret defaults
+DATABASE_NAME = "mydb"       # OK: non-secret defaults
 
 [tasks.backfill]
 run = "bash scripts/backfill.sh"

@@ -9,10 +9,10 @@ Tasks automatically inherit `[env]` values:
 ```toml
 [env]
 DATABASE_URL = "postgresql://localhost/mydb"
-_.file       = ".env"                        # Load additional env vars
+_.file = ".env"  # Load additional env vars
 
 [tasks.migrate]
-run = "diesel migration run" # $DATABASE_URL available
+run = "diesel migration run"  # $DATABASE_URL available
 ```
 
 ## Credential Loading Pattern
@@ -23,11 +23,11 @@ _.file = { path = ".env.secrets", redact = true }
 
 [tasks._check-env]
 hide = true
-run  = '[ -n "$API_KEY" ] || { echo "Missing API_KEY"; exit 1; }'
+run = '[ -n "$API_KEY" ] || { echo "Missing API_KEY"; exit 1; }'
 
 [tasks.deploy]
 depends = ["_check-env"]
-run     = "deploy.sh"
+run = "deploy.sh"
 ```
 
 ## Cross-Reference: mise-configuration

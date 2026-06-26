@@ -13,7 +13,7 @@ hooks:
         - extension: agent-context
           command: speckit.agent-context.update
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Execute speckit.agent-context.update?
           description: Refresh agent context after specification
@@ -21,7 +21,7 @@ hooks:
         - extension: superb
           command: speckit.superb.brainstorm
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Refine the new spec.md with Superpowers brainstorming before clarification or planning?
           description: |
@@ -30,7 +30,7 @@ hooks:
         - extension: squad
           command: speckit.squad.generate
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Spec updated — regenerate Squad agent definitions?
           description: Keeps Squad agents aligned as the spec evolves
@@ -39,7 +39,7 @@ hooks:
         - extension: agent-context
           command: speckit.agent-context.update
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Execute speckit.agent-context.update?
           description: Refresh agent context after planning
@@ -47,14 +47,14 @@ hooks:
         - extension: data-model-diagram
           command: speckit.data-model-diagram.generate
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Generate a Mermaid ER diagram after planning?
           description: Generate a Mermaid ER diagram from the active feature data model
           condition: null
         - extension: superb
           command: speckit.superb.plan-gate
-          enabled: true
+          enabled: false
           optional: false
           priority: 10
           prompt: Execute speckit.superb.plan-gate?
@@ -153,7 +153,7 @@ hooks:
         - extension: memory-md
           command: speckit.memory-md.capture-from-diff
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Would you like to capture durable lessons from this implementation to project memory?
           description: ''
@@ -179,7 +179,7 @@ hooks:
         - extension: superb
           command: speckit.superb.review
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Review tasks.md for coverage and TDD-readiness before implementation?
           description: |
@@ -188,7 +188,7 @@ hooks:
         - extension: squad
           command: speckit.squad.route
           enabled: true
-          optional: true
+          optional: false
           priority: 10
           prompt: Tasks generated — route them to Squad agents?
           description: Distributes new tasks to the right agents automatically

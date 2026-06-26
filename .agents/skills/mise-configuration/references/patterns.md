@@ -3,31 +3,31 @@
 ## Table of Contents
 
 - [Python Venv Auto-Creation](#python-venv-auto-creation)
-    - [Basic Pattern](#basic-pattern)
-    - [With uv Auto-Venv via Settings](#with-uv-auto-venv-via-settings)
-    - [Project Template with Venv](#project-template-with-venv)
+  - [Basic Pattern](#basic-pattern)
+  - [With uv Auto-Venv via Settings](#with-uv-auto-venv-via-settings)
+  - [Project Template with Venv](#project-template-with-venv)
 - [Special Directives](#special-directives)
-    - [Load from .env Files (`_.file`)](#load-from-env-files-_file)
-    - [Extend PATH (`_.path`)](#extend-path-_path)
-    - [Source Bash Scripts (`_.source`)](#source-bash-scripts-_source)
-    - [Complete Special Directives Example](#complete-special-directives-example)
+  - [Load from .env Files (`_.file`)](#load-from-env-files-_file)
+  - [Extend PATH (`_.path`)](#extend-path-_path)
+  - [Source Bash Scripts (`_.source`)](#source-bash-scripts-_source)
+  - [Complete Special Directives Example](#complete-special-directives-example)
 - [Template Syntax (Tera)](#template-syntax-tera)
-    - [Built-in Variables](#built-in-variables)
-    - [Functions](#functions)
-    - [Filters](#filters)
-    - [Conditionals](#conditionals)
-    - [Complete Template Example](#complete-template-example)
+  - [Built-in Variables](#built-in-variables)
+  - [Functions](#functions)
+  - [Filters](#filters)
+  - [Conditionals](#conditionals)
+  - [Complete Template Example](#complete-template-example)
 - [Required & Redacted Variables](#required--redacted-variables)
-    - [Required Variables](#required-variables)
-    - [Redacted Variables](#redacted-variables)
-    - [Combined Patterns](#combined-patterns)
+  - [Required Variables](#required-variables)
+  - [Redacted Variables](#redacted-variables)
+  - [Combined Patterns](#combined-patterns)
 - [[settings] Section](#settings-section)
-    - [Python Development Setup](#python-development-setup)
+  - [Python Development Setup](#python-development-setup)
 - [[tools] Version Pinning](#tools-version-pinning)
-    - [Basic Pinning](#basic-pinning)
-    - [With Options](#with-options)
-    - [min_version Enforcement](#min_version-enforcement)
-    - [Full Development Environment](#full-development-environment)
+  - [Basic Pinning](#basic-pinning)
+  - [With Options](#with-options)
+  - [min_version Enforcement](#min_version-enforcement)
+  - [Full Development Environment](#full-development-environment)
 - [Python Pattern](#python-pattern)
 - [Bash Pattern](#bash-pattern)
 - [JavaScript/Node.js Pattern](#javascriptnodejs-pattern)
@@ -66,8 +66,8 @@ _.python.venv = { path = ".venv", create = true }
 python.uv_venv_auto = true
 
 [tools]
-python = "3.11"   # baseline >=3.11; pin to project needs
-uv     = "latest"
+python = "3.11"  # baseline >=3.11; pin to project needs
+uv = "latest"
 ```
 
 ### Project Template with Venv
@@ -75,13 +75,13 @@ uv     = "latest"
 ```toml
 # .mise.toml - Python project with auto-venv
 [env]
-_.python.venv           = { path = ".venv", create = true }
-PYTHONUNBUFFERED        = "1"
+_.python.venv = { path = ".venv", create = true }
+PYTHONUNBUFFERED = "1"
 PYTHONDONTWRITEBYTECODE = "1"
 
 [tools]
-python = "3.11"   # baseline >=3.11; pin to project needs
-uv     = "latest"
+python = "3.11"  # baseline >=3.11; pin to project needs
+uv = "latest"
 ```
 
 ## Special Directives
@@ -94,7 +94,11 @@ uv     = "latest"
 _.file = ".env"
 
 # Multiple files with options
-_.file = [".env", ".env.local", { path = ".env.secrets", redact = true }]
+_.file = [
+    ".env",
+    ".env.local",
+    { path = ".env.secrets", redact = true }
+]
 
 # Load after tools are installed
 _.file = { path = ".env", tools = true }
@@ -107,7 +111,11 @@ _.file = { path = ".env", tools = true }
 ```toml
 [env]
 # Add project directories to PATH
-_.path = ["{{config_root}}/bin", "{{config_root}}/scripts", "node_modules/.bin"]
+_.path = [
+    "{{config_root}}/bin",
+    "{{config_root}}/scripts",
+    "node_modules/.bin"
+]
 ```
 
 **Use case:** Make project scripts and tool binaries available without full path.
@@ -134,14 +142,20 @@ _.source = { path = ".secrets.sh", redact = true }
 _.python.venv = { path = ".venv", create = true }
 
 # 2. Load .env files
-_.file = [".env", { path = ".env.local", redact = true }]
+_.file = [
+    ".env",
+    { path = ".env.local", redact = true }
+]
 
 # 3. Extend PATH
-_.path = ["{{config_root}}/bin", "{{config_root}}/scripts"]
+_.path = [
+    "{{config_root}}/bin",
+    "{{config_root}}/scripts"
+]
 
 # 4. Project configuration
 PROJECT_NAME = "my-project"
-LOG_LEVEL    = "info"
+LOG_LEVEL = "info"
 ```
 
 ## Template Syntax (Tera)
@@ -153,13 +167,13 @@ mise uses Tera templating engine. Reference for common patterns:
 ```toml
 [env]
 # Directory paths
-PROJECT_ROOT = "{{config_root}}" # .mise.toml directory
-CURRENT_DIR  = "{{cwd}}"         # Current working directory
+PROJECT_ROOT = "{{config_root}}"        # .mise.toml directory
+CURRENT_DIR = "{{cwd}}"                 # Current working directory
 
 # XDG directories
-CACHE  = "{{xdg_cache_home}}/myapp"
+CACHE = "{{xdg_cache_home}}/myapp"
 CONFIG = "{{xdg_config_home}}/myapp"
-DATA   = "{{xdg_data_home}}/myapp"
+DATA = "{{xdg_data_home}}/myapp"
 
 # mise info
 MISE_BIN = "{{mise_bin}}"
@@ -175,23 +189,22 @@ NODE_VER = "{{ get_env(name='NODE_VERSION', default='20') }}"
 
 # Execute shell command
 BUILD_TIME = "{{ exec(command='date +%Y-%m-%d') }}"
-GIT_SHA    = "{{ exec(command='git rev-parse --short HEAD') }}"
+GIT_SHA = "{{ exec(command='git rev-parse --short HEAD') }}"
 
 # System info
-ARCH      = "{{ arch() }}"      # x64, arm64
-OS        = "{{ os() }}"        # linux, macos, windows
-CPUS      = "{{ num_cpus() }}"
+ARCH = "{{ arch() }}"           # x64, arm64
+OS = "{{ os() }}"               # linux, macos, windows
+CPUS = "{{ num_cpus() }}"
 OS_FAMILY = "{{ os_family() }}" # unix, windows
 
 # File operations
-VERSION     = "{{ read_file(path='VERSION') | trim }}"
+VERSION = "{{ read_file(path='VERSION') | trim }}"
 CONFIG_HASH = "{{ hash_file(path='config.json', len=8) }}"
 
-
-{% if is_dir("src") %}
 # Directory check
-
-{% endif %}SRC_EXISTS = "true"
+{% if is_dir("src") %}
+SRC_EXISTS = "true"
+{% endif %}
 ```
 
 ### Filters
@@ -199,27 +212,27 @@ CONFIG_HASH = "{{ hash_file(path='config.json', len=8) }}"
 ```toml
 [env]
 # Case conversion
-SNAKE_NAME  = "{{ project_name | snakecase }}"      # my_project
-KEBAB_NAME  = "{{ project_name | kebabcase }}"      # my-project
-CAMEL_NAME  = "{{ project_name | lowercamelcase }}" # myProject
+SNAKE_NAME = "{{ project_name | snakecase }}"    # my_project
+KEBAB_NAME = "{{ project_name | kebabcase }}"    # my-project
+CAMEL_NAME = "{{ project_name | lowercamelcase }}" # myProject
 PASCAL_NAME = "{{ project_name | uppercamelcase }}" # MyProject
 
 # String manipulation
-CLEAN    = "{{ raw_value | trim }}"
-UPPER    = "{{ name | upper }}"
-LOWER    = "{{ name | lower }}"
+CLEAN = "{{ raw_value | trim }}"
+UPPER = "{{ name | upper }}"
+LOWER = "{{ name | lower }}"
 REPLACED = "{{ text | replace(from='-', to='_') }}"
 
 # Path operations
-ABS_PATH  = "{{ relative_path | absolute }}"
+ABS_PATH = "{{ relative_path | absolute }}"
 FILE_NAME = "{{ full_path | basename }}"
-DIR_NAME  = "{{ full_path | dirname }}"
-FILE_STEM = "{{ full_path | file_stem }}"      # without extension
+DIR_NAME = "{{ full_path | dirname }}"
+FILE_STEM = "{{ full_path | file_stem }}"         # without extension
 EXTENSION = "{{ full_path | file_extension }}"
 
 # String utilities
-QUOTED     = "{{ value | quote }}"
-LAST_ITEM  = "{{ list | last }}"
+QUOTED = "{{ value | quote }}"
+LAST_ITEM = "{{ list | last }}"
 FIRST_ITEM = "{{ list | first }}"
 ```
 
@@ -229,22 +242,19 @@ FIRST_ITEM = "{{ list | first }}"
 [env]
 {% if env.CI %}
 # CI-specific settings
-
-{% else %}
 LOG_LEVEL = "error"
-PARALLEL  = "{{ num_cpus() }}"
+PARALLEL = "{{ num_cpus() }}"
+{% else %}
 # Local development
-
+LOG_LEVEL = "debug"
+PARALLEL = "2"
 {% endif %}
 
 {% if os() == "macos" %}
-
-{% elif os() == "linux" %}
-
-{% endif %}LOG_LEVEL   = "debug"
-PARALLEL    = "2"
 BREW_PREFIX = "/opt/homebrew"
+{% elif os() == "linux" %}
 BREW_PREFIX = "/home/linuxbrew/.linuxbrew"
+{% endif %}
 ```
 
 ### Complete Template Example
@@ -254,34 +264,29 @@ BREW_PREFIX = "/home/linuxbrew/.linuxbrew"
 [env]
 # Computed paths
 PROJECT_ROOT = "{{config_root}}"
-BUILD_DIR    = "{{config_root}}/build/{{ os() }}-{{ arch() }}"
-CACHE_DIR    = "{{xdg_cache_home}}/{{ cwd | basename }}"
+BUILD_DIR = "{{config_root}}/build/{{ os() }}-{{ arch() }}"
+CACHE_DIR = "{{xdg_cache_home}}/{{ cwd | basename }}"
 
 # Git-derived values
 GIT_BRANCH = "{{ exec(command='git branch --show-current') | trim }}"
-GIT_SHA    = "{{ exec(command='git rev-parse --short HEAD') | trim }}"
-VERSION    = "{{ read_file(path='VERSION') | trim | default(value='0.0.0') }}"
+GIT_SHA = "{{ exec(command='git rev-parse --short HEAD') | trim }}"
+VERSION = "{{ read_file(path='VERSION') | trim | default(value='0.0.0') }}"
 
-
-{% if os() == "macos" %}
 # Platform-specific
-
+{% if os() == "macos" %}
+DYLD_LIBRARY_PATH = "{{config_root}}/lib"
 {% else %}
-
+LD_LIBRARY_PATH = "{{config_root}}/lib"
 {% endif %}
 
-DYLD_LIBRARY_PATH = "{{config_root}}/lib"
-LD_LIBRARY_PATH   = "{{config_root}}/lib"
-
-{% if get_env(name='CI', default='false') == 'true' %}
 # Environment-aware
-
-{% else %}
-
-{% endif %}LOG_LEVEL     = "error"
+{% if get_env(name='CI', default='false') == 'true' %}
+LOG_LEVEL = "error"
 PARALLEL_JOBS = "{{ num_cpus() }}"
-LOG_LEVEL     = "debug"
+{% else %}
+LOG_LEVEL = "debug"
 PARALLEL_JOBS = "4"
+{% endif %}
 ```
 
 ## Required & Redacted Variables
@@ -294,7 +299,7 @@ PARALLEL_JOBS = "4"
 DATABASE_URL = { required = true }
 
 # Required with help message
-API_KEY      = { required = "Get your API key from https://example.com/settings" }
+API_KEY = { required = "Get your API key from https://example.com/settings" }
 GITHUB_TOKEN = { required = "Run: gh auth token" }
 ```
 
@@ -319,7 +324,7 @@ redactions = ["*_TOKEN", "*_KEY", "*_SECRET", "PASSWORD", "CREDENTIAL"]
 ```toml
 [env]
 # Public configuration
-LOG_LEVEL  = "info"
+LOG_LEVEL = "info"
 OUTPUT_DIR = "output"
 
 # Required with help
@@ -342,31 +347,31 @@ Configure mise behavior:
 experimental = true
 
 # Python-specific
-python.uv_venv_auto          = true                       # Auto-create venv with uv
+python.uv_venv_auto = true           # Auto-create venv with uv
 python.default_packages_file = ".default-python-packages"
 
 # Node.js-specific
 node.default_packages_file = ".default-npm-packages"
 
 # Task runner
-task.auto_install = true # Auto-install task dependencies
+task.auto_install = true              # Auto-install task dependencies
 
 # General
 always_keep_download = false
-always_keep_install  = false
-verbose              = false
+always_keep_install = false
+verbose = false
 ```
 
 ### Python Development Setup
 
 ```toml
 [settings]
-experimental        = true
+experimental = true
 python.uv_venv_auto = true
 
 [tools]
-python = "3.11"   # baseline >=3.11; pin to project needs
-uv     = "latest"
+python = "3.11"  # baseline >=3.11; pin to project needs
+uv = "latest"
 
 [env]
 PYTHONUNBUFFERED = "1"
@@ -380,10 +385,10 @@ Pin tool versions for reproducibility:
 
 ```toml
 [tools]
-python = "3.11"   # baseline >=3.11; pin to project needs
-node   = "latest"
-uv     = "latest"
-rust   = "1.75"
+python = "3.11"  # baseline >=3.11; pin to project needs
+node = "latest"
+uv = "latest"
+rust = "1.75"
 ```
 
 ### With Options
@@ -394,7 +399,7 @@ rust   = "1.75"
 python = "3.12.3"
 
 # Version prefix (latest 3.12.x)
-python = "3.11" # baseline >=3.11; pin to project needs
+python = "3.11"  # baseline >=3.11; pin to project needs
 
 # Latest
 uv = "latest"
@@ -413,7 +418,7 @@ node = ["22", "20", "18"]
 min_version = "2024.9.5"
 
 [tools]
-python = "3.11" # baseline >=3.11; pin to project needs
+python = "3.11"  # baseline >=3.11; pin to project needs
 ```
 
 ### Full Development Environment
@@ -423,21 +428,21 @@ python = "3.11" # baseline >=3.11; pin to project needs
 min_version = "2024.9.5"
 
 [settings]
-experimental        = true
+experimental = true
 python.uv_venv_auto = true
 
 [tools]
-python = "3.11"   # baseline >=3.11; pin to project needs
-node   = "latest"
-uv     = "latest"
-rust   = "1.75"
+python = "3.11"  # baseline >=3.11; pin to project needs
+node = "latest"
+uv = "latest"
+rust = "1.75"
 
 [env]
 _.python.venv = { path = ".venv", create = true }
-_.path        = ["{{config_root}}/bin", "node_modules/.bin"]
+_.path = ["{{config_root}}/bin", "node_modules/.bin"]
 
 PYTHONUNBUFFERED = "1"
-NODE_ENV         = "development"
+NODE_ENV = "development"
 ```
 
 ## Python Pattern
@@ -510,14 +515,14 @@ CONFIG_EOF
 
 // ADR: 2025-12-08-mise-env-centralized-config
 // Configuration from environment with defaults
-const TIMEOUT = parseInt(process.env.SCRIPT_TIMEOUT || '300', 10);
-const OUTPUT_DIR = process.env.OUTPUT_DIR || 'output';
-const PARALLEL_WORKERS = parseInt(process.env.PARALLEL_WORKERS || '4', 10);
-const DEBUG_MODE = process.env.DEBUG_MODE === 'true';
+const TIMEOUT = parseInt(process.env.SCRIPT_TIMEOUT || "300", 10);
+const OUTPUT_DIR = process.env.OUTPUT_DIR || "output";
+const PARALLEL_WORKERS = parseInt(process.env.PARALLEL_WORKERS || "4", 10);
+const DEBUG_MODE = process.env.DEBUG_MODE === "true";
 
 async function main() {
-    console.log(`Running with timeout=${TIMEOUT}, workers=${PARALLEL_WORKERS}`);
-    // ... script logic
+  console.log(`Running with timeout=${TIMEOUT}, workers=${PARALLEL_WORKERS}`);
+  // ... script logic
 }
 
 main().catch(console.error);
@@ -609,16 +614,16 @@ min_version = "2024.9.5"
 # SETTINGS - mise behavior configuration
 # ==============================================================================
 [settings]
-experimental        = true
+experimental = true
 python.uv_venv_auto = true
 
 # ==============================================================================
 # TOOLS - Version pinning for reproducibility
 # ==============================================================================
 [tools]
-python = "3.11"   # baseline >=3.11; pin to project needs
-node   = "latest"
-uv     = "latest"
+python = "3.11"  # baseline >=3.11; pin to project needs
+node = "latest"
+uv = "latest"
 
 # ==============================================================================
 # ENVIRONMENT CONFIGURATION
@@ -636,27 +641,27 @@ _.path = ["{{config_root}}/bin", "{{config_root}}/scripts"]
 
 # --- Project Paths ---
 PROJECT_ROOT = "{{config_root}}"
-OUTPUT_DIR   = "output"
-ADR_DIR      = "docs/adr"
-DESIGN_DIR   = "docs/design"
+OUTPUT_DIR = "output"
+ADR_DIR = "docs/adr"
+DESIGN_DIR = "docs/design"
 
 # --- Timeouts (seconds) ---
 SCRIPT_TIMEOUT = "300"
-JSCPD_TIMEOUT  = "120"
+JSCPD_TIMEOUT = "120"
 
 # --- Performance ---
 PARALLEL_WORKERS = "4"
 
 # --- Feature Flags ---
 DEBUG_MODE = "false"
-VERBOSE    = "false"
+VERBOSE = "false"
 
 # --- Python ---
 PYTHONUNBUFFERED = "1"
 
 # --- External Services (non-secrets only) ---
 DOPPLER_PROJECT = "my-project"
-DOPPLER_CONFIG  = "prd"
+DOPPLER_CONFIG = "prd"
 
 # --- Redaction patterns for sensitive values ---
 redactions = ["*_TOKEN", "*_KEY", "*_SECRET"]
@@ -690,29 +695,29 @@ redactions = ["*_TOKEN", "*_KEY", "*_SECRET"]
 ```toml
 [env]
 AUDIT_PARALLEL_WORKERS = "4"
-AUDIT_JSCPD_TIMEOUT    = "300"
+AUDIT_JSCPD_TIMEOUT = "300"
 AUDIT_GITLEAKS_TIMEOUT = "120"
-AUDIT_OUTPUT_FORMAT    = "both"
-PYTHONUNBUFFERED       = "1"
+AUDIT_OUTPUT_FORMAT = "both"
+PYTHONUNBUFFERED = "1"
 ```
 
 ### pypi-doppler/.mise.toml
 
 ```toml
 [env]
-DOPPLER_PROJECT     = "claude-config"
-DOPPLER_CONFIG      = "prd"
+DOPPLER_PROJECT = "claude-config"
+DOPPLER_CONFIG = "prd"
 DOPPLER_PYPI_SECRET = "PYPI_TOKEN"
-PYPI_VERIFY_DELAY   = "3"
+PYPI_VERIFY_DELAY = "3"
 ```
 
 ### implement-plan-preflight/.mise.toml
 
 ```toml
 [env]
-ADR_DIR               = "docs/adr"
-DESIGN_DIR            = "docs/design"
-DESIGN_SPEC_FILENAME  = "spec.md"
+ADR_DIR = "docs/adr"
+DESIGN_DIR = "docs/design"
+DESIGN_SPEC_FILENAME = "spec.md"
 PREFLIGHT_STRICT_MODE = "true"
 ```
 

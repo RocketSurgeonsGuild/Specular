@@ -79,22 +79,32 @@ Each content page has:
 
 ## Linting Configuration Entity
 
-**File**: `eslint.config.mjs` (repo root)
+**File**: `oxlintrc.json` (repo root)
 
-### Config blocks
+### Config shape
 
-| Block name | `files` pattern     | Parser                      | Key rules                                                       |
-| ---------- | ------------------- | --------------------------- | --------------------------------------------------------------- |
-| TypeScript | `**/*.{ts,mts,cts}` | `@typescript-eslint/parser` | `@typescript-eslint/recommended-type-checked`                   |
-| Vue SFC    | `**/*.vue`          | `vue-eslint-parser`         | `plugin:vue/vue3-recommended`                                   |
-| Markdown   | `**/*.md`           | (markdown plugin)           | `plugin:markdown/recommended` (lint fenced blocks)              |
-| Ignores    | —                   | —                           | `node_modules`, `docs/.vitepress/dist`, `docs/.vitepress/cache` |
+| Field            | Value                                                           | Notes                                     |
+| ---------------- | --------------------------------------------------------------- | ----------------------------------------- |
+| `$schema`        | oxc configuration schema URL                                    | Enables IDE autocomplete                  |
+| `plugins`        | `["vue", "typescript"]`                                         | Built-in plugins; no separate npm install |
+| `rules`          | `{}`                                                            | Start with recommended defaults           |
+| `ignorePatterns` | `node_modules`, `docs/.vitepress/dist`, `docs/.vitepress/cache` | Exclude generated output                  |
 
-### TypeScript project config for ESLint type-aware rules
+### Covered file types
+
+| Files           | Plugin       | Notes                                          |
+| --------------- | ------------ | ---------------------------------------------- |
+| `**/*.{ts,mts}` | `typescript` | Built-in TS rules; no separate parser required |
+| `**/*.vue`      | `vue`        | Vue 3 SFC rules                                |
+
+Markdown fenced-block linting is **not** in scope (out of scope per clarification 2026-06-25).
+
+### TypeScript config for VitePress type-checking
 
 **File**: `docs/tsconfig.json`
 
-Scoped to `docs/**` only. Required for `@typescript-eslint/recommended-type-checked`.
+Scoped to `docs/**` only. Used by the VitePress build and IDE; not required by oxlint
+(oxlint resolves types independently).
 
 ---
 
@@ -121,11 +131,11 @@ Scoped to `docs/**` only. Required for `@typescript-eslint/recommended-type-chec
 
 ## hk Hook Integration
 
-The existing `hk` configuration (`hk.pkl` or equivalent) gains two new hook entries:
+The existing `hk` configuration (`.config/hk.pkl`) gains one new hook entry:
 
-| Hook         | Trigger                                      | Command                |
-| ------------ | -------------------------------------------- | ---------------------- |
-| ESLint fix   | pre-commit, staged `.vue/.ts/.mts/.md` files | `eslint --fix <files>` |
-| ESLint check | CI check (`hk check`)                        | `eslint .`             |
+| Hook         | Trigger                                  | Command                                                 |
+| ------------ | ---------------------------------------- | ------------------------------------------------------- |
+| oxlint fix   | pre-commit, staged `.vue/.ts/.mts` files | `oxlint --fix --plugin vue --plugin typescript <files>` |
+| oxlint check | CI check (`hk check`)                    | `oxlint --plugin vue --plugin typescript <files>`       |
 
-No changes to the existing prettier hooks.
+No changes to the existing prettier hooks. Markdown files are not linted by oxlint.

@@ -1,6 +1,6 @@
 ---
 name: csharp-mstest
-description: Get best practices for MSTest 3.x/4.x unit testing, including modern assertion APIs and data-driven tests
+description: 'Get best practices for MSTest 3.x/4.x unit testing, including modern assertion APIs and data-driven tests'
 ---
 
 # MSTest Best Practices (MSTest 3.x/4.x)
@@ -75,14 +75,14 @@ public sealed class ServiceTests
 1. **Assembly Initialization** - `[AssemblyInitialize]` (once per test assembly)
 2. **Class Initialization** - `[ClassInitialize]` (once per test class)
 3. **Test Initialization** (for every test method):
-    1. Constructor
-    2. Set `TestContext` property
-    3. `[TestInitialize]`
+   1. Constructor
+   2. Set `TestContext` property
+   3. `[TestInitialize]`
 4. **Test Execution** - test method runs
 5. **Test Cleanup** (for every test method):
-    1. `[TestCleanup]`
-    2. `DisposeAsync` (if implemented)
-    3. `Dispose` (if implemented)
+   1. `[TestCleanup]`
+   2. `DisposeAsync` (if implemented)
+   3. `Dispose` (if implemented)
 6. **Class Cleanup** - `[ClassCleanup]` (once per test class)
 7. **Assembly Cleanup** - `[AssemblyCleanup]` (once per test assembly)
 
@@ -423,7 +423,6 @@ public void BugFix_Issue42_IsResolved() { }
 ```
 
 Work item associations appear in test results and can be used for:
-
 - Tracing test coverage to requirements
 - Linking bug fixes to regression tests
 - Generating traceability reports in CI/CD pipelines

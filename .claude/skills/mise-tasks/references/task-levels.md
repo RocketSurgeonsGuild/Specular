@@ -21,12 +21,12 @@ run = "echo 'Hello, World!'"
 # BAD: Too minimal - AI agent has no context
 [tasks.test]
 description = "Run test suite"
-run         = "pytest tests/"
+run = "pytest tests/"
 
 # GOOD: Rich context for AI agent decision-making
 [tasks.test]
 description = "Run pytest test suite against src/ with coverage reporting. Requires virtualenv activated or uv. Depends on build completing first. Exits non-zero on any test failure. Safe to run repeatedly."
-run         = "pytest tests/"
+run = "pytest tests/"
 ```
 
 **Description checklist**:
@@ -46,8 +46,8 @@ run         = "pytest tests/"
 ```toml
 [tasks.test]
 description = "Run pytest test suite with coverage. Requires virtualenv or uv. Exits non-zero on failure."
-alias       = "t"
-run         = "pytest tests/"
+alias = "t"
+run = "pytest tests/"
 ```
 
 Now `mise run t` works.
@@ -77,7 +77,7 @@ For multi-account GitHub setups, add a verification task:
 ```toml
 [tasks._verify-gh-auth]
 description = "Verify GitHub token matches expected account"
-hide = true # Hidden helper task
+hide = true  # Hidden helper task
 run = """
 expected="${GH_ACCOUNT:-}"
 if [ -z "$expected" ]; then
@@ -94,8 +94,8 @@ echo "✓ GitHub auth verified: $actual"
 
 [tasks.release]
 description = "Create semantic release"
-depends     = ["_verify-gh-auth"]            # Verify before release
-run         = "npx semantic-release --no-ci"
+depends = ["_verify-gh-auth"]  # Verify before release
+run = "npx semantic-release --no-ci"
 ```
 
 See [`mise-configuration` skill](../../mise-configuration/SKILL.md#github-token-multi-account-patterns) for GH_TOKEN setup.
@@ -106,7 +106,11 @@ See [`mise-configuration` skill](../../mise-configuration/SKILL.md#github-token-
 
 ```toml
 [tasks.setup]
-run = ["npm install", "npm run build", "npm run migrate"]
+run = [
+  "npm install",
+  "npm run build",
+  "npm run migrate"
+]
 ```
 
 ---
@@ -118,7 +122,7 @@ run = ["npm install", "npm run build", "npm run migrate"]
 ```toml
 [tasks.deploy]
 depends = ["test", "build"]
-run     = "kubectl apply -f deployment.yaml"
+run = "kubectl apply -f deployment.yaml"
 ```
 
 Tasks `test` and `build` run BEFORE `deploy`.
@@ -127,9 +131,9 @@ Tasks `test` and `build` run BEFORE `deploy`.
 
 ```toml
 [tasks.release]
-depends      = ["test"]
+depends = ["test"]
 depends_post = ["notify", "cleanup"]
-run          = "npm publish"
+run = "npm publish"
 ```
 
 After `release` succeeds, `notify` and `cleanup` run automatically.
@@ -139,7 +143,7 @@ After `release` succeeds, `notify` and `cleanup` run automatically.
 ```toml
 [tasks.migrate]
 wait_for = ["database"]
-run      = "./migrate.sh"
+run = "./migrate.sh"
 ```
 
 If `database` task is already running, wait for it. Otherwise, proceed.
@@ -148,10 +152,10 @@ If `database` task is already running, wait for it. Otherwise, proceed.
 
 ```toml
 [tasks.ci]
-description  = "Full CI pipeline"
-depends      = ["lint", "test", "build"]
+description = "Full CI pipeline"
+depends = ["lint", "test", "build"]
 depends_post = ["coverage-report"]
-run          = "echo 'CI passed'"
+run = "echo 'CI passed'"
 ```
 
 Single command: `mise run ci` executes entire chain.
@@ -162,8 +166,8 @@ Dependencies without inter-dependencies run in parallel:
 
 ```toml
 [tasks.validate]
-depends = ["lint", "typecheck", "test"]   # These can run in parallel
-run     = "echo 'All validations passed'"
+depends = ["lint", "typecheck", "test"]  # These can run in parallel
+run = "echo 'All validations passed'"
 ```
 
 ---
@@ -185,7 +189,7 @@ fi
 
 [tasks.deploy]
 depends = ["_check-credentials"]
-run     = "deploy.sh"
+run = "deploy.sh"
 ```
 
 Hidden tasks don't appear in `mise tasks` output but can be dependencies.
@@ -307,7 +311,7 @@ For complete argument syntax, see: [arguments.md](./arguments.md)
 ```toml
 [tasks.build]
 sources = ["Cargo.toml", "src/**/*.rs"]
-run     = "cargo build"
+run = "cargo build"
 ```
 
 Task re-runs only when source files change.
@@ -318,7 +322,7 @@ Task re-runs only when source files change.
 [tasks.build]
 sources = ["Cargo.toml", "src/**/*.rs"]
 outputs = ["target/release/myapp"]
-run     = "cargo build --release"
+run = "cargo build --release"
 ```
 
 If outputs are newer than sources, task is **skipped**.
@@ -333,8 +337,8 @@ mise run build --force  # Bypass caching
 
 ```toml
 [tasks.compile]
-outputs = { auto = true }     # Default behavior
-run     = "gcc -o app main.c"
+outputs = { auto = true }  # Default behavior
+run = "gcc -o app main.c"
 ```
 
 ---
@@ -346,30 +350,30 @@ run     = "gcc -o app main.c"
 ```toml
 [tasks.drop-database]
 confirm = "This will DELETE all data. Continue?"
-run     = "dropdb myapp"
+run = "dropdb myapp"
 ```
 
 ### Output Control
 
 ```toml
 [tasks.quiet-task]
-quiet = true                       # Suppress mise's output (not task output)
-run   = "echo 'This still prints'"
+quiet = true   # Suppress mise's output (not task output)
+run = "echo 'This still prints'"
 
 [tasks.silent-task]
-silent = true                # Suppress ALL output
-run    = "background-job.sh"
+silent = true  # Suppress ALL output
+run = "background-job.sh"
 
 [tasks.silent-stderr]
-silent = "stderr"        # Only suppress stderr
-run    = "noisy-command"
+silent = "stderr"  # Only suppress stderr
+run = "noisy-command"
 ```
 
 ### Raw Mode (Interactive)
 
 ```toml
 [tasks.edit-config]
-raw = true              # Direct stdin/stdout/stderr
+raw = true  # Direct stdin/stdout/stderr
 run = "vim config.yaml"
 ```
 
@@ -380,7 +384,7 @@ run = "vim config.yaml"
 ```toml
 [tasks.legacy-test]
 tools = { python = "3.9", node = "18" }
-run   = "pytest && npm test"
+run = "pytest && npm test"
 ```
 
 Use specific tool versions for this task only.
@@ -390,7 +394,7 @@ Use specific tool versions for this task only.
 ```toml
 [tasks.powershell-task]
 shell = "pwsh -c"
-run   = "Get-Process | Select-Object -First 5"
+run = "Get-Process | Select-Object -First 5"
 ```
 
 ---

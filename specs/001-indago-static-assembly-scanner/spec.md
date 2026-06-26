@@ -198,6 +198,10 @@ site — without reading source code.
   filters, namespace scoping, attribute-based opt-in/out, assignability checks (`AssignableTo<T>`),
   and type-kind filters (concrete, open-generic) are all currently supported. Scrutor features not
   yet supported by Indago are candidates for inclusion and should be identified during planning.
+- Q: Which linting tool should be used for `.vue`, `.ts/.mts`, and `.md` files in the docs tree? → A: oxlint.
+  Use oxlint instead of ESLint. oxlint handles TypeScript and Vue rules natively via `--plugin vue`.
+  Markdown fenced-block linting is out of scope for the linter (content quality is the author's
+  responsibility; the VitePress build catches broken syntax).
 
 ## Assumptions
 

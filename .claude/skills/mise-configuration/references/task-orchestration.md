@@ -19,7 +19,7 @@ When you detect **workflow opportunities** during mise configuration, prescripti
 
 ```toml
 [env]
-DATABASE_URL  = "postgresql://localhost/mydb"
+DATABASE_URL = "postgresql://localhost/mydb"
 _.python.venv = { path = ".venv", create = true }
 ```
 
@@ -28,11 +28,11 @@ _.python.venv = { path = ".venv", create = true }
 ```toml
 [tasks.test]
 depends = ["lint"]
-run     = "pytest tests/"
+run = "pytest tests/"
 
 [tasks.deploy]
 depends = ["test", "build"]
-run     = "deploy.sh"
+run = "deploy.sh"
 ```
 
 Tasks automatically inherit `[env]` values.

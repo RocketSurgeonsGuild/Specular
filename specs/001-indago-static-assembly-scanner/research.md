@@ -29,42 +29,46 @@ project's `LangVersion=preview` / strict culture for C# extended to the JS/TS to
 
 ---
 
-## ESLint 9 Flat Config
+## oxlint
 
-**Decision**: `eslint.config.mjs` at repo root using ESLint 9 flat config format.
+**Decision**: `oxlintrc.json` at repo root using oxlint's native JSON config format.
 
-**Rationale**: ESLint 9+ ships with flat config as the default; the legacy `.eslintrc` format
-is deprecated. Flat config is explicit about which files each config block applies to, making
-it easy to apply Vue rules only to `.vue` files and TS rules only to `.ts/.mts` files.
+**Rationale**: User decision (clarification 2026-06-25). oxlint is a Rust-based linter that is
+significantly faster than ESLint, has built-in TypeScript support without parser packages, and
+supports Vue 3 SFC rules via `--plugin vue`. For the docs site (VitePress scaffold with minimal
+custom Vue), the Vue rule coverage is sufficient. Markdown fenced-block linting is out of scope —
+VitePress build catches broken syntax, and content quality is the author's responsibility.
 
-**Plugin selection**:
+**Package selection**:
 
-| Plugin                             | Version                     | Purpose                                     |
-| ---------------------------------- | --------------------------- | ------------------------------------------- |
-| `eslint`                           | `^9`                        | Core linting engine                         |
-| `eslint-plugin-vue`                | `^9`                        | Vue 3 SFC rules (`vue3-recommended` preset) |
-| `@typescript-eslint/eslint-plugin` | `^8`                        | TypeScript-aware rules                      |
-| `@typescript-eslint/parser`        | `^8`                        | TS parser for ESLint                        |
-| `eslint-plugin-markdown`           | `^3`                        | Lint fenced code blocks inside `.md` files  |
-| `vue-eslint-parser`                | (peer of eslint-plugin-vue) | `.vue` file parser                          |
+| Package  | Version | Purpose                                              |
+| -------- | ------- | ---------------------------------------------------- |
+| `oxlint` | `^0.x`  | All-in-one linter (TS, Vue 3, JS rules — no plugins) |
 
-**Rationale for NOT using `@eslint/js` recommended alone**: The Vue and TS plugins ship their
-own recommended configs that extend and override `@eslint/js` rules appropriately for their
-file types.
+No additional parser or plugin packages are needed. oxlint bundles everything.
 
-**Integration with prettier**: ESLint handles logic/correctness rules only. Prettier handles
-all formatting. No `eslint-config-prettier` needed unless a rule conflict arises — the existing
-prettier setup is the formatter of record.
+**Config shape** (`oxlintrc.json`):
 
-**Integration with hk**: The existing `hk` hooks run `prettier --write` on staged files. We
-will add an ESLint auto-fix step so `hk fix` runs `eslint --fix` on staged `.vue`, `.ts`,
-`.mts`, and `.md` files before commit.
+```json
+{
+    "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+    "plugins": ["vue", "typescript"],
+    "rules": {}
+}
+```
+
+**Integration with prettier**: oxlint handles logic/correctness rules only. Prettier remains
+the formatter of record. No conflict — oxlint does not emit formatting rules.
+
+**Integration with hk**: Add an `oxlint` step to `.config/hk.pkl` that runs
+`oxlint --plugin vue --plugin typescript {{files}}` (check) and
+`oxlint --fix --plugin vue --plugin typescript {{files}}` (fix) on staged `.vue`, `.ts`, `.mts` files.
 
 **Alternatives considered**:
 
-- Biome (all-in-one formatter + linter) — would replace prettier, requiring migration of all
-  existing prettier config and plugins. Out of scope; too disruptive.
-- oxlint — very fast but missing Vue 3 plugin maturity. Deferred.
+- ESLint 9 flat config — previously the plan default; superseded by oxlint per user decision.
+- Biome — would replace prettier; too disruptive to existing config.
+- No linter — rejected; IV. Code Quality principle requires linting.
 
 ---
 

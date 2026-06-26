@@ -28,14 +28,12 @@ lean-ctx setup
 ```
 
 lean-ctx supports two integration styles (auto-detected per agent):
-
 - **Hybrid (default where shell access exists)**: MCP for cached reads/search + shell hooks that compress command output.
 - **MCP (for IDE-extension agents without reliable shell hooks)**: cached reads + all tools via MCP.
 
 ## When to use lean-ctx
 
 Always prefer `lean-ctx -c <command>` over running commands directly when:
-
 - The command produces verbose output (build logs, git diffs, dependency trees, test results)
 - You are reading files and only need the structure or API surface
 - You want to check token savings for the current session
@@ -135,7 +133,6 @@ lean-ctx benchmark report       # Shareable Markdown report
 ```
 
 MCP tools for CCP:
-
 - `ctx_session status` — show current session state (~400 tokens)
 - `ctx_session load` — restore previous session (cross-chat memory)
 - `ctx_session task "description"` — set current task

@@ -1,16 +1,15 @@
 ---
 name: mise-configurator
-description: Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization.
+description: "Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization."
 category: devops
 risk: safe
 source: self
 source_type: self
-date_added: 2026-04-16
+date_added: "2026-04-16"
 author: community
 tags: [mise, devops, ci-cd, toolchain, runtimes, automation]
 tools: [claude, cursor, gemini]
 ---
-
 # Mise Configurator
 
 ## Overview
@@ -87,50 +86,69 @@ poetry = "1.8.4"
 
 ```yaml
 steps:
-    - uses: actions/checkout@v4
-    - uses: jdx/mise-action@v2
-    - run: poetry install
-    - run: pytest
+  - uses: actions/checkout@v4
+  - uses: jdx/mise-action@v2
+  - run: poetry install
+  - run: pytest
 ```
 
 ## Best Practices
 
 - ✅ Respect versions already pinned in the repository
+    
 - ✅ Keep configs minimal and readable
+    
 - ✅ Prefer stable runtime releases
+    
 - ✅ Generate CI examples with caching
 
 - ✅ Ask for target versions before pinning when the repository does not already declare them
 
 - ❌ Do not use floating `latest` or `lts` aliases in shared production configs unless explicitly requested
+    
 - ❌ Do not over-engineer unnecessary tool entries
+    
 - ❌ Do not ignore existing lockfiles or version files
+    
 
 ## Limitations
 
 - This skill does not replace environment-specific validation, testing, or expert review.
+    
 - Stop and ask for clarification if required inputs, permissions, or safety boundaries are missing.
+    
 - Runtime availability may vary by OS, shell, or CI platform.
+    
 - Some plugins or niche tools may require manual adjustment.
+    
 
 ## Security & Safety Notes
 
 - Review generated shell commands before execution.
+    
 - Confirm CI/CD permissions before modifying pipelines.
+    
 - Validate runtime versions against production requirements.
+    
 - Use only in authorized repositories and environments.
+    
 
 ## Common Pitfalls
 
 - **Problem:** Wrong runtime version selected  
-   **Solution:** Check repository lockfiles and pinned versions first.
+    **Solution:** Check repository lockfiles and pinned versions first.
+    
 - **Problem:** CI installs are slow  
-   **Solution:** Enable cache layers and reuse mise cache directories.
+    **Solution:** Enable cache layers and reuse mise cache directories.
+    
 - **Problem:** Tool missing from registry  
-   **Solution:** Verify plugin support or install manually.
+    **Solution:** Verify plugin support or install manually.
+    
 
 ## Related Skills
 
 - `@docker-expert` - Use when building containerized development environments
+    
 - `@github-actions-templates` - Use for advanced workflow automation
+    
 - `@monorepo-architect` - Use for large multi-package repositories

@@ -14,7 +14,7 @@ Release workflows have natural phases that must execute in order. When phases ar
 # ❌ BROKEN: publish has no dependency on build
 [tasks."release:build-all"]
 depends = ["release:version"]
-run     = "maturin build --release"
+run = "maturin build --release"
 
 [tasks."release:pypi"]
 # No depends! Can run before build-all completes
@@ -51,8 +51,8 @@ git push origin main
 # Phase 3a: Version bump
 [tasks."release:version"]
 description = "Bump version via semantic-release"
-depends     = ["release:sync"]
-run         = "./scripts/semantic-release.sh"
+depends = ["release:sync"]
+run = "./scripts/semantic-release.sh"
 
 # Phase 3b: Build (after version bump sets new version)
 [tasks."release:build-all"]
@@ -71,7 +71,7 @@ cp -n target/wheels/*-${VERSION}.tar.gz dist/ 2>/dev/null || true
 # Phase 4: Smoke test (runs after build)
 [tasks.smoke]
 description = "Verify built artifacts"
-depends     = ["smoke:import", "smoke:process"]
+depends = ["smoke:import", "smoke:process"]
 
 # Phase 5: Postflight verification
 [tasks."release:postflight"]
@@ -84,14 +84,14 @@ echo "Found $(find dist/ -name '*.whl' | wc -l | tr -d ' ') wheel(s)"
 # Phase 6: Publish (depends on build — CRITICAL)
 [tasks."release:pypi"]
 description = "Publish to PyPI"
-depends     = ["release:build-all"]
-run         = "./scripts/publish-to-pypi.sh"
+depends = ["release:build-all"]
+run = "./scripts/publish-to-pypi.sh"
 
 # Orchestrator: single command for everything
 [tasks."release:full"]
 description = "Full release: version → build → smoke → publish"
-depends     = ["release:postflight", "release:pypi"]
-run         = "echo 'Release complete and published!'"
+depends = ["release:postflight", "release:pypi"]
+run = "echo 'Release complete and published!'"
 ```
 
 **Dependency DAG**:
@@ -136,8 +136,8 @@ COUNT=$(find dist/ -name "*-${VERSION}-*.whl" 2>/dev/null | wc -l | tr -d ' ')
 # Publish with guard (not depends on build)
 [tasks."release:pypi"]
 description = "Publish to PyPI (requires pre-built wheels)"
-depends     = ["_guard-wheels-exist"]
-run         = "./scripts/publish-to-pypi.sh"
+depends = ["_guard-wheels-exist"]
+run = "./scripts/publish-to-pypi.sh"
 ```
 
 **When to use this instead of Pattern 1**: When cross-platform builds are slow (e.g., remote Docker builds) and you want to re-run publish without rebuilding on every invocation.
@@ -179,13 +179,13 @@ PyPI requires either a wheel per platform or an sdist for source-only installs. 
 ```toml
 # ❌ Wheels land in different directories
 [tasks."release:macos-arm64"]
-run = "maturin build" # → target/wheels/
+run = "maturin build"  # → target/wheels/
 
 [tasks."release:linux"]
-run = "ssh remote 'maturin build' && scp remote:wheels/*.whl dist/" # → dist/
+run = "ssh remote 'maturin build' && scp remote:wheels/*.whl dist/"  # → dist/
 
 [tasks."release:pypi"]
-run = "uv publish" # Looks in dist/ only
+run = "uv publish"  # Looks in dist/ only
 ```
 
 **Fix**: `release:build-all` should consolidate all artifacts into `dist/` after building. The publish step should only need to look in one place.
@@ -196,7 +196,7 @@ run = "uv publish" # Looks in dist/ only
 # ❌ release:full just prints a message, doesn't enforce anything
 [tasks."release:full"]
 depends = ["release:postflight"]
-run     = "echo 'Done! Now run: mise run release:pypi'"
+run = "echo 'Done! Now run: mise run release:pypi'"
 ```
 
 **Fix**: Include `release:pypi` in the `depends` array so `release:full` is truly complete:
@@ -204,7 +204,7 @@ run     = "echo 'Done! Now run: mise run release:pypi'"
 ```toml
 [tasks."release:full"]
 depends = ["release:postflight", "release:pypi"]
-run     = "echo 'Released and published!'"
+run = "echo 'Released and published!'"
 ```
 
 ---
@@ -234,7 +234,7 @@ cargo publish --workspace
 ```toml
 [tasks."release:crates-dry"]
 description = "Dry-run crates.io workspace publish"
-run         = "cargo publish --workspace --dry-run"
+run = "cargo publish --workspace --dry-run"
 ```
 
 **Why this supersedes all other approaches**:
@@ -320,7 +320,7 @@ Some tools require other tools to be installed but don't fail fast when they're 
 ```toml
 # ❌ zig is installed, but cargo-zigbuild is missing
 [tools]
-zig             = "<version>"
+zig = "<version>"
 "cargo:maturin" = "latest"
 
 [tasks."release:linux"]
@@ -350,9 +350,9 @@ Declare all implicit dependencies explicitly in `[tools]`:
 ```toml
 # ✅ All tools that work together are declared together
 [tools]
-zig                    = "<version>"
-"cargo:maturin"        = "latest"
-"cargo:cargo-zigbuild" = "latest"    # Required for maturin --zig
+zig = "<version>"
+"cargo:maturin" = "latest"
+"cargo:cargo-zigbuild" = "latest"  # Required for maturin --zig
 ```
 
 ### Common Implicit Dependencies
