@@ -30,7 +30,7 @@ jobs:
         steps:
             - name: 📥 Download event
               continue-on-error: true
-              uses: actions/download-artifact@v7
+              uses: actions/download-artifact@v8
               with:
                   name: event
                   path: artifacts/
@@ -38,7 +38,7 @@ jobs:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
             - name: 📥 Download test data
               continue-on-error: true
-              uses: actions/download-artifact@v7
+              uses: actions/download-artifact@v8
               with:
                   name: test data
                   path: artifacts/tests/
@@ -46,7 +46,7 @@ jobs:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
             - name: 📥 Download coverage data
               continue-on-error: true
-              uses: actions/download-artifact@v7
+              uses: actions/download-artifact@v8
               with:
                   name: coverage
                   path: artifacts/coverage/
