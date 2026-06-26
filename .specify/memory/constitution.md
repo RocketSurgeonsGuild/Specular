@@ -1,0 +1,182 @@
+<!--
+  SYNC IMPACT REPORT
+  ==================
+  Version change: (unversioned / template) → 1.0.0
+  Modified principles: N/A (initial fill from template)
+  Added sections:
+    - Core Principles (I–V)
+    - Technical Constraints
+    - Development Workflow
+    - Governance
+  Removed sections: N/A
+  Templates requiring updates:
+    - .specify/templates/plan-template.md ✅ aligned (Constitution Check section present)
+    - .specify/templates/spec-template.md ✅ aligned (user stories + acceptance criteria match)
+    - .specify/templates/tasks-template.md ✅ aligned (test-first task ordering, AOT/docs phases)
+  Follow-up TODOs:
+    - TODO(RATIFICATION_DATE): Confirm original adoption date; placeholder set to 2026-06-25.
+-->
+
+# Indago Constitution
+
+## Core Principles
+
+### I. AOT & Trim Safety (NON-NEGOTIABLE)
+
+Indago's foundational promise is zero-runtime-reflection scanning. Every public API, every generator
+output, and every new feature MUST be compatible with .NET's Native AOT compilation and IL trimming.
+
+- Generated code MUST NOT use `Assembly.GetTypes()`, `Activator.CreateInstance`, or any reflection
+  APIs that are unsafe under trim.
+- The source generator (`Indago.Analyzers`) targets `netstandard2.0` and MUST satisfy
+  `EnforceExtendedAnalyzerRules`. No runtime-only packages may be referenced from it.
+- Cross-assembly scan results MUST be serialized to `IndagoProvider.ctpjson` via the
+  source-generated `JsonSourceGenerationContext`; no runtime JSON serializer is permitted.
+- AOT compatibility MUST be verified in CI against each supported target (`net8.0`, `net10.0`).
+- Any deviation from AOT safety requires explicit justification in a plan's Complexity Tracking
+  section and approval before implementation.
+
+### II. Test-First with Snapshot Verification (NON-NEGOTIABLE)
+
+All generator behavior changes MUST follow a Red-Green-Refactor cycle anchored on snapshot tests.
+
+- Tests MUST be written (and confirmed to fail) before implementation begins.
+- Generator output is verified via Verify snapshot tests in `test/Indago.Tests/snapshots/`.
+  Changing generated code requires updating (not deleting) the relevant `.verified.cs` file.
+- The test fixture in `test/TestAssembly/` is the source of truth for sample types; new scenarios
+  MUST add types there first, then add tests, then implement.
+- TUnit (`[Test]`, `[MethodDataSource]`, `[DependsOn]`) is the mandatory test framework.
+  Shouldly for assertions; FakeItEasy for mocks; Verify.TUnit for snapshots.
+- A PR MUST NOT reduce existing snapshot coverage or remove passing tests without replacement.
+- Every new public API surface MUST have at least one end-to-end generator test.
+
+### III. Minimal & Stable Public API Surface
+
+The public surface of `src/Indago` is intentionally small. Changes to it carry a long-tail cost
+(source compatibility, binary compatibility, public API tracking file `RS0017`).
+
+- The `RS0017` analyzer is treated as a build error. Any public API addition or removal MUST
+  update the tracked public API file in the same PR.
+- Selector expression hashing (`GetArgumentExpressionHash`) is a stable contract; changing the
+  hash algorithm is a MAJOR version bump and requires a migration note in the changelog.
+- Default lifetimes and attribute names (`ServiceRegistrationAttribute`, `ExcludeFromIndagoAttribute`)
+  are stable contracts; renames require a deprecation cycle.
+- Avoid adding overloads or abstractions unless they are demanded by at least one concrete use case
+  in tests or docs. YAGNI applies here more strictly than in most libraries.
+
+### IV. Code Quality & Strict Analysis
+
+All code MUST pass the project's strict analysis configuration before merge.
+
+- `Nullable=enable`, `LangVersion=preview`, `Features=strict`, `AnalysisMode=AllEnabledByDefault`.
+- Roslynator, BannedApiAnalyzers, and NETAnalyzers are active on every project.
+- NuGet audit is enabled at the `moderate` severity level for all packages.
+- `ImplicitUsings=enable` is on; explicit `using` statements for non-global namespaces are still
+  required in `Indago.Analyzers` (netstandard2.0 constraint).
+- Formatting MUST pass `prettier` (XML/YAML/TOML/PowerShell) and `dotnet format` before commit.
+  `hk` (git hooks via mise) enforces this automatically.
+- Comments MUST explain _why_, not _what_. Multi-line comment blocks in implementation code are
+  discouraged; prefer self-documenting identifiers.
+
+### V. Documentation as a First-Class Deliverable
+
+Documentation is not an afterthought. New features are not considered complete until docs exist.
+
+- Every new public API MUST have XML doc comments (`<summary>`, `<param>`, `<returns>` where
+  applicable) and be reflected in the VitePress docs site under `docs/`.
+- Non-trivial generator behavior (new filter type, new selector method, cache shape change) MUST
+  include a page or section update in `docs/` explaining the feature and its rationale.
+- The VitePress dev server (`mise run docs`) MUST render the new docs without errors before the PR
+  is merged.
+- Snapshot `.verified.cs` files serve dual purpose as both tests and living documentation of
+  generated output; they MUST be committed and reviewed alongside implementation changes.
+- Breaking changes MUST be documented in a `CHANGELOG` entry with a migration guide before the
+  release is tagged.
+
+## Technical Constraints
+
+### Roslyn Compatibility Matrix
+
+The generator MUST compile and emit correct output on Roslyn 4.8, 4.14, and 5.0. The
+`src/Indago.Analyzers.supports/` variant projects enforce this at build time.
+
+- No Roslyn 5.x-only APIs may be used in `Indago.Analyzers` without a fallback or conditional
+  compilation guard tested in the 4.8 and 4.14 variant projects.
+- `Polyfill` is the approved mechanism for accessing newer BCL APIs in netstandard2.0 code.
+
+### Central Package Management
+
+All NuGet versions live in `Directory.Packages.props` (`ManagePackageVersionsCentrally=true`).
+
+- Add a `<PackageVersion>` entry in `Directory.Packages.props`; reference without version in
+  `.csproj` files.
+- `GlobalPackageReference` entries apply build tooling / analyzers to every project automatically.
+- Do not add `<Version>` attributes to individual project references.
+
+### Build Systems
+
+Two build orchestrators coexist — do not conflate them:
+
+- **`mise run build`** (ModularPipelines, `build/Build.cs`) — day-to-day CI pipeline invocation.
+- **`./build.sh`** (Nuke, `.build/Build.cs`) — canonical release pipeline.
+- `src/Indago/build*/` directories are MSBuild props/targets **packed into the NuGet package**,
+  not build scripts.
+
+## Development Workflow
+
+### Quality Gates (sequential, non-skippable)
+
+1. **Snapshot test written and confirmed failing** before implementation.
+2. **Implementation passes all existing + new snapshot tests** (`dotnet test`).
+3. **Public API tracking file updated** if any public surface changed.
+4. **Docs updated** (XML comments + VitePress pages where applicable).
+5. **AOT compatibility verified** (build succeeds on `net8.0` and `net10.0` targets).
+6. **Formatting passes** (`prettier --write .` + `dotnet format`).
+7. **NuGet audit passes** (no moderate-or-higher advisories introduced).
+
+### Roslyn Version Verification
+
+After any generator change, the `Indago.Analyzers.supports` variant builds MUST pass:
+
+```bash
+dotnet build src/Indago.Analyzers.supports/
+```
+
+### Snapshot Management
+
+- Accept intended snapshot changes with `dotnet verify accept`.
+- Never silently delete `.verified.cs` files; replace with the new expected output.
+- Temp paths are scrubbed to `{TempPath}` automatically; do not hard-code system paths.
+
+### Review Checklist
+
+Every PR MUST confirm:
+
+- [ ] AOT/trim safety: no new reflection APIs that are trim-unsafe.
+- [ ] Test-first: snapshot test exists and was confirmed failing before implementation.
+- [ ] Public API tracking: `RS0017` file updated if surface changed.
+- [ ] Docs: XML comments and VitePress page updated where applicable.
+- [ ] Formatting: `prettier` + `dotnet format` pass.
+- [ ] Complexity justified: any deviation from these principles documented in plan.
+
+## Governance
+
+This constitution supersedes all other informal practices and conventions for the Indago project.
+It applies to all contributors and all code paths — generator, runtime library, build tooling,
+tests, and documentation.
+
+**Amendments**:
+
+- PATCH amendments (clarifications, typo fixes) may be merged by any maintainer with a PR review.
+- MINOR amendments (new principle or materially expanded guidance) require discussion in a GitHub
+  issue before the PR is opened.
+- MAJOR amendments (principle removals, redefinitions, or backward-incompatible governance changes)
+  require maintainer consensus and a migration plan.
+
+**Versioning policy**: `MAJOR.MINOR.PATCH` following the rules above.
+
+**Compliance review**: Constitution Check MUST appear in every implementation plan
+(`.specify/templates/plan-template.md`). Violations that are not justified in the plan's
+Complexity Tracking section are grounds for PR rejection.
+
+**Version**: 1.0.0 | **Ratified**: 2026-06-25 | **Last Amended**: 2026-06-25

@@ -69,3 +69,11 @@ dotnet run --project test/Indago.Tests/Indago.Tests.csproj -- --treenode-filter 
 - `test/TestAssembly` — sample types scanned by tests
 - `.build/` — Nuke pipeline · `build/` — ModularPipelines pipeline
 - `docs/` — VitePress documentation site (`mise run docs` to start dev server, `mise run docs-preview` for production preview)
+
+<!-- SPECKIT START -->
+
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+at `specs/001-indago-static-assembly-scanner/plan.md`.
+
+<!-- SPECKIT END -->

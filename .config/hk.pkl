@@ -32,6 +32,20 @@ local excludeDiagnostics = new Listing<String> {
   "RS0026"
 }
 
+local excludes = new Listing<String> {
+  "**/obj/**/*"
+  "**/bin/**/*"
+  ".git/**/*"
+  ".vs/**/*"
+  ".vscode/**/*"
+  ".idea/**/*"
+  ".claude/**/*"
+  ".agents/**/*"
+  ".apm/**/*"
+  ".copilot/**/*"
+  ".squad/**/*"
+}
+
 local excludedDiagnosticsString = excludeDiagnostics.join(" ")
 
 // `dotnet format` — whitespace / code-style / analyzer fixes, scoped to the changed C# files.
@@ -64,14 +78,18 @@ local linters = new Mapping<String, Step> {
   ["symlinks"] = Builtins.check_symlinks
   ["hk-test"] = Builtins.hk_test
   ["pkl-format"] = Builtins.pkl_format
-  ["prettier"] = Builtins.prettier
+  ["prettier"] = (Builtins.prettier) {
+    exclude = excludes
+  }
   ["prettier-extended"] = (Builtins.prettier) {
     glob = List("*.*proj", "*.props", "*.targets", "*.xml")
   }
   // Validate the hand-authored GitHub Actions workflows (.github/workflows/*.yml).
   ["actionlint"] = Builtins.actionlint
   // Safety nets (no external binaries required).
-  ["detect-private-key"] = Builtins.detect_private_key
+  ["detect-private-key"] = (Builtins.detect_private_key) {
+    exclude = excludes
+  }
   ["large-files"] = Builtins.check_added_large_files
   ["dotnet-format"] = dotnetFormat
   // ["jb-cleanupcode"] = jbCleanupCode

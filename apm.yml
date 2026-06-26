@@ -19,6 +19,8 @@ dependencies:
         - dotnet/skills
         - yvgude/lean-ctx
         - antfu/skills/skills/vitepress
+        - obra/superpowers
+        -
     mcp:
         - io.github.upstash/context7
         - name: nuget
