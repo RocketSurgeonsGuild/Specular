@@ -1,0 +1,10 @@
+{
+    "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+    "plugins": ["vue", "typescript"],
+    "env": {
+        "browser": true,
+        "es2022": true
+    },
+    "ignorePatterns": ["node_modules", "docs/.vitepress/dist", "docs/.vitepress/cache", "apm_modules", ".apm"],
+    "rules": {}
+}
