@@ -2,9 +2,13 @@
     "hooks": {
         "PostToolUse": [
             {
-                "type": "command",
-                "bash": "bash hooks/scripts/track-telemetry.sh",
-                "powershell": "powershell -File hooks/scripts/track-telemetry.ps1"
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "bash hooks/scripts/track-telemetry.sh"
+                    }
+                ]
             }
         ]
     }

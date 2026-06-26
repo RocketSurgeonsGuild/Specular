@@ -1,5 +1,5 @@
 lockfile_version: '1'
-generated_at: 2026-06-22T23:42:48.312203+00:00
+generated_at: 2026-06-22 23:42:48.312203+00:00
 apm_version: 0.20.0
 dependencies:
     - repo_url: antfu/skills
@@ -427,15 +427,19 @@ local_deployed_files:
     - .agents/skills/context7-mcp
     - .agents/skills/context7-mcp/SKILL.md
     - .claude/rules/context7.md
+    - .claude/rules/indago-onboarding.md
     - .claude/rules/neo4j-knowledgebase.md
     - .claude/skills/context7-mcp
     - .claude/skills/context7-mcp/SKILL.md
     - .github/instructions/context7.instructions.md
+    - .github/instructions/indago-onboarding.instructions.md
     - .github/instructions/neo4j-knowledgebase.instructions.md
 local_deployed_file_hashes:
     .agents/skills/context7-mcp/SKILL.md: sha256:6f07fd4d6cbf96c00c66ef859c2981efb0795315069f55af30c0ae4f28b77690
     .claude/rules/context7.md: sha256:0f66072fffde531a3b65ad1fca2a0a719b2c0a146f79a32230e1566aa917a792
+    .claude/rules/indago-onboarding.md: sha256:d6037539e1e7307c44719b640160a3495906579031586ebf80cb872d8ae00018
     .claude/rules/neo4j-knowledgebase.md: sha256:416db8f43b40abd878578c0e11c3eb5531c646a5ac77d6df62e4f3ee0876088e
     .claude/skills/context7-mcp/SKILL.md: sha256:6f07fd4d6cbf96c00c66ef859c2981efb0795315069f55af30c0ae4f28b77690
     .github/instructions/context7.instructions.md: sha256:c2faee057cf9de0bd7fcf511743479ab2755f09b0274d3ba69ad157ff5757d24
+    .github/instructions/indago-onboarding.instructions.md: sha256:9ce52e7a130ffdc125aefad5d8d84aa90fd06f84c0738f6345f70ab62fd5237f
     .github/instructions/neo4j-knowledgebase.instructions.md: sha256:1c54cb072667363a83ba46ba02b1d25d022f9a5b9256b5c9f17d63b22793c6db

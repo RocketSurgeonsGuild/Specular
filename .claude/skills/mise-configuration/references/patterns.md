@@ -184,15 +184,14 @@ CPUS      = "{{ num_cpus() }}"
 OS_FAMILY = "{{ os_family() }}" # unix, windows
 
 # File operations
-
-
-
-{% if is_dir("src") %}
 VERSION     = "{{ read_file(path='VERSION') | trim }}"
 CONFIG_HASH = "{{ hash_file(path='config.json', len=8) }}"
 
 
-{% endif %}SRC_EXISTS = "true"# Directory check
+{% if is_dir("src") %}
+# Directory check
+
+{% endif %}SRC_EXISTS = "true"
 ```
 
 ### Filters
@@ -229,13 +228,12 @@ FIRST_ITEM = "{{ list | first }}"
 ```toml
 [env]
 {% if env.CI %}
-
+# CI-specific settings
 
 {% else %}
-# CI-specific settings
 LOG_LEVEL = "error"
 PARALLEL  = "{{ num_cpus() }}"
-
+# Local development
 
 {% endif %}
 
@@ -244,7 +242,6 @@ PARALLEL  = "{{ num_cpus() }}"
 {% elif os() == "linux" %}
 
 {% endif %}LOG_LEVEL   = "debug"
-# Local development
 PARALLEL    = "2"
 BREW_PREFIX = "/opt/homebrew"
 BREW_PREFIX = "/home/linuxbrew/.linuxbrew"
@@ -261,31 +258,27 @@ BUILD_DIR    = "{{config_root}}/build/{{ os() }}-{{ arch() }}"
 CACHE_DIR    = "{{xdg_cache_home}}/{{ cwd | basename }}"
 
 # Git-derived values
-
-
-
-{% if os() == "macos" %}
 GIT_BRANCH = "{{ exec(command='git branch --show-current') | trim }}"
 GIT_SHA    = "{{ exec(command='git rev-parse --short HEAD') | trim }}"
 VERSION    = "{{ read_file(path='VERSION') | trim | default(value='0.0.0') }}"
 
 
+{% if os() == "macos" %}
+# Platform-specific
+
 {% else %}
 
 {% endif %}
 
-# Platform-specific
-
-
-{% if get_env(name='CI', default='false') == 'true' %}
 DYLD_LIBRARY_PATH = "{{config_root}}/lib"
 LD_LIBRARY_PATH   = "{{config_root}}/lib"
 
+{% if get_env(name='CI', default='false') == 'true' %}
+# Environment-aware
 
 {% else %}
 
 {% endif %}LOG_LEVEL     = "error"
-# Environment-aware
 PARALLEL_JOBS = "{{ num_cpus() }}"
 LOG_LEVEL     = "debug"
 PARALLEL_JOBS = "4"

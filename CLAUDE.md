@@ -17,6 +17,7 @@ The public surface (`src/Indago`) is intentionally small; nearly all the work li
     - `Abstractions/` holds the fluent selector interfaces (`IReflectionAssemblySelector`, `IServiceDescriptorAssemblySelector`, `ITypeFilter`, etc.) and opt-out attributes (`ExcludeFromIndagoAttribute`).
 - **`src/Indago.Analyzers`** — the generator (`netstandard2.0`, `IsRoslynComponent`). `IndagoProviderGenerator` (in `CompiledTypeProviderGenerator.cs`) is the `[Generator]`. It builds three syntax providers — `AssemblyCollection`, `ReflectionCollection`, `ServiceDescriptorCollection` — corresponding to the three `IIndagoProvider` methods.
     - **Cross-assembly cache:** the generator reads/writes `IndagoProvider.ctpjson` (constant `Constants.IndagoProviderCacheFileName`) passed in as an `AdditionalText`. This lets a downstream assembly reuse scan results from a referenced assembly without re-resolving. JSON (de)serialization uses the source-generated `JsonSourceGenerationContext`. `Configuration/` contains all the serializable data records; `AssemblyProviders/` contains the symbol visitors and compiled filters that evaluate selectors against the `Compilation`.
+- **`src/Indago.Analyzers.supports`** — Multi-Roslyn-version variant projects (`Indago.Analyzers.roslyn4.8.csproj`, `roslyn4.14`, `roslyn5.0`). Each pins a specific `Microsoft.CodeAnalysis.CSharp` version via `VersionOverride` to verify the generator compiles and runs correctly against older Roslyn hosts (e.g. VS 2022 before an update). These are build-time verification artifacts, not separate shipping units.
 - **`test/TestAssembly`** — a fixture assembly of sample services/types the generator scans in tests.
 
 When changing behavior, the change is usually in `Indago.Analyzers` (what gets generated), and the runtime `Indago` API stays stable.
@@ -63,6 +64,8 @@ dotnet run --project test/Indago.Tests/Indago.Tests.csproj -- --treenode-filter 
 
 - `src/Indago` — runtime API + abstractions (the NuGet package `Indago`)
 - `src/Indago.Analyzers` — the incremental source generator (packed into `Indago` as an analyzer)
+- `src/Indago.Analyzers.supports` — multi-Roslyn-version variant projects for compatibility testing
 - `test/Indago.Tests` — generator + snapshot tests (TUnit/Verify)
 - `test/TestAssembly` — sample types scanned by tests
 - `.build/` — Nuke pipeline · `build/` — ModularPipelines pipeline
+- `docs/` — VitePress documentation site (`mise run docs` to start dev server, `mise run docs-preview` for production preview)

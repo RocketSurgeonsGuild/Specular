@@ -231,8 +231,8 @@ description = "Dry-run release (no changes)"
 depends     = ["_check-clean", "_check-main", "test"]
 [tasks.release]
 run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci'\'''description = "Create release"
-depends = ["_check-clean", "_check-main", "test"]
-confirm = "This will create a new release. Continue?"
+depends     = ["_check-clean", "_check-main", "test"]
+confirm     = "This will create a new release. Continue?"
 ```
 
 ---
@@ -541,6 +541,6 @@ run         = "uv build"
 # Release
 [tasks.release]
 run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci'\'''description = "Create release"
-depends = ["_check-clean", "build"]
-confirm = "Create new release?"
+depends     = ["_check-clean", "build"]
+confirm     = "Create new release?"
 ```
