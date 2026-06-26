@@ -3,6 +3,7 @@
     "devDependencies": {
         "@prettier/plugin-xml": "3.4.2",
         "oxlint": "latest",
-        "prettier": "3.8.1"
+        "prettier": "3.8.1",
+        "vitepress-plugin-typesense": "1.1.5"
     }
 }

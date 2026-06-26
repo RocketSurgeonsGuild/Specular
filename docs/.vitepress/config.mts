@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { TypesenseSearchPlugin } from 'vitepress-plugin-typesense';
 
 export default defineConfig({
     title: 'Indago',
@@ -7,6 +8,39 @@ export default defineConfig({
     base: '/Indago/',
     cleanUrls: true,
     lastUpdated: true,
+
+    vite: {
+        plugins: [
+            TypesenseSearchPlugin({
+                // Collection name in your Typesense instance
+                typesenseCollectionName: process.env.TYPESENSE_COLLECTION_NAME ?? 'indago-docs',
+                typesenseServerConfig: {
+                    // Search-only API key (safe to expose in the browser)
+                    apiKey: process.env.TYPESENSE_SEARCH_API_KEY ?? 'xyz',
+                    nodes: [
+                        {
+                            url: process.env.TYPESENSE_HOST ?? 'https://search.example.com',
+                        },
+                    ],
+                },
+                typesenseSearchParameters: {},
+                indexing: {
+                    // Set to true during CI/deploy to index pages into Typesense
+                    enabled: process.env.TYPESENSE_INDEX === 'true',
+                    hostname: process.env.DOCS_HOSTNAME ?? 'https://rocketsurgeonsguild.github.io/Indago/',
+                    typesenseServerConfig: {
+                        // Admin API key with write permissions — keep in .env, never commit
+                        apiKey: process.env.TYPESENSE_ADMIN_API_KEY ?? '',
+                        nodes: [
+                            {
+                                url: process.env.TYPESENSE_HOST ?? 'https://search.example.com',
+                            },
+                        ],
+                    },
+                },
+            }),
+        ],
+    },
 
     themeConfig: {
         nav: [
@@ -74,8 +108,6 @@ export default defineConfig({
         },
 
         socialLinks: [{ icon: 'github', link: 'https://github.com/RocketSurgeonsGuild/Indago' }],
-
-        search: { provider: 'local' },
 
         footer: {
             message: 'Released under the MIT License.',
