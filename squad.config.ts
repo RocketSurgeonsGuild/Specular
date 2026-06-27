@@ -36,15 +36,15 @@ export default defineSquad({
             }),
             defineAgent({
                 name: 'docs-engineer',
-                role: 'VitePress documentation site and GitHub Pages specialist',
+                role: 'Starlight (Astro) documentation site and GitHub Pages specialist',
                 model: 'claude-haiku-4-5',
                 status: 'active',
                 capabilities: [
-                    { name: 'VitePress 2.0 alpha configuration', level: 'expert' },
-                    { name: 'Markdown technical writing', level: 'expert' },
+                    { name: 'Starlight 0.41 / Astro 7 configuration', level: 'expert' },
+                    { name: 'Starlight plugin setup & verification', level: 'expert' },
+                    { name: 'Markdown / MDX technical writing', level: 'expert' },
                     { name: 'GitHub Actions (Pages deployment)', level: 'expert' },
-                    { name: 'ESLint 9 flat config (Vue 3 + TS + MD)', level: 'proficient' },
-                    { name: 'Vue 3 SFC components', level: 'proficient' },
+                    { name: 'Link validation & browser-based verification', level: 'proficient' },
                 ],
             }),
             defineAgent({
@@ -111,11 +111,11 @@ export default defineSquad({
                 agent: 'dotnet-engineer',
             },
             {
-                pattern: /\bVitePress|docs\/(guide|reference|architecture)|sidebar|navbar\b/i,
+                pattern: /\bStarlight|Astro|astro\.config|docs\/(guide|reference|architecture|api)|sidebar|landing page|starlight-\w+\b/i,
                 agent: 'docs-engineer',
             },
             {
-                pattern: /\beslint|hk fix|hk check|deploy-docs|GitHub Pages\b/i,
+                pattern: /\blinks?-validator|deploy-docs|GitHub Pages|plugin verification\b/i,
                 agent: 'docs-engineer',
             },
             {

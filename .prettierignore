@@ -5,3 +5,6 @@ azure-pipelines.nuke.yml
 package-lock.json
 *.verified.*
 *.received.*
+# Auto-generated API reference (xmldocmd output, regenerated in CI). Keep api/index.md.
+docs/src/content/docs/api/**
+!docs/src/content/docs/api/index.md

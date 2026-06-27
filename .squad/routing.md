@@ -12,9 +12,9 @@ How to decide who handles what.
 | AOT / trim safety             | dotnet-engineer                   | `PublishAot=true`, trim warnings, IL linking                                                                        |
 | NuGet / packaging             | dotnet-engineer                   | `Directory.Packages.props`, csproj, `buildTransitive` targets                                                       |
 | Public API surface            | dotnet-engineer                   | RS0017 PublicAPI files, breaking-change review                                                                      |
-| Docs content / site           | docs-engineer                     | Pages under `docs/`, VitePress config, sidebar, nav, `index.md`                                                     |
-| ESLint / linting config       | docs-engineer                     | `eslint.config.mjs`, `hk` hook integration, `.vue`/`.ts`/`.md` lint rules                                           |
-| GitHub Actions / Pages        | docs-engineer                     | `deploy-docs.yml`, GitHub Pages deployment, CI lint job                                                             |
+| Docs content / site           | docs-engineer                     | Pages under `docs/src/content/docs/`, `astro.config.mjs`, sidebar topics, section landing pages, `index.mdx`        |
+| Starlight plugins             | docs-engineer                     | Plugin setup & verification, link validator, tags, changelogs, badges, llms-txt, activating content                |
+| GitHub Actions / Pages        | docs-engineer                     | `deploy-docs.yml`, GitHub Pages deployment, base-path correctness                                                   |
 | Snapshot tests                | qa-engineer                       | `.received.cs` / `.verified.cs` diffs, `dotnet verify accept`                                                       |
 | Generator tests               | qa-engineer                       | `test/Indago.Tests/`, `GeneratorTest` builder, `TestAssembly/` fixtures                                             |
 | Cross-version CI              | qa-engineer                       | Roslyn 4.8/4.14/5.0 snapshot parity, MTP treenode-filter runs                                                       |
@@ -31,8 +31,8 @@ How to decide who handles what.
 | `/\bRoslyn (4\.8\|4\.14\|5\.0)\|EnforceExtendedAnalyzerRules\|Polyfill\b/i`                | roslyn-engineer |
 | `/\bIIndagoProvider\|ServiceRegistration\|ExcludeFromIndago\|AddIndago\b/i`                | dotnet-engineer |
 | `/\bPublishAot\|trim warn\|AOT compat\|IL trim\b/i`                                        | dotnet-engineer |
-| `/\bVitePress\|docs\/(guide\|reference\|architecture)\|sidebar\|navbar\b/i`                | docs-engineer   |
-| `/\beslint\|hk fix\|hk check\|deploy-docs\|GitHub Pages\b/i`                               | docs-engineer   |
+| `/\bStarlight\|Astro\|astro\.config\|docs\/(guide\|reference\|architecture\|api)\|sidebar\|landing page\|starlight-\w+\b/i` | docs-engineer |
+| `/\blinks?-validator\|deploy-docs\|GitHub Pages\|plugin verification\b/i`                  | docs-engineer   |
 | `/\bsnapshot\|\.received\.\|\.verified\.\|dotnet verify\|TUnit\|Shouldly\b/i`              | qa-engineer     |
 | `/\btest(ing)?\|coverage\|GeneratorTest\|TestAssembly\|treenode-filter\b/i`                | qa-engineer     |
 

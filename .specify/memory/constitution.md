@@ -83,10 +83,10 @@ All code MUST pass the project's strict analysis configuration before merge.
 Documentation is not an afterthought. New features are not considered complete until docs exist.
 
 - Every new public API MUST have XML doc comments (`<summary>`, `<param>`, `<returns>` where
-  applicable) and be reflected in the VitePress docs site under `docs/`.
+  applicable) and be reflected in the Starlight docs site under `docs/`.
 - Non-trivial generator behavior (new filter type, new selector method, cache shape change) MUST
   include a page or section update in `docs/` explaining the feature and its rationale.
-- The VitePress dev server (`mise run docs`) MUST render the new docs without errors before the PR
+- The Starlight dev server (`mise run docs`) MUST render the new docs without errors before the PR
   is merged.
 - Snapshot `.verified.cs` files serve dual purpose as both tests and living documentation of
   generated output; they MUST be committed and reviewed alongside implementation changes.
@@ -129,7 +129,7 @@ Two build orchestrators coexist — do not conflate them:
 1. **Snapshot test written and confirmed failing** before implementation.
 2. **Implementation passes all existing + new snapshot tests** (`dotnet test`).
 3. **Public API tracking file updated** if any public surface changed.
-4. **Docs updated** (XML comments + VitePress pages where applicable).
+4. **Docs updated** (XML comments + Starlight pages where applicable).
 5. **AOT compatibility verified** (build succeeds on `net8.0` and `net10.0` targets).
 6. **Formatting passes** (`prettier --write .` + `dotnet format`).
 7. **NuGet audit passes** (no moderate-or-higher advisories introduced).
@@ -155,7 +155,7 @@ Every PR MUST confirm:
 - [ ] AOT/trim safety: no new reflection APIs that are trim-unsafe.
 - [ ] Test-first: snapshot test exists and was confirmed failing before implementation.
 - [ ] Public API tracking: `RS0017` file updated if surface changed.
-- [ ] Docs: XML comments and VitePress page updated where applicable.
+- [ ] Docs: XML comments and Starlight page updated where applicable.
 - [ ] Formatting: `prettier` + `dotnet format` pass.
 - [ ] Complexity justified: any deviation from these principles documented in plan.
 
@@ -179,4 +179,4 @@ tests, and documentation.
 (`.specify/templates/plan-template.md`). Violations that are not justified in the plan's
 Complexity Tracking section are grounds for PR rejection.
 
-**Version**: 1.0.0 | **Ratified**: 2026-06-25 | **Last Amended**: 2026-06-25
+**Version**: 1.0.1 | **Ratified**: 2026-06-25 | **Last Amended**: 2026-06-26

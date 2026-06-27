@@ -1,0 +1,33 @@
+erDiagram
+    NAVIGATION_TOPIC {
+        string label
+        string icon
+        string link
+        string directory
+        boolean resolves
+    }
+    SECTION_LANDING_PAGE {
+        string path
+        string title
+        string description
+        string tags
+        string badge
+        string body
+    }
+    PLUGIN_VERIFICATION_RECORD {
+        string plugin
+        string feature
+        string activation
+        string evidence
+        string status
+        string reason
+    }
+    DEFERRED_VERIFICATION_TASK {
+        string id
+        string scenario
+        string outcome
+        string followup
+    }
+
+    NAVIGATION_TOPIC ||--|| SECTION_LANDING_PAGE : "backed-by (section-root topics)"
+    SECTION_LANDING_PAGE ||--o{ PLUGIN_VERIFICATION_RECORD : "hosts activation content for"
