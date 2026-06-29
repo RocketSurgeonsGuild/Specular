@@ -59,7 +59,7 @@ using System.Runtime.Loader;
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
 [assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
-[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 file class IndagoProvider : IIndagoProvider
 {
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
@@ -112,6 +112,7 @@ file class IndagoProvider : IIndagoProvider
         {
             // FilePath: Input0.cs Expression: h7YOdRK4kWM8suq9w5jcEA==
             case 42:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Program));
                 items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
@@ -153,8 +154,26 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::TestAssembly.Service));
                 items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
                 break;
+            // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
+            case 82:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                break;
             // FilePath: Input0.cs Expression: IEL5ckPWEXd/Ak5gZ5DdEg==
             case 102:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Program));
                 items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
@@ -201,6 +220,7 @@ file class IndagoProvider : IIndagoProvider
                 break;
             // FilePath: Input0.cs Expression: yMvGbByGNy7UnkUU8zAHhg==
             case 122:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Program));
                 items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
@@ -571,22 +591,6 @@ file class IndagoProvider : IIndagoProvider
             case 72:
                 items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                break;
-            // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
-            case 82:
-                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
-                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
-                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 break;
             // FilePath: Input0.cs Expression: AkSQC22LryNlbH2i5Itc6g==
             case 92:

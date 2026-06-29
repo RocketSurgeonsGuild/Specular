@@ -44,6 +44,8 @@ local excludes = new Listing<String> {
   ".apm/**/*"
   ".copilot/**/*"
   ".squad/**/*"
+  "**/*.verified.*"
+  "**/*.received.*"
 }
 
 local excludedDiagnosticsString = excludeDiagnostics.join(" ")
@@ -52,6 +54,7 @@ local excludedDiagnosticsString = excludeDiagnostics.join(" ")
 // Has a real verify mode, so it can run in `check` as well as `fix`.
 local dotnetFormat: Step = new Step {
   glob = "**/*.cs"
+  exclude = excludes
   check =
     "dotnet format \(solution) --exclude-diagnostics \(excludedDiagnosticsString) --verify-no-changes --include {{files}}"
   fix =

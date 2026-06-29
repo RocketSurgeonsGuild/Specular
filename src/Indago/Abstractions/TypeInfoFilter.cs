@@ -1,4 +1,4 @@
-﻿namespace Indago.Abstractions;
+namespace Indago.Abstractions;
 
 /// <summary>
 ///     Enumeration for possible type information filters.

@@ -10,7 +10,7 @@ using Indago.Abstractions;
 using System.Runtime.Loader;
 
 [assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
-[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 file class IndagoProvider : IIndagoProvider
 {
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
@@ -66,6 +66,162 @@ file class IndagoProvider : IIndagoProvider
         var items = new List<Type>();
         switch (lineNumber)
         {
+            // FilePath: Input0.cs Expression: h7YOdRK4kWM8suq9w5jcEA==
+            case 42:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.IndagoProviderExtensions));
+                items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
+                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(Indago.GetType("MyAssembly")!);
+                items.Add(Indago.GetType("MyAssembly+Info")!);
+                items.Add(Indago.GetType("MyAssembly+Metadata")!);
+                items.Add(Indago.GetType("MyAssembly+Project")!);
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Program")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("MyAssembly")!);
+                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.Nested));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+                items.Add(typeof(global::TestAssembly.Service));
+                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+                break;
+            // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
+            case 82:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                break;
+            // FilePath: Input0.cs Expression: IEL5ckPWEXd/Ak5gZ5DdEg==
+            case 102:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Program")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.IGenericService<>));
+                items.Add(typeof(global::TestAssembly.IOther));
+                items.Add(typeof(global::TestAssembly.IRequest<>));
+                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                items.Add(typeof(global::TestAssembly.IService));
+                items.Add(typeof(global::TestAssembly.IServiceB));
+                items.Add(typeof(global::TestAssembly.IValidator));
+                items.Add(typeof(global::TestAssembly.IValidator<>));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+                items.Add(typeof(global::TestAssembly.Service));
+                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+                break;
+            // FilePath: Input0.cs Expression: yMvGbByGNy7UnkUU8zAHhg==
+            case 122:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.IndagoProviderExtensions));
+                items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
+                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(Indago.GetType("MyAssembly")!);
+                items.Add(Indago.GetType("MyAssembly+Info")!);
+                items.Add(Indago.GetType("MyAssembly+Metadata")!);
+                items.Add(Indago.GetType("MyAssembly+Project")!);
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Program")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("MyAssembly")!);
+                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.Nested));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+                items.Add(typeof(global::TestAssembly.Service));
+                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+                break;
             // FilePath: Input0.cs Expression: bKhVPtwmtNPU4oAyExjo+A==
             case 22:
                 items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
@@ -103,49 +259,6 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::TestAssembly.IServiceB));
                 items.Add(typeof(global::TestAssembly.IValidator));
                 items.Add(typeof(global::TestAssembly.IValidator<>));
-                break;
-            // FilePath: Input0.cs Expression: h7YOdRK4kWM8suq9w5jcEA==
-            case 42:
-                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
-                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
-                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Indago.IndagoProviderExtensions));
-                items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
-                items.Add(typeof(global::Indago.IndagoSupport));
-                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
-                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(Indago.GetType("MyAssembly")!);
-                items.Add(Indago.GetType("MyAssembly+Info")!);
-                items.Add(Indago.GetType("MyAssembly+Metadata")!);
-                items.Add(Indago.GetType("MyAssembly+Project")!);
-                items.Add(OtherProject.GetType("Program")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
                 break;
             // FilePath: Input0.cs Expression: K7KxgHvx+EGwwlQkuemT3A==
             case 52:
@@ -210,22 +323,6 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
                 break;
-            // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
-            case 82:
-                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
-                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
-                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                break;
             // FilePath: Input0.cs Expression: AkSQC22LryNlbH2i5Itc6g==
             case 92:
                 items.Add(typeof(global::Indago.IndagoProviderExtensions));
@@ -241,52 +338,6 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::TestAssembly.Nested));
                 break;
-            // FilePath: Input0.cs Expression: IEL5ckPWEXd/Ak5gZ5DdEg==
-            case 102:
-                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
-                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
-                items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
-                items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
-                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
-                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
-                items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
-                items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
-                items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
-                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(OtherProject.GetType("Program")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
             // FilePath: Input0.cs Expression: icamNGQlbhR5fqnsVbNH4A==
             case 112:
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
@@ -301,49 +352,6 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::TestAssembly.IRequest<>));
                 items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
                 items.Add(typeof(global::TestAssembly.IValidator<>));
-                break;
-            // FilePath: Input0.cs Expression: yMvGbByGNy7UnkUU8zAHhg==
-            case 122:
-                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
-                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
-                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Indago.IndagoProviderExtensions));
-                items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
-                items.Add(typeof(global::Indago.IndagoSupport));
-                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
-                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(Indago.GetType("MyAssembly")!);
-                items.Add(Indago.GetType("MyAssembly+Info")!);
-                items.Add(Indago.GetType("MyAssembly+Metadata")!);
-                items.Add(Indago.GetType("MyAssembly+Project")!);
-                items.Add(OtherProject.GetType("Program")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
                 break;
             // FilePath: Input0.cs Expression: V1zz0pHDKJ/BSBrqm8jiAQ==
             case 132:

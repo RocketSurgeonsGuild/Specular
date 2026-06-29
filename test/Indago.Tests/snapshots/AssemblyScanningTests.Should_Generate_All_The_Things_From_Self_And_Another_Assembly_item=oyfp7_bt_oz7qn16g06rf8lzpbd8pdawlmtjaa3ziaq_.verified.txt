@@ -258,6 +258,7 @@
           },
           Expression:
 {
+    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [

@@ -240,11 +240,4 @@ dist/
 # Keep the hand-written section landing page (api/index.md); ignore the generated tree.
 docs/src/content/docs/api/**
 !docs/src/content/docs/api/index.md
-.playwright-mcp/page-2026-06-27T19-11-31-322Z.yml
-.playwright-mcp/page-2026-06-27T19-12-10-269Z.yml
-.playwright-mcp/page-2026-06-27T19-12-39-356Z.yml
-.playwright-mcp/page-2026-06-27T19-12-56-351Z.yml
-.playwright-mcp/page-2026-06-27T19-14-11-059Z.yml
-.playwright-mcp/page-2026-06-27T19-15-05-854Z.yml
-.playwright-mcp/page-2026-06-27T19-15-16-604Z.yml
-.playwright-mcp/page-2026-06-27T19-15-47-635Z.yml
+.playwright-mcp/

@@ -1,14 +1,11 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.Loader;
 
 namespace Indago.Tests;
 
 internal class CollectibleTestAssemblyLoadContext : AssemblyLoadContext, IDisposable
 {
-    protected override Assembly? Load(AssemblyName assemblyName)
-    {
-        return null;
-    }
+    protected override Assembly? Load(AssemblyName assemblyName) => null;
 
     public void Dispose()
     {

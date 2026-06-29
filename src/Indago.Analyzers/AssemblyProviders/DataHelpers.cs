@@ -623,8 +623,16 @@ internal static class DataHelpers
 }
 
 #pragma warning disable RCS1194 // Implement exception constructors
-internal class MustBeAnExpressionException(Location location, string expression) : Exception($"The expression {expression} must be a constant expression.")
+public class MustBeAnExpressionException(Location location, string expression) : Exception($"The expression {expression} must be a constant expression.")
 #pragma warning restore RCS1194 // Implement exception constructors
 {
     public Location Location { get; } = location;
+
+    public MustBeAnExpressionException() : this(Location.None, string.Empty)
+    {
+    }
+
+    public MustBeAnExpressionException(string message) : base(message)
+    {
+    }
 }

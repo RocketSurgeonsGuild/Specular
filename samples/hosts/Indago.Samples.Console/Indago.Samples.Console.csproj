@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <!-- AOT publish is exercised on net10.0 only (libraries multi-target; host is net10.0). -->
+        <TargetFramework>net10.0</TargetFramework>
+        <!-- Consume Indago exactly like a packaged consumer: wire the analyzer + global using. -->
+        <UsesIndagoGenerator>true</UsesIndagoGenerator>
+        <!-- Native AOT guardrail target (US2/US3). Build/run are unaffected; only publish AOT-compiles. -->
+        <PublishAot>true</PublishAot>
+        <InvariantGlobalization>true</InvariantGlobalization>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../../src/Indago/Indago.csproj" />
+        <ProjectReference Include="../../libraries/Indago.Samples.Catalog/Indago.Samples.Catalog.csproj" />
+        <ProjectReference Include="../../libraries/Indago.Samples.Notifications/Indago.Samples.Notifications.csproj" />
+        <ProjectReference Include="../../libraries/Indago.Samples.Diagnostics/Indago.Samples.Diagnostics.csproj" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+</Project>

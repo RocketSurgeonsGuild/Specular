@@ -314,6 +314,7 @@ internal static class Helpers
                             )
                         ),
                     Attribute(ParseName("System.Runtime.CompilerServices.CompilerGenerated")),
+                    Attribute(ParseName("Microsoft.CodeAnalysis.EmbeddedAttribute")),
                     Attribute(ParseName("System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage")),
                 ]
             )

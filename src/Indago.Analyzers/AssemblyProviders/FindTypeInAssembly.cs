@@ -1,6 +1,6 @@
-﻿using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 using Indago.Analyzers.Descriptors;
+using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.AssemblyProviders;
 

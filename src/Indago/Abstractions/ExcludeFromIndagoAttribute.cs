@@ -1,4 +1,4 @@
-﻿namespace Indago.Abstractions;
+namespace Indago.Abstractions;
 
 /// <summary>
 /// Exclude the given assembly from compiled type provider resolution.

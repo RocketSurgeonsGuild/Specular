@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
     <PropertyGroup>
         <ExcludeAssemblyFromCTP>netstandard;System;mscorlib;Microsoft</ExcludeAssemblyFromCTP>
     </PropertyGroup>
