@@ -62,7 +62,7 @@ public partial class AssemblyScanningTestData
                     public static void Main(string[] args)
                     {
                         var services = new ServiceCollection();
-                        var provider = typeof(Program).Assembly.GetIndagoProvider();
+                        var provider = IndagoProvider.Instance;
                         {{{string.Join("\n", expressions)}}}
                     }
                 }

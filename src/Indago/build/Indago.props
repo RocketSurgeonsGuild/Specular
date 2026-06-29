@@ -1,10 +1,17 @@
 ﻿<Project>
     <PropertyGroup>
         <ExcludeAssemblyFromCTP>netstandard;System;mscorlib;Microsoft</ExcludeAssemblyFromCTP>
+        <!--
+            Controls whether this assembly emits an IIndagoProvider implementation.
+            Set to false for library assemblies that should be scanned but should not
+            emit their own provider (the consuming application emits the provider).
+        -->
+        <IndagoEmitProvider Condition="'$(IndagoEmitProvider)' == ''">true</IndagoEmitProvider>
     </PropertyGroup>
     <ItemGroup>
         <CompilerVisibleProperty Include="IntermediateOutputPath" />
         <CompilerVisibleProperty Include="ProjectDir" />
         <CompilerVisibleProperty Include="ExcludeAssemblyFromCTP" />
+        <CompilerVisibleProperty Include="IndagoEmitProvider" />
     </ItemGroup>
 </Project>

@@ -33,7 +33,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -81,7 +81,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -128,7 +128,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -174,7 +174,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -222,7 +222,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -270,7 +270,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -318,7 +318,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -366,7 +366,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	       provider.Scan(
                                            services,
                                            z => z
@@ -414,7 +414,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	       provider.Scan(
                                            services,
                                            z => z
@@ -462,7 +462,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	       provider.Scan(
                                            services,
                                            z => z
@@ -510,7 +510,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -558,7 +558,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -624,7 +624,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	        provider.Scan(
                                            services,
                                            z => z
@@ -706,7 +706,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                        z => z
@@ -767,7 +767,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -817,7 +817,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -867,7 +867,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -917,7 +917,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -967,7 +967,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -1017,7 +1017,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -1071,7 +1071,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -1126,7 +1126,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z
@@ -1224,7 +1224,7 @@ namespace TestProject
         static IServiceCollection LoadServices()
         {
             var services = new ServiceCollection();
-            var provider = typeof(Program).Assembly.GetIndagoProvider();
+            var provider = IndagoProvider.Instance;
 	        provider.Scan(
                 services,
                 z => z
@@ -1287,7 +1287,7 @@ namespace TestProject
         static IServiceCollection LoadServices()
         {
             var services = new ServiceCollection();
-            var provider = typeof(Program).Assembly.GetIndagoProvider();
+            var provider = IndagoProvider.Instance;
 	        provider.Scan(
                 services,
                 z => z
@@ -1355,7 +1355,7 @@ namespace TestProject
         static IServiceCollection LoadServices()
         {
             var services = new ServiceCollection();
-            var provider = typeof(Program).Assembly.GetIndagoProvider();
+            var provider = IndagoProvider.Instance;
 	        provider.Scan(
                 services,
                 z => z
@@ -1456,7 +1456,7 @@ namespace TestProject
         static IServiceCollection LoadServices()
         {
             var services = new ServiceCollection();
-            var provider = typeof(Program).Assembly.GetIndagoProvider();
+            var provider = IndagoProvider.Instance;
 	        provider.Scan(
                 services,
                 z => z
@@ -1518,7 +1518,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -1582,7 +1582,7 @@ namespace TestProject
         static IServiceCollection LoadServices()
         {
             var services = new ServiceCollection();
-            var provider = typeof(Program).Assembly.GetIndagoProvider();
+            var provider = IndagoProvider.Instance;
 	        provider.Scan(
                 services,
                 z => z
@@ -1650,7 +1650,7 @@ namespace TestProject
         static IServiceCollection LoadServices()
         {
             var services = new ServiceCollection();
-            var provider = typeof(Program).Assembly.GetIndagoProvider();
+            var provider = IndagoProvider.Instance;
 	        provider.Scan(
                 services,
                 z => z
@@ -1699,7 +1699,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -1747,7 +1747,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -1797,7 +1797,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                        provider.Scan(
                                            services,
                                            z => z
@@ -1851,7 +1851,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -1919,7 +1919,7 @@ public static class Program {
     {
         var type = typeof(IService);
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z.FromAssemblies()
@@ -1960,7 +1960,7 @@ public static class Program {
                                    {
                                        var ns = "MyNamespace";
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	    provider.Scan(
                                            services,
                                            z => z.FromAssemblies()
@@ -2000,7 +2000,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => {
@@ -2167,7 +2167,7 @@ namespace RootDependencyProject
                                        static IServiceCollection LoadServices()
                                        {
                                            var services = new ServiceCollection();
-                                           var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                           var provider = IndagoProvider.Instance;
                                	            provider.Scan(
                                                services,
                                                z => z
@@ -2278,7 +2278,7 @@ namespace RootDependencyProject
                                        static IServiceCollection LoadServices()
                                        {
                                            var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                	        provider.Scan(
                                                services,
                                                z => z
@@ -2331,7 +2331,7 @@ public static class Program {
     static void Main() {}
     static IServiceCollection Method()
     {
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             Services,
             z => z
@@ -2356,7 +2356,7 @@ public static class Program2 {
 
     static IServiceCollection Method()
     {
-        var provider = typeof(Program2).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             Services,
             z => z
@@ -2477,7 +2477,7 @@ public static class Program {
     static IServiceCollection LoadServices()
     {
         var services = new ServiceCollection();
-        var provider = typeof(Program).Assembly.GetIndagoProvider();
+        var provider = IndagoProvider.Instance;
 	    provider.Scan(
             services,
             z => z
@@ -2530,7 +2530,7 @@ public static class Program {
                                           static IServiceCollection LoadServices()
                                           {
                                               var services = new ServiceCollection();
-                                              var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                              var provider = IndagoProvider.Instance;
                                               var classes = provider.GetTypes(
                                                   s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())
                                               );
@@ -2573,7 +2573,7 @@ public static class Program {
                                    static IServiceCollection LoadServices()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                        var classes = provider.GetTypes(
                                            s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())
                                        );

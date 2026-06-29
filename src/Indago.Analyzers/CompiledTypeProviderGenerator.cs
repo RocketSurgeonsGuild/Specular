@@ -81,6 +81,13 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                 HashSet<string> excludedAssemblies = request.options.GlobalOptions.TryGetValue("build_property.ExcludeAssemblyFromCTP", out var assemblies)
                     ? [.. assemblies.Split([';', ','], StringSplitOptions.RemoveEmptyEntries)]
                     : [];
+                // Whether this assembly should emit its own IIndagoProvider implementation.
+                // Libraries that are only meant to be scanned can opt out by setting
+                // <IndagoEmitProvider>false</IndagoEmitProvider>; the consuming application
+                // then emits the provider. Defaults to true to preserve existing behaviour.
+                var emitProvider = !request.options.GlobalOptions.TryGetValue("build_property.IndagoEmitProvider", out var emitProviderValue)
+                 || !bool.TryParse(emitProviderValue, out var parsedEmitProvider)
+                 || parsedEmitProvider;
                 var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
                 var diagnostics = new HashSet<Diagnostic>();
                 var assemblyRequests = AssemblyCollection.GetAssemblyItems(request.compilation, diagnostics, request.assemblies, context.CancellationToken);
@@ -194,32 +201,37 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                     privateAssemblies,
                     out var cacheHash
                 );
-                if (privateAssemblies.Any()) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
 
-                MemberDeclarationSyntax[] members = [assemblyProvider];
+                cu = cu.AddSharedTrivia().AddAttributeLists(attributes);
 
-                cu = cu
-                    .AddSharedTrivia()
-                    .AddAttributeLists(attributes)
-                    .AddAttributeLists(
-                         AttributeList(
-                                 SingletonSeparatedList(
-                                     Attribute(
-                                         ParseName("Indago.Abstractions.IndagoProviderAttribute"),
-                                         AttributeArgumentList(
-                                             SeparatedList(
-                                                 [
-                                                     AttributeArgument(TypeOfExpression(ParseName(assemblyProvider.Identifier.Text))),
-                                                     AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
-                                                 ]
+                // Only emit the provider implementation (and the attribute that points at it)
+                // when this assembly is configured to do so. The scan-metadata attributes above
+                // are always emitted so that downstream assemblies can reuse the resolved data.
+                if (emitProvider)
+                {
+                    if (privateAssemblies.Any()) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+
+                    cu = cu
+                        .AddAttributeLists(
+                             AttributeList(
+                                     SingletonSeparatedList(
+                                         Attribute(
+                                             ParseName("Indago.Abstractions.IndagoProviderAttribute"),
+                                             AttributeArgumentList(
+                                                 SeparatedList(
+                                                     [
+                                                         AttributeArgument(TypeOfExpression(ParseName(assemblyProvider.Identifier.Text))),
+                                                         AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
+                                                     ]
+                                                 )
                                              )
                                          )
                                      )
                                  )
-                             )
-                            .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
-                     )
-                    .AddMembers(members);
+                                .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
+                         )
+                        .AddMembers(assemblyProvider);
+                }
 
                 foreach (var diagnostic in diagnostics)
                 {

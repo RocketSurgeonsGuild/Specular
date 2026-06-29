@@ -10,8 +10,10 @@ using Indago.Abstractions;
 
 [assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
 [System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-file class IndagoProvider : IIndagoProvider
+internal sealed class IndagoProvider : IIndagoProvider
 {
+    public static IIndagoProvider Instance { get; } = new IndagoProvider();
+
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Assembly>();

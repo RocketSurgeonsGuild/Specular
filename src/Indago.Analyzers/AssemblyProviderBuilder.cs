@@ -107,8 +107,9 @@ internal static class AssemblyProviderBuilder
         cacheHash = Convert.ToBase64String(hasher.Hash);
         return ClassDeclaration("IndagoProvider")
               .AddAttributeLists(Helpers.CompilerGeneratedAttributes)
-              .WithModifiers(TokenList(Token(SyntaxKind.FileKeyword)))
+              .WithModifiers(TokenList(Token(SyntaxKind.InternalKeyword), Token(SyntaxKind.SealedKeyword)))
               .WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName("IIndagoProvider")))))
+              .AddMembers(InstanceProperty)
               .AddMembers(resolvedAssemblyDetails, resolvedReflectionDetails, resolvedServiceDescriptorDetails)
               .AddMembers(privateMembers.ToArray());
     }
@@ -164,6 +165,27 @@ internal static class AssemblyProviderBuilder
                 )
             )
     );
+
+    // public static IIndagoProvider Instance { get; } = new IndagoProvider();
+    // Exposes the generated provider as a compile-time singleton so consumers can reference it
+    // directly (IndagoProvider.Instance) instead of resolving it through runtime reflection.
+    private static readonly PropertyDeclarationSyntax InstanceProperty =
+        PropertyDeclaration(IdentifierName("IIndagoProvider"), Identifier("Instance"))
+           .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
+           .WithAccessorList(
+                AccessorList(
+                    SingletonList(
+                        AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                           .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                    )
+                )
+            )
+           .WithInitializer(
+                EqualsValueClause(
+                    ObjectCreationExpression(IdentifierName("IndagoProvider")).WithArgumentList(ArgumentList())
+                )
+            )
+           .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
 
     private const string IReflectionAssemblySelector = nameof(IReflectionAssemblySelector);
 
