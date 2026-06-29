@@ -16,7 +16,7 @@
         {
             "label": "mise: docs-build",
             "type": "shell",
-            "command": "mise run docs-build",
+            "command": "mise run docs:build",
             "problemMatcher": [],
             "group": "build",
             "presentation": {

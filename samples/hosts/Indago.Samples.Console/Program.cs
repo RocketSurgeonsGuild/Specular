@@ -12,25 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 var provider = IIndagoProvider.EntryAssembly;
 
-partial class Program
-{
-    private static readonly string[] sourceArray = new[]
-{
-    // Catalog — interface-matching, Singleton.
-    "IProductService=>ProductService (Singleton)",
-    "ICategoryService=>CategoryService (Singleton)",
-    "IInventoryService=>InventoryService (Singleton)",
-    "IPricingService=>PricingService (Singleton)",
-    // Notifications — attribute-based, AsSelf, Transient.
-    "EmailNotifier=>EmailNotifier (Transient)",
-    "SmsNotifier=>SmsNotifier (Transient)",
-    "PushNotifier=>PushNotifier (Transient)",
-    "NotificationDispatcher=>NotificationDispatcher (Transient)",
-    // Diagnostics — interface-matching, Scoped (opt-out ExperimentalProbe excluded).
-    "IHealthCheck=>HealthCheck (Scoped)",
-    "IMetricsCollector=>MetricsCollector (Scoped)",
-};
-}
 
 var services = new ServiceCollection();
 
@@ -114,3 +95,23 @@ if (entryTypes.Count != 0)
 return 1;
 
 static string Name(Type? type) => type?.Name ?? "(factory)";
+
+internal partial class Program
+{
+    private static readonly string[] sourceArray =
+[
+    // Catalog — interface-matching, Singleton.
+    "IProductService=>ProductService (Singleton)",
+    "ICategoryService=>CategoryService (Singleton)",
+    "IInventoryService=>InventoryService (Singleton)",
+    "IPricingService=>PricingService (Singleton)",
+    // Notifications — attribute-based, AsSelf, Transient.
+    "EmailNotifier=>EmailNotifier (Transient)",
+    "SmsNotifier=>SmsNotifier (Transient)",
+    "PushNotifier=>PushNotifier (Transient)",
+    "NotificationDispatcher=>NotificationDispatcher (Transient)",
+    // Diagnostics — interface-matching, Scoped (opt-out ExperimentalProbe excluded).
+    "IHealthCheck=>HealthCheck (Scoped)",
+    "IMetricsCollector=>MetricsCollector (Scoped)",
+];
+}

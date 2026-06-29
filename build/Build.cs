@@ -6,10 +6,18 @@
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 
 using Build;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ModularPipelines;
+using ModularPipelines.Configuration;
+using ModularPipelines.Context;
+using ModularPipelines.FileSystem;
+using ModularPipelines.Models;
+using ModularPipelines.Modules;
 using ModularPipelines.Plugins;
 using Rocket.Surgery.Conventions;
 using Rocket.Surgery.ModularPipelines.Extensions;
+using Rocket.Surgery.ModularPipelines.Extensions.Mise;
 
 var pipelineBuilder = Pipeline.CreateBuilder(args);
 PluginRegistry.Register(new ConventionsPlugin(ConventionContextBuilder.Create(Imports.Instance)
