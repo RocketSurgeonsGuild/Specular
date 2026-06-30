@@ -56,7 +56,7 @@ for PKG in "${!PACKAGES[@]}"; do
   # Generate from the Release **bin** (not a publish) — net8.0 is the documented source TFM (T025).
   DLL=""
   TFM_USED=""
-  for TFM in net8.0 net10.0 netstandard2.0; do
+  for TFM in net10.0 net8.0 netstandard2.0; do
     TFM_DIR="$PKG_DIR/bin/Release/$TFM"
     CANDIDATE="$TFM_DIR/$EXPECTED_ASSEMBLY.dll"
     if [[ -f "$CANDIDATE" ]]; then

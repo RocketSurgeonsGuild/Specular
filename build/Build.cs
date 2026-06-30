@@ -7,8 +7,12 @@
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 #:property ExperimentalFileBasedProgramEnableTransitiveDirectives=true
 
+using System.Collections.Immutable;
 using Build;
 using ModularPipelines;
+using ModularPipelines.Context;
+using ModularPipelines.Models;
+using ModularPipelines.Modules;
 using ModularPipelines.Plugins;
 using Rocket.Surgery.ModularPipelines.Extensions;
 using Rocket.Surgery.ModularPipelines.Extensions.Modules;
@@ -19,6 +23,28 @@ PluginRegistry.Register(new ConventionsPlugin(ConventionContextBuilder.Create(Im
 try
 {
     await pipelineBuilder.Build().RunAsync();
-} catch (AggregateException ex) 
+}
+catch (AggregateException ex)
 {
+}
+
+class GenerateApiDocs : Module<ImmutableList<CommandResult>>
+{
+    protected override async Task<ImmutableList<CommandResult>> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
+    {
+
+        var result = await context.SubModule("Docs", async () =>
+        {
+            return await context.DotNet().Run(
+                new DotNetRunOptions
+                {
+                    ProjectSolution = new File(MyAssembly.Project.BuildScriptsRoot, "Docs/Docs.csproj"),
+                    Configuration = "Release",
+                    Arguments = ["--no-build", "--no-restore", "--", "generate"]
+                },
+                new CommandExecutionOptions(),
+                cancellationToken);
+        });
+        return [.. result];
+    }
 }
