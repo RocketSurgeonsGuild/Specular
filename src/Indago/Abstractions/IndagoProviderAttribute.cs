@@ -5,7 +5,10 @@ namespace Indago.Abstractions;
 /// </summary>
 [PublicAPI]
 [AttributeUsage(AttributeTargets.Assembly)]
-public sealed class IndagoProviderAttribute(Type type, string generatedHash) : Attribute
+public sealed class IndagoProviderAttribute(
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
+    Type type,
+    string generatedHash) : Attribute
 {
     /// <summary>
     ///     The generated hash to be used for cache busting
@@ -20,6 +23,7 @@ public sealed class IndagoProviderAttribute(Type type, string generatedHash) : A
     /// <summary>
     ///     The type
     /// </summary>
+    [property: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public Type Type => type;
 
     // ReSharper disable once NullableWarningSuppressionIsUsed

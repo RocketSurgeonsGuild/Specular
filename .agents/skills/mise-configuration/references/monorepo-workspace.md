@@ -19,7 +19,11 @@ Dev dependencies (`pytest`, `ruff`, `jupyterlab`, etc.) should be **hoisted to w
 members = ["packages/*"]
 
 [dependency-groups]
-dev = ["pytest>=<version>", "ruff>=<version>", "jupyterlab>=<version>"]
+dev = [
+    "pytest>=<version>",
+    "ruff>=<version>",
+    "jupyterlab>=<version>",
+]
 ```
 
 **Why hoist?** Sub-package `[dependency-groups]` are NOT automatically installed by `uv sync` from root. Hoisting ensures:

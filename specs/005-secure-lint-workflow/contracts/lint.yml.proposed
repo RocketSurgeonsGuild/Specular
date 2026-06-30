@@ -1,0 +1,105 @@
+# Reference implementation for the new .github/workflows/lint.yml.
+# Copied/adapted into place during implementation (Phase 2 tasks). Not active here.
+name: Lint
+
+on:
+    pull_request:
+        branches:
+            - main
+            - next
+    merge_group:
+        branches:
+            - main
+            - next
+
+# Least-privilege. contents:write is effective only for same-repo PRs; GitHub
+# downgrades it to read for fork PRs, which is exactly the guard we want.
+permissions:
+    contents: write
+    pull-requests: write
+    checks: write
+    statuses: write
+
+concurrency:
+    group: lint-${{ github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: true
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                  clean: 'false'
+                  fetch-depth: '0'
+                  # Check out the PR head BRANCH (not the merge ref) so the working
+                  # tree matches the ref we will commit back to. No token override:
+                  # default GITHUB_TOKEN only.
+                  ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.sha }}
+
+            - name: Compute context
+              id: ctx
+              run: |
+                  if [ "${{ github.event_name }}" = "pull_request" ] && \
+                     [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+                      echo "is_fork=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "is_fork=false" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Get Head Commit Message
+              id: commit-message
+              run: echo "message=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
+
+            - name: 🛠️ Setup mise
+              uses: jdx/mise-action@v4
+              with:
+                  install: true
+                  cache: true
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+
+            # merge_group: read-only gate, never pushes.
+            - name: 🧹 Lint (hk check) — merge_group
+              if: github.event_name == 'merge_group'
+              run: hk check --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
+              env:
+                  DEFAULT_BRANCH: ${{ github.event.merge_group.base_sha }}
+                  HEAD: ${{ github.event.merge_group.head_sha }}
+
+            # Fork PRs: read-only check. Token is read-only here; a non-zero exit
+            # fails the job and tells the contributor to run `hk fix` locally.
+            - name: 🧹 Lint (hk check) — fork PR
+              if: github.event_name == 'pull_request' && steps.ctx.outputs.is_fork == 'true'
+              run: hk check --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
+              env:
+                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+
+            # Same-repo PRs: auto-fix.
+            - name: 🧹 Lint (hk fix) — same-repo PR
+              if: >-
+                  github.event_name == 'pull_request' &&
+                  steps.ctx.outputs.is_fork == 'false' &&
+                  !contains(steps.commit-message.outputs.message, 'Automatically linting code')
+              run: hk fix --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
+              env:
+                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+
+            # Create a SIGNED/VERIFIED commit via the GitHub GraphQL API using
+            # GITHUB_TOKEN — no GPG key, no PAT. The action diffs the working tree
+            # (adds + deletions) and no-ops on a clean tree (empty: false), giving
+            # the empty-diff fixpoint for free.
+            - name: ✍️ Commit verified lint fix
+              if: >-
+                  github.event_name == 'pull_request' &&
+                  steps.ctx.outputs.is_fork == 'false' &&
+                  !contains(steps.commit-message.outputs.message, 'Automatically linting code')
+              uses: planetscale/ghcommit-action@v0.2.22
+              with:
+                  commit_message: Automatically linting code
+                  repo: ${{ github.repository }}
+                  branch: ${{ github.head_ref }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

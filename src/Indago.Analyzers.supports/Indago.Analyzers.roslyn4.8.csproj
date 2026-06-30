@@ -1,7 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="4.8.0" PrivateAssets="all" />
-        <PackageReference Include="System.Collections.Immutable" VersionOverride="7.0.0" />
-        <PackageReference Include="System.Text.Json" VersionOverride="9.0.9" PrivateAssets="all" GeneratePathProperty="true" />
-    </ItemGroup>
-</Project>

@@ -1,4 +1,4 @@
-﻿namespace Indago.Tests;
+namespace Indago.Tests;
 
 #pragma warning disable CA1008
 public enum NamespaceFilter

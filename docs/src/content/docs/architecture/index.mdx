@@ -1,0 +1,18 @@
+---
+title: Architecture
+description: How the Indago Roslyn source generator works internally and how the cross-assembly cache keeps incremental builds fast.
+tags:
+    - architecture
+    - source-generator
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+The Architecture section explains how Indago works under the hood — how the Roslyn incremental source generator resolves your selector expressions at build time, and how the cross-assembly cache (`IndagoProvider.ctpjson`) lets downstream assemblies reuse scan results without re-resolving everything from scratch.
+
+## Internals <Badge text="Advanced" variant="caution" />
+
+These pages go beyond everyday usage and into the generator's internals. You do not need to read them to use Indago, but they are useful if you want to understand its behavior, debug an unexpected scan result, or contribute to the project.
+
+- [How It Works](./how-it-works/) — the generator pipeline, from finding selector call sites to emitting the `IIndagoProvider` implementation.
+- [Cross-Assembly Caching](./cross-assembly-caching/) — what `IndagoProvider.ctpjson` stores, how it is produced, and how downstream assemblies consume it.

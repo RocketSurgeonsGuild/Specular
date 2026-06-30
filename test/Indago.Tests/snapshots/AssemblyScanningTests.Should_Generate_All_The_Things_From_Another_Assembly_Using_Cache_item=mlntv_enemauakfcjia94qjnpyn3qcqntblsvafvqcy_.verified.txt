@@ -3295,6 +3295,22 @@
           ],
           CacheVersion: {Scrubbed}
         },
+        OtherProject: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 82,
+            ExpressionHash: FZejBoVN5/sP3GKMlJ/eVg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+},
+          PrivateAssemblies: [
+            OtherProject
+          ],
+          CacheVersion: {Scrubbed}
+        },
         TestAssembly: {
           Location: {
             Kind: Reflection,
@@ -3419,6 +3435,7 @@
           },
           Expression:
 {
+    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [
@@ -3841,6 +3858,7 @@
           },
           Expression:
 {
+    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [
@@ -4257,6 +4275,7 @@
           },
           Expression:
 {
+    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [

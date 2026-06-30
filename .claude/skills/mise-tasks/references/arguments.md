@@ -17,7 +17,7 @@ The `usage` field defines task arguments and flags using a specialized DSL. Argu
 ```toml
 [tasks.process]
 usage = 'arg "<file>" help="Input file to process"'
-run   = 'cat "${usage_file}"'
+run = 'cat "${usage_file}"'
 ```
 
 - Angle brackets `<file>` = required
@@ -28,7 +28,7 @@ run   = 'cat "${usage_file}"'
 ```toml
 [tasks.compile]
 usage = 'arg "[output]" default="a.out" help="Output filename"'
-run   = 'gcc main.c -o "${usage_output}"'
+run = 'gcc main.c -o "${usage_output}"'
 ```
 
 - Square brackets `[output]` = optional
@@ -51,7 +51,7 @@ run = 'deploy.sh "${usage_environment}"'
 ```toml
 [tasks.concat]
 usage = 'arg "<files>" var=#true help="Files to concatenate"'
-run   = 'cat ${usage_files}'
+run = 'cat ${usage_files}'
 ```
 
 With limits:
@@ -82,7 +82,7 @@ cargo build
 ```toml
 [tasks.server]
 usage = 'flag "-p --port <port>" default="8080" help="Server port"'
-run   = 'uvicorn app:main --port "${usage_port}"'
+run = 'uvicorn app:main --port "${usage_port}"'
 ```
 
 ### Environment-Backed Flag
@@ -90,7 +90,7 @@ run   = 'uvicorn app:main --port "${usage_port}"'
 ```toml
 [tasks.deploy]
 usage = 'flag "--region <region>" env="AWS_REGION" default="us-east-1"'
-run   = 'aws --region "${usage_region}" ecs deploy'
+run = 'aws --region "${usage_region}" ecs deploy'
 ```
 
 Flag value can come from:

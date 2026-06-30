@@ -21,7 +21,6 @@
   </Folder>
   <Folder Name="/config/">
     <File Path=".codecov.yml" />
-    <File Path=".config/dotnet-tools.json" />
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
@@ -49,9 +48,23 @@
     <Project Path="src/Indago.Analyzers/Indago.Analyzers.csproj" />
     <Project Path="src/Indago/Indago.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <File Path="samples/Directory.Build.props" />
+    <File Path="samples/Directory.Build.targets" />
+    <File Path="samples/Directory.Build.workloads.props" />
+  </Folder>
+  <Folder Name="/samples/libraries/">
+    <Project Path="samples/libraries/Indago.Samples.Catalog/Indago.Samples.Catalog.csproj" />
+    <Project Path="samples/libraries/Indago.Samples.Diagnostics/Indago.Samples.Diagnostics.csproj" />
+    <Project Path="samples/libraries/Indago.Samples.Notifications/Indago.Samples.Notifications.csproj" />
+  </Folder>
+  <Folder Name="/samples/fixtures/" />
+  <Folder Name="/samples/hosts/">
+    <Project Path="samples/hosts/Indago.Samples.Console/Indago.Samples.Console.csproj" />
+    <Project Path="samples/hosts/Indago.Samples.Web/Indago.Samples.Web.csproj" />
+  </Folder>
   <Folder Name="/src/Indago.Analyzers.supports/">
     <File Path=".editorconfig" />
-    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.8.csproj" />
     <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.14.csproj" />
     <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn5.0.csproj" />
   </Folder>

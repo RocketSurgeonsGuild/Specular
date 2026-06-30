@@ -1,8 +1,8 @@
 ---
 name: show-env-status
-description: Show mise environment status — tools, env vars, tasks, release readiness. TRIGGERS - mise status, mise env, repo status, environment check.
+description: "Show mise environment status — tools, env vars, tasks, release readiness. TRIGGERS - mise status, mise env, repo status, environment check."
 allowed-tools: Bash
-argument-hint: ''
+argument-hint: ""
 model: haiku
 ---
 
@@ -83,6 +83,7 @@ Release: ✓ Configured (release:full + .releaserc.yml)
 Config: .mise.toml (42 lines)
 ═══════════════════════════════════════════
 ```
+
 
 ## Post-Execution Reflection
 

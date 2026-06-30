@@ -116,7 +116,7 @@ For functions (`get_env`, `exec`, `arch`, `read_file`, `hash_file`), filters (`s
 [env]
 # Required - fails if not set
 DATABASE_URL = { required = true }
-API_KEY      = { required = "Get from https://example.com/api-keys" }
+API_KEY = { required = "Get from https://example.com/api-keys" }
 
 # Redacted - hides from output
 SECRET = { value = "my_secret", redact = true }
@@ -135,21 +135,21 @@ By default, env vars resolve BEFORE tools install. Use `tools = true` to access 
 ```toml
 [env]
 GEM_BIN = { value = "{{env.GEM_HOME}}/bin", tools = true }
-_.file  = { path = ".env", tools = true }
+_.file = { path = ".env", tools = true }
 ```
 
 ## [settings] and [tools]
 
 ```toml
 [settings]
-experimental        = true
+experimental = true
 python.uv_venv_auto = true
 
 [tools]
 python = "<version>"
-node   = "latest"
-uv     = "latest"
-rust   = { version = "<version>", profile = "minimal" }
+node = "latest"
+uv = "latest"
+rust = { version = "<version>", profile = "minimal" }
 
 # SSoT-OK: mise min_version directive, not a package version
 min_version = "2024.9.5"

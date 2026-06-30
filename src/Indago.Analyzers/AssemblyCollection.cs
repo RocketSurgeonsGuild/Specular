@@ -129,7 +129,7 @@ internal static class AssemblyCollection
 
                 if (filterAssemblies.Length == 0) continue;
 
-                var descriptors = GenerateDescriptors(compilation, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
+                var descriptors = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
                 results.Add(new(item.Location, descriptors, pa.Select(z => z.MetadataName).ToImmutableHashSet(), ""));
             }
             catch (Exception e)
@@ -153,14 +153,23 @@ internal static class AssemblyCollection
 
     public record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter);
 
-    private static BlockSyntax GenerateDescriptors(Compilation compilation, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
+    private static BlockSyntax GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
     {
+        var compilation = configuration.Compilation;
         var block = Block();
         foreach (var assembly in assemblies.OrderBy(z => z.ToDisplayString()))
         {
             // TODO: Make this always use the load context?
             if (StatementGeneration.GetAssemblyExpression(compilation, assembly) is not { } assemblyExpression)
             {
+                if (configuration.IsAot)
+                {
+                    _ = diagnostics.Add(
+                        Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, Location.None, assembly.Identity.Name, assembly.Identity.Name)
+                    );
+                    continue;
+                }
+
                 privateAssemblies.Add(assembly);
                 block = block.AddStatements(
                     ExpressionStatement(

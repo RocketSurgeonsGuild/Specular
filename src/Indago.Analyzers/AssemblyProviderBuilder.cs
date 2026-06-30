@@ -18,9 +18,12 @@ internal static class AssemblyProviderBuilder
         ImmutableList<ResolvedSourceLocation> reflectionRequests,
         ImmutableList<ResolvedSourceLocation> serviceDescriptorRequests,
         HashSet<IAssemblySymbol> privateAssemblies,
+        Configuration.AssemblyProviderConfiguration configuration,
         out string cacheHash
     )
     {
+        var compilation = configuration.Compilation;
+        var isAot = configuration.IsAot;
         using var hasher = MD5.Create();
 
         static void addStringToHash(ICryptoTransform hasher, string textToHash)
@@ -58,13 +61,43 @@ internal static class AssemblyProviderBuilder
                                      return z.MetadataName;
                                  }
                              )
-                            .SelectMany(StatementGeneration.AssemblyDeclaration)
+                            .SelectMany(z => StatementGeneration.AssemblyDeclaration(compilation, isAot, z))
                             .ToList();
         if (privateAssemblies.Any())
         {
-            privateMembers.Insert(
-                0,
-                FieldDeclaration(
+            var privateAssemblyByVariable = privateAssemblies
+                                           .GroupBy(StatementGeneration.AssemblyVariableName, StringComparer.Ordinal)
+                                           .ToDictionary(z => z.Key, z => z.First(), StringComparer.Ordinal);
+            var dynamicDependencies = CollectDynamicDependencies(
+                privateAssemblyByVariable,
+                resolvedAssemblyDetails,
+                resolvedReflectionDetails,
+                resolvedServiceDescriptorDetails
+            );
+
+            // The provider resolves inaccessible types from string literals via reflection; the trimmer/ILC can't
+            // statically prove that, so it reports IL2026/IL2072 (and #pragma is not honoured by the trimmer).
+            // Suppress them with [UnconditionalSuppressMessage] (which IS honoured) on the methods that actually
+            // reflect. This is safe because every resolved type and its public constructors are rooted via the
+            // [DynamicDependency] attributes emitted below.
+            var trimSuppressions = BuildTrimSuppressionAttributeList();
+            if (MethodUsesPrivateReflection(resolvedAssemblyDetails, privateAssemblyByVariable))
+                resolvedAssemblyDetails = resolvedAssemblyDetails.AddAttributeLists(trimSuppressions);
+            if (MethodUsesPrivateReflection(resolvedReflectionDetails, privateAssemblyByVariable))
+                resolvedReflectionDetails = resolvedReflectionDetails.AddAttributeLists(trimSuppressions);
+            if (MethodUsesPrivateReflection(resolvedServiceDescriptorDetails, privateAssemblyByVariable))
+                resolvedServiceDescriptorDetails = resolvedServiceDescriptorDetails.AddAttributeLists(trimSuppressions);
+
+            if (isAot)
+            {
+                // Native AOT resolves private assemblies via typeof(PublicType).Assembly (no AssemblyLoadContext),
+                // so there is no _context field; anchor the trimming roots on an always-present provider method.
+                if (dynamicDependencies.Count > 0)
+                    resolvedReflectionDetails = resolvedReflectionDetails.AddAttributeLists(BuildDynamicDependencyAttributeList(dynamicDependencies));
+            }
+            else
+            {
+                var contextField = FieldDeclaration(
                         VariableDeclaration(IdentifierName("AssemblyLoadContext"))
                            .WithVariables(
                                 SingletonSeparatedList(
@@ -99,8 +132,13 @@ internal static class AssemblyProviderBuilder
                                 )
                             )
                     )
-                   .WithModifiers(TokenList(Token(SyntaxKind.PrivateKeyword)))
-            );
+                   .WithModifiers(TokenList(Token(SyntaxKind.PrivateKeyword)));
+
+                if (dynamicDependencies.Count > 0)
+                    contextField = contextField.WithAttributeLists(SingletonList(BuildDynamicDependencyAttributeList(dynamicDependencies)));
+
+                privateMembers.Insert(0, contextField);
+            }
         }
 
         _ = hasher.TransformFinalBlock([], 0, 0);
@@ -112,6 +150,98 @@ internal static class AssemblyProviderBuilder
               .AddMembers(resolvedAssemblyDetails, resolvedReflectionDetails, resolvedServiceDescriptorDetails)
               .AddMembers(privateMembers.ToArray());
     }
+
+    // Collects (assembly, type) pairs for every `<privateAssembly>.GetType("...")` call the generated
+    // provider emits, so the trimmer/Native AOT analyzer keeps those dynamically-resolved types. Only
+    // pairs whose type actually resolves in the target assembly are kept, so speculative GetType probes
+    // don't produce unresolved-dependency warnings (IL2035/IL2036).
+    private static IReadOnlyList<(string Assembly, string Type)> CollectDynamicDependencies(
+        IReadOnlyDictionary<string, IAssemblySymbol> privateAssemblyByVariable,
+        params MethodDeclarationSyntax[] methods
+    )
+    {
+        var found = new HashSet<(string Assembly, string Type)>();
+        foreach (var method in methods)
+        {
+            foreach (var invocation in method.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            {
+                if (invocation.Expression is not MemberAccessExpressionSyntax { Name.Identifier.ValueText: "GetType", Expression: IdentifierNameSyntax receiver }) continue;
+                if (!privateAssemblyByVariable.TryGetValue(receiver.Identifier.ValueText, out var assemblySymbol)) continue;
+                if (invocation.ArgumentList.Arguments.Count != 1) continue;
+                if (invocation.ArgumentList.Arguments[0].Expression is not LiteralExpressionSyntax { Token.Value: string typeName }) continue;
+                if (assemblySymbol.GetTypeByMetadataName(typeName) is null) continue;
+
+                _ = found.Add((assemblySymbol.Identity.Name, typeName));
+            }
+        }
+
+        return found
+              .OrderBy(z => z.Assembly, StringComparer.Ordinal)
+              .ThenBy(z => z.Type, StringComparer.Ordinal)
+              .ToList();
+    }
+
+    private static bool MethodUsesPrivateReflection(MethodDeclarationSyntax method, IReadOnlyDictionary<string, IAssemblySymbol> privateAssemblyByVariable) =>
+        method.DescendantNodes()
+              .OfType<InvocationExpressionSyntax>()
+              .Any(
+                   invocation => invocation.Expression is MemberAccessExpressionSyntax { Name.Identifier.ValueText: "GetType", Expression: IdentifierNameSyntax receiver }
+                    && privateAssemblyByVariable.ContainsKey(receiver.Identifier.ValueText)
+               );
+
+    private static AttributeListSyntax BuildTrimSuppressionAttributeList() =>
+        AttributeList(
+            SeparatedList(
+                new[]
+                {
+                    BuildTrimSuppression("IL2026:RequiresUnreferencedCode"),
+                    BuildTrimSuppression("IL2072:DynamicallyAccessedMembers"),
+                }
+            )
+        );
+
+    private static AttributeSyntax BuildTrimSuppression(string checkId) =>
+        Attribute(ParseName("global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage"))
+           .WithArgumentList(
+                AttributeArgumentList(
+                    SeparatedList(
+                        new[]
+                        {
+                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Trimming"))),
+                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(checkId))),
+                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")))
+                               .WithNameEquals(NameEquals(IdentifierName("Justification"))),
+                        }
+                    )
+                )
+            );
+
+    private static AttributeListSyntax BuildDynamicDependencyAttributeList(IReadOnlyList<(string Assembly, string Type)> dependencies) =>
+        AttributeList(
+            SeparatedList(
+                dependencies.Select(
+                    dependency => Attribute(ParseName("global::System.Diagnostics.CodeAnalysis.DynamicDependency"))
+                       .WithArgumentList(
+                            AttributeArgumentList(
+                                SeparatedList(
+                                    new[]
+                                    {
+                                        AttributeArgument(
+                                            MemberAccessExpression(
+                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                ParseName("global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes"),
+                                                IdentifierName("All")
+                                            )
+                                        ),
+                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(dependency.Type))),
+                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(dependency.Assembly))),
+                                    }
+                                )
+                            )
+                        )
+                )
+            )
+        );
 
     private static MethodDeclarationSyntax GenerateMethodBody(MethodDeclarationSyntax baseMethod, IEnumerable<ResolvedSourceLocation> locations)
     {

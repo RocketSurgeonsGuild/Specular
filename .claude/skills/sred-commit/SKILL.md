@@ -1,8 +1,8 @@
 ---
 name: sred-commit
-description: Create a git commit with SR&ED (CRA tax credit) trailers. TRIGGERS - sred commit, sred, cra commit, tax credit commit, scientific research commit.
+description: "Create a git commit with SR&ED (CRA tax credit) trailers. TRIGGERS - sred commit, sred, cra commit, tax credit commit, scientific research commit."
 allowed-tools: Read, Bash, Glob, Grep, Write, AskUserQuestion
-argument-hint: '[commit message summary]'
+argument-hint: "[commit message summary]"
 disable-model-invocation: false
 ---
 
@@ -101,6 +101,7 @@ rm -f /tmp/sred-commit-msg.txt
 ```
 
 Show the user the commit hash and summary.
+
 
 ## Post-Execution Reflection
 

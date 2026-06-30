@@ -1,4 +1,4 @@
-﻿namespace Indago.Analyzers.Descriptors;
+namespace Indago.Analyzers.Descriptors;
 
 /// <summary>
 ///     Enumeration for possible type information filters.
@@ -25,10 +25,10 @@ public enum TypeInfoFilter
     /// </summary>
     ValueType = 3,
 
-//    /// <summary>
-//    ///   The type is nested.
-//    /// </summary>
-//    Nested = 4,
+    //    /// <summary>
+    //    ///   The type is nested.
+    //    /// </summary>
+    //    Nested = 4,
 
     /// <summary>
     ///     The type is sealed.
@@ -40,10 +40,10 @@ public enum TypeInfoFilter
     /// </summary>
     GenericType = 6,
 
-//    /// <summary>
-//    ///   The type is a generic type definition.
-//    /// </summary>
-//    GenericTypeDefinition = 7,
+    //    /// <summary>
+    //    ///   The type is a generic type definition.
+    //    /// </summary>
+    //    GenericTypeDefinition = 7,
 
     /// <summary>
     ///     The type is static.

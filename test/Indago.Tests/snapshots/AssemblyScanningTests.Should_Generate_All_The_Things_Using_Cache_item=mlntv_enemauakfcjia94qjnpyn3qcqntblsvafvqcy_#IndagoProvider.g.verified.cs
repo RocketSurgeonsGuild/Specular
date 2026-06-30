@@ -59,7 +59,7 @@ using System.Runtime.Loader;
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
 [assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
-[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 file class IndagoProvider : IIndagoProvider
 {
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
@@ -105,6 +105,7 @@ file class IndagoProvider : IIndagoProvider
         return items;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> IIndagoProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
@@ -112,6 +113,7 @@ file class IndagoProvider : IIndagoProvider
         {
             // FilePath: Input0.cs Expression: h7YOdRK4kWM8suq9w5jcEA==
             case 42:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Program));
                 items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
@@ -153,8 +155,26 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::TestAssembly.Service));
                 items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
                 break;
+            // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
+            case 82:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                break;
             // FilePath: Input0.cs Expression: IEL5ckPWEXd/Ak5gZ5DdEg==
             case 102:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Program));
                 items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
@@ -201,6 +221,7 @@ file class IndagoProvider : IIndagoProvider
                 break;
             // FilePath: Input0.cs Expression: yMvGbByGNy7UnkUU8zAHhg==
             case 122:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Program));
                 items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
@@ -572,22 +593,6 @@ file class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
                 break;
-            // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
-            case 82:
-                items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
-                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
-                items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                break;
             // FilePath: Input0.cs Expression: AkSQC22LryNlbH2i5Itc6g==
             case 92:
                 items.Add(typeof(global::Indago.IndagoProviderExtensions));
@@ -671,6 +676,7 @@ file class IndagoProvider : IIndagoProvider
         return items;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     Microsoft.Extensions.DependencyInjection.IServiceCollection IIndagoProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
         switch (lineNumber)
@@ -840,6 +846,7 @@ file class IndagoProvider : IIndagoProvider
         return services;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Indago"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly", "Indago"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Info", "Indago"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Metadata", "Indago"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Project", "Indago"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Info", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Metadata", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Project", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(IndagoProvider).Assembly)!;
     private Assembly _Indago;
     private Assembly Indago => _Indago ??= _context.LoadFromAssemblyName(new AssemblyName("Indago, Version=version, Culture=neutral, PublicKeyToken=null"));

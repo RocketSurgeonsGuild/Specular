@@ -1,0 +1,27 @@
+<Project>
+    <!--
+        Conditional-workload guard (Decision D1).
+
+        Goal: `dotnet build Indago.slnx` MUST stay green on a machine/runner that has NO MAUI and
+        NO `wasm-tools` workloads installed. We achieve this by gating workload-specific target
+        frameworks / SDK switches behind opt-in properties that default to OFF.
+
+        - IndagoSamplesMauiEnabled    : when false (default) the MAUI host builds as a plain
+                                        `net10.0` project (its MAUI UI shell is `#if INDAGO_MAUI`
+                                        guarded), so it compiles without the MAUI/Android workload.
+                                        The pipeline flips this on (and selects `net10.0-android`)
+                                        only after detecting the workload, otherwise it reports
+                                        skip-with-reason.
+        - IndagoSamplesWasmAotEnabled : Blazor WASM builds & publishes fine without `wasm-tools`;
+                                        only `RunAOTCompilation=true` needs it. This flag gates the
+                                        AOT switch, defaulting OFF so a normal build never requires
+                                        the workload.
+
+        Both can be forced on explicitly:  dotnet build -p:IndagoSamplesMauiEnabled=true
+        The ModularPipelines build sets them based on `dotnet workload list` detection.
+    -->
+    <PropertyGroup>
+        <IndagoSamplesMauiEnabled Condition="'$(IndagoSamplesMauiEnabled)' == ''">false</IndagoSamplesMauiEnabled>
+        <IndagoSamplesWasmAotEnabled Condition="'$(IndagoSamplesWasmAotEnabled)' == ''">false</IndagoSamplesWasmAotEnabled>
+    </PropertyGroup>
+</Project>

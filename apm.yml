@@ -1,6 +1,6 @@
-name: equestria-cluster
+name: Indago
 version: 1.0.0
-description: APM project for equestria-cluster
+description: APM project for Indago
 author: David Driscoll
 targets:
     - claude
@@ -19,6 +19,8 @@ dependencies:
         - dotnet/skills
         - yvgude/lean-ctx
         - antfu/skills/skills/vitepress
+        - obra/superpowers
+        -
     mcp:
         - io.github.upstash/context7
         - name: nuget

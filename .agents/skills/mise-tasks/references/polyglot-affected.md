@@ -85,8 +85,13 @@ monorepo/
 
 ```toml
 [GLOBAL]
-pants_version    = "<version>"
-backend_packages = ["pants.backend.python", "pants.backend.python.lint.ruff", "pants.backend.experimental.rust", "pants.backend.experimental.javascript"]
+pants_version = "<version>"
+backend_packages = [
+    "pants.backend.python",
+    "pants.backend.python.lint.ruff",
+    "pants.backend.experimental.rust",
+    "pants.backend.experimental.javascript",
+]
 
 [python]
 interpreter_constraints = [">=3.11"]
@@ -105,8 +110,8 @@ search_path = ["<PATH>"]
 # Runtime versions - Pants inherits from PATH
 [tools]
 python = "<version>"
-node   = "<version>"
-rust   = "<version>"
+node = "<version>"
+rust = "<version>"
 
 [env]
 PANTS_CONCURRENT = "true"
@@ -114,23 +119,23 @@ PANTS_CONCURRENT = "true"
 # Convenience wrappers for Pants commands
 [tasks."test:affected"]
 description = "Test affected packages via Pants"
-run         = "pants --changed-since=origin/main test"
+run = "pants --changed-since=origin/main test"
 
 [tasks."lint:affected"]
 description = "Lint affected packages via Pants"
-run         = "pants --changed-since=origin/main lint"
+run = "pants --changed-since=origin/main lint"
 
 [tasks.test-all]
 description = "Test all packages"
-run         = "pants test ::"
+run = "pants test ::"
 
 [tasks."pants:tailor"]
 description = "Generate BUILD files"
-run         = "pants tailor"
+run = "pants tailor"
 
 [tasks."pants:check"]
 description = "Type-check all Python"
-run         = "pants check ::"
+run = "pants check ::"
 ```
 
 ### BUILD File Patterns
@@ -243,8 +248,8 @@ Both require `package.json` wrapper files in non-JS packages:
 ```json
 // packages/core-python/package.json (REQUIRED by Turborepo)
 {
-    "name": "core-python",
-    "scripts": { "test": "uv run pytest" }
+  "name": "core-python",
+  "scripts": { "test": "uv run pytest" }
 }
 ```
 

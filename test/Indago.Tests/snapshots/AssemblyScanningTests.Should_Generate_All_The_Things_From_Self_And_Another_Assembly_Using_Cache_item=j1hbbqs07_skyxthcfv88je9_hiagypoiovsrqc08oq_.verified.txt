@@ -235,6 +235,22 @@
           ],
           CacheVersion: {Scrubbed}
         },
+        OtherProject: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: FZejBoVN5/sP3GKMlJ/eVg==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+},
+          PrivateAssemblies: [
+            OtherProject
+          ],
+          CacheVersion: {Scrubbed}
+        },
         TestAssembly: {
           Location: {
             Kind: Reflection,
