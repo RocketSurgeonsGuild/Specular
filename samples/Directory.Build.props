@@ -6,6 +6,7 @@
         <!-- Samples are demonstrations, never shipped or packed. -->
         <IsPackable>false</IsPackable>
         <IsPublishable>true</IsPublishable>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 
         <!--
             The samples are not part of the tracked public API surface. Drop the RS0017

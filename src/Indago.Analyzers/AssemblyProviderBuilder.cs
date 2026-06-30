@@ -75,12 +75,25 @@ internal static class AssemblyProviderBuilder
                 resolvedServiceDescriptorDetails
             );
 
+            // The provider resolves inaccessible types from string literals via reflection; the trimmer/ILC can't
+            // statically prove that, so it reports IL2026/IL2072 (and #pragma is not honoured by the trimmer).
+            // Suppress them with [UnconditionalSuppressMessage] (which IS honoured) on the methods that actually
+            // reflect. This is safe because every resolved type and its public constructors are rooted via the
+            // [DynamicDependency] attributes emitted below.
+            var trimSuppressions = BuildTrimSuppressionAttributeList();
+            if (MethodUsesPrivateReflection(resolvedAssemblyDetails, privateAssemblyByVariable))
+                resolvedAssemblyDetails = resolvedAssemblyDetails.AddAttributeLists(trimSuppressions);
+            if (MethodUsesPrivateReflection(resolvedReflectionDetails, privateAssemblyByVariable))
+                resolvedReflectionDetails = resolvedReflectionDetails.AddAttributeLists(trimSuppressions);
+            if (MethodUsesPrivateReflection(resolvedServiceDescriptorDetails, privateAssemblyByVariable))
+                resolvedServiceDescriptorDetails = resolvedServiceDescriptorDetails.AddAttributeLists(trimSuppressions);
+
             if (isAot)
             {
                 // Native AOT resolves private assemblies via typeof(PublicType).Assembly (no AssemblyLoadContext),
                 // so there is no _context field; anchor the trimming roots on an always-present provider method.
                 if (dynamicDependencies.Count > 0)
-                    resolvedReflectionDetails = resolvedReflectionDetails.WithAttributeLists(SingletonList(BuildDynamicDependencyAttributeList(dynamicDependencies)));
+                    resolvedReflectionDetails = resolvedReflectionDetails.AddAttributeLists(BuildDynamicDependencyAttributeList(dynamicDependencies));
             }
             else
             {
@@ -167,6 +180,41 @@ internal static class AssemblyProviderBuilder
               .ThenBy(z => z.Type, StringComparer.Ordinal)
               .ToList();
     }
+
+    private static bool MethodUsesPrivateReflection(MethodDeclarationSyntax method, IReadOnlyDictionary<string, IAssemblySymbol> privateAssemblyByVariable) =>
+        method.DescendantNodes()
+              .OfType<InvocationExpressionSyntax>()
+              .Any(
+                   invocation => invocation.Expression is MemberAccessExpressionSyntax { Name.Identifier.ValueText: "GetType", Expression: IdentifierNameSyntax receiver }
+                    && privateAssemblyByVariable.ContainsKey(receiver.Identifier.ValueText)
+               );
+
+    private static AttributeListSyntax BuildTrimSuppressionAttributeList() =>
+        AttributeList(
+            SeparatedList(
+                new[]
+                {
+                    BuildTrimSuppression("IL2026:RequiresUnreferencedCode"),
+                    BuildTrimSuppression("IL2072:DynamicallyAccessedMembers"),
+                }
+            )
+        );
+
+    private static AttributeSyntax BuildTrimSuppression(string checkId) =>
+        Attribute(ParseName("global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage"))
+           .WithArgumentList(
+                AttributeArgumentList(
+                    SeparatedList(
+                        new[]
+                        {
+                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Trimming"))),
+                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(checkId))),
+                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")))
+                               .WithNameEquals(NameEquals(IdentifierName("Justification"))),
+                        }
+                    )
+                )
+            );
 
     private static AttributeListSyntax BuildDynamicDependencyAttributeList(IReadOnlyList<(string Assembly, string Type)> dependencies) =>
         AttributeList(

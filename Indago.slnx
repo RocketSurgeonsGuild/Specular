@@ -58,9 +58,7 @@
     <Project Path="samples/libraries/Indago.Samples.Diagnostics/Indago.Samples.Diagnostics.csproj" />
     <Project Path="samples/libraries/Indago.Samples.Notifications/Indago.Samples.Notifications.csproj" />
   </Folder>
-  <Folder Name="/samples/fixtures/">
-    <Project Path="samples/fixtures/Indago.Samples.NegativeFixture/Indago.Samples.NegativeFixture.csproj" />
-  </Folder>
+  <Folder Name="/samples/fixtures/" />
   <Folder Name="/samples/hosts/">
     <Project Path="samples/hosts/Indago.Samples.Console/Indago.Samples.Console.csproj" />
     <Project Path="samples/hosts/Indago.Samples.Web/Indago.Samples.Web.csproj" />

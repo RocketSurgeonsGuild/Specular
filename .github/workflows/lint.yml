@@ -1,7 +1,7 @@
 name: Lint
 
 on:
-    pull_request_target:
+    pull_request:
         branches:
             - main
             - next
@@ -10,19 +10,12 @@ on:
             - main
             - next
 
+# Least-privilege. contents:write is effective only for same-repo PRs; GitHub
+# downgrades it to read for fork PRs, which is exactly the guard we want.
 permissions:
-    actions: read
-    checks: write
     contents: write
-    deployments: read
-    id-token: none
-    issues: write
-    discussions: none
-    packages: none
-    pages: none
     pull-requests: write
-    repository-projects: none
-    security-events: none
+    checks: write
     statuses: write
 
 concurrency:
@@ -38,9 +31,19 @@ jobs:
               with:
                   clean: 'false'
                   fetch-depth: '0'
-                  ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }}
-                  repository: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name || github.repository }}
-                  token: ${{ secrets.RSG_BOT_TOKEN }}
+                  # Check out the PR head BRANCH (not the merge ref) so the working
+                  # tree matches the ref we commit back to. No token override: the
+                  # default GITHUB_TOKEN is read-only for forks, read/write for same-repo.
+                  ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.sha }}
+            - name: Compute context
+              id: ctx
+              run: |
+                  if [ "${{ github.event_name }}" = "pull_request" ] && \
+                     [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+                      echo "is_fork=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "is_fork=false" >> "$GITHUB_OUTPUT"
+                  fi
             - name: Get Head Commit Message
               id: commit-message
               run: |
@@ -51,24 +54,43 @@ jobs:
                   install: true
                   cache: true
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-            - name: 🧹 Lint (hk fix)
-              if: github.event_name == 'pull_request_target'
-              run: |
-                  hk fix --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
-              env:
-                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.sha }}
-                  HEAD: ${{ github.event.pull_request.head.sha }}
-            - name: 🧹 Lint (hk check)
+            - name: 🧹 Lint (hk check) — merge_group
               if: github.event_name == 'merge_group'
               run: |
                   hk check --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
               env:
                   DEFAULT_BRANCH: ${{ github.event.merge_group.base_sha }}
                   HEAD: ${{ github.event.merge_group.head_sha }}
-            - name: Add & Commit
-              if: github.event_name == 'pull_request_target' && !contains(steps.commit-message.outputs.message, 'Automatically linting code')
-              uses: stefanzweifel/git-auto-commit-action@v7
+            # Fork PRs: read-only check. The token is read-only here, so a non-zero
+            # exit fails the job and tells the contributor to run `hk fix` locally.
+            - name: 🧹 Lint (hk check) — fork PR
+              if: github.event_name == 'pull_request' && steps.ctx.outputs.is_fork == 'true'
+              run: |
+                  hk check --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
               env:
-                  GITHUB_TOKEN: ${{ secrets.RSG_BOT_TOKEN }}
+                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+            # Same-repo PRs: auto-fix. Skipped when the head commit is already the
+            # bot's lint commit (loop guard).
+            - name: 🧹 Lint (hk fix) — same-repo PR
+              if: >-
+                  github.event_name == 'pull_request' && steps.ctx.outputs.is_fork == 'false' && !contains(steps.commit-message.outputs.message, 'Automatically linting code')
+              run: |
+                  hk fix --from-ref "$DEFAULT_BRANCH" --to-ref "$HEAD"
+              env:
+                  DEFAULT_BRANCH: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+            # Create a SIGNED/VERIFIED commit via the GitHub GraphQL API using
+            # GITHUB_TOKEN — no GPG key, no PAT. The action diffs the working tree
+            # (adds + deletions) and no-ops on a clean tree (empty: false), which
+            # gives us the empty-diff fixpoint for free.
+            - name: ✍️ Commit verified lint fix
+              if: >-
+                  github.event_name == 'pull_request' && steps.ctx.outputs.is_fork == 'false' && !contains(steps.commit-message.outputs.message, 'Automatically linting code')
+              uses: planetscale/ghcommit-action@v0.2.22
               with:
                   commit_message: Automatically linting code
+                  repo: ${{ github.repository }}
+                  branch: ${{ github.head_ref }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
