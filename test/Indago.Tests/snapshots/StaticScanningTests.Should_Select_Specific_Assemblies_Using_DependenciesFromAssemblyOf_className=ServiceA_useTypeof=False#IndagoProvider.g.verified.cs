@@ -48,6 +48,7 @@ file class IndagoProvider : IIndagoProvider
         return services;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "DependencyProjectC.HardReferenceA", "DependencyProjectC"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "DependencyProjectD.HardReferenceA", "DependencyProjectD"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "DependencyProjectD.HardReferenceC", "DependencyProjectD")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(IndagoProvider).Assembly)!;
     private Assembly _DependencyProjectC;
     private Assembly DependencyProjectC => _DependencyProjectC ??= _context.LoadFromAssemblyName(new AssemblyName("DependencyProjectC, Version=version, Culture=neutral, PublicKeyToken=null"));

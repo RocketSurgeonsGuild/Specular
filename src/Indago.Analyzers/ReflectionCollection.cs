@@ -86,7 +86,7 @@ internal static class ReflectionCollection
                               .GetTypes();
             if (reducedTypes.Count == 0) return null;
 
-            var localBlock = GenerateDescriptors(compilation, reducedTypes, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
+            var localBlock = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
             return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion());
         }
     }
@@ -174,11 +174,20 @@ internal static class ReflectionCollection
         return items.ToImmutable();
     }
 
-    private static BlockSyntax GenerateDescriptors(Compilation compilation, IEnumerable<INamedTypeSymbol> types, HashSet<IAssemblySymbol> privateAssemblies)
+    private static BlockSyntax GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<INamedTypeSymbol> types, HashSet<IAssemblySymbol> privateAssemblies)
     {
+        var compilation = configuration.Compilation;
         var block = Block();
         foreach (var type in types.OrderBy(z => z.ToDisplayString()))
         {
+            if (configuration.IsAot && StatementGeneration.GetUnreachableType(compilation, type) is { } unreachable)
+            {
+                _ = diagnostics.Add(
+                    Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, Location.None, unreachable.ToDisplayString(), unreachable.ContainingAssembly.Identity.Name)
+                );
+                continue;
+            }
+
             block = block.AddStatements(
                 ExpressionStatement(
                     InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))

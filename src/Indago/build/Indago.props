@@ -6,5 +6,7 @@
         <CompilerVisibleProperty Include="IntermediateOutputPath" />
         <CompilerVisibleProperty Include="ProjectDir" />
         <CompilerVisibleProperty Include="ExcludeAssemblyFromCTP" />
+        <CompilerVisibleProperty Include="PublishAot" />
+        <CompilerVisibleProperty Include="EnableAotAnalyzer" />
     </ItemGroup>
 </Project>

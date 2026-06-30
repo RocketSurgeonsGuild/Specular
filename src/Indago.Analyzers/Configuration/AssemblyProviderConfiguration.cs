@@ -20,6 +20,8 @@ internal partial class AssemblyProviderConfiguration
 )
 #pragma warning restore CS9113
 {
+    public Compilation Compilation => compilation;
+    public bool IsAot { get; } = StatementGeneration.IsAotCompilation(options);
     public (
         ImmutableList<AssemblyCollection.Item> InternalAssemblyRequests,
         ImmutableList<ReflectionCollection.Item> InternalReflectionRequests,

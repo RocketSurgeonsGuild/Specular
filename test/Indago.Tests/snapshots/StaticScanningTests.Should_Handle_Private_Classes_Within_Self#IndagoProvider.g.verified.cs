@@ -42,6 +42,7 @@ file class IndagoProvider : IIndagoProvider
         return services;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "DependencyProject.Service", "DependencyProject")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(IndagoProvider).Assembly)!;
     private Assembly _DependencyProject;
     private Assembly DependencyProject => _DependencyProject ??= _context.LoadFromAssemblyName(new AssemblyName("DependencyProject, Version=version, Culture=neutral, PublicKeyToken=null"));

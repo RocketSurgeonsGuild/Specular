@@ -193,9 +193,10 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                     reflectionSources,
                     serviceDescriptorSources,
                     privateAssemblies,
+                    config,
                     out var cacheHash
                 );
-                if (privateAssemblies.Any()) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+                if (privateAssemblies.Any() && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
 
                 MemberDeclarationSyntax[] members = [assemblyProvider];
 

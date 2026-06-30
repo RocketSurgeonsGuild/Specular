@@ -43,6 +43,7 @@ file class IndagoProvider : IIndagoProvider
         return services;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Dependency1Project.Service0", "Dependency0Project"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Dependency1Project.Service1", "Dependency1Project"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Dependency1Project.Service2", "Dependency2Project"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Dependency1Project.Service3", "Dependency3Project"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Dependency1Project.Service4", "Dependency4Project")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(IndagoProvider).Assembly)!;
     private Assembly _Dependency0Project;
     private Assembly Dependency0Project => _Dependency0Project ??= _context.LoadFromAssemblyName(new AssemblyName("Dependency0Project, Version=version, Culture=neutral, PublicKeyToken=null"));

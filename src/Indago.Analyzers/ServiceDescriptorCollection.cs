@@ -50,7 +50,7 @@ internal static class ServiceDescriptorCollection
 
                 if (reducedTypes.Count == 0) return null;
 
-                var localBlock = GenerateDescriptors(compilation, diagnostics, reducedTypes, item.ServicesTypeFilter, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
+                var localBlock = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
                 return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion());
             }
         }
@@ -166,13 +166,14 @@ internal static class ServiceDescriptorCollection
     }
 
     private static BlockSyntax GenerateDescriptors(
-        Compilation compilation,
+        AssemblyProviderConfiguration configuration,
         HashSet<Diagnostic> diagnostics,
         IEnumerable<INamedTypeSymbol> types,
         CompiledServiceTypeDescriptors serviceTypes,
         HashSet<IAssemblySymbol> privateAssemblies
     )
     {
+        var compilation = configuration.Compilation;
         var asSelf = serviceTypes.ServiceTypeDescriptors.OfType<SelfServiceTypeDescriptor>().Any() || !serviceTypes.ServiceTypeDescriptors.Any();
         var asImplementedInterfaces = serviceTypes.ServiceTypeDescriptors.OfType<ImplementedInterfacesServiceTypeDescriptor>().ToArray();
         var asMatchingInterface = serviceTypes.ServiceTypeDescriptors.OfType<MatchingInterfaceServiceTypeDescriptor>().Any();
@@ -184,6 +185,13 @@ internal static class ServiceDescriptorCollection
 
         foreach (var type in types.OrderBy(z => z.ToDisplayString()))
         {
+            if (configuration.IsAot && StatementGeneration.GetUnreachableType(compilation, type) is { } unreachable)
+            {
+                _ = diagnostics.Add(
+                    Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, Location.None, unreachable.ToDisplayString(), unreachable.ContainingAssembly.Identity.Name)
+                );
+                continue;
+            }
 #pragma warning disable RS1024
             var emittedTypes = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 #pragma warning restore RS1024

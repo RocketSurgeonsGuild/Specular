@@ -8,12 +8,12 @@ detector is itself guarded against silently breaking.
 
 ## Inputs
 
-| Input            | Value                                                                                                |
-| ---------------- | ---------------------------------------------------------------------------------------------------- |
-| Fixture project  | `Indago.Samples.NegativeFixture.csproj`                                                              |
-| TFM × RID        | `net10.0` × current-OS RID (same target as the demo hosts, FR-021)                                   |
-| Warning policy   | **NOT** warnings-as-errors — the publish must be allowed to warn so the warning can be detected      |
-| Expected warning | A stable Indago-attributable trim/AOT warning signature (pinned during implementation — research D2) |
+| Input            | Value                                                                                           |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| Fixture project  | `Indago.Samples.NegativeFixture.csproj`                                                         |
+| TFM × RID        | `net10.0` × current-OS RID (same target as the demo hosts, FR-021)                              |
+| Warning policy   | **NOT** warnings-as-errors — the publish must be allowed to warn so the warning can be detected |
+| Expected warning | `IL2072` — pinned below (D2 RESOLVED)                                                           |
 
 ## Required behavior (MUST)
 
@@ -47,6 +47,46 @@ detector is itself guarded against silently breaking.
   (research D2), so a future SDK change that alters the warning is a deliberate, reviewed update.
 - Keep the fixture minimal and self-contained; it must reliably re-trigger across SDK updates or
   fail loudly when it stops (that is the point).
+
+## Pinned warning signature (D2 — RESOLVED)
+
+> Pinned by T021/T022, 2026-06-29, SDK `10.0.301`, `Microsoft.DotNet.ILCompiler` `10.0.9`.
+
+**Triggering construct.** `samples/fixtures/Indago.Samples.NegativeFixture/Program.cs` feeds the
+results of Indago's `IIndagoProvider.GetTypes(...)` — whose element `Type` carries **no**
+`[DynamicallyAccessedMembers]` annotation by design — into `Activator.CreateInstance(Type)`:
+
+```csharp
+foreach (var type in provider.GetTypes(s => s.EntryAssembly().GetTypes(f => f.AssignableTo<Marker>())))
+{
+    _ = Activator.CreateInstance(type);
+}
+```
+
+**Emitted warning (greppable signature).**
+
+```
+warning IL2072: 'type' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicParameterlessConstructor' in call to 'System.Activator.CreateInstance(Type)'
+```
+
+Project-scoped match: the warning line ends with
+`[…/Indago.Samples.NegativeFixture.csproj]`.
+
+**Attribution note.** Because the value flows through `foreach`, the trim analyzer names the
+immediate data-flow source as `IEnumerator<Type>.Current` rather than `IIndagoProvider.GetTypes`
+directly; the warning nonetheless arises solely from consuming Indago's un-annotated `GetTypes`
+return. If Indago ever annotates `GetTypes` with `[DynamicallyAccessedMembers]`, this warning
+disappears and the **inverted assertion FAILS** — which is precisely the regression signal D2 exists
+to provide. A future SDK that renames/renumbers the warning is a deliberate, reviewed edit here.
+
+**Inverted-assertion module behavior.** `NegativeFixtureAotPublishModule` publishes this project
+(`net10.0 × current RID`, NOT warnings-as-errors, `ThrowOnNonZeroExitCode=false`), scans the captured
+publish output for `IL2072` scoped to `Indago.Samples.NegativeFixture.csproj`:
+
+- present ⇒ `PASS`; clean/absent ⇒ `FAIL` (fails the build).
+- The trim/AOT analysis (where `IL2072` is emitted) runs **before** the native link, so the inverted
+  assertion is observable locally even when the local Native AOT link is unavailable; it reports
+  `SKIP` only when the trim toolchain itself cannot run.
 
 ## Acceptance mapping
 

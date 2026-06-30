@@ -8,6 +8,10 @@
         <!-- Native AOT guardrail target (US2/US3). Build/run are unaffected; only publish AOT-compiles. -->
         <PublishAot>true</PublishAot>
         <InvariantGlobalization>true</InvariantGlobalization>
+        <!-- Zero-warning AOT policy (D4-pinned): surface each trim/AOT warning individually and
+             promote every IL2xxx/IL3xxx to an error so the publish FAILS on any trim/AOT warning. -->
+        <TrimmerSingleWarn>false</TrimmerSingleWarn>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

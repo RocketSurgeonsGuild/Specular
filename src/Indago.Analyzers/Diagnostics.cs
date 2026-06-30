@@ -76,5 +76,14 @@ internal static class Diagnostics
         true
     );
 
+    public static DiagnosticDescriptor PrivateTypeUnreachableUnderAot { get; } = new(
+        "RSGD0008",
+        "Inaccessible type unreachable under Native AOT",
+        "'{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped",
+        Category,
+        DiagnosticSeverity.Info,
+        true
+    );
+
     private const string Category = "Dependency Injection";
 }

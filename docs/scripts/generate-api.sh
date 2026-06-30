@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCS_DIR="$(dirname "$SCRIPT_DIR")"
 REPO_ROOT="$(dirname "$DOCS_DIR")"
 API_OUTPUT_DIR="$DOCS_DIR/src/content/docs/api"
-SOURCE_BASE="https://github.com/RocketSurgeonsGuild/Conventions/blob/main/src"
+SOURCE_BASE="https://github.com/RocketSurgeonsGuild/Indago/blob/main/src"
 
 # Locate xmldocmd — prefer mise shim, then dotnet tools global, then PATH
 if command -v xmldocmd &>/dev/null; then
@@ -53,48 +53,51 @@ for PKG in "${!PACKAGES[@]}"; do
     EXPECTED_ASSEMBLY="$(basename "$CSPROJ" .csproj)"
   fi
 
-  # Find DLL in preference order. We try net10.0 first because most packages target that.
-  # If xmldocmd cannot load it in the current environment, we fall back to XML-only generation.
+  # Generate from the Release **bin** (not a publish) — net8.0 is the documented source TFM (T025).
   DLL=""
-  for TFM in net10.0 net8.0 netstandard2.0; do
+  TFM_USED=""
+  for TFM in net8.0 net10.0 netstandard2.0; do
     TFM_DIR="$PKG_DIR/bin/Release/$TFM"
     CANDIDATE="$TFM_DIR/$EXPECTED_ASSEMBLY.dll"
     if [[ -f "$CANDIDATE" ]]; then
       DLL="$CANDIDATE"
+      TFM_USED="$TFM"
       break
     fi
   done
 
   if [[ -z "$DLL" ]]; then
-    echo "  SKIP  $PKG — no DLL found (tried net10.0, net8.0, netstandard2.0)"
+    echo "  SKIP  $PKG — no DLL found (tried net8.0, net10.0, netstandard2.0)"
     ((skipped++)) || true
     continue
   fi
 
+  # Precondition (T026): the XML doc is REQUIRED — fail clearly rather than emit a partial API ref.
   XML="${DLL%.dll}.xml"
   if [[ ! -f "$XML" ]]; then
-    echo "  SKIP  $PKG — XML doc file missing: $XML"
-    ((skipped++)) || true
-    continue
+    echo "  ERROR $PKG — required XML doc missing: $XML" >&2
+    echo "        Ensure <GenerateDocumentationFile>true</GenerateDocumentationFile> for $PKG." >&2
+    exit 1
   fi
+
+  # xmldocmd reflection-loads the assembly, so its runtime dependency assemblies must sit next to it.
+  # Libraries don't copy NuGet deps to bin by default; populate them so xmldocmd can load (no fallback).
+  dotnet build "$CSPROJ" -c Release -f "$TFM_USED" -p:CopyLocalLockFileAssemblies=true \
+    --no-restore -v quiet -clp:ErrorsOnly >/dev/null 2>&1 || true
 
   OUT_DIR="$API_OUTPUT_DIR/$SLUG"
   mkdir -p "$OUT_DIR"
   rm -rf "${OUT_DIR:?}"/*
 
-  echo "  GEN   $PKG → api/$SLUG/"
-  if "${XMLDOCMD}" "$DLL" "$OUT_DIR/" \
+  # xmldocmd is MANDATORY (no XML-only fallback): a load failure must fail the docs build loudly.
+  echo "  GEN   $PKG ($TFM_USED) → api/$SLUG/"
+  "${XMLDOCMD}" "$DLL" "$OUT_DIR/" \
+    --namespace "$PKG" \
     --source "$SOURCE_BASE/$PKG/" \
     --skip-compiler-generated \
     --skip-unbrowsable \
-    --clean; then
-    ((generated++)) || true
-  else
-    echo "  WARN  $PKG — xmldocmd failed, using XML fallback generator"
-    node "$DOCS_DIR/scripts/generate-api-from-xml.mjs" "$XML" "$OUT_DIR/"
-    ((generated++)) || true
-    ((fallback_generated++)) || true
-  fi
+    --clean
+  ((generated++)) || true
 done
 
 echo ""

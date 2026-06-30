@@ -51,9 +51,45 @@ not the exact MSBuild property strings (finalized via research D4).
   absent).
 - MAUI-android: `-f net10.0-android` with platform-appropriate trimming/AOT; requires MAUI +
   Android workloads (skip-with-reason if absent).
-- Warning enforcement property set is pinned in research D4; each host MUST be proven to FAIL when
-  a trim/AOT warning is injected (the test-first red state for this guardrail).
 - Build modules MUST log via `context.Logger` (the `ConsoleUse` analyzer forbids `System.Console`).
+
+## Pinned warning-enforcement property set (D4 — RESOLVED)
+
+> Pinned by T009 (Native AOT spike), 2026-06-29, SDK `10.0.301`, `Microsoft.DotNet.ILCompiler`
+> `10.0.9`. Future SDK drift that changes these is a deliberate, reviewed contract edit.
+
+**Native AOT (Console / Web).** The enforcement properties live **in the host `.csproj`** (scoped to
+the host), NOT passed as global `-p:` on the command line. Passing `PublishAot`/`TreatWarningsAsErrors`
+globally propagates into the `netstandard2.0` dependency closure (`src/Indago`, analyzers) and fails
+with `NETSDK1207` and unrelated warning-as-error promotions — so the pipeline module publishes the
+host project with **no propagating `-p:` switches**:
+
+```xml
+<PublishAot>true</PublishAot>            <!-- self-contained AOT compile on publish -->
+<InvariantGlobalization>true</InvariantGlobalization>
+<TrimmerSingleWarn>false</TrimmerSingleWarn>   <!-- surface each IL2xxx/IL3xxx individually -->
+<TreatWarningsAsErrors>true</TreatWarningsAsErrors> <!-- any trim/AOT warning ⇒ publish FAILS -->
+```
+
+Publish invocation: `-c Release -f net10.0 -r <currentRID>` (single deterministic matrix, FR-013).
+
+**RED proof (T009).** Injecting `Assembly.GetExecutingAssembly().GetTypes()` into the Console host
+produced `error IL2026` and the publish exited non-zero — confirming the property set fails the
+publish on a trim/AOT warning. Removing the injection restores a clean trim/AOT analysis (zero IL
+warnings). Each host repeats this red proof (Console T020, Web T035, …).
+
+**Indago core prerequisite (discovered by T009).** The `IIndagoProvider.EntryAssembly` path resolved
+the generated provider via `Activator.CreateInstance(Type)` in `IndagoProviderAttribute`, which emitted
+`IL2077` under Native AOT. Fixed by annotating the `Type` with
+`[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]`
+(Constitution Principle I). Without that fix every zero-warning AOT publish that touches
+`EntryAssembly` fails.
+
+**Local toolchain note (D4 / skip-with-reason).** On `osx-arm64` the Native AOT **link** step needs a
+chain of Homebrew native libs (`openssl@3`, `brotli`, …) on the linker search path; absent by default
+the link fails (`ld: library 'ssl'/'brotlienc' not found`) **after** a clean trim/AOT analysis. Per the
+resolved decision, AOT-publish modules **publish for real in CI (Linux)** and report **skip-with-reason**
+locally when the native link prerequisites are unsatisfied — never `pass` (FR-016, rule 4).
 
 ## Acceptance mapping
 
