@@ -36,9 +36,9 @@ chmod 600 ~/.claude/.secrets/gh-token-*
 ```toml
 # ~/.claude/.mise.toml
 [env]
-GH_TOKEN     = "{{ read_file(path=config_root ~ '/.secrets/gh-token-terrylica') | trim }}"
+GH_TOKEN = "{{ read_file(path=config_root ~ '/.secrets/gh-token-terrylica') | trim }}"
 GITHUB_TOKEN = "{{ read_file(path=config_root ~ '/.secrets/gh-token-terrylica') | trim }}"
-GH_ACCOUNT   = "terrylica"                                                                 # Human reference only
+GH_ACCOUNT = "terrylica"  # Human reference only
 ```
 
 ### Cross-Directory Token (using env.HOME)
@@ -46,9 +46,9 @@ GH_ACCOUNT   = "terrylica"                                                      
 ```toml
 # ~/eon/.mise.toml
 [env]
-GH_TOKEN     = "{{ read_file(path=env.HOME ~ '/.claude/.secrets/gh-token-terrylica') | trim }}"
+GH_TOKEN = "{{ read_file(path=env.HOME ~ '/.claude/.secrets/gh-token-terrylica') | trim }}"
 GITHUB_TOKEN = "{{ read_file(path=env.HOME ~ '/.claude/.secrets/gh-token-terrylica') | trim }}"
-GH_ACCOUNT   = "terrylica"
+GH_ACCOUNT = "terrylica"
 ```
 
 **When to use each**:
@@ -106,43 +106,43 @@ See [SSH ControlMaster Cache](../../semantic-release/references/troubleshooting.
 
 1. Check account alignment:
 
-    ```bash
-    ssh -T git@github.com  # SSH account
-    gh api user --jq '.login'  # gh CLI account (should match)
-    ```
+   ```bash
+   ssh -T git@github.com  # SSH account
+   gh api user --jq '.login'  # gh CLI account (should match)
+   ```
 
 2. If mismatch, verify mise config:
 
-    ```bash
-    mise env | grep GH_TOKEN
-    cat ~/.claude/.secrets/gh-token-accountname  # First 10 chars
-    ```
+   ```bash
+   mise env | grep GH_TOKEN
+   cat ~/.claude/.secrets/gh-token-accountname  # First 10 chars
+   ```
 
 3. Clear SSH ControlMaster cache:
 
-    ```bash
-    ssh -O exit git@github.com 2>/dev/null || pkill -f 'ssh.*github.com'
-    ```
+   ```bash
+   ssh -O exit git@github.com 2>/dev/null || pkill -f 'ssh.*github.com'
+   ```
 
 ### Token Not Loading
 
 1. Verify mise trusted:
 
-    ```bash
-    mise trust
-    ```
+   ```bash
+   mise trust
+   ```
 
 2. Check token file exists:
 
-    ```bash
-    ls -la ~/.claude/.secrets/gh-token-*
-    ```
+   ```bash
+   ls -la ~/.claude/.secrets/gh-token-*
+   ```
 
 3. Test token directly:
 
-    ```bash
+   ```bash
 
-    ```
+   ```
 
 /usr/bin/env bash << 'GITHUB_TOKENS_SCRIPT_EOF'
 GH_TOKEN=$(cat ~/.claude/.secrets/gh-token-accountname) gh api user --jq '.login'
@@ -166,7 +166,7 @@ For automatic token rotation:
 
 ```toml
 [env]
-GH_TOKEN     = "{{ cache(key='gh_token', duration='1h', run='op read op://Engineering/GitHub Token/credential') }}"
+GH_TOKEN = "{{ cache(key='gh_token', duration='1h', run='op read op://Engineering/GitHub Token/credential') }}"
 GITHUB_TOKEN = "{{ cache(key='gh_token', duration='1h', run='op read op://Engineering/GitHub Token/credential') }}"
 ```
 

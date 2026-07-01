@@ -32,7 +32,7 @@ Orchestrate multi-step project workflows using mise `[tasks]` section with depen
 ```toml
 [tasks.build]
 description = "Build the project"
-run         = "cargo build --release"
+run = "cargo build --release"
 ```
 
 ### Running Tasks
@@ -133,15 +133,15 @@ Tasks automatically inherit `[env]` values. Use `_.file` for external env files 
 ```toml
 [env]
 DATABASE_URL = "postgresql://localhost/mydb"
-_.file       = { path = ".env.secrets", redact = true }
+_.file = { path = ".env.secrets", redact = true }
 
 [tasks._check-env]
 hide = true
-run  = '[ -n "$API_KEY" ] || { echo "Missing API_KEY"; exit 1; }'
+run = '[ -n "$API_KEY" ] || { echo "Missing API_KEY"; exit 1; }'
 
 [tasks.deploy]
 depends = ["_check-env"]
-run     = "deploy.sh"    # $DATABASE_URL and $API_KEY available
+run = "deploy.sh"  # $DATABASE_URL and $API_KEY available
 ```
 
 For full env integration patterns, see [Environment Integration](./references/env-integration.md).

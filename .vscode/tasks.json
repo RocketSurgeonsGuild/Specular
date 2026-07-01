@@ -2,15 +2,26 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "mise",
-            "task": "docs",
-            "watch": false,
-            "runArgs": [],
-            "watchexecArgs": [],
+            "label": "mise: docs",
+            "type": "shell",
+            "command": "mise run docs",
             "problemMatcher": [],
-            "label": "Docs",
-            "runOptions": {
-                "runOn": "folderOpen"
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            }
+        },
+        {
+            "label": "mise: docs-build",
+            "type": "shell",
+            "command": "mise run docs:build",
+            "problemMatcher": [],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
             }
         }
     ]

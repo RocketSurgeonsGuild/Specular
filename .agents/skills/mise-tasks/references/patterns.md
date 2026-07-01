@@ -3,24 +3,24 @@
 ## Table of Contents
 
 - [Hidden Helper Tasks](#hidden-helper-tasks)
-    - [Credential Check](#credential-check)
-    - [Destructive Operation Confirmation](#destructive-operation-confirmation)
-    - [Environment Validation](#environment-validation)
+  - [Credential Check](#credential-check)
+  - [Destructive Operation Confirmation](#destructive-operation-confirmation)
+  - [Environment Validation](#environment-validation)
 - [Database Migration Pattern](#database-migration-pattern)
 - [CI/CD Pipeline Pattern](#cicd-pipeline-pattern)
 - [Release Workflow Pattern](#release-workflow-pattern)
 - [Development Server Pattern](#development-server-pattern)
-    - [Runtime-Native Watch (Preferred)](#runtime-native-watch-preferred)
-    - [External Watch (Polyglot / Non-Runtime)](#external-watch-polyglot--non-runtime)
-    - [Watch Method Decision Table](#watch-method-decision-table)
+  - [Runtime-Native Watch (Preferred)](#runtime-native-watch-preferred)
+  - [External Watch (Polyglot / Non-Runtime)](#external-watch-polyglot--non-runtime)
+  - [Watch Method Decision Table](#watch-method-decision-table)
 - [Parameterized Deployment Pattern](#parameterized-deployment-pattern)
 - [File Tracking Pattern](#file-tracking-pattern)
 - [Pueue Pipeline Orchestration Pattern](#pueue-pipeline-orchestration-pattern)
-    - [mise Entry Points](#mise-entry-points)
-    - [Shell Script DAG Builder](#shell-script-dag-builder)
-    - [Key Principles](#key-principles)
-    - [Anti-Pattern: mise `depends` for Long-Running Remote Jobs](#anti-pattern-mise-depends-for-long-running-remote-jobs)
-    - [When to Use](#when-to-use)
+  - [mise Entry Points](#mise-entry-points)
+  - [Shell Script DAG Builder](#shell-script-dag-builder)
+  - [Key Principles](#key-principles)
+  - [Anti-Pattern: mise `depends` for Long-Running Remote Jobs](#anti-pattern-mise-depends-for-long-running-remote-jobs)
+  - [When to Use](#when-to-use)
 - [Complete Project Template](#complete-project-template)
 
 Real-world task patterns for common workflows.
@@ -104,39 +104,39 @@ Complete database migration workflow with safety checks.
 
 ```toml
 [env]
-_.file              = ".env"
+_.file = ".env"
 CLICKHOUSE_DATABASE = "myapp"
 
 [tasks._check-credentials]
 hide = true
-run  = '[ -n "$CLICKHOUSE_HOST" ] || { echo "Set CLICKHOUSE_HOST in .env"; exit 1; }'
+run = '[ -n "$CLICKHOUSE_HOST" ] || { echo "Set CLICKHOUSE_HOST in .env"; exit 1; }'
 
 [tasks._confirm-destructive]
 hide = true
-run  = 'echo "Press Enter to continue or Ctrl+C to cancel..." && read'
+run = 'echo "Press Enter to continue or Ctrl+C to cancel..." && read'
 
 [tasks.db-drop]
 description = "Drop legacy database (destructive!)"
-depends     = ["_check-credentials", "_confirm-destructive"]
-run         = "clickhouse-client --query 'DROP DATABASE IF EXISTS legacy_db'"
+depends = ["_check-credentials", "_confirm-destructive"]
+run = "clickhouse-client --query 'DROP DATABASE IF EXISTS legacy_db'"
 
 [tasks.db-init]
-description  = "Create database and tables from schema"
-depends      = ["_check-credentials"]
+description = "Create database and tables from schema"
+depends = ["_check-credentials"]
 depends_post = ["db-validate"]
-usage        = 'opt "--schema" default="main" help="Schema name"'
-run          = "uv run python -m schema.cli init --schema ${usage_schema}"
+usage = 'opt "--schema" default="main" help="Schema name"'
+run = "uv run python -m schema.cli init --schema ${usage_schema}"
 
 [tasks.db-validate]
 description = "Validate schema against live database"
-depends     = ["_check-credentials"]
-run         = "uv run python -m schema.cli validate"
+depends = ["_check-credentials"]
+run = "uv run python -m schema.cli validate"
 
 [tasks.db-migrate]
-description  = "Full migration: drop legacy + create new + validate"
-depends      = ["db-drop", "db-init"]
+description = "Full migration: drop legacy + create new + validate"
+depends = ["db-drop", "db-init"]
 depends_post = ["test-e2e"]
-run          = "echo 'Migration complete'"
+run = "echo 'Migration complete'"
 ```
 
 **Usage**:
@@ -155,35 +155,35 @@ Comprehensive CI pipeline with parallel stages.
 ```toml
 [tasks.lint]
 description = "Run linters"
-run         = "ruff check . && ruff format --check ."
+run = "ruff check . && ruff format --check ."
 
 [tasks.typecheck]
 description = "Run type checker"
-run         = "mypy src/"
+run = "mypy src/"
 
 [tasks.test]
 description = "Run test suite"
-alias       = "t"
-run         = "pytest tests/ -v"
+alias = "t"
+run = "pytest tests/ -v"
 
 [tasks."test:unit"]
 description = "Run unit tests only"
-run         = "pytest tests/unit/ -v"
+run = "pytest tests/unit/ -v"
 
 [tasks."test:integration"]
 description = "Run integration tests"
-depends     = ["_check-credentials"]
-run         = "pytest tests/integration/ -v"
+depends = ["_check-credentials"]
+run = "pytest tests/integration/ -v"
 
 [tasks.build]
 description = "Build distribution"
-depends     = ["lint", "typecheck", "test"]
-run         = "uv build"
+depends = ["lint", "typecheck", "test"]
+run = "uv build"
 
 [tasks.ci]
 description = "Full CI pipeline"
-depends     = ["lint", "typecheck", "test", "build"]
-run         = "echo 'CI passed'"
+depends = ["lint", "typecheck", "test", "build"]
+run = "echo 'CI passed'"
 ```
 
 **Parallel execution**:
@@ -225,14 +225,15 @@ fi
 '''
 
 [tasks.release-dry]
+description = "Dry-run release (no changes)"
+depends = ["_check-clean", "_check-main", "test"]
 run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci --dry-run'\'''
 
-description = "Dry-run release (no changes)"
-depends     = ["_check-clean", "_check-main", "test"]
 [tasks.release]
-run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci'\'''description = "Create release"
+description = "Create release"
 depends = ["_check-clean", "_check-main", "test"]
 confirm = "This will create a new release. Continue?"
+run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci'\'''
 ```
 
 ---
@@ -250,11 +251,11 @@ Use the runtime's built-in file watcher when available — zero extra processes,
 ```toml
 [tasks.start]
 description = "Start service (auto-restarts on file changes)"
-run         = "bun --watch run src/main.ts"
+run = "bun --watch run src/main.ts"
 
 [tasks.start-plain]
 description = "Start without file watching"
-run         = "bun run src/main.ts"
+run = "bun run src/main.ts"
 ```
 
 > **Anti-pattern**: Do NOT use `bun --hot`, `nodemon`, `ts-node-dev`, `tsx watch`, or
@@ -268,16 +269,16 @@ run         = "bun run src/main.ts"
 ```toml
 [tasks.dev]
 description = "Start development server"
-run         = "uvicorn app:main --reload --port 8000"
+run = "uvicorn app:main --reload --port 8000"
 
 [tasks.dev-db]
 description = "Start database in Docker"
-run         = "docker compose up -d postgres"
+run = "docker compose up -d postgres"
 
 [tasks.dev-full]
 description = "Start full dev environment"
-depends     = ["dev-db"]
-run         = "mise run dev"
+depends = ["dev-db"]
+run = "mise run dev"
 ```
 
 ### External Watch (Polyglot / Non-Runtime)
@@ -358,16 +359,16 @@ Efficient builds with source/output tracking.
 ```toml
 [tasks.compile]
 description = "Compile TypeScript"
-sources     = ["src/**/*.ts", "tsconfig.json"]
-outputs     = ["dist/**/*.js"]
-run         = "tsc"
+sources = ["src/**/*.ts", "tsconfig.json"]
+outputs = ["dist/**/*.js"]
+run = "tsc"
 
 [tasks.bundle]
 description = "Bundle for production"
-depends     = ["compile"]
-sources     = ["dist/**/*.js", "package.json"]
-outputs     = ["build/bundle.js"]
-run         = "esbuild dist/index.js --bundle --outfile=build/bundle.js"
+depends = ["compile"]
+sources = ["dist/**/*.js", "package.json"]
+outputs = ["build/bundle.js"]
+run = "esbuild dist/index.js --bundle --outfile=build/bundle.js"
 ```
 
 **Behavior**:
@@ -391,16 +392,16 @@ Delegate long-running, multi-step pipelines to [pueue](https://github.com/Nukeso
 # Individual steps (can run standalone)
 ["cache:detect-overflow"]
 description = "Detect volume overflow (negative volumes) in ClickHouse cache"
-run         = "python scripts/detect_volume_overflow.py"
+run = "python scripts/detect_volume_overflow.py"
 
 ["cache:optimize"]
 description = "Run OPTIMIZE TABLE FINAL on range_bars"
-run         = "./scripts/pueue-populate.sh optimize"
+run = "./scripts/pueue-populate.sh optimize"
 
 # Fully-chained pueue pipeline (recommended for production)
 ["cache:postprocess-all"]
 description = "Full post-fix pipeline via pueue: repopulate → optimize → detect (auto-chained)"
-run         = "./scripts/pueue-populate.sh postprocess-all"
+run = "./scripts/pueue-populate.sh postprocess-all"
 ```
 
 ### Shell Script DAG Builder
@@ -487,60 +488,61 @@ experimental = true
 
 [tools]
 python = "3.11"
-node   = "22"
-uv     = "latest"
+node = "22"
+uv = "latest"
 
 [env]
 _.python.venv = { path = ".venv", create = true }
-_.file        = [".env", { path = ".env.local", redact = true }]
-_.path        = ["{{config_root}}/bin", "node_modules/.bin"]
+_.file = [".env", { path = ".env.local", redact = true }]
+_.path = ["{{config_root}}/bin", "node_modules/.bin"]
 
-PROJECT_ROOT     = "{{config_root}}"
+PROJECT_ROOT = "{{config_root}}"
 PYTHONUNBUFFERED = "1"
 
 # Hidden helpers
 [tasks._check-env]
 hide = true
-run  = '[ -f .env ] || { echo "Copy .env.example to .env"; exit 1; }'
+run = '[ -f .env ] || { echo "Copy .env.example to .env"; exit 1; }'
 
 [tasks._check-clean]
 hide = true
-run  = '[ -z "$(git status --porcelain)" ] || { echo "Uncommitted changes"; exit 1; }'
+run = '[ -z "$(git status --porcelain)" ] || { echo "Uncommitted changes"; exit 1; }'
 
 # Development
 [tasks.dev]
 description = "Start development server"
-depends     = ["_check-env"]
-run         = "uvicorn app:main --reload"
+depends = ["_check-env"]
+run = "uvicorn app:main --reload"
 
 # Testing
 [tasks.test]
 description = "Run tests"
-alias       = "t"
-run         = "pytest tests/ -v"
+alias = "t"
+run = "pytest tests/ -v"
 
 [tasks."test:cov"]
 description = "Run tests with coverage"
-run         = "pytest tests/ --cov=src --cov-report=html"
+run = "pytest tests/ --cov=src --cov-report=html"
 
 # Code quality
 [tasks.lint]
 description = "Run linters"
-run         = "ruff check . && ruff format --check ."
+run = "ruff check . && ruff format --check ."
 
 [tasks.fix]
 description = "Fix linting issues"
-run         = "ruff check --fix . && ruff format ."
+run = "ruff check --fix . && ruff format ."
 
 # Build
 [tasks.build]
 description = "Build package"
-depends     = ["lint", "test"]
-run         = "uv build"
+depends = ["lint", "test"]
+run = "uv build"
 
 # Release
 [tasks.release]
-run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci'\'''description = "Create release"
+description = "Create release"
 depends = ["_check-clean", "build"]
 confirm = "Create new release?"
+run = '/usr/bin/env bash -c '\''GITHUB_TOKEN=$(gh auth token) npx semantic-release --no-ci'\'''
 ```

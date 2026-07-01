@@ -13,5 +13,7 @@
         <CompilerVisibleProperty Include="ProjectDir" />
         <CompilerVisibleProperty Include="ExcludeAssemblyFromCTP" />
         <CompilerVisibleProperty Include="IndagoEmitProvider" />
+        <CompilerVisibleProperty Include="PublishAot" />
+        <CompilerVisibleProperty Include="EnableAotAnalyzer" />
     </ItemGroup>
 </Project>

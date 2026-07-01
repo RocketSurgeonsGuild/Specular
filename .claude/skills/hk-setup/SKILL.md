@@ -4,8 +4,8 @@ description: Set up hk (git hook manager) with pre-commit hooks for any project.
 license: MIT
 compatibility: Requires hk to be installed (brew install hk or mise use hk). Works with Claude Code and similar agents.
 metadata:
-    author: kenny
-    version: '1.1'
+  author: kenny
+  version: "1.1"
 ---
 
 # hk Setup
@@ -33,16 +33,16 @@ mise use -g hk
 
 Look for these files to identify the project:
 
-| File                       | Project Type          | Recommended Linters          |
-| -------------------------- | --------------------- | ---------------------------- |
-| `pyproject.toml`, `*.py`   | Python                | ruff, ruff_format            |
-| `package.json`, `*.ts`     | JavaScript/TypeScript | biome (or eslint + prettier) |
-| `go.mod`, `*.go`           | Go                    | go_fmt, golangci_lint        |
-| `Cargo.toml`, `*.rs`       | Rust                  | rustfmt, cargo_clippy        |
-| `Package.swift`, `*.swift` | Swift                 | swiftlint, swiftformat       |
-| `*.sh`, `*.bash`           | Shell                 | shellcheck, shfmt            |
-| `Dockerfile`               | Docker                | hadolint                     |
-| `*.pkl`                    | Pkl configs           | pkl                          |
+| File | Project Type | Recommended Linters |
+|------|--------------|---------------------|
+| `pyproject.toml`, `*.py` | Python | ruff, ruff_format |
+| `package.json`, `*.ts` | JavaScript/TypeScript | biome (or eslint + prettier) |
+| `go.mod`, `*.go` | Go | go_fmt, golangci_lint |
+| `Cargo.toml`, `*.rs` | Rust | rustfmt, cargo_clippy |
+| `Package.swift`, `*.swift` | Swift | swiftlint, swiftformat |
+| `*.sh`, `*.bash` | Shell | shellcheck, shfmt |
+| `Dockerfile` | Docker | hadolint |
+| `*.pkl` | Pkl configs | pkl |
 
 ### 2. Check Available Tools
 
@@ -52,13 +52,13 @@ hk builtins  # List all built-in linters
 
 See [references/builtins.md](references/builtins.md) for full catalog. Key builtins:
 
-| Language | Recommended Builtins                    |
-| -------- | --------------------------------------- |
-| Python   | `ruff`, `ruff_format`                   |
-| JS/TS    | `biome` or `eslint` + `prettier`        |
-| Go       | `go_fmt`, `go_imports`, `golangci_lint` |
-| Rust     | `rustfmt`, `cargo_clippy`               |
-| Shell    | `shellcheck`, `shfmt`                   |
+| Language | Recommended Builtins |
+|----------|---------------------|
+| Python | `ruff`, `ruff_format` |
+| JS/TS | `biome` or `eslint` + `prettier` |
+| Go | `go_fmt`, `go_imports`, `golangci_lint` |
+| Rust | `rustfmt`, `cargo_clippy` |
+| Shell | `shellcheck`, `shfmt` |
 
 ### 3. Generate hk.pkl
 
@@ -228,7 +228,6 @@ local linters = new Mapping<String, Step> {
 Note: Pkl Mappings don't support `+` concatenation. Define all linters in a single mapping.
 
 Other useful universal builtins:
-
 - `check_merge_conflict` - Prevent committing merge conflict markers
 - `detect_private_key` - Prevent committing private keys
 - `check_added_large_files` - Warn about large files
@@ -247,14 +246,14 @@ For tools without builtins, define custom steps:
 
 ### Step Options
 
-| Option      | Description                           |
-| ----------- | ------------------------------------- |
-| `glob`      | File patterns to match                |
-| `check`     | Command to run for checking           |
-| `fix`       | Command to run for fixing (optional)  |
-| `exclusive` | Run in isolation (no parallel)        |
-| `batch`     | Process files in batches              |
-| `stomp`     | Allow file modifications during check |
+| Option | Description |
+|--------|-------------|
+| `glob` | File patterns to match |
+| `check` | Command to run for checking |
+| `fix` | Command to run for fixing (optional) |
+| `exclusive` | Run in isolation (no parallel) |
+| `batch` | Process files in batches |
+| `stomp` | Allow file modifications during check |
 
 ## Environment Variables
 

@@ -3,6 +3,7 @@ using Indago.Analyzers.AssemblyProviders;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Indago.Analyzers;
@@ -136,9 +137,23 @@ internal static class StatementGeneration
     public static bool IsOpenGenericType(this INamedTypeSymbol type) =>
         type.IsGenericType && ( type.IsUnboundGenericType || type.TypeArguments.All(z => z.TypeKind == TypeKind.TypeParameter) );
 
-    public static IEnumerable<MemberDeclarationSyntax> AssemblyDeclaration(IAssemblySymbol symbol)
+    public static IEnumerable<MemberDeclarationSyntax> AssemblyDeclaration(Compilation compilation, bool isAot, IAssemblySymbol symbol)
     {
         var name = AssemblyVariableName(symbol);
+
+        if (isAot)
+        {
+            // Native AOT cannot load assemblies dynamically, so obtain the assembly handle statically from a
+            // public type in it. Zero-public-type assemblies are skipped upstream, so this is never null here.
+            // ReSharper disable once NullableWarningSuppressionIsUsed
+            var assemblyExpression = GetAssemblyExpression(compilation, symbol)!;
+            yield return PropertyDeclaration(IdentifierName("Assembly"), Identifier(name))
+                        .WithModifiers(TokenList(Token(SyntaxKind.PrivateKeyword)))
+                        .WithExpressionBody(ArrowExpressionClause(assemblyExpression))
+                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+            yield break;
+        }
+
         var assemblyName = LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(symbol.Identity.GetDisplayName(true)));
 
         yield return FieldDeclaration(
@@ -233,6 +248,40 @@ internal static class StatementGeneration
 
 
     public static ExpressionSyntax GetPrivateAssembly(IAssemblySymbol type) => IdentifierName(AssemblyVariableName(type));
+
+    /// <summary>Detects whether the current compilation targets Native AOT (or is marked AOT-compatible).</summary>
+    public static bool IsAotCompilation(AnalyzerConfigOptionsProvider options) =>
+        IsTrue(options, "build_property.PublishAot") || IsTrue(options, "build_property.EnableAotAnalyzer");
+
+    private static bool IsTrue(AnalyzerConfigOptionsProvider options, string key) =>
+        options.GlobalOptions.TryGetValue(key, out var value) && string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    ///     Under Native AOT an inaccessible type can only be resolved via a public type in its assembly. Returns the
+    ///     first type in the closure (the type plus any generic arguments) that has no such anchor, or null if reachable.
+    /// </summary>
+    public static INamedTypeSymbol? GetUnreachableType(Compilation compilation, INamedTypeSymbol type)
+    {
+        foreach (var candidate in EnumerateTypeClosure(type))
+        {
+            if (!compilation.IsSymbolAccessibleWithin(candidate, compilation.Assembly)
+             && FindTypeInAssembly.FindType(compilation, candidate.ContainingAssembly) is null)
+            {
+                return candidate;
+            }
+        }
+
+        return null;
+
+        static IEnumerable<INamedTypeSymbol> EnumerateTypeClosure(INamedTypeSymbol named)
+        {
+            yield return named;
+            foreach (var argument in named.TypeArguments.OfType<INamedTypeSymbol>())
+            {
+                foreach (var inner in EnumerateTypeClosure(argument)) yield return inner;
+            }
+        }
+    }
 
     public static string AssemblyVariableName(IAssemblySymbol symbol) => SpecialCharacterRemover.Replace(symbol.MetadataName, "");
 

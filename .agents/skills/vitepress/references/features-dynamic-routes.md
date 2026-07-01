@@ -23,14 +23,17 @@ The paths loader exports a `paths` method returning route parameters:
 ```js
 // packages/[pkg].paths.js
 export default {
-    paths() {
-        return [{ params: { pkg: 'foo' } }, { params: { pkg: 'bar' } }, { params: { pkg: 'baz' } }];
-    },
-};
+  paths() {
+    return [
+      { params: { pkg: 'foo' }},
+      { params: { pkg: 'bar' }},
+      { params: { pkg: 'baz' }}
+    ]
+  }
+}
 ```
 
 Generated pages:
-
 - `/packages/foo.html`
 - `/packages/bar.html`
 - `/packages/baz.html`
@@ -47,10 +50,14 @@ Generated pages:
 ```js
 // packages/[pkg]-[version].paths.js
 export default {
-    paths() {
-        return [{ params: { pkg: 'foo', version: '1.0.0' } }, { params: { pkg: 'foo', version: '2.0.0' } }, { params: { pkg: 'bar', version: '1.0.0' } }];
-    },
-};
+  paths() {
+    return [
+      { params: { pkg: 'foo', version: '1.0.0' }},
+      { params: { pkg: 'foo', version: '2.0.0' }},
+      { params: { pkg: 'bar', version: '1.0.0' }}
+    ]
+  }
+}
 ```
 
 ## Dynamic Path Generation
@@ -59,15 +66,15 @@ From local files:
 
 ```js
 // packages/[pkg].paths.js
-import fs from 'node:fs';
+import fs from 'node:fs'
 
 export default {
-    paths() {
-        return fs.readdirSync('packages').map(pkg => ({
-            params: { pkg },
-        }));
-    },
-};
+  paths() {
+    return fs.readdirSync('packages').map(pkg => ({
+      params: { pkg }
+    }))
+  }
+}
 ```
 
 From remote API:
@@ -75,17 +82,17 @@ From remote API:
 ```js
 // packages/[pkg].paths.js
 export default {
-    async paths() {
-        const packages = await fetch('https://api.example.com/packages').then(r => r.json());
-
-        return packages.map(pkg => ({
-            params: {
-                pkg: pkg.name,
-                version: pkg.version,
-            },
-        }));
-    },
-};
+  async paths() {
+    const packages = await fetch('https://api.example.com/packages').then(r => r.json())
+    
+    return packages.map(pkg => ({
+      params: {
+        pkg: pkg.name,
+        version: pkg.version
+      }
+    }))
+  }
+}
 ```
 
 ## Accessing Params in Page
@@ -94,7 +101,6 @@ Template globals:
 
 ```md
 <!-- packages/[pkg].md -->
-
 # Package: {{ $params.pkg }}
 
 Version: {{ $params.version }}
@@ -104,12 +110,12 @@ In script:
 
 ```vue
 <script setup>
-import { useData } from 'vitepress';
-const { params } = useData();
+import { useData } from 'vitepress'
+const { params } = useData()
 </script>
 
 <template>
-    <h1>{{ params.pkg }}</h1>
+  <h1>{{ params.pkg }}</h1>
 </template>
 ```
 
@@ -120,23 +126,24 @@ For heavy content (raw markdown/HTML from CMS), use `content` instead of params 
 ```js
 // posts/[slug].paths.js
 export default {
-    async paths() {
-        const posts = await fetch('https://cms.example.com/posts').then(r => r.json());
-
-        return posts.map(post => ({
-            params: { slug: post.slug },
-            content: post.content, // Raw markdown or HTML
-        }));
-    },
-};
+  async paths() {
+    const posts = await fetch('https://cms.example.com/posts').then(r => r.json())
+    
+    return posts.map(post => ({
+      params: { slug: post.slug },
+      content: post.content  // Raw markdown or HTML
+    }))
+  }
+}
 ```
 
 Render content in template:
 
 ```md
-## <!-- posts/[slug].md -->
-
-## title: {{ $params.title }}
+<!-- posts/[slug].md -->
+---
+title: {{ $params.title }}
+---
 
 <!-- @content -->
 ```
@@ -150,57 +157,61 @@ Auto-rebuild when template or data files change:
 ```js
 // posts/[slug].paths.js
 export default {
-    watch: ['./templates/**/*.njk', '../data/**/*.json'],
-
-    paths(watchedFiles) {
-        const dataFiles = watchedFiles.filter(f => f.endsWith('.json'));
-
-        return dataFiles.map(file => {
-            const data = JSON.parse(fs.readFileSync(file, 'utf-8'));
-            return {
-                params: { slug: data.slug },
-                content: renderTemplate(data),
-            };
-        });
-    },
-};
+  watch: [
+    './templates/**/*.njk',
+    '../data/**/*.json'
+  ],
+  
+  paths(watchedFiles) {
+    const dataFiles = watchedFiles.filter(f => f.endsWith('.json'))
+    
+    return dataFiles.map(file => {
+      const data = JSON.parse(fs.readFileSync(file, 'utf-8'))
+      return {
+        params: { slug: data.slug },
+        content: renderTemplate(data)
+      }
+    })
+  }
+}
 ```
 
 ## Complete Example: Blog
 
 ```js
 // posts/[slug].paths.js
-import fs from 'node:fs';
-import matter from 'gray-matter';
+import fs from 'node:fs'
+import matter from 'gray-matter'
 
 export default {
-    watch: ['./posts/*.md'],
-
-    paths(files) {
-        return files
-            .filter(f => !f.includes('[slug]'))
-            .map(file => {
-                const content = fs.readFileSync(file, 'utf-8');
-                const { data, content: body } = matter(content);
-                const slug = file.match(/([^/]+)\.md$/)[1];
-
-                return {
-                    params: {
-                        slug,
-                        title: data.title,
-                        date: data.date,
-                    },
-                    content: body,
-                };
-            });
-    },
-};
+  watch: ['./posts/*.md'],
+  
+  paths(files) {
+    return files
+      .filter(f => !f.includes('[slug]'))
+      .map(file => {
+        const content = fs.readFileSync(file, 'utf-8')
+        const { data, content: body } = matter(content)
+        const slug = file.match(/([^/]+)\.md$/)[1]
+        
+        return {
+          params: { 
+            slug,
+            title: data.title,
+            date: data.date
+          },
+          content: body
+        }
+      })
+  }
+}
 ```
 
 ```md
-## <!-- posts/[slug].md -->
-
-## layout: doc
+<!-- posts/[slug].md -->
+---
+layout: doc
+---
 
 # {{ $params.title }}
 

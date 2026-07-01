@@ -22,6 +22,7 @@ internal sealed class IndagoProvider : IIndagoProvider
         return items;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> IIndagoProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
@@ -29,6 +30,8 @@ internal sealed class IndagoProvider : IIndagoProvider
         {
             // FilePath: Input0.cs Expression: FZejBoVN5/sP3GKMlJ/eVg==
             case 16:
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
                 items.Add(typeof(global::Indago.Abstractions.IndagoProviderAttribute));
                 items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
@@ -53,6 +56,8 @@ internal sealed class IndagoProvider : IIndagoProvider
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
                 items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
                 items.Add(Indago.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 break;
@@ -66,9 +71,13 @@ internal sealed class IndagoProvider : IIndagoProvider
         return services;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Indago"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(IndagoProvider).Assembly)!;
     private Assembly _Indago;
     private Assembly Indago => _Indago ??= _context.LoadFromAssemblyName(new AssemblyName("Indago, Version=version, Culture=neutral, PublicKeyToken=null"));
+
+    private Assembly _OtherProject;
+    private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));
 
     private Assembly _TestAssembly;
     private Assembly TestAssembly => _TestAssembly ??= _context.LoadFromAssemblyName(new AssemblyName("TestAssembly, Version=version, Culture=neutral, PublicKeyToken=null"));

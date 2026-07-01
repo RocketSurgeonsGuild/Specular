@@ -80,15 +80,15 @@ Register in theme for use everywhere:
 
 ```ts
 // .vitepress/theme/index.ts
-import DefaultTheme from 'vitepress/theme';
-import MyGlobalComponent from './MyGlobalComponent.vue';
+import DefaultTheme from 'vitepress/theme'
+import MyGlobalComponent from './MyGlobalComponent.vue'
 
 export default {
-    extends: DefaultTheme,
-    enhanceApp({ app }) {
-        app.component('MyGlobalComponent', MyGlobalComponent);
-    },
-};
+  extends: DefaultTheme,
+  enhanceApp({ app }) {
+    app.component('MyGlobalComponent', MyGlobalComponent)
+  }
+}
 ```
 
 Then use in any markdown:
@@ -170,7 +170,7 @@ npm install -D stylus # for .styl/.stylus
 ```vue
 <style lang="scss">
 .title {
-    font-size: 20px;
+  font-size: 20px;
 }
 </style>
 ```
@@ -194,17 +194,17 @@ Enable Vue language features for `.md` files:
 ```json
 // tsconfig.json
 {
-    "include": ["docs/**/*.ts", "docs/**/*.vue", "docs/**/*.md"],
-    "vueCompilerOptions": {
-        "vitePressExtensions": [".md"]
-    }
+  "include": ["docs/**/*.ts", "docs/**/*.vue", "docs/**/*.md"],
+  "vueCompilerOptions": {
+    "vitePressExtensions": [".md"]
+  }
 }
 ```
 
 ```json
 // .vscode/settings.json
 {
-    "vue.server.includeLanguages": ["vue", "markdown"]
+  "vue.server.includeLanguages": ["vue", "markdown"]
 }
 ```
 

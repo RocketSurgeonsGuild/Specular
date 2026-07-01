@@ -32,8 +32,8 @@ Or in script:
 
 ```vue
 <script setup>
-import { useData } from 'vitepress';
-const { frontmatter } = useData();
+import { useData } from 'vitepress'
+const { frontmatter } = useData()
 </script>
 ```
 
@@ -115,7 +115,7 @@ Generate a TOC with:
 
 ```md
 | Feature | Status |
-| ------- | ------ |
+|---------|--------|
 | SSR     | ✅     |
 | HMR     | ✅     |
 ```
@@ -149,9 +149,7 @@ With regions:
 ```md
 <!-- In parts/basics.md -->
 <!-- #region usage -->
-
 Usage content here
-
 <!-- #endregion usage -->
 
 <!-- Include just that region -->
@@ -192,15 +190,11 @@ Tab groups for code variants:
 ::: code-group
 
 ```js [config.js]
-export default {
-    /* ... */
-};
+export default { /* ... */ }
 ```
 
 ```ts [config.ts]
-export default defineConfig({
-    /* ... */
-});
+export default defineConfig({ /* ... */ })
 ```
 
 :::
@@ -228,10 +222,10 @@ npm add -D markdown-it-mathjax3@^4
 ```ts
 // .vitepress/config.ts
 export default {
-    markdown: {
-        math: true,
-    },
-};
+  markdown: {
+    math: true
+  }
+}
 ```
 
 Then use LaTeX:
@@ -240,7 +234,6 @@ Then use LaTeX:
 Inline: $E = mc^2$
 
 Block:
-
 $$
 \frac{-b \pm \sqrt{b^2-4ac}}{2a}
 $$
@@ -250,12 +243,12 @@ $$
 
 ```ts
 export default {
-    markdown: {
-        image: {
-            lazyLoading: true,
-        },
-    },
-};
+  markdown: {
+    image: {
+      lazyLoading: true
+    }
+  }
+}
 ```
 
 ## Raw Container

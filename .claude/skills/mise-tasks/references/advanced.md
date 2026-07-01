@@ -26,7 +26,7 @@ Watch uses `sources` from task definition to determine which files to monitor:
 ```toml
 [tasks.build]
 sources = ["src/**/*.rs", "Cargo.toml"]
-run     = "cargo build"
+run = "cargo build"
 ```
 
 ### Watch Options
@@ -136,8 +136,8 @@ mise run build        # Also runs local build
 ```toml
 # packages/web/.mise.toml
 [tasks.build]
-depends = ["//packages/shared:build"] # Depend on shared lib
-run     = "npm run build"
+depends = ["//packages/shared:build"]  # Depend on shared lib
+run = "npm run build"
 ```
 
 ### Monorepo Patterns
@@ -148,11 +148,11 @@ run     = "npm run build"
 # Root .mise.toml
 [tasks.test-all]
 description = "Run all package tests"
-run         = "mise run '//packages/...:test'"
+run = "mise run '//packages/...:test'"
 
 [tasks.build-all]
 description = "Build all packages"
-run         = "mise run '//packages/...:build'"
+run = "mise run '//packages/...:build'"
 ```
 
 **Selective execution**:
@@ -179,7 +179,7 @@ run = "pytest"
 
 [tasks."test:unit"]
 inherits = "base-test"
-run      = "pytest tests/unit/"
+run = "pytest tests/unit/"
 ```
 
 ### Remote Tasks
@@ -207,7 +207,7 @@ mise test  # Runs: mise run test -v
 ```toml
 [tasks.powershell-task]
 shell = "pwsh -c"
-run   = "Get-Process | Select-Object -First 5"
+run = "Get-Process | Select-Object -First 5"
 
 [tasks.python-task]
 shell = "python -c"
@@ -218,7 +218,7 @@ print(json.dumps({"status": "ok"}))
 
 [tasks.zsh-task]
 shell = "zsh -c"
-run   = "setopt extended_glob && ls **/*.md"
+run = "setopt extended_glob && ls **/*.md"
 ```
 
 ### Default Shell Configuration
@@ -255,7 +255,7 @@ mise run --jobs 0 'test:*'   # Unlimited parallelism
 [tasks.validate]
 # These run in parallel (no dependencies between them)
 depends = ["lint", "typecheck", "format-check"]
-run     = "echo 'All validations passed'"
+run = "echo 'All validations passed'"
 ```
 
 Dependencies without inter-dependencies run in parallel automatically.
@@ -288,7 +288,7 @@ _.file = ".env"
 [tasks.deploy]
 # Additional env file for deploy
 env_file = ".env.deploy"
-run      = "deploy.sh"
+run = "deploy.sh"
 ```
 
 ### Conditional Environment
@@ -296,11 +296,10 @@ run      = "deploy.sh"
 ```toml
 [env]
 {% if env.CI %}
-
+LOG_LEVEL = "error"
 {% else %}
-
-{% endif %}LOG_LEVEL = "error"
 LOG_LEVEL = "debug"
+{% endif %}
 ```
 
 ---

@@ -23,6 +23,7 @@ public class IndagoProviderGenerator : IIncrementalGenerator
     /// <inheritdoc />
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        context.RegisterPostInitializationOutput(z => z.AddEmbeddedAttributeDefinition());
         var hasAssemblyLoadContext =
             context.CompilationProvider.Select((compilation, _) => compilation.GetTypeByMetadataName("System.Runtime.Loader.AssemblyLoadContext") is { });
         var assembliesSyntaxProvider = AssemblyCollection.Create(context.SyntaxProvider, hasAssemblyLoadContext);
@@ -198,8 +199,10 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                     reflectionSources,
                     serviceDescriptorSources,
                     privateAssemblies,
+                    config,
                     out var cacheHash
                 );
+                if (privateAssemblies.Any() && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
 
                 cu = cu.AddSharedTrivia().AddAttributeLists(attributes);
 

@@ -1,16 +1,16 @@
 ---
 name: mise-configurator-v2
-description: Mise Configurator workflow skill. Use this skill when the user needs Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization and the operator should preserve the upstream workflow, copied support files, and provenance before merging or handing off.
-version: 0.0.1
+description: "Mise Configurator workflow skill. Use this skill when the user needs Generate production-ready mise.toml setups for local development, CI/CD pipelines, and toolchain standardization and the operator should preserve the upstream workflow, copied support files, and provenance before merging or handing off."
+version: "0.0.1"
 category: devops
-tags: [mise, devops, ci-cd, toolchain, runtimes, automation, mise-configurator-v2, mise-configurator]
+tags: ["mise", "devops", "ci-cd", "toolchain", "runtimes", "automation", "mise-configurator-v2", "mise-configurator"]
 complexity: beginner
 risk: caution
-tools: [cursor, codex-cli, claude-code, gemini-cli, opencode]
+tools: ["cursor", "codex-cli", "claude-code", "gemini-cli", "opencode"]
 source: community
-author: community
-date_added: 2026-04-25
-date_updated: 2026-04-25
+author: "community"
+date_added: "2026-04-25"
+date_updated: "2026-04-25"
 ---
 
 # Mise Configurator
@@ -40,13 +40,13 @@ Use this section as the trigger filter. It should make the activation boundary e
 
 ## Operating Table
 
-| Situation          | Start here          | Why it matters                                                                                                                 |
-| ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| First-time use     | `metadata.json`     | Confirms repository, branch, commit, and imported path through the `external_source` block before touching the copied workflow |
-| Provenance review  | `ORIGIN.md`         | Gives reviewers a plain-language audit trail for the imported source                                                           |
-| Workflow execution | `SKILL.md`          | Starts with the smallest copied file that materially changes execution                                                         |
-| Supporting context | `SKILL.md`          | Adds the next most relevant copied source file without loading the entire package                                              |
-| Handoff decision   | `## Related Skills` | Helps the operator switch to a stronger native skill when the task drifts                                                      |
+| Situation | Start here | Why it matters |
+| --- | --- | --- |
+| First-time use | `metadata.json` | Confirms repository, branch, commit, and imported path through the `external_source` block before touching the copied workflow |
+| Provenance review | `ORIGIN.md` | Gives reviewers a plain-language audit trail for the imported source |
+| Workflow execution | `SKILL.md` | Starts with the smallest copied file that materially changes execution |
+| Supporting context | `SKILL.md` | Adds the next most relevant copied source file without loading the entire package |
+| Handoff decision | `## Related Skills` | Helps the operator switch to a stronger native skill when the task drifts |
 
 ## Workflow
 
@@ -164,10 +164,10 @@ poetry = "1.8.4"
 
 ```yaml
 steps:
-    - uses: actions/checkout@v4
-    - uses: jdx/mise-action@v2
-    - run: poetry install
-    - run: pytest
+  - uses: actions/checkout@v4
+  - uses: jdx/mise-action@v2
+  - run: poetry install
+  - run: pytest
 ```
 
 ## Best Practices
@@ -219,6 +219,8 @@ Treat the generated public skill as a reviewable packaging layer around the upst
 **Symptoms:** The imported skill starts in the right place, but the work turns into debugging, architecture, design, security, or release orchestration that a native skill handles better.
 **Solution:** Use the related skills section to hand off deliberately. Keep the imported provenance visible so the next skill inherits the right context instead of starting blind.
 
+
+
 ## Related Skills
 
 - `@00-andruia-consultant` - Use when the work is better handled by that native specialization after this imported skill establishes context.
@@ -230,13 +232,15 @@ Treat the generated public skill as a reviewable packaging layer around the upst
 
 Use this support matrix and the linked files below as the operator packet for this imported skill. They should reflect real copied source material, not generic scaffolding.
 
-| Resource family | What it gives the reviewer                                                  | Example path     |
-| --------------- | --------------------------------------------------------------------------- | ---------------- |
-| `references`    | copied reference notes, guides, or background material from upstream        | `references/n/a` |
-| `examples`      | worked examples or reusable prompts copied from upstream                    | `examples/n/a`   |
-| `scripts`       | upstream helper scripts that change execution or validation                 | `scripts/n/a`    |
-| `agents`        | routing or delegation notes that are genuinely part of the imported package | `agents/n/a`     |
-| `assets`        | supporting assets or schemas copied from the source package                 | `assets/n/a`     |
+| Resource family | What it gives the reviewer | Example path |
+| --- | --- | --- |
+| `references` | copied reference notes, guides, or background material from upstream | `references/n/a` |
+| `examples` | worked examples or reusable prompts copied from upstream | `examples/n/a` |
+| `scripts` | upstream helper scripts that change execution or validation | `scripts/n/a` |
+| `agents` | routing or delegation notes that are genuinely part of the imported package | `agents/n/a` |
+| `assets` | supporting assets or schemas copied from the source package | `assets/n/a` |
+
+
 
 ### Imported Reference Notes
 
@@ -263,10 +267,10 @@ Use this support matrix and the linked files below as the operator packet for th
 #### Imported: Common Pitfalls
 
 - **Problem:** Wrong runtime version selected
-  **Solution:** Check repository lockfiles and pinned versions first.
+    **Solution:** Check repository lockfiles and pinned versions first.
 
 - **Problem:** CI installs are slow
-  **Solution:** Enable cache layers and reuse mise cache directories.
+    **Solution:** Enable cache layers and reuse mise cache directories.
 
 - **Problem:** Tool missing from registry
-  **Solution:** Verify plugin support or install manually.
+    **Solution:** Verify plugin support or install manually.

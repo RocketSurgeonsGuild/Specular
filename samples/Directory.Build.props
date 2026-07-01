@@ -1,0 +1,26 @@
+<Project>
+    <!-- Inherit the repository-wide conventions (Company, LangVersion, analyzers, CPM, etc.). -->
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <!-- Samples are demonstrations, never shipped or packed. -->
+        <IsPackable>false</IsPackable>
+        <IsPublishable>true</IsPublishable>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+
+        <!--
+            The samples are not part of the tracked public API surface. Drop the RS0017
+            warnings-as-error inherited from the root and silence the public-API analyzer so
+            samples don't need PublicAPI.*.txt tracking files (Principle III: src/Indago's
+            surface stays the sole tracked contract).
+        -->
+        <WarningsAsErrors>$(WarningsAsErrors.Replace('RS0017', '').Trim(';'))</WarningsAsErrors>
+        <NoWarn>$(NoWarn);RS0016;RS0017;RS0026;RS0027;RS0037;RS0041</NoWarn>
+
+        <!-- Samples are not consumed as libraries; no XML doc requirement. -->
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <!-- Conditional workload guards (D1): keep the default solution build green without MAUI / wasm-tools. -->
+    <Import Project="$(MSBuildThisFileDirectory)Directory.Build.workloads.props" />
+</Project>

@@ -1,0 +1,93 @@
+erDiagram
+
+    SiteConfig {
+        string title
+        string description
+        string lang
+        string base
+        boolean cleanUrls
+        boolean lastUpdated
+        ThemeConfig themeConfig
+    }
+
+    ThemeConfig {
+        NavItem_array nav
+        Sidebar_object sidebar
+        EditLink editLink
+        SocialLink_array socialLinks
+        SearchConfig search
+    }
+
+    NavItem {
+        string text
+        string link
+        string_nullable rel
+    }
+
+    SidebarSection {
+        string path_prefix
+        SidebarItem_array items
+    }
+
+    SidebarItem {
+        string text
+        string link
+    }
+
+    ContentPage {
+        string file_path
+        string title
+        string_nullable description
+        string h1_heading
+        CodeBlock_array code_examples
+        string_nullable next_steps_links
+    }
+
+    OxlintConfig {
+        string file_path
+        string_array plugins
+        string_array ignorePatterns
+        object rules
+    }
+
+    TypeScriptConfig {
+        string file_path
+        string target
+        string module
+        string moduleResolution
+        boolean strict
+        string jsx
+        string_array lib
+        string_array include
+    }
+
+    HkStep {
+        string name
+        string_array glob
+        string_array exclude
+        string check_command
+        string fix_command
+    }
+
+    DeployWorkflow {
+        string file_path
+        string_array triggers
+        WorkflowPermissions permissions
+        ConcurrencyConfig concurrency
+        WorkflowJob_array jobs
+    }
+
+    MiseTask {
+        string name
+        string run_command
+        string_nullable description
+    }
+
+    SiteConfig ||--|| ThemeConfig : "contains"
+    ThemeConfig ||--o{ NavItem : "nav"
+    ThemeConfig ||--o{ SidebarSection : "sidebar"
+    SidebarSection ||--o{ SidebarItem : "items"
+    OxlintConfig ||--|| TypeScriptConfig : "co-deployed with"
+    HkStep }o--|| OxlintConfig : "invokes via oxlint"
+    DeployWorkflow ||--o{ MiseTask : "build step calls docs-build"
+    ContentPage }o--|| SidebarItem : "linked from"

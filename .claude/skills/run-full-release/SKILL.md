@@ -2,7 +2,7 @@
 name: run-full-release
 description: Run the current repo's mise release pipeline, or bootstrap one if missing. Use when user wants to release, version bump, publish a package, or.
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit, AskUserQuestion
-argument-hint: '[--dry] [--status]'
+argument-hint: "[--dry] [--status]"
 ---
 
 # /mise:run-full-release
@@ -31,18 +31,18 @@ ls pyproject.toml Cargo.toml package.json setup.py go.mod 2>/dev/null || echo "N
 - **Has a package manifest** (Python/Rust/Node/Go) → publishable repo. Continue to **Step 2** (scaffold a version+publish pipeline).
 - **NO package manifest AND no existing release infra** → this is a **docs / config / sync repo** (personal dotfiles, notes, or a multi-machine `git`-synced config repo). There is nothing to version or publish. **Do NOT scaffold `semantic-release`.** For these repos, "release" = **sync to origin**:
 
-    ```bash
-    git fetch origin
-    git rev-list --left-right --count origin/<branch>...HEAD   # behind  ahead
-    [ -z "$(git status --porcelain)" ] || echo "DIRTY — commit or stash first"
-    # Only when the user has asked to release/ship (push only on request):
-    git push origin <branch>
-    git fetch origin && [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/<branch>)" ] && echo "✅ synced — release complete"
-    ```
+  ```bash
+  git fetch origin
+  git rev-list --left-right --count origin/<branch>...HEAD   # behind  ahead
+  [ -z "$(git status --porcelain)" ] || echo "DIRTY — commit or stash first"
+  # Only when the user has asked to release/ship (push only on request):
+  git push origin <branch>
+  git fetch origin && [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/<branch>)" ] && echo "✅ synced — release complete"
+  ```
 
-    If `behind > 0`, reconcile first (`git pull --rebase` or merge) before pushing. Optionally scaffold a minimal `release:full` = `preflight` (clean tree + correct branch + up-to-date) → `push` → `verify` (origin == HEAD), with NO version/publish phases — but only if the user wants repeatable sync; otherwise the one-shot push above IS the whole release.
+  If `behind > 0`, reconcile first (`git pull --rebase` or merge) before pushing. Optionally scaffold a minimal `release:full` = `preflight` (clean tree + correct branch + up-to-date) → `push` → `verify` (origin == HEAD), with NO version/publish phases — but only if the user wants repeatable sync; otherwise the one-shot push above IS the whole release.
 
-    _Evidence (2026-06-04): invoked on `claude-sys`, a multi-machine git-synced config/docs repo — no package manifest, no `.mise.toml`, no semantic-release. Correct action was a fast-forward `git push origin main` + HEAD==origin verify, NOT a pipeline scaffold. Audit-first (Step 2a's ecosystem check) is what surfaced this; promoting it to an explicit Step 1b gate prevents the wrong reflex of scaffolding a publish pipeline on a repo with nothing to publish._
+  _Evidence (2026-06-04): invoked on `claude-sys`, a multi-machine git-synced config/docs repo — no package manifest, no `.mise.toml`, no semantic-release. Correct action was a fast-forward `git push origin main` + HEAD==origin verify, NOT a pipeline scaffold. Audit-first (Step 2a's ecosystem check) is what surfaced this; promoting it to an explicit Step 1b gate prevents the wrong reflex of scaffolding a publish pipeline on a repo with nothing to publish._
 
 ## Step 2: Bootstrap Release Workflow
 
@@ -120,18 +120,18 @@ done
 **Cargo workspace lockfile cascade** (Rust workspaces with `version.workspace = true`): the perl-based version bump in `prepareCmd` only touches `Cargo.toml`, but the workspace version cascades into every member crate's entry in `Cargo.lock`. The `@semantic-release/git` plugin only stages files listed in `assets`, so without an explicit cargo invocation + `Cargo.lock` in assets, the lockfile stays at the old version. Symptoms: `release:preflight` fails with `M Cargo.lock` after a successful `release:version`, blocking `cargo publish`. Fix in `.releaserc.yml`:
 
 ```yaml
-- - '@semantic-release/exec'
+- - "@semantic-release/exec"
   - prepareCmd: |
-        perl -i -pe 's/^version = ".*"/version = "${nextRelease.version}"/' Cargo.toml
-        cargo update --workspace --offline 2>/dev/null \
-          || cargo metadata --format-version=1 --offline >/dev/null 2>&1 \
-          || true
+      perl -i -pe 's/^version = ".*"/version = "${nextRelease.version}"/' Cargo.toml
+      cargo update --workspace --offline 2>/dev/null \
+        || cargo metadata --format-version=1 --offline >/dev/null 2>&1 \
+        || true
 
-- - '@semantic-release/git'
+- - "@semantic-release/git"
   - assets:
-        - Cargo.toml
-        - Cargo.lock # ← critical: capture the cascading version bump
-    message: 'chore(release): ${nextRelease.version} [skip ci]'
+      - Cargo.toml
+      - Cargo.lock # ← critical: capture the cascading version bump
+    message: "chore(release): ${nextRelease.version} [skip ci]"
 ```
 
 `--offline` keeps the sync local (no registry hit). The `|| true` fallback prevents `prepareCmd` from blocking the release if neither cargo command can run; if the lockfile actually needed sync, the next preflight will catch it.

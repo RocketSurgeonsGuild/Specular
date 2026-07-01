@@ -1,4 +1,4 @@
-﻿namespace TestAssembly;
+namespace TestAssembly;
 
 public interface IService;
 
@@ -17,23 +17,23 @@ public static class Nested
     private class Validator : IValidator<MyRecord>;
 }
 
-class ServiceB : IService;
+internal class ServiceB : IService;
 
 public interface IRequest<T>;
 
 public interface IRequestHandler<T, R> where T : IRequest<R>;
 
-class Request : IRequest<Response>;
+internal class Request : IRequest<Response>;
 
-class Response;
+internal class Response;
 
-class RequestHandler : IRequestHandler<Request, Response>;
+internal class RequestHandler : IRequestHandler<Request, Response>;
 
 public interface IOther;
 
 public interface IGenericService<T>;
 
-class GenericService : IGenericService<int>, IGenericService<string>, IOther;
+internal class GenericService : IGenericService<int>, IGenericService<string>, IOther;
 
 public class GenericServiceB : IGenericService<decimal>, IOther;
 

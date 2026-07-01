@@ -14,8 +14,8 @@ Specify language after opening backticks:
 ````md
 ```js
 export default {
-    name: 'MyComponent',
-};
+  name: 'MyComponent'
+}
 ```
 ````
 
@@ -59,12 +59,12 @@ Inline highlighting with comment:
 ````md
 ```js
 export default {
-    data() {
-        return {
-            msg: 'Highlighted!', // [!code highlight]
-        };
-    },
-};
+  data() {
+    return {
+      msg: 'Highlighted!' // [!code highlight]
+    }
+  }
+}
 ```
 ````
 
@@ -75,12 +75,12 @@ Blur other code and focus specific lines:
 ````md
 ```js
 export default {
-    data() {
-        return {
-            msg: 'Focused!', // [!code focus]
-        };
-    },
-};
+  data() {
+    return {
+      msg: 'Focused!' // [!code focus]
+    }
+  }
+}
 ```
 ````
 
@@ -114,13 +114,13 @@ Color lines as errors or warnings:
 ````md
 ```js
 export default {
-    data() {
-        return {
-            msg: 'Error', // [!code error]
-            msg: 'Warning', // [!code warning]
-        };
-    },
-};
+  data() {
+    return {
+      msg: 'Error',   // [!code error]
+      msg: 'Warning'  // [!code warning]
+    }
+  }
+}
 ```
 ````
 
@@ -131,10 +131,10 @@ Enable globally:
 ```ts
 // .vitepress/config.ts
 export default {
-    markdown: {
-        lineNumbers: true,
-    },
-};
+  markdown: {
+    lineNumbers: true
+  }
+}
 ```
 
 Per-block override:
@@ -169,15 +169,11 @@ Tabbed code blocks:
 ::: code-group
 
 ```js [JavaScript]
-export default {
-    /* ... */
-};
+export default { /* ... */ }
 ```
 
 ```ts [TypeScript]
-export default defineConfig({
-    /* ... */
-});
+export default defineConfig({ /* ... */ })
 ```
 
 :::
@@ -226,7 +222,7 @@ Add filename labels to code blocks:
 
 ````md
 ```js [vite.config.js]
-export default defineConfig({});
+export default defineConfig({})
 ```
 ````
 
