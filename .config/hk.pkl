@@ -75,12 +75,24 @@ local jbCleanupCode: Step = new Step {
 
 local linters = new Mapping<String, Step> {
   ["mise"] = Builtins.mise
-  ["byte-order-marker"] = Builtins.byte_order_marker
-  ["case-conflict"] = Builtins.check_case_conflict
-  ["merge-conflict"] = Builtins.check_merge_conflict
-  ["symlinks"] = Builtins.check_symlinks
-  ["hk-test"] = Builtins.hk_test
-  ["pkl-format"] = Builtins.pkl_format
+  ["byte-order-marker"] = (Builtins.byte_order_marker) {
+    exclude = excludes
+  }
+  ["case-conflict"] = (Builtins.check_case_conflict) {
+    exclude = excludes
+  }
+  ["merge-conflict"] = (Builtins.check_merge_conflict) {
+    exclude = excludes
+  }
+  ["symlinks"] = (Builtins.check_symlinks) {
+    exclude = excludes
+  }
+  ["hk-test"] = (Builtins.hk_test) {
+    exclude = excludes
+  }
+  ["pkl-format"] = (Builtins.pkl_format) {
+    exclude = excludes
+  }
   ["prettier"] = (Builtins.prettier) {
     exclude = excludes
   }
@@ -93,7 +105,9 @@ local linters = new Mapping<String, Step> {
   ["detect-private-key"] = (Builtins.detect_private_key) {
     exclude = excludes
   }
-  ["large-files"] = Builtins.check_added_large_files
+  ["large-files"] = (Builtins.check_added_large_files) {
+    exclude = excludes
+  }
   ["dotnet-format"] = dotnetFormat
   // ["jb-cleanupcode"] = jbCleanupCode
 }
