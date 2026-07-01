@@ -4,6 +4,7 @@
     Indago.Analyzers.IndagoProviderGenerator: []
   },
   GlobalOptions: {
+    build_property.IndagoEmitProvider: true,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2
   },
@@ -17,27 +18,5 @@
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
-  ],
-  Services: [
-    {
-      Lifetime: Scoped,
-      ServiceType: Nested+ServiceA,
-      ImplementationType: Nested+ServiceA
-    },
-    {
-      Lifetime: Scoped,
-      ServiceType: Service,
-      ImplementationType: Service
-    },
-    {
-      Lifetime: Scoped,
-      ServiceType: IServiceB,
-      ImplementationFactory: System.Func`2[System.IServiceProvider,IServiceB]
-    },
-    {
-      Lifetime: Scoped,
-      ServiceType: ServiceB,
-      ImplementationType: ServiceB
-    }
   ]
 }

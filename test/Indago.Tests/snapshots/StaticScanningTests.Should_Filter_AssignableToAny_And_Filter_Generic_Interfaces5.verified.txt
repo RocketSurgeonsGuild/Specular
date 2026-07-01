@@ -4,6 +4,7 @@
     Indago.Analyzers.IndagoProviderGenerator: []
   },
   GlobalOptions: {
+    build_property.IndagoEmitProvider: true,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2
   },
@@ -17,17 +18,5 @@
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
-  ],
-  Services: [
-    {
-      Lifetime: Scoped,
-      ServiceType: Nested+Validator,
-      ImplementationType: Nested+Validator
-    },
-    {
-      Lifetime: Scoped,
-      ServiceType: IValidator`1[[Nested+MyRecord, TestProject, Version=version, Culture=neutral, PublicKeyToken=null]],
-      ImplementationFactory: System.Func`2[System.IServiceProvider,System.Object]
-    }
   ]
 }

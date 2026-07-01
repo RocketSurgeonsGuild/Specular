@@ -113,6 +113,9 @@ internal static class ServiceDescriptorCollection
             {
                 (var methodCallSyntax, var selector, _) = tuple;
 
+                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                if (!Helpers.IsIndagoProviderCall(semanticModel, methodCallSyntax)) continue;
+
                 List<IAssemblyDescriptor> assemblies = [];
                 List<ITypeFilterDescriptor> typeFilters =
                 [
@@ -125,7 +128,7 @@ internal static class ServiceDescriptorCollection
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
-                    compilation.GetSemanticModel(tuple.expression.SyntaxTree),
+                    semanticModel,
                     selector,
                     assemblies,
                     typeFilters,
@@ -481,10 +484,9 @@ internal static class ServiceDescriptorCollection
     private static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetServiceDescriptorMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetMethod(context.Node);
-        return context.SemanticModel.GetTypeInfo(selector).ConvertedType is not INamedTypeSymbol
-        {
-            TypeArguments: [{ Name: IServiceDescriptorAssemblySelector }, ..],
-        }
+        // Structural detection only; genuine IIndagoProvider validation is deferred to GetServiceDescriptorItems,
+        // which runs against the shell-augmented compilation. See IndagoProviderGenerator.CreateSemanticCompilation.
+        return method is null || selector is null
             ? default
             : (method, selector, semanticModel: context.SemanticModel);
     }

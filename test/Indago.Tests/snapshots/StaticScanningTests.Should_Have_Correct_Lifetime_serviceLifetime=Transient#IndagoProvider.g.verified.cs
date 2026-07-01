@@ -10,8 +10,8 @@ using Indago.Abstractions;
 
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
-[assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
-[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+[assembly: Indago.Abstractions.IndagoHashAttribute("{scrubbed}")]
+[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class IndagoProvider : IIndagoProvider
 {
     public static IIndagoProvider Instance { get; } = new IndagoProvider();
@@ -30,20 +30,6 @@ internal sealed class IndagoProvider : IIndagoProvider
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection IIndagoProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        switch (lineNumber)
-        {
-            // FilePath: Input0.cs Expression: 9SEuo9RSNxqx2S7RDRddCg==
-            case 17:
-                services.Add(ServiceDescriptor.Transient<global::Service, global::Service>());
-                services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Service>()));
-                break;
-            // FilePath: Input0.cs Expression: 6G+we5t+6z0YxEom+P04Fg==
-            case 27:
-                services.Add(ServiceDescriptor.Transient<global::ServiceB, global::ServiceB>());
-                services.Add(ServiceDescriptor.Transient<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
-                break;
-        }
-
         return services;
     }
 }

@@ -33,7 +33,13 @@ internal static class AssemblyCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, var semanticModel) = tuple;
+                (var methodCallSyntax, var selector, _) = tuple;
+
+                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                // The compilation passed here is augmented with an IndagoProvider shell so the receiver binds.
+                // Only treat this as a scan when the call actually resolves to IIndagoProvider; otherwise a
+                // syntactically-similar call would produce an empty (match-everything) filter.
+                if (!Helpers.IsIndagoProviderCall(semanticModel, methodCallSyntax)) continue;
 
                 var assemblies = new List<IAssemblyDescriptor>();
                 var typeFilters = new List<ITypeFilterDescriptor>();
@@ -43,7 +49,7 @@ internal static class AssemblyCollection
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
-                    compilation.GetSemanticModel(tuple.expression.SyntaxTree),
+                    semanticModel,
                     selector,
                     assemblies,
                     typeFilters,
@@ -89,12 +95,11 @@ internal static class AssemblyCollection
     )
     {
         (var method, var selector) = GetMethod(context.Node);
-        if (method is null) return default;
-
-        if (selector is null) return default;
-
-        var convertType = context.SemanticModel.GetTypeInfo(selector).ConvertedType;
-        return convertType is not INamedTypeSymbol { TypeArguments: [{ Name: IReflectionAssemblySelector }, ..] }
+        // Detection is intentionally structural only. The selector's converted type cannot be resolved here when
+        // the call is written against the generated IndagoProvider (which does not exist yet during generation),
+        // so validation that this is a genuine IIndagoProvider call is deferred to GetAssemblyItems, which runs
+        // against a shell-augmented compilation. See IndagoProviderGenerator.CreateSemanticCompilation.
+        return method is null || selector is null
             ? default
             : (method, selector, semanticModel: context.SemanticModel);
     }
