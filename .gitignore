@@ -241,3 +241,4 @@ dist/
 docs/src/content/docs/api/**
 !docs/src/content/docs/api/index.md
 .playwright-mcp/
+docs/api/
