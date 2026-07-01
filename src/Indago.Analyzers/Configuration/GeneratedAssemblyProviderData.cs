@@ -22,10 +22,11 @@ public record GeneratedAssemblyProviderData
 
     public ResolvedSourceLocation? GetSourceLocation(IAssemblySymbol assembly, SourceLocation sourceLocation, Func<ResolvedSourceLocation?> factory)
     {
-        if (assembly is null) throw new ArgumentNullException(nameof(assembly));
-        return  sourceLocation is null 
+        return  assembly is null 
+            ? throw new ArgumentNullException(nameof(assembly))
+            :  sourceLocation is null
             ? throw new ArgumentNullException(nameof(sourceLocation))
-            :  factory is null
+            : factory is null
             ? throw new ArgumentNullException(nameof(factory))
             : Partials.TryGetValue(ResultingAssemblyProviderData.GetCacheFileHash(sourceLocation), out var resolvedSourceLocations)
      && resolvedSourceLocations.GetSourceLocation(assembly.MetadataName) is { } data
