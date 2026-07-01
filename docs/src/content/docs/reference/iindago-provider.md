@@ -8,29 +8,23 @@ tags:
 
 # IIndagoProvider
 
-`IIndagoProvider` is the primary entry point for all compile-time scanning operations in Indago. At build time, the Roslyn source generator emits a concrete implementation of this interface and wires it to your assembly via `[IndagoProviderAttribute]`. You never instantiate the provider directly — you access it through `EntryAssembly` or through the generated class.
+`IIndagoProvider` is the primary entry point for all compile-time scanning operations in Indago. At build time, the Roslyn source generator emits a concrete `IndagoProvider` implementation of this interface into your assembly. You access it through the generated static `IndagoProvider.Instance` property — no manual instantiation, no reflection.
 
-## Static Members
+## Accessing the Provider
 
-### `EntryAssembly`
-
-```csharp
-static IIndagoProvider EntryAssembly { get; }
-```
-
-Resolves the provider for the current application's entry assembly. Under the hood it calls:
+### `IndagoProvider.Instance`
 
 ```csharp
-Assembly.GetEntryAssembly().GetIndagoProvider();
+public static IIndagoProvider Instance { get; }
 ```
 
-`GetIndagoProvider()` reads the `[IndagoProviderAttribute]` that the generator attaches to the entry assembly at build time and activates the generated provider type via lazy `Activator.CreateInstance`. If no attribute is present (e.g. the assembly was not processed by the generator) an `InvalidOperationException` is thrown.
-
-**Usage:**
+The source generator emits a concrete `IndagoProvider` class into your assembly and exposes it through the static `Instance` property. This is the entry point for all scanning — access it directly, with no reflection or `Activator.CreateInstance` involved:
 
 ```csharp
-IIndagoProvider provider = IIndagoProvider.EntryAssembly;
+IIndagoProvider provider = IndagoProvider.Instance;
 ```
+
+`IndagoProvider` is `internal` to the assembly the generator runs in, so `Instance` is available anywhere in that same assembly. Hold the returned `IIndagoProvider` in a field or local, or call `GetAssemblies`, `GetTypes`, and `Scan` on it inline.
 
 ### `GetArgumentExpressionHash(string)`
 

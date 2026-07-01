@@ -10,10 +10,16 @@ using Indago.Abstractions;
 
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
-[assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
+[assembly: Indago.Abstractions.IndagoHashAttribute("{scrubbed}")]
 [System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-file class IndagoProvider : IIndagoProvider
+internal sealed class IndagoProvider : IIndagoProvider
 {
+    public static IIndagoProvider Instance { get; } = new IndagoProvider();
+
+    private IndagoProvider()
+    {
+    }
+
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Assembly>();
@@ -28,27 +34,6 @@ file class IndagoProvider : IIndagoProvider
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection IIndagoProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        switch (lineNumber)
-        {
-            // FilePath: Input1.cs Expression: 5eMbUdKffIDeG8HjnS42og==
-            case 12:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input1.cs Expression: 5eMbUdKffIDeG8HjnS42og==
-                    case "Input1.cs":
-                        services.Add(ServiceDescriptor.Singleton<global::Service, global::Service>());
-                        services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::Service>()));
-                        break;
-                    // FilePath: Input2.cs Expression: lk0ALym+V2W6xQDXO/AkYw==
-                    case "Input2.cs":
-                        services.Add(ServiceDescriptor.Scoped<global::ServiceB, global::ServiceB>());
-                        services.Add(ServiceDescriptor.Scoped<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
-                        break;
-                }
-
-                break;
-        }
-
         return services;
     }
 }

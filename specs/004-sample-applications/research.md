@@ -86,17 +86,12 @@ missing>, "<reason>"))` (pattern used by `PublishNuGetPackagesModule`, `TestSolu
 
 ### D-E. Docs module behavior
 
-- **Decision**: `DocsModule` (`[DependsOn<BuildSolution>]`) does, in order:
-    1. Assert `src/Indago/bin/Release/net8.0/Indago.dll` **and** `Indago.xml` exist (fail clearly
-       if `Indago.xml` is missing — Edge Case "Docs build consumes bin"). `SolutionSettings.
-Configuration` defaults to `Release`, so `BuildSolution` already produces these.
-    2. Run `xmldocmd <Indago.dll> docs/src/content/docs/api/ --namespace Indago --source
+- **Decision**: `DocsModule` (`[DependsOn<BuildSolution>]`) does, in order: 1. Assert `src/Indago/bin/Release/net8.0/Indago.dll` **and** `Indago.xml` exist (fail clearly
+  if `Indago.xml` is missing — Edge Case "Docs build consumes bin"). `SolutionSettings.
+Configuration` defaults to `Release`, so `BuildSolution` already produces these. 2. Run `xmldocmd <Indago.dll> docs/src/content/docs/api/ --namespace Indago --source
 https://github.com/RocketSurgeonsGuild/Indago/blob/main/src/Indago/ --clean`
-       (xmldocmd is the mise dotnet tool `xmldocmd@2.9.0`).
-    3. Run `node docs/scripts/add-api-frontmatter.mjs` (existing Starlight frontmatter injector).
-    4. `npm ci` + `npm run build` in `docs/` via `context.Node()`.
-    5. Copy/emit the built site (`docs/dist`) into `ArtifactSettings.ArtifactsDirectory / "docs"`
-       using `FolderExtensions` (`EnsureExists`, `/`, `+`).
+  (xmldocmd is the mise dotnet tool `xmldocmd@2.9.0`). 3. Run `node docs/scripts/add-api-frontmatter.mjs` (existing Starlight frontmatter injector). 4. `npm ci` + `npm run build` in `docs/` via `context.Node()`. 5. Copy/emit the built site (`docs/dist`) into `ArtifactSettings.ArtifactsDirectory / "docs"`
+  using `FolderExtensions` (`EnsureExists`, `/`, `+`).
 - **Rationale**: FR-022–FR-025, SC-008. Generates from **bin, not publish** (FR-023). Reuses
   extensions building blocks (FR-025). Stays deploy-agnostic (FR-028).
 - **Alternatives considered**: building Astro to a temp dir then copying — equivalent; we keep

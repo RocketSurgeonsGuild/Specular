@@ -9,15 +9,25 @@ public class ResultingAssemblyProviderData
 {
     public void AddExpressionData(IAssemblySymbol assembly, CompiledAssemblyProviderData data)
     {
+        if (assembly is null) throw new ArgumentNullException(nameof(assembly));
+
         if (_assemblyData.TryGetValue(assembly.MetadataName, out _)) return;
 
         _assemblyData.Add(assembly.MetadataName, data);
     }
 
-    public bool NoExpressions(IAssemblySymbol assembly) => _expressionlessAssemblies.Add(assembly.MetadataName);
+    public bool NoExpressions(IAssemblySymbol assembly)
+    {
+        return assembly is null
+            ? throw new ArgumentNullException(nameof(assembly))
+            : _expressionlessAssemblies.Add(assembly.MetadataName);
+    }
 
     public void AddSourceLocation(IAssemblySymbol assembly, ResolvedSourceLocation resolvedSource)
     {
+        if (assembly is null) throw new ArgumentNullException(nameof(assembly));
+        if (resolvedSource is null) throw new ArgumentNullException(nameof(resolvedSource));
+
         var cacheKey = GetCacheFileHash(resolvedSource.Location);
         if (!_sourceLocations.TryGetValue(cacheKey, out _)) _sourceLocations.Add(cacheKey, new(resolvedSource.Location));
 
@@ -33,12 +43,13 @@ public class ResultingAssemblyProviderData
         )
     );
 
+    [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a non-cryptographic, stable cache key for selector text; not used for security.")]
     internal static string GetCacheFileHash(SourceLocation location)
     {
         using var hasher = MD5.Create();
         addStringToHash(hasher, location.FileName);
         addStringToHash(hasher, location.ExpressionHash);
-        addStringToHash(hasher, location.LineNumber.ToString());
+        addStringToHash(hasher, location.LineNumber.ToString(System.Globalization.CultureInfo.InvariantCulture));
         _ = hasher.TransformFinalBlock([], 0, 0);
         return Convert.ToBase64String(hasher.Hash);
 

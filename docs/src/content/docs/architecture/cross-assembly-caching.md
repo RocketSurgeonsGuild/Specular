@@ -43,17 +43,17 @@ Inside `AssemblyProviderConfiguration`, before visiting any upstream `ITypeSymbo
 Every assembly that has been processed by Indago carries an assembly-level attribute:
 
 ```csharp
-[assembly: IndagoProvider(typeof(GeneratedIndagoProvider), "abc123…")]
+[assembly: IndagoHashAttribute("abc123…")]
 ```
 
-The second constructor argument is the `GeneratedHash` — a hash of the generator's output computed by `AssemblyProviderBuilder`. When Indago reads a cached entry from `ctpjson`, it compares the upstream assembly's `GeneratedHash` (read from its `IndagoProviderAttribute` via Roslyn's `GetAttributes()`) against the `CacheVersion` stored in the JSON:
+The constructor argument is the `GeneratedHash` — a hash of the generator's output computed by `AssemblyProviderBuilder`. When Indago reads a cached entry from `ctpjson`, it compares the upstream assembly's `GeneratedHash` (read from its `IndagoHashAttribute` via Roslyn's `GetAttributes()`) against the `CacheVersion` stored in the JSON:
 
 ```csharp
 public bool MatchesCachedVersion(this IAssemblySymbol assembly, string? cacheVersion) =>
     assembly.GetCachedVersion() is not { Length: > 0 } version || version == cacheVersion;
 ```
 
-`GetCachedVersion` first looks for the `IndagoProviderAttribute` hash; if absent it falls back to `AssemblyInformationalVersionAttribute`. A mismatch means the upstream types changed after the cache was written — the downstream generator discards the cached entry and re-resolves from source.
+`GetCachedVersion` first looks for the `IndagoHashAttribute` hash; if absent it falls back to `AssemblyInformationalVersionAttribute`. A mismatch means the upstream types changed after the cache was written — the downstream generator discards the cached entry and re-resolves from source.
 
 ## Two-Project Example
 

@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.AssemblyProviders;
 
-internal class CompiledAssemblyFilter(ImmutableList<IAssemblyDescriptor> assemblyDescriptors, SourceLocation? sourceLocation = null) : ICompiledTypeFilter<IAssemblySymbol>
+internal sealed class CompiledAssemblyFilter(ImmutableList<IAssemblyDescriptor> assemblyDescriptors, SourceLocation? sourceLocation = null) : ICompiledTypeFilter<IAssemblySymbol>
 {
     public ImmutableList<IAssemblyDescriptor> AssemblyDescriptors { get; } = assemblyDescriptors;
 

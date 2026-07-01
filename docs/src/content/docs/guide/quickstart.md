@@ -8,19 +8,17 @@ tags:
 
 # Quickstart
 
-This page assumes you have already [installed Indago](../installation/) and applied `[assembly: IndagoProviderAttribute]` to your entry project.
+This page assumes you have already [installed Indago](../installation/).
 
 ## 1. Obtain the Provider
 
-`IIndagoProvider.EntryAssembly` is a static property that resolves the generated provider for the currently running entry assembly. It works by reading the `IndagoProviderAttribute` the generator stamped onto your assembly at build time:
+The generator emits an `IndagoProvider` class into your assembly and exposes it through the static `IndagoProvider.Instance` property:
 
 ```csharp
-using Indago;
-
-IIndagoProvider provider = IIndagoProvider.EntryAssembly;
+IIndagoProvider provider = IndagoProvider.Instance;
 ```
 
-You can also inject the provider or store it in a variable — `IIndagoProvider` is a plain interface.
+`IndagoProvider` is `internal`, so `Instance` is available throughout your project. You can hold it in a variable or field, or call it inline — `IIndagoProvider` is a plain interface you can also inject.
 
 ## 2. Scan for Types
 
@@ -52,7 +50,7 @@ The full selector fluent API is covered in the Reference section. Common startin
 ```csharp
 // Program.cs
 var builder = WebApplication.CreateBuilder(args);
-var provider = IIndagoProvider.EntryAssembly;
+var provider = IndagoProvider.Instance;
 
 provider.Scan(builder.Services, s =>
     s.FromAssemblyOf<Program>()

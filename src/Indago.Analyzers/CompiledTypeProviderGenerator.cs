@@ -4,7 +4,6 @@ using System.Text.Json;
 using Indago.Analyzers.Configuration;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -82,17 +81,33 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                 HashSet<string> excludedAssemblies = request.options.GlobalOptions.TryGetValue("build_property.ExcludeAssemblyFromCTP", out var assemblies)
                     ? [.. assemblies.Split([';', ','], StringSplitOptions.RemoveEmptyEntries)]
                     : [];
+                // Whether this assembly should emit its own IIndagoProvider implementation.
+                // Libraries that are only meant to be scanned can opt out by setting
+                // <IndagoEmitProvider>false</IndagoEmitProvider>; the consuming application
+                // then emits the provider. Defaults to true to preserve existing behaviour.
+                var emitProvider = !request.options.GlobalOptions.TryGetValue("build_property.IndagoEmitProvider", out var emitProviderValue)
+                 || !bool.TryParse(emitProviderValue, out var parsedEmitProvider)
+                 || parsedEmitProvider;
                 var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
                 var diagnostics = new HashSet<Diagnostic>();
-                var assemblyRequests = AssemblyCollection.GetAssemblyItems(request.compilation, diagnostics, request.assemblies, context.CancellationToken);
+
+                // The generated IndagoProvider type does not exist while this generator runs, so consumer scan
+                // calls written against `IndagoProvider.Instance` (or a local typed from it) fail to bind, which
+                // would silently drop every scan expression. Build a semantic-only compilation that includes a
+                // minimal IndagoProvider shell purely so those selector lambdas bind and can be parsed. This
+                // augmented compilation is used ONLY for interpreting selector expressions - never for enumerating
+                // the types being scanned - so the shell can never appear in scan results.
+                var semanticCompilation = CreateSemanticCompilation(request.compilation);
+
+                var assemblyRequests = AssemblyCollection.GetAssemblyItems(semanticCompilation, diagnostics, request.assemblies, context.CancellationToken);
                 var reflectionRequests = ReflectionCollection.GetReflectionItems(
-                    request.compilation,
+                    semanticCompilation,
                     diagnostics,
                     request.reflection,
                     context.CancellationToken
                 );
                 var serviceDescriptorRequests = ServiceDescriptorCollection.GetServiceDescriptorItems(
-                    request.compilation,
+                    semanticCompilation,
                     diagnostics,
                     request.serviceDescriptors,
                     context.CancellationToken
@@ -196,32 +211,35 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                     config,
                     out var cacheHash
                 );
-                if (privateAssemblies.Any() && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+                cu = cu.AddSharedTrivia()
+                .AddAttributeLists(attributes)
 
-                MemberDeclarationSyntax[] members = [assemblyProvider];
-
-                cu = cu
-                    .AddSharedTrivia()
-                    .AddAttributeLists(attributes)
-                    .AddAttributeLists(
-                         AttributeList(
-                                 SingletonSeparatedList(
-                                     Attribute(
-                                         ParseName("Indago.Abstractions.IndagoProviderAttribute"),
-                                         AttributeArgumentList(
-                                             SeparatedList(
-                                                 [
-                                                     AttributeArgument(TypeOfExpression(ParseName(assemblyProvider.Identifier.Text))),
-                                                     AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
-                                                 ]
+                        .AddAttributeLists(
+                             AttributeList(
+                                     SingletonSeparatedList(
+                                         Attribute(
+                                             ParseName("Indago.Abstractions.IndagoHashAttribute"),
+                                             AttributeArgumentList(
+                                                 SeparatedList(
+                                                     [
+                                                         AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
+                                                     ]
+                                                 )
                                              )
                                          )
                                      )
                                  )
-                             )
-                            .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
-                     )
-                    .AddMembers(members);
+                                .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
+                         );
+
+                // Only emit the provider implementation (and the attribute that points at it)
+                // when this assembly is configured to do so. The scan-metadata attributes above
+                // are always emitted so that downstream assemblies can reuse the resolved data.
+                if (emitProvider)
+                {
+                    if (privateAssemblies.Count != 0 && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+                    cu = cu.AddMembers(assemblyProvider);
+                }
 
                 foreach (var diagnostic in diagnostics)
                 {
@@ -276,4 +294,23 @@ public class IndagoProviderGenerator : IIncrementalGenerator
         return cacheDirectory;
     }
 #pragma warning restore RS1035
+
+    // Produces a compilation augmented with a minimal IndagoProvider shell so that consumer scan calls written
+    // against the generated `IndagoProvider.Instance` bind during generation. Used only for parsing selector
+    // expressions - never for enumerating the types being scanned.
+    private static Compilation CreateSemanticCompilation(Compilation compilation)
+    {
+        // If the consuming compilation already declares an IndagoProvider, do not inject the shell.
+        if (compilation.GetTypeByMetadataName("IndagoProvider") is { }) return compilation;
+
+        const string shellSource =
+            "internal sealed class IndagoProvider\n"
+          + "{\n"
+          + "    public static global::Indago.IIndagoProvider Instance { get; }\n"
+          + "}\n";
+
+        var parseOptions = compilation.SyntaxTrees.Select(z => z.Options).FirstOrDefault() as CSharpParseOptions;
+        var shellTree = CSharpSyntaxTree.ParseText(shellSource, parseOptions);
+        return compilation.AddSyntaxTrees(shellTree);
+    }
 }

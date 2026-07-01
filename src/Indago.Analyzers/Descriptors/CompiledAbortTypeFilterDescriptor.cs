@@ -1,3 +1,4 @@
 namespace Indago.Analyzers.Descriptors;
 
-internal record CompiledAbortTypeFilterDescriptor : ITypeFilterDescriptor;
+[SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Instantiated via the generic type-filter pipeline / reflection-free generics.")]
+internal sealed record CompiledAbortTypeFilterDescriptor : ITypeFilterDescriptor;

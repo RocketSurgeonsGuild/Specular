@@ -32,8 +32,9 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
 
     private readonly IReadOnlyCollection<FileInfo> projects = [
         Sourcy.DotNet.Projects.Indago_Samples_Console,
-         Sourcy.DotNet.Projects.Indago_Samples_Web
-         ];
+        Sourcy.DotNet.Projects.Indago_Samples_Web
+    ];
+    protected override ModuleConfiguration Configure() => ModuleConfiguration.Create().WithRetryCount(3).Build();
     protected override async Task<ImmutableList<CommandResult>> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
     {
         var rid = RuntimeInformation.RuntimeIdentifier;

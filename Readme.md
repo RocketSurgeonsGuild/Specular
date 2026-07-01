@@ -18,7 +18,7 @@ This library works in two parts.
 
 The first part is the interfaces and attributes. `IIndagoProvider` grants you access the scanner. There are helper methods to get access to the scanner for a given assembly ( any thoughts on how to improve this experience are welcome?!? )
 
-For applications using `IndagoSupport.EntryAssembly` to get access to the the scanner of the entry assembly, makes sense. However your consumers should almost **ALWAYS** accept the `IIndagoProvider` interface as a dependency, and not rely on the static `IndagoSupport.EntryAssembly` method. This ensures that the correct scanner is used. THIS IS IMPORTANT but we will get to that in step 2.
+Each assembly that emits a provider exposes it as a compile-time singleton, `IndagoProvider.Instance`, so applications can grab the scanner for their own compilation directly without any runtime reflection. However your consumers should almost **ALWAYS** accept the `IIndagoProvider` interface as a dependency, and not rely on the static `IndagoProvider.Instance` singleton. This ensures that the correct scanner is used. THIS IS IMPORTANT but we will get to that in step 2.
 
 The `IIndagoProvider` interface has 3 methods for scanning.
 
@@ -107,7 +107,7 @@ The scanner uses the compiler API to scan all assemblies and types of the given 
 
 > I skipped something in the explination of the types earlier. Every method on the `IndagoProvider` takes in it's arguments but it also uses `CallerLineNumber`, `CallerFilePath` and `CallerArgumentExpression`. It then uses these values in a huge switch statement to determine which list of items to return. If the queries are all on different lines 1 jump, at most you'll have 2 jumps (unless you make some silly single long code!)
 
-The generated `IIndagoProvider` is attached to the compilation as an assembly attribute, so it can be obtained and instantiated at runtime. Inside the generator will be scanner results of all of the queries that were found across all assemblies in the compilation.
+The generated `IIndagoProvider` is exposed as a compile-time singleton (`IndagoProvider.Instance`) and is also described by an assembly attribute used for cross-assembly cache busting. Whether an assembly emits a provider at all is controlled by the `IndagoEmitProvider` MSBuild property (defaults to `true`); library assemblies that are only meant to be scanned can set it to `false` so the consuming application is the one that emits the provider. Inside the generated provider are the scanner results of all of the queries that were found across all assemblies in the compilation.
 
 # Status
 

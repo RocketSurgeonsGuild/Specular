@@ -56,7 +56,7 @@ The generated file is checked into `obj/` and compiled into your assembly just l
 | `GetTypes(selector)`       | Types matched by the selector                              |
 | `Scan(services, selector)` | Registers matched types directly into `IServiceCollection` |
 
-The static property `IIndagoProvider.EntryAssembly` resolves the generated provider for the running entry assembly automatically. See [Quickstart](./quickstart/) for usage.
+The static property `IndagoProvider.Instance` exposes the generated provider for the entry assembly. See [Quickstart](./quickstart/) for usage.
 
 ### Selector Expressions
 

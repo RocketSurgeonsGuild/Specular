@@ -14,7 +14,7 @@ internal static class AssemblySymbolExtensions
     private static string? GetIndagoProviderHash(IAssemblySymbol assembly) =>
         assembly
            .GetAttributes()
-           .FirstOrDefault(x => x.AttributeClass?.ToDisplayString() == "Indago.Abstractions.IndagoProviderAttribute")
+           .FirstOrDefault(x => x.AttributeClass?.ToDisplayString() == "Indago.Abstractions.IndagoHashAttribute")
           ?.ConstructorArguments.LastOrDefault()
            .Value?.ToString();
 

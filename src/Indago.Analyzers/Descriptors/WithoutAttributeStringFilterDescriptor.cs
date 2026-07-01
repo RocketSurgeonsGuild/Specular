@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Indago.Analyzers.Descriptors;
 
 [DebuggerDisplay("{ToString()}")]
-internal record WithoutAttributeStringFilterDescriptor
+internal sealed record WithoutAttributeStringFilterDescriptor
 (
     [property: JsonPropertyName("a")]
     string AttributeClassName) : ITypeFilterDescriptor;

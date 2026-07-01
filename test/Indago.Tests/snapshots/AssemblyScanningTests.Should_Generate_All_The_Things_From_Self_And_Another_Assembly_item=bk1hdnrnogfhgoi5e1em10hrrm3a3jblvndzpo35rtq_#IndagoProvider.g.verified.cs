@@ -1,0 +1,119 @@
+//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
+#nullable enable
+#pragma warning disable CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+using Indago;
+using Indago.Abstractions;
+
+[assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ReflectionTypes","{scrubbed}")]
+[assembly: Indago.Abstractions.IndagoHashAttribute("{scrubbed}")]
+[System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+internal sealed class IndagoProvider : IIndagoProvider
+{
+    public static IIndagoProvider Instance { get; } = new IndagoProvider();
+
+    private IndagoProvider()
+    {
+    }
+
+    IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
+    {
+        var items = new List<Assembly>();
+        return items;
+    }
+
+    IEnumerable<Type> IIndagoProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
+    {
+        var items = new List<Type>();
+        switch (lineNumber)
+        {
+            // FilePath: Input0.cs Expression: /9IHLslt+gQ8+YOvZs9dwA==
+            case 16:
+                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoHashAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
+                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(typeof(global::Indago.Abstractions.ExcludeFromIndagoAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IndagoHashAttribute));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+                items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+                items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeInfoFilter));
+                items.Add(typeof(global::Indago.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+                items.Add(typeof(global::Indago.IndagoSupport));
+                items.Add(typeof(global::Indago.RegistrationLifetimeAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<>));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<,, >));
+                items.Add(typeof(global::Indago.ServiceRegistrationAttribute<, >));
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.IGenericService<>));
+                items.Add(typeof(global::TestAssembly.IOther));
+                items.Add(typeof(global::TestAssembly.IRequest<>));
+                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                items.Add(typeof(global::TestAssembly.IService));
+                items.Add(typeof(global::TestAssembly.IServiceB));
+                items.Add(typeof(global::TestAssembly.IValidator));
+                items.Add(typeof(global::TestAssembly.IValidator<>));
+                items.Add(typeof(global::TestAssembly.Nested));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(typeof(global::TestAssembly.Service));
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.IGenericService<>));
+                items.Add(typeof(global::TestAssembly.IOther));
+                items.Add(typeof(global::TestAssembly.IRequest<>));
+                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                items.Add(typeof(global::TestAssembly.IService));
+                items.Add(typeof(global::TestAssembly.IServiceB));
+                items.Add(typeof(global::TestAssembly.IValidator));
+                items.Add(typeof(global::TestAssembly.IValidator<>));
+                items.Add(typeof(global::TestAssembly.Nested));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(typeof(global::TestAssembly.Service));
+                break;
+        }
+
+        return items;
+    }
+
+    Microsoft.Extensions.DependencyInjection.IServiceCollection IIndagoProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
+    {
+        return services;
+    }
+}
+#pragma warning restore CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
+#nullable restore

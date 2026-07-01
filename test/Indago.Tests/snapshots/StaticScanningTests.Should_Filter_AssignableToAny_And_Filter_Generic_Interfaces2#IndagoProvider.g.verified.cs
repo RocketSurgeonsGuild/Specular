@@ -9,10 +9,16 @@ using Indago;
 using Indago.Abstractions;
 
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ServiceDescriptorTypes","{scrubbed}")]
-[assembly: Indago.Abstractions.IndagoProviderAttribute(typeof(IndagoProvider), "{scrubbed}")]
+[assembly: Indago.Abstractions.IndagoHashAttribute("{scrubbed}")]
 [System.CodeDom.Compiler.GeneratedCode("Indago.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-file class IndagoProvider : IIndagoProvider
+internal sealed class IndagoProvider : IIndagoProvider
 {
+    public static IIndagoProvider Instance { get; } = new IndagoProvider();
+
+    private IndagoProvider()
+    {
+    }
+
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Assembly>();
@@ -27,17 +33,6 @@ file class IndagoProvider : IIndagoProvider
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection IIndagoProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        switch (lineNumber)
-        {
-            // FilePath: Input0.cs Expression: 21+ChQAbiYni1DL6TATU6w==
-            case 21:
-                services.Add(ServiceDescriptor.Scoped<global::IService<global::System.String>, global::Nested.ServiceA>());
-                services.Add(ServiceDescriptor.Scoped<global::IService<global::System.Int32>, global::Service>());
-                services.Add(ServiceDescriptor.Scoped<global::IService<global::System.String>, global::Service>());
-                services.Add(ServiceDescriptor.Scoped<global::IService<global::System.Decimal>, global::ServiceB>());
-                break;
-        }
-
         return services;
     }
 }

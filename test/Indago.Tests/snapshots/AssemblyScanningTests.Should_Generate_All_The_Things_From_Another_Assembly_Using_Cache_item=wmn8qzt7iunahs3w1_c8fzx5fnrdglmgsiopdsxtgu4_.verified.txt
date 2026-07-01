@@ -1,0 +1,317 @@
+{
+  EmptyAssemblies: [
+    mscorlib,
+    netstandard,
+    System,
+    System.ComponentModel,
+    System.Core,
+    System.Private.CoreLib,
+    System.Runtime,
+    TestAssembly
+  ],
+  FinalDiagnostics: [],
+  GeneratedCache: {
+    Indago: {
+      InternalServiceDescriptorRequests: [
+        {
+          Assembly: {
+            Location: {
+              Kind: ServiceDescriptor,
+              LineNumber: 19,
+              ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              FileName: IndagoProviderServiceCollectionExtensions.cs
+            },
+            Assembly: {
+              AllAssembly: true,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: null,
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: null,
+              NameFilters: null,
+              TypeKindFilters: [
+                {
+                  Include: true,
+                  TypeKinds: [
+                    Class
+                  ]
+                }
+              ],
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    Static,
+                    Abstract
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`5,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`6,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`7,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Indago,
+                  Attribute: Indago.ServiceRegistrationAttribute`8,
+                  UnboundGenericType: true
+                }
+              ],
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: null,
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          ServiceDescriptor: {
+            ServiceDescriptor: {
+              ServiceTypeDescriptors: [
+                {
+                  Identifier: s
+                }
+              ]
+            }
+          },
+          Type: GetServiceDescriptorCollectionData
+        }
+      ],
+      ExcludeFromResolution: false,
+      CacheVersion: {Scrubbed},
+      IsEmpty: false
+    },
+    OtherProject: {
+      InternalReflectionRequests: [
+        {
+          Assembly: {
+            Location: {
+              Kind: Reflection,
+              LineNumber: 16,
+              ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+              FileName: Input0.cs
+            },
+            Assembly: {
+              AllAssembly: true,
+              IncludeSystem: false,
+              Assembly: null,
+              NotAssembly: [
+                Indago
+              ],
+              AssemblyDependencies: null
+            }
+          },
+          Reflection: {
+            Type: {
+              Filter: All,
+              NamespaceFilters: [
+                {
+                  Filter: NotIn,
+                  Namespaces: [
+                    JetBrains.Annotations,
+                    Polyfills,
+                    System
+                  ]
+                }
+              ],
+              NameFilters: [
+                {
+                  Include: false,
+                  Names: [
+                    Polyfill
+                  ]
+                }
+              ],
+              TypeKindFilters: null,
+              TypeInfoFilters: [
+                {
+                  Include: false,
+                  TypeInfos: [
+                    ValueType
+                  ]
+                }
+              ],
+              WithAttributeFilters: null,
+              WithAttributeStringFilters: null,
+              WithAnyAttributeFilters: null,
+              WithAnyAttributeStringFilters: null,
+              AssignableToTypeFilters: [
+                {
+                  Include: false,
+                  Assembly: Indago,
+                  Type: Indago.IIndagoProvider,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: false,
+                  Assembly: System.Private.CoreLib,
+                  Type: System.Attribute,
+                  UnboundGenericType: false
+                }
+              ],
+              AssignableToAnyTypeFilters: null
+            }
+          },
+          Type: GetReflectionCollectionData
+        }
+      ],
+      ExcludeFromResolution: false,
+      CacheVersion: {Scrubbed},
+      IsEmpty: false
+    }
+  },
+  GeneratorDiagnostics: {
+    Indago.Analyzers.IndagoProviderGenerator: []
+  },
+  GlobalOptions: {
+    build_property.ExcludeAssemblyFromCTP: Microsoft.Extensions.DependencyInjection,
+    build_property.IndagoEmitProvider: true,
+    build_property.IntermediateOutputPath: obj/net9.0,
+    build_property.ProjectDir: {TempPath}/test
+  },
+  PartialsCached: {
+    JjBeaXLkn5IuRHDOX55EIA==: {
+      ResolvedSources: {
+        Indago: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(typeof(global::Indago.Abstractions.IReflectionAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IReflectionTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorAssemblySelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceDescriptorTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceLifetimeSelector));
+    items.Add(typeof(global::Indago.Abstractions.IServiceTypeSelector));
+    items.Add(typeof(global::Indago.Abstractions.ITypeFilter));
+    items.Add(typeof(global::Indago.IndagoProviderServiceCollectionExtensions));
+    items.Add(typeof(global::Indago.IndagoSupport));
+    items.Add(Indago.GetType("MyAssembly")!);
+    items.Add(Indago.GetType("MyAssembly+Info")!);
+    items.Add(Indago.GetType("MyAssembly+Metadata")!);
+    items.Add(Indago.GetType("MyAssembly+Project")!);
+},
+          PrivateAssemblies: [
+            Indago
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        OtherProject: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(OtherProject.GetType("Program")!);
+},
+          PrivateAssemblies: [
+            OtherProject
+          ],
+          CacheVersion: {Scrubbed}
+        },
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: D3ksYueIthG4SMYim0ZUgQ==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("MyAssembly")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
+    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+    items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+    items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IOther));
+    items.Add(typeof(global::TestAssembly.IRequest<>));
+    items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+    items.Add(typeof(global::TestAssembly.IService));
+    items.Add(typeof(global::TestAssembly.IServiceB));
+    items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.Nested));
+    items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+    items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+    items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+    items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+    items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+    items.Add(typeof(global::TestAssembly.Service));
+    items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed}
+        }
+      }
+    }
+  },
+  References: [
+    <in-memory assembly>,
+    Indago.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    mscorlib.dll,
+    netstandard.dll,
+    System.ComponentModel.dll,
+    System.Core.dll,
+    System.dll,
+    System.Private.CoreLib.dll,
+    System.Runtime.dll,
+    TestAssembly.dll
+  ]
+}

@@ -79,7 +79,7 @@ publish on a trim/AOT warning. Removing the injection restores a clean trim/AOT 
 warnings). Each host repeats this red proof (Console T020, Web T035, …).
 
 **Indago core prerequisite (discovered by T009).** The `IIndagoProvider.EntryAssembly` path resolved
-the generated provider via `Activator.CreateInstance(Type)` in `IndagoProviderAttribute`, which emitted
+the generated provider via `Activator.CreateInstance(Type)` in `IndagoHashAttribute`, which emitted
 `IL2077` under Native AOT. Fixed by annotating the `Type` with
 `[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]`
 (Constitution Principle I). Without that fix every zero-warning AOT publish that touches

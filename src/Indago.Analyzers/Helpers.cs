@@ -13,6 +13,15 @@ namespace Indago.Analyzers;
 
 internal static class Helpers
 {
+    // Validates that an invocation resolves to a method declared on IIndagoProvider. Detection in the
+    // syntax providers is structural only (the receiver may reference the not-yet-generated IndagoProvider),
+    // so this runs against a compilation augmented with an IndagoProvider shell to confirm genuine scan calls.
+    public static bool IsIndagoProviderCall(SemanticModel semanticModel, InvocationExpressionSyntax invocation)
+    {
+        var info = semanticModel.GetSymbolInfo(invocation);
+        return ( info.Symbol ?? info.CandidateSymbols.FirstOrDefault() ) is IMethodSymbol { ContainingType.MetadataName: "IIndagoProvider" };
+    }
+
     public static CompilationUnitSyntax AddSharedTrivia(this CompilationUnitSyntax source) =>
         source
            .WithLeadingTrivia(
@@ -251,6 +260,7 @@ internal static class Helpers
             )
            .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)));
 
+    [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
     internal static SourceLocation CreateSourceLocation(SourceLocationKind kind, InvocationExpressionSyntax methodCallSyntax, CancellationToken cancellationToken)
     {
         if (methodCallSyntax is { Expression: MemberAccessExpressionSyntax memberAccess, ArgumentList.Arguments: [{ Expression: { } argumentExpression }] }) { }

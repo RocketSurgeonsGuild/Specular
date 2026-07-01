@@ -33,19 +33,11 @@ Or add it manually to your `.csproj`:
 > <PackageVersion Include="Indago" Version="x.y.z" />
 > ```
 
-## 2. Apply the Assembly Attribute
+## 2. No Attribute to Apply
 
-The generator needs to know which assembly is the entry point for scanning. Add `[assembly: IndagoProviderAttribute]` to your project. The conventional location is the top of `Program.cs` or a dedicated `AssemblyInfo.cs` file.
+There is nothing to wire up by hand. When the generator runs it stamps your assembly with `[assembly: IndagoHashAttribute("<hash>")]` automatically (the hash drives cross-assembly cache invalidation) and emits the `IndagoProvider` class you scan through. You never write this attribute yourself.
 
-```csharp
-using Indago.Abstractions;
-
-[assembly: IndagoProviderAttribute]
-```
-
-The attribute lives in the `Indago.Abstractions` namespace.
-
-> **One attribute per entry assembly.** If you have multiple projects in a solution, apply the attribute only to the projects that call `IIndagoProvider` methods directly. Library projects that are _scanned_ do not need the attribute.
+> **Libraries that are only scanned** — and never call `IIndagoProvider` themselves — can opt out of emitting their own provider by setting `<IndagoEmitProvider>false</IndagoEmitProvider>` in the project file. Application and entry projects emit a provider by default.
 
 ## 3. Build the Project
 
@@ -72,15 +64,13 @@ You can inspect `IndagoProvider.g.cs` to see exactly what the generator produced
 Add a quick check to confirm the provider resolves:
 
 ```csharp
-using Indago;
-
-var provider = IIndagoProvider.EntryAssembly;
-Console.WriteLine(provider.GetType().FullName); // should print the generated type name
+var provider = IndagoProvider.Instance;
+Console.WriteLine(provider.GetType().FullName); // should print "IndagoProvider"
 ```
 
 ## No Additional Configuration
 
-That's it. The generator runs automatically on every build. There are no config files, no MSBuild properties to set, and no additional packages to reference. The `IndagoProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
+That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knob is `<IndagoEmitProvider>` (see step 2) for libraries that should not emit their own provider. The `IndagoProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
 
 ## Next Steps
 

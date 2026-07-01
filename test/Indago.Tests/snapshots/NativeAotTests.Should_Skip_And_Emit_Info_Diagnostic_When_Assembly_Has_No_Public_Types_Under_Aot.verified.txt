@@ -47,6 +47,7 @@
   },
   GlobalOptions: {
     build_property.EnableAotAnalyzer: true,
+    build_property.IndagoEmitProvider: true,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2
   },

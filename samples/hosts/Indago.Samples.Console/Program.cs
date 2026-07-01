@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 // the produced ServiceDescriptors back, compare to a hard-coded expected set, print the result, and
 // exit nonzero on mismatch so the build pipeline can treat the exit code as pass/fail.
 
-var provider = IIndagoProvider.EntryAssembly;
+var provider = IndagoProvider.Instance;
 
 
 var services = new ServiceCollection();

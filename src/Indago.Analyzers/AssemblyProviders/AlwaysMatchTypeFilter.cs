@@ -2,7 +2,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.AssemblyProviders;
 
-internal class AlwaysMatchTypeFilter<TSymbol> : ICompiledTypeFilter<TSymbol>
+[SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Instantiated via the generic type-filter pipeline.")]
+internal sealed class AlwaysMatchTypeFilter<TSymbol> : ICompiledTypeFilter<TSymbol>
 {
     public bool IsMatch(Compilation compilation, TSymbol targetType) => true;
 

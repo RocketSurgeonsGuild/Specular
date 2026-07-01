@@ -59,9 +59,9 @@ The net result is a precise, build-time enumeration of every type that would hav
 After resolving all call sites, the generator builds a single `IndagoProvider.g.cs` file containing:
 
 1. A concrete class that implements `IIndagoProvider`, with each method returning a hard-coded collection for its call-site hash.
-2. An `[assembly: IndagoProviderAttribute(typeof(GeneratedProvider), "…hash…")]` attribute that registers the implementation and embeds a `GeneratedHash` for cache validation.
+2. An `[assembly: IndagoHashAttribute("…hash…")]` attribute that embeds a `GeneratedHash` for cross-assembly cache validation.
 
-The generated provider is wired up via `IIndagoProvider.EntryAssembly`, which reads the assembly attribute at startup and activates the provider — one lazy instantiation, zero reflection scanning.
+The generated provider is exposed through the static `IndagoProvider.Instance` property — you call into it directly, with zero reflection scanning.
 
 ## Incremental Rebuild
 

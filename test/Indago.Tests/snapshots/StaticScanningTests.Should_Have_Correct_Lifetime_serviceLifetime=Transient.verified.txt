@@ -4,6 +4,7 @@
     Indago.Analyzers.IndagoProviderGenerator: []
   },
   GlobalOptions: {
+    build_property.IndagoEmitProvider: true,
     build_property.IntermediateOutputPath: obj/net9.0,
     build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2
   },
@@ -17,27 +18,5 @@
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
-  ],
-  Services: [
-    {
-      Lifetime: Transient,
-      ServiceType: Service,
-      ImplementationType: Service
-    },
-    {
-      Lifetime: Transient,
-      ServiceType: IService,
-      ImplementationFactory: System.Func`2[System.IServiceProvider,IService]
-    },
-    {
-      Lifetime: Transient,
-      ServiceType: ServiceB,
-      ImplementationType: ServiceB
-    },
-    {
-      Lifetime: Transient,
-      ServiceType: IServiceB,
-      ImplementationFactory: System.Func`2[System.IServiceProvider,IServiceB]
-    }
   ]
 }

@@ -12,7 +12,7 @@ using Indago.Samples.Notifications;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-var provider = IIndagoProvider.EntryAssembly;
+var provider = IndagoProvider.Instance;
 
 // 1. Catalog — interface-matching, Singleton.
 provider.Scan(

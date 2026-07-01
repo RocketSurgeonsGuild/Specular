@@ -26,14 +26,11 @@ internal static class ReflectionCollection
     public static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetTypesMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetTypesMethod(context.Node);
-        return method is null
-         || selector is null
-         || context.SemanticModel.GetTypeInfo(selector).ConvertedType is not INamedTypeSymbol
-         {
-             TypeArguments: [{ Name: IReflectionTypeSelector }, ..],
-         }
-                ? default
-                : (method, selector, semanticModel: context.SemanticModel);
+        // Structural detection only; genuine IIndagoProvider validation is deferred to GetReflectionItems, which
+        // runs against the shell-augmented compilation. See IndagoProviderGenerator.CreateSemanticCompilation.
+        return method is null || selector is null
+            ? default
+            : (method, selector, semanticModel: context.SemanticModel);
     }
 
     public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetTypesMethod(SyntaxNode node) =>
@@ -45,6 +42,7 @@ internal static class ReflectionCollection
             ? (invocationExpressionSyntax, expression)
             : default;
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ResolvedSourceLocation? ResolveSource(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -112,8 +110,9 @@ internal static class ReflectionCollection
         return results.ToImmutableList();
     }
 
-    public record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter, CompiledTypeFilter TypeFilter);
+    public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter, CompiledTypeFilter TypeFilter);
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     internal static ImmutableList<Item> GetReflectionItems(
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
@@ -128,6 +127,9 @@ internal static class ReflectionCollection
             {
                 (var methodCallSyntax, var selector, _) = tuple;
 
+                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                if (!Helpers.IsIndagoProviderCall(semanticModel, methodCallSyntax)) continue;
+
                 var assemblies = new List<IAssemblyDescriptor>();
                 var typeFilters = new List<ITypeFilterDescriptor>();
                 var classFilter = ClassFilter.All;
@@ -135,7 +137,7 @@ internal static class ReflectionCollection
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
-                    compilation.GetSemanticModel(tuple.expression.SyntaxTree),
+                    semanticModel,
                     selector,
                     assemblies,
                     typeFilters,

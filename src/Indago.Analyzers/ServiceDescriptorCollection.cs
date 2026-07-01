@@ -23,6 +23,7 @@ internal static class ServiceDescriptorCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ResolvedSourceLocation? ResolveSource(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -91,7 +92,7 @@ internal static class ServiceDescriptorCollection
         return results.ToImmutableList();
     }
 
-    public record Item
+    public sealed record Item
     (
         SourceLocation Location,
         CompiledAssemblyFilter AssemblyFilter,
@@ -99,6 +100,7 @@ internal static class ServiceDescriptorCollection
         CompiledServiceTypeDescriptors ServicesTypeFilter,
         int Lifetime);
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     internal static ImmutableList<Item> GetServiceDescriptorItems(
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
@@ -113,6 +115,9 @@ internal static class ServiceDescriptorCollection
             {
                 (var methodCallSyntax, var selector, _) = tuple;
 
+                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                if (!Helpers.IsIndagoProviderCall(semanticModel, methodCallSyntax)) continue;
+
                 List<IAssemblyDescriptor> assemblies = [];
                 List<ITypeFilterDescriptor> typeFilters =
                 [
@@ -125,7 +130,7 @@ internal static class ServiceDescriptorCollection
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
-                    compilation.GetSemanticModel(tuple.expression.SyntaxTree),
+                    semanticModel,
                     selector,
                     assemblies,
                     typeFilters,
@@ -406,7 +411,7 @@ internal static class ServiceDescriptorCollection
                 _ = emittedTypes.Add(asType);
             }
 
-            if (!emittedTypes.Any() && ( lifetimeRegistrations.Any() || discoveredLifetime is { } ) && !asMatchingInterface)
+            if (emittedTypes.Count == 0 && ( lifetimeRegistrations.Any() || discoveredLifetime is { } ) && !asMatchingInterface)
             {
                 foreach (var @interface in type.AllInterfaces.OrderBy(z => z.ToDisplayString()))
                 {
@@ -481,10 +486,9 @@ internal static class ServiceDescriptorCollection
     private static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetServiceDescriptorMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetMethod(context.Node);
-        return context.SemanticModel.GetTypeInfo(selector).ConvertedType is not INamedTypeSymbol
-        {
-            TypeArguments: [{ Name: IServiceDescriptorAssemblySelector }, ..],
-        }
+        // Structural detection only; genuine IIndagoProvider validation is deferred to GetServiceDescriptorItems,
+        // which runs against the shell-augmented compilation. See IndagoProviderGenerator.CreateSemanticCompilation.
+        return method is null || selector is null
             ? default
             : (method, selector, semanticModel: context.SemanticModel);
     }

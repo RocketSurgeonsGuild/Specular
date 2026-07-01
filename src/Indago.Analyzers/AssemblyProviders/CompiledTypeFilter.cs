@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.AssemblyProviders;
 
-internal class CompiledTypeFilter(ClassFilter classFilter, ImmutableList<ITypeFilterDescriptor> typeFilterDescriptors, SourceLocation? sourceLocation = null) : ICompiledTypeFilter<INamedTypeSymbol>
+internal sealed class CompiledTypeFilter(ClassFilter classFilter, ImmutableList<ITypeFilterDescriptor> typeFilterDescriptors, SourceLocation? sourceLocation = null) : ICompiledTypeFilter<INamedTypeSymbol>
 {
     public ImmutableList<ITypeFilterDescriptor> TypeFilterDescriptors { get; } = typeFilterDescriptors;
     public ClassFilter ClassFilter { get; } = classFilter;
@@ -13,7 +13,7 @@ internal class CompiledTypeFilter(ClassFilter classFilter, ImmutableList<ITypeFi
 
     public bool IsMatch(Compilation compilation, INamedTypeSymbol targetType)
     {
-        return !Aborted  && (   ClassFilter !=  ClassFilter.PublicOnly   ||   targetType.DeclaredAccessibility  ==  Accessibility.Public    )  && ( TypeFilterDescriptors.Count == 0 || TypeFilterDescriptors.All(GetFilterDescriptor) ) ;
+        return !Aborted && ( ClassFilter != ClassFilter.PublicOnly || targetType.DeclaredAccessibility == Accessibility.Public ) && ( TypeFilterDescriptors.Count == 0 || TypeFilterDescriptors.All(GetFilterDescriptor) );
         bool GetFilterDescriptor(ITypeFilterDescriptor filterDescriptor)
         {
             return filterDescriptor switch
@@ -74,8 +74,8 @@ internal class CompiledTypeFilter(ClassFilter classFilter, ImmutableList<ITypeFi
             return filterName switch
             {
                 NamespaceFilter.Exact => filterNamespaces.Contains(ns),
-                NamespaceFilter.In => filterNamespaces.Any(n => ns.StartsWith(n)),
-                NamespaceFilter.NotIn => filterNamespaces.All(n => !ns.StartsWith(n)),
+                NamespaceFilter.In => filterNamespaces.Any(n => ns.StartsWith(n, StringComparison.Ordinal)),
+                NamespaceFilter.NotIn => filterNamespaces.All(n => !ns.StartsWith(n, StringComparison.Ordinal)),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -86,10 +86,10 @@ internal class CompiledTypeFilter(ClassFilter classFilter, ImmutableList<ITypeFi
             {
                 (true, TextDirectionFilter.Contains) => filterNames.Any(name => type.Name.Contains(name)),
                 (false, TextDirectionFilter.Contains) => !filterNames.Any(name => type.Name.Contains(name)),
-                (true, TextDirectionFilter.EndsWith) => filterNames.Any(name => type.Name.EndsWith(name)),
-                (false, TextDirectionFilter.EndsWith) => !filterNames.Any(name => type.Name.EndsWith(name)),
-                (true, TextDirectionFilter.StartsWith) => filterNames.Any(name => type.Name.StartsWith(name)),
-                (false, TextDirectionFilter.StartsWith) => !filterNames.Any(name => type.Name.StartsWith(name)),
+                (true, TextDirectionFilter.EndsWith) => filterNames.Any(name => type.Name.EndsWith(name, StringComparison.Ordinal)),
+                (false, TextDirectionFilter.EndsWith) => !filterNames.Any(name => type.Name.EndsWith(name, StringComparison.Ordinal)),
+                (true, TextDirectionFilter.StartsWith) => filterNames.Any(name => type.Name.StartsWith(name, StringComparison.Ordinal)),
+                (false, TextDirectionFilter.StartsWith) => !filterNames.Any(name => type.Name.StartsWith(name, StringComparison.Ordinal)),
                 _ => throw new NotImplementedException(),
             };
         }

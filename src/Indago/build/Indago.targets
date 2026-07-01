@@ -1,4 +1,17 @@
 <Project>
+    <PropertyGroup>
+        <_IndagoApplicationDetected Condition="'$(_IndagoApplicationDetected)' == '' and ('$(OutputType)' != 'Library' or '$(OutputType)' != 'library')">
+            true
+        </_IndagoApplicationDetected>
+        <_IndagoApplicationDetected Condition="'$(_IndagoApplicationDetected)' == '' and ('$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true')">
+            true
+        </_IndagoApplicationDetected>
+        <_IndagoApplicationDetected Condition="'$(_IndagoApplicationDetected)' == ''">false</_IndagoApplicationDetected>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsTestProject)' == 'true' or '$(_IndagoApplicationDetected)' == 'true'">
+        <IndagoEmitProvider Condition="'$(IndagoEmitProvider)' == ''">true</IndagoEmitProvider>
+    </PropertyGroup>
+
     <Target Name="CleanAssemblyCache" BeforeTargets="Clean">
         <Delete Files="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson" Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
     </Target>
