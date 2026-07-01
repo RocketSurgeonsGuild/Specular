@@ -1,4 +1,4 @@
-﻿//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
+//HintName: Indago.Analyzers/Indago.Analyzers.IndagoProviderGenerator/IndagoProvider.g.cs
 #nullable enable
 #pragma warning disable CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
 using System;
@@ -13,6 +13,10 @@ using Indago.Abstractions;
 internal sealed class IndagoProvider : IIndagoProvider
 {
     public static IIndagoProvider Instance { get; } = new IndagoProvider();
+
+    private IndagoProvider()
+    {
+    }
 
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {

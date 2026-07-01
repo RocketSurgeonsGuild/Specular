@@ -5,7 +5,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Indago.Analyzers.Descriptors;
 
-internal record CompiledServiceTypeDescriptors(ImmutableArray<IServiceTypeDescriptor> ServiceTypeDescriptors, int Lifetime)
+internal sealed record CompiledServiceTypeDescriptors(ImmutableArray<IServiceTypeDescriptor> ServiceTypeDescriptors, int Lifetime)
 {
     public string GetLifetime() => Lifetime switch { 1 => "Scoped", 2 => "Transient", _ => "Singleton" };
 

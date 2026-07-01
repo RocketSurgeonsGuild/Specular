@@ -5,4 +5,4 @@ using Microsoft.CodeAnalysis;
 namespace Indago.Analyzers.Descriptors;
 
 [DebuggerDisplay("{ToString()}")]
-internal record TypeKindFilterDescriptor(bool Include, ImmutableHashSet<TypeKind> TypeKinds) : ITypeFilterDescriptor;
+internal sealed record TypeKindFilterDescriptor(bool Include, ImmutableHashSet<TypeKind> TypeKinds) : ITypeFilterDescriptor;

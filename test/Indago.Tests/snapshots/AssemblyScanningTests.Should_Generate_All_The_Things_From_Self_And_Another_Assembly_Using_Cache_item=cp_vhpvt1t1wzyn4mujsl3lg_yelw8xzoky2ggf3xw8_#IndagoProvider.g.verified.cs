@@ -16,6 +16,10 @@ internal sealed class IndagoProvider : IIndagoProvider
 {
     public static IIndagoProvider Instance { get; } = new IndagoProvider();
 
+    private IndagoProvider()
+    {
+    }
+
     IEnumerable<Assembly> IIndagoProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Assembly>();

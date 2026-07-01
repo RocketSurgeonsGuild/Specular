@@ -13,6 +13,7 @@ namespace Indago.Analyzers;
 
 internal static class AssemblyProviderBuilder
 {
+    [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
     public static TypeDeclarationSyntax GetAssemblyProvider(
         ImmutableList<ResolvedSourceLocation> assemblyRequests,
         ImmutableList<ResolvedSourceLocation> reflectionRequests,
@@ -63,7 +64,7 @@ internal static class AssemblyProviderBuilder
                              )
                             .SelectMany(z => StatementGeneration.AssemblyDeclaration(compilation, isAot, z))
                             .ToList();
-        if (privateAssemblies.Any())
+        if (privateAssemblies.Count != 0)
         {
             var privateAssemblyByVariable = privateAssemblies
                                            .GroupBy(StatementGeneration.AssemblyVariableName, StringComparer.Ordinal)
@@ -148,6 +149,7 @@ internal static class AssemblyProviderBuilder
               .WithModifiers(TokenList(Token(SyntaxKind.InternalKeyword), Token(SyntaxKind.SealedKeyword)))
               .WithBaseList(BaseList(SingletonSeparatedList<BaseTypeSyntax>(SimpleBaseType(IdentifierName("IIndagoProvider")))))
               .AddMembers(InstanceProperty)
+              .AddMembers(PrivateConstructor)
               .AddMembers(resolvedAssemblyDetails, resolvedReflectionDetails, resolvedServiceDescriptorDetails)
               .AddMembers(privateMembers.ToArray());
     }
@@ -156,8 +158,8 @@ internal static class AssemblyProviderBuilder
     // provider emits, so the trimmer/Native AOT analyzer keeps those dynamically-resolved types. Only
     // pairs whose type actually resolves in the target assembly are kept, so speculative GetType probes
     // don't produce unresolved-dependency warnings (IL2035/IL2036).
-    private static IReadOnlyList<(string Assembly, string Type)> CollectDynamicDependencies(
-        IReadOnlyDictionary<string, IAssemblySymbol> privateAssemblyByVariable,
+    private static List<(string Assembly, string Type)> CollectDynamicDependencies(
+        Dictionary<string, IAssemblySymbol> privateAssemblyByVariable,
         params MethodDeclarationSyntax[] methods
     )
     {
@@ -182,7 +184,7 @@ internal static class AssemblyProviderBuilder
               .ToList();
     }
 
-    private static bool MethodUsesPrivateReflection(MethodDeclarationSyntax method, IReadOnlyDictionary<string, IAssemblySymbol> privateAssemblyByVariable) =>
+    private static bool MethodUsesPrivateReflection(MethodDeclarationSyntax method, Dictionary<string, IAssemblySymbol> privateAssemblyByVariable) =>
         method.DescendantNodes()
               .OfType<InvocationExpressionSyntax>()
               .Any(
@@ -278,7 +280,7 @@ internal static class AssemblyProviderBuilder
             );
     }
 
-    private static StatementSyntax GetCollectionVariable(TypeSyntax type) => LocalDeclarationStatement(
+    private static LocalDeclarationStatementSyntax GetCollectionVariable(TypeSyntax type) => LocalDeclarationStatement(
         VariableDeclaration(IdentifierName(Identifier(TriviaList(), SyntaxKind.VarKeyword, "var", "var", TriviaList())))
            .WithVariables(
                 SingletonSeparatedList(
@@ -316,6 +318,14 @@ internal static class AssemblyProviderBuilder
                 )
             )
            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+
+    // private IndagoProvider() { }
+    // The generated provider is a singleton; the only way to obtain it is the static Instance
+    // property, so the constructor is private to prevent external instantiation.
+    private static readonly ConstructorDeclarationSyntax PrivateConstructor =
+        ConstructorDeclaration(Identifier("IndagoProvider"))
+           .WithModifiers(TokenList(Token(SyntaxKind.PrivateKeyword)))
+           .WithBody(Block());
 
     private const string IReflectionAssemblySelector = nameof(IReflectionAssemblySelector);
 

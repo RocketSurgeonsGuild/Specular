@@ -176,7 +176,7 @@ internal static class DataHelpers
                 INamedTypeSymbol nts when name is { Identifier.Text: "DependenciesFromAssemblyOf" } =>
                     new AssemblyDependenciesDescriptor(nts.ContainingAssembly),
                 INamedTypeSymbol namedType when name is { Identifier.Text: "FromAssemblyOf" or "NotFromAssemblyOf" } =>
-                    name.Identifier.Text.StartsWith("Not")
+                    name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal)
                         ? new NotAssemblyDescriptor(namedType.ContainingAssembly)
                         : new AssemblyDescriptor(namedType.ContainingAssembly),
                 _ => null,
@@ -237,12 +237,12 @@ internal static class DataHelpers
 
         static ITypeFilterDescriptor createAssignableToTypeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType)
         {
-            return name.Identifier.Text.StartsWith("Not")
+            return name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal)
                 ? new NotAssignableToTypeFilterDescriptor(namedType)
                 : new AssignableToTypeFilterDescriptor(namedType);
         }
 
-        static ITypeFilterDescriptor createWithAttributeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType) => name.Identifier.Text.StartsWith("Without") ? new WithoutAttributeFilterDescriptor(namedType) : new WithAttributeFilterDescriptor(namedType);
+        static ITypeFilterDescriptor createWithAttributeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType) => name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal) ? new WithoutAttributeFilterDescriptor(namedType) : new WithAttributeFilterDescriptor(namedType);
 
         static ITypeFilterDescriptor createWithAnyAttributeFilterDescriptor(
             SimpleNameSyntax name,
@@ -269,7 +269,7 @@ internal static class DataHelpers
                            .OfType<INamedTypeSymbol>()
                            .ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 
-            return name.Identifier.Text.StartsWith("Not")
+            return name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal)
                 ? new NotAssignableToAnyTypeFilterDescriptor(arguments)
                 : new AssignableToAnyTypeFilterDescriptor(arguments);
         }
@@ -301,7 +301,7 @@ internal static class DataHelpers
                 stringValues.Add(item);
             }
 
-            return new NameFilterDescriptor(!name.Identifier.Text.StartsWith("Not"), filter, stringValues.ToImmutable());
+            return new NameFilterDescriptor(!name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal), filter, stringValues.ToImmutable());
         }
 
         static NamespaceFilterDescriptor createNamespaceTypeFilterDescriptor(
@@ -399,14 +399,14 @@ internal static class DataHelpers
                 }
              && GetSyntaxTypeInfo(semanticModel, typeOfExpressionSyntax, name) is { } type)
             {
-                return name.Identifier.Text.StartsWith("Without")
+                return name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal)
                     ? new WithoutAttributeStringFilterDescriptor(Helpers.GetFullMetadataName(type))
                     : new WithAttributeStringFilterDescriptor(Helpers.GetFullMetadataName(type));
             }
 
             if (getStringValue(argument) is { Length: > 0 } item)
             {
-                return name.Identifier.Text.StartsWith("Without")
+                return name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal)
                     ? new WithoutAttributeStringFilterDescriptor(item)
                     : new WithAttributeStringFilterDescriptor(item);
             }
@@ -601,7 +601,7 @@ internal static class DataHelpers
     {
         return name.ToFullString() == "WithLifetime"
          && expression is { ArgumentList.Arguments: [{ Expression: MemberAccessExpressionSyntax { Name: { } lifetimeName } }] }
-            ? lifetimeName.Identifier.Text switch { "Scoped" => 1, "Transient" => 2, "Singleton" => 0, _ => throw new ArgumentOutOfRangeException() }
+            ? lifetimeName.Identifier.Text switch { "Scoped" => 1, "Transient" => 2, "Singleton" => 0, _ => throw new ArgumentOutOfRangeException(nameof(expression)) }
             : name.ToFullString() switch
             {
                 "WithSingletonLifetime" => 0, // Singleton

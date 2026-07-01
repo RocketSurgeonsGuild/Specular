@@ -237,7 +237,7 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                 // are always emitted so that downstream assemblies can reuse the resolved data.
                 if (emitProvider)
                 {
-                    if (privateAssemblies.Any() && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+                    if (privateAssemblies.Count != 0 && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
                     cu = cu.AddMembers(assemblyProvider);
                 }
 

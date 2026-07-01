@@ -5,4 +5,4 @@ using Microsoft.CodeAnalysis;
 namespace Indago.Analyzers.Descriptors;
 
 [DebuggerDisplay("{ToString()}")]
-internal record AssignableToAnyTypeFilterDescriptor(ImmutableHashSet<INamedTypeSymbol> Types) : ITypeFilterDescriptor;
+internal sealed record AssignableToAnyTypeFilterDescriptor(ImmutableHashSet<INamedTypeSymbol> Types) : ITypeFilterDescriptor;

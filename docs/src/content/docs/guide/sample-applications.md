@@ -76,10 +76,10 @@ discovered set — the host asserts its absence.
 
 ## The hosts
 
-| Host                     | Kind                | Proves                                                                  |
-| ------------------------ | ------------------- | ----------------------------------------------------------------------- |
-| `Indago.Samples.Console` | console             | discovery + `IIndagoProvider.EntryAssembly`; exits non-zero on mismatch |
-| `Indago.Samples.Web`     | ASP.NET minimal API | fail-fast at startup on mismatch; `/services` endpoint lists discovery  |
+| Host                     | Kind                | Proves                                                                 |
+| ------------------------ | ------------------- | ---------------------------------------------------------------------- |
+| `Indago.Samples.Console` | console             | discovery via `IndagoProvider.Instance`; exits non-zero on mismatch    |
+| `Indago.Samples.Web`     | ASP.NET minimal API | fail-fast at startup on mismatch; `/services` endpoint lists discovery |
 
 Both hosts hold a hard-coded **expected service set** and compare it to what Indago discovered,
 failing the process (and therefore the CI smoke test) on any mismatch. Both are published under the

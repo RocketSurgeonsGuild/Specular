@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace Indago.Analyzers.Descriptors;
 
 [DebuggerDisplay("{ToString()}")]
-internal record AssemblyDescriptor(IAssemblySymbol Assembly) : IAssemblyDescriptor
+internal sealed record AssemblyDescriptor(IAssemblySymbol Assembly) : IAssemblyDescriptor
 {
     public override string ToString() => "Assembly: " + Assembly.Name;
 }

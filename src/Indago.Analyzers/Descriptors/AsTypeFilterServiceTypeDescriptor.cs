@@ -1,3 +1,3 @@
 namespace Indago.Analyzers.Descriptors;
 
-internal record AsTypeFilterServiceTypeDescriptor : IServiceTypeDescriptor;
+internal sealed record AsTypeFilterServiceTypeDescriptor : IServiceTypeDescriptor;

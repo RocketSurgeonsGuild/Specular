@@ -40,7 +40,7 @@ public class NativeAotTests : GeneratorTest
                                    static IServiceCollection Load()
                                    {
                                        var services = new ServiceCollection();
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                        provider.Scan(
                                            services,
                                            z => z
@@ -98,7 +98,7 @@ public class NativeAotTests : GeneratorTest
 
                                    static IEnumerable<Type> Load()
                                    {
-                                       var provider = typeof(Program).Assembly.GetIndagoProvider();
+                                       var provider = IndagoProvider.Instance;
                                        return provider.GetTypes(z => z.FromAssemblies().GetTypes(x => x.InNamespaces("SecretLib")));
                                    }
                                }

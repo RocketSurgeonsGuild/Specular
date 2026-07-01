@@ -2,4 +2,4 @@ using Indago.Analyzers.AssemblyProviders;
 
 namespace Indago.Analyzers.Descriptors;
 
-internal record ImplementedInterfacesServiceTypeDescriptor(CompiledTypeFilter? InterfaceFilter) : IServiceTypeDescriptor;
+internal sealed record ImplementedInterfacesServiceTypeDescriptor(CompiledTypeFilter? InterfaceFilter) : IServiceTypeDescriptor;

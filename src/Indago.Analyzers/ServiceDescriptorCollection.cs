@@ -23,6 +23,7 @@ internal static class ServiceDescriptorCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ResolvedSourceLocation? ResolveSource(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -91,7 +92,7 @@ internal static class ServiceDescriptorCollection
         return results.ToImmutableList();
     }
 
-    public record Item
+    public sealed record Item
     (
         SourceLocation Location,
         CompiledAssemblyFilter AssemblyFilter,
@@ -99,6 +100,7 @@ internal static class ServiceDescriptorCollection
         CompiledServiceTypeDescriptors ServicesTypeFilter,
         int Lifetime);
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     internal static ImmutableList<Item> GetServiceDescriptorItems(
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
@@ -409,7 +411,7 @@ internal static class ServiceDescriptorCollection
                 _ = emittedTypes.Add(asType);
             }
 
-            if (!emittedTypes.Any() && ( lifetimeRegistrations.Any() || discoveredLifetime is { } ) && !asMatchingInterface)
+            if (emittedTypes.Count == 0 && ( lifetimeRegistrations.Any() || discoveredLifetime is { } ) && !asMatchingInterface)
             {
                 foreach (var @interface in type.AllInterfaces.OrderBy(z => z.ToDisplayString()))
                 {

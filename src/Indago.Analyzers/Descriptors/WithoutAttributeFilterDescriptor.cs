@@ -4,4 +4,4 @@ using Microsoft.CodeAnalysis;
 namespace Indago.Analyzers.Descriptors;
 
 [DebuggerDisplay("{ToString()}")]
-internal record WithoutAttributeFilterDescriptor(INamedTypeSymbol Attribute) : ITypeFilterDescriptor;
+internal sealed record WithoutAttributeFilterDescriptor(INamedTypeSymbol Attribute) : ITypeFilterDescriptor;

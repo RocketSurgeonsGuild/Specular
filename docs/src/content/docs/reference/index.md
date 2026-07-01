@@ -15,7 +15,7 @@ This section documents Indago's **public API surface**: the interface your code 
 
 ## Pages :badge[Stable]{variant=success}
 
-- [IIndagoProvider](./iindago-provider/) — the generated entry point. Exposes `GetAssemblies`, `GetTypes`, and `Scan`, plus the static `EntryAssembly` accessor.
+- [IIndagoProvider](./iindago-provider/) — the generated entry point, accessed via the static `IndagoProvider.Instance` singleton. Exposes `GetAssemblies`, `GetTypes`, and `Scan`.
 - [ServiceRegistrationAttribute](./service-registration/) — declaratively mark a type for dependency-injection registration with a chosen lifetime.
 - [ExcludeFromIndagoAttribute](./exclude-from-indago/) — opt a type out of scanning so the generator skips it.
 - [Type Filters](./type-filters/) — the fluent selector methods (`AddClasses`, `AsImplementedInterfaces`, namespace and attribute filters, and more) used to build a scan.

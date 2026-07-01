@@ -21,6 +21,7 @@ internal static class AssemblyCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ImmutableList<Item> GetAssemblyItems(
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
@@ -113,6 +114,7 @@ internal static class AssemblyCollection
             ? (invocationExpressionSyntax, expression)
             : default;
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ImmutableList<ResolvedSourceLocation> ResolveSources(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -156,7 +158,7 @@ internal static class AssemblyCollection
         //        .WithBody(Block(SwitchGenerator.GenerateSwitchStatement(results)));
     }
 
-    public record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter);
+    public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter);
 
     private static BlockSyntax GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
     {

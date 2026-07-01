@@ -3,6 +3,6 @@ using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.Descriptors;
 
-internal record CompiledServiceTypeDescriptor(INamedTypeSymbol Type) : IServiceTypeDescriptor;
+internal sealed record CompiledServiceTypeDescriptor(INamedTypeSymbol Type) : IServiceTypeDescriptor;
 
-internal record UnknownCompiledServiceTypeDescriptor(AnyTypeData Data) : IServiceTypeDescriptor;
+internal sealed record UnknownCompiledServiceTypeDescriptor(AnyTypeData Data) : IServiceTypeDescriptor;

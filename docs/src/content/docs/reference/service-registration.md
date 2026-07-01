@@ -107,7 +107,7 @@ Extension method on `IServiceCollection` that uses `provider.Scan()` to find all
 
 ```csharp
 // In Program.cs / Startup.cs
-services.AddIndagoServiceRegistrations(IIndagoProvider.EntryAssembly);
+services.AddIndagoServiceRegistrations(IndagoProvider.Instance);
 ```
 
 ## Combined example
@@ -130,7 +130,7 @@ public class DualService : IMyService, IAlternate { }
 
 ```csharp
 // Wire up everything in one call
-builder.Services.AddIndagoServiceRegistrations(IIndagoProvider.EntryAssembly);
+builder.Services.AddIndagoServiceRegistrations(IndagoProvider.Instance);
 ```
 
 ## Notes

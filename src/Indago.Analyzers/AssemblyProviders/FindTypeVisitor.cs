@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Indago.Analyzers.AssemblyProviders;
 
-internal class FindTypeVisitor(Compilation compilation, ICompiledTypeFilter<IAssemblySymbol> assemblyFilter, string typeName) : TypeSymbolVisitorBase(
+internal sealed class FindTypeVisitor(Compilation compilation, ICompiledTypeFilter<IAssemblySymbol> assemblyFilter, string typeName) : TypeSymbolVisitorBase(
     compilation,
     assemblyFilter,
     new CompiledTypeFilter(ClassFilter.PublicOnly, ImmutableList<ITypeFilterDescriptor>.Empty)

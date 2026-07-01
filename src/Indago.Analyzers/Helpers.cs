@@ -260,6 +260,7 @@ internal static class Helpers
             )
            .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)));
 
+    [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
     internal static SourceLocation CreateSourceLocation(SourceLocationKind kind, InvocationExpressionSyntax methodCallSyntax, CancellationToken cancellationToken)
     {
         if (methodCallSyntax is { Expression: MemberAccessExpressionSyntax memberAccess, ArgumentList.Arguments: [{ Expression: { } argumentExpression }] }) { }

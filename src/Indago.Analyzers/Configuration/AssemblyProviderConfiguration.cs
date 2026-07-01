@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Indago.Analyzers.Configuration;
 
 #pragma warning disable CS9113
-internal partial class AssemblyProviderConfiguration
+internal sealed partial class AssemblyProviderConfiguration
 (
     SourceProductionContext context,
     Compilation compilation,
@@ -22,6 +22,7 @@ internal partial class AssemblyProviderConfiguration
 {
     public Compilation Compilation => compilation;
     public bool IsAot { get; } = StatementGeneration.IsAotCompilation(options);
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; the unexpected exception is surfaced as a diagnostic.")]
     public (
         ImmutableList<AssemblyCollection.Item> InternalAssemblyRequests,
         ImmutableList<ReflectionCollection.Item> InternalReflectionRequests,
@@ -554,7 +555,7 @@ internal partial class AssemblyProviderConfiguration
             withAnyAttributeFilter.Add(type);
         }
 
-        if (withAnyAttributeFilter.Any()) descriptors.Add(new WithAnyAttributeFilterDescriptor(withAnyAttributeFilter.ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default)));
+        if (withAnyAttributeFilter.Count != 0) descriptors.Add(new WithAnyAttributeFilterDescriptor(withAnyAttributeFilter.ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default)));
 
         var withAnyAttributeStringFilter = new List<string>();
         foreach (var item in data.WithAnyAttributeStringFilters)
@@ -562,7 +563,7 @@ internal partial class AssemblyProviderConfiguration
             withAnyAttributeStringFilter.Add(item.Attribute);
         }
 
-        if (withAnyAttributeStringFilter.Any()) descriptors.Add(new WithAnyAttributeStringFilterDescriptor(withAnyAttributeStringFilter.ToImmutableHashSet()));
+        if (withAnyAttributeStringFilter.Count != 0) descriptors.Add(new WithAnyAttributeStringFilterDescriptor(withAnyAttributeStringFilter.ToImmutableHashSet()));
 
         foreach (var item in data.AssignableToTypeFilters)
         {

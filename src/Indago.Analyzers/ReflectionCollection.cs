@@ -42,6 +42,7 @@ internal static class ReflectionCollection
             ? (invocationExpressionSyntax, expression)
             : default;
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ResolvedSourceLocation? ResolveSource(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -109,8 +110,9 @@ internal static class ReflectionCollection
         return results.ToImmutableList();
     }
 
-    public record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter, CompiledTypeFilter TypeFilter);
+    public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter, CompiledTypeFilter TypeFilter);
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     internal static ImmutableList<Item> GetReflectionItems(
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
