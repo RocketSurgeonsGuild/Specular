@@ -4,7 +4,7 @@ Durable lessons from fixed bugs. Newest entries appended; see `INDEX.md` for rou
 
 ---
 
-### 2026-06-29 - IndagoProviderAttribute emitted IL2077 under Native AOT
+### 2026-06-29 - IndagoHashAttribute emitted IL2077 under Native AOT
 
 **Status**
 Active
@@ -15,7 +15,7 @@ Constitution Principle I (AOT & Trim Safety) is non-negotiable, yet the provider
 `IIndagoProvider.EntryAssembly` would have failed.
 
 **Decision / Finding**
-`IndagoProviderAttribute` resolved the source-generated provider via
+`IndagoHashAttribute` resolved the source-generated provider via
 `Activator.CreateInstance(type)` where `type` had no `[DynamicallyAccessedMembers]` annotation, so the
 trim analyzer emitted **IL2077**. Fixed by annotating the constructor parameter and the `Type` getter
 with `[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]`.

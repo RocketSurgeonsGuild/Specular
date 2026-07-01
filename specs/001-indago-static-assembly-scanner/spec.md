@@ -71,7 +71,7 @@ the cache without re-visiting their symbols.
 2. **Given** a type in LibA changes its implemented interfaces,
    **When** AppB rebuilds,
    **Then** AppB's generated scan results reflect the updated interface list (cache is
-   invalidated by the `GeneratedHash` embedded in `IndagoProviderAttribute`).
+   invalidated by the `GeneratedHash` embedded in `IndagoHashAttribute`).
 
 ---
 
@@ -145,7 +145,7 @@ site — without reading source code.
   re-resolving.
 - **FR-007**: The generator MUST read `IndagoProvider.ctpjson` from referenced assemblies
   (via `AdditionalText`) and use it as a cache, validated against the `GeneratedHash` embedded
-  in `[IndagoProviderAttribute]`.
+  in `[IndagoHashAttribute]`.
 - **FR-008**: The generator MUST compile and produce correct output on Roslyn 4.8, 4.14, and 5.0.
 - **FR-009**: The library MUST expose `AddIndagoServiceRegistrations(IServiceCollection)` to
   register all types annotated with `[ServiceRegistration]` without runtime reflection.
@@ -157,7 +157,7 @@ site — without reading source code.
 ### Key Entities
 
 - **IIndagoProvider**: The generated provider interface; entry point for all scanning operations.
-  Resolved at startup via `[IndagoProviderAttribute]` on the entry assembly.
+  Resolved at startup via `[IndagoHashAttribute]` on the entry assembly.
 - **TypeSelector / AssemblySelector**: Fluent builder objects passed to `GetTypes()` /
   `GetAssemblies()` / `Scan()` respectively; their expressions are hashed at the call site.
 - **IndagoProvider.ctpjson**: The cross-assembly cache artifact; contains serialized scan

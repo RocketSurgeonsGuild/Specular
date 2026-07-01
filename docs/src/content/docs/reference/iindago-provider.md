@@ -8,7 +8,7 @@ tags:
 
 # IIndagoProvider
 
-`IIndagoProvider` is the primary entry point for all compile-time scanning operations in Indago. At build time, the Roslyn source generator emits a concrete implementation of this interface and wires it to your assembly via `[IndagoProviderAttribute]`. You never instantiate the provider directly — you access it through `EntryAssembly` or through the generated class.
+`IIndagoProvider` is the primary entry point for all compile-time scanning operations in Indago. At build time, the Roslyn source generator emits a concrete implementation of this interface and wires it to your assembly via `[IndagoHashAttribute]`. You never instantiate the provider directly — you access it through `EntryAssembly` or through the generated class.
 
 ## Static Members
 
@@ -24,7 +24,7 @@ Resolves the provider for the current application's entry assembly. Under the ho
 Assembly.GetEntryAssembly().GetIndagoProvider();
 ```
 
-`GetIndagoProvider()` reads the `[IndagoProviderAttribute]` that the generator attaches to the entry assembly at build time and activates the generated provider type via lazy `Activator.CreateInstance`. If no attribute is present (e.g. the assembly was not processed by the generator) an `InvalidOperationException` is thrown.
+`GetIndagoProvider()` reads the `[IndagoHashAttribute]` that the generator attaches to the entry assembly at build time and activates the generated provider type via lazy `Activator.CreateInstance`. If no attribute is present (e.g. the assembly was not processed by the generator) an `InvalidOperationException` is thrown.
 
 **Usage:**
 

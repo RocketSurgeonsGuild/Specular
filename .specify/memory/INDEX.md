@@ -7,7 +7,7 @@ the lesson.
 
 | ID  | Title                                                    | Source  | Tags                            |
 | --- | -------------------------------------------------------- | ------- | ------------------------------- |
-| B1  | IndagoProviderAttribute emitted IL2077 under Native AOT  | BUGS.md | aot, trim, il2077, principle-i  |
+| B1  | IndagoHashAttribute emitted IL2077 under Native AOT      | BUGS.md | aot, trim, il2077, principle-i  |
 | B2  | Pipeline DocsModule recursion via a delegating mise task | BUGS.md | pipeline, mise, docs, recursion |
 
 ## Decisions

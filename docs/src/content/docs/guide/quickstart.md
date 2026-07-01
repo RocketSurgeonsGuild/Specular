@@ -8,11 +8,11 @@ tags:
 
 # Quickstart
 
-This page assumes you have already [installed Indago](../installation/) and applied `[assembly: IndagoProviderAttribute]` to your entry project.
+This page assumes you have already [installed Indago](../installation/) and applied `[assembly: IndagoHashAttribute]` to your entry project.
 
 ## 1. Obtain the Provider
 
-`IIndagoProvider.EntryAssembly` is a static property that resolves the generated provider for the currently running entry assembly. It works by reading the `IndagoProviderAttribute` the generator stamped onto your assembly at build time:
+`IIndagoProvider.EntryAssembly` is a static property that resolves the generated provider for the currently running entry assembly. It works by reading the `IndagoHashAttribute` the generator stamped onto your assembly at build time:
 
 ```csharp
 using Indago;

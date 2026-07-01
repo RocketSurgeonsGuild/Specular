@@ -35,12 +35,12 @@ Or add it manually to your `.csproj`:
 
 ## 2. Apply the Assembly Attribute
 
-The generator needs to know which assembly is the entry point for scanning. Add `[assembly: IndagoProviderAttribute]` to your project. The conventional location is the top of `Program.cs` or a dedicated `AssemblyInfo.cs` file.
+The generator needs to know which assembly is the entry point for scanning. Add `[assembly: IndagoHashAttribute]` to your project. The conventional location is the top of `Program.cs` or a dedicated `AssemblyInfo.cs` file.
 
 ```csharp
 using Indago.Abstractions;
 
-[assembly: IndagoProviderAttribute]
+[assembly: IndagoHashAttribute]
 ```
 
 The attribute lives in the `Indago.Abstractions` namespace.

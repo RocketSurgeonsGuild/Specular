@@ -26,7 +26,7 @@ compatibility, and NuGet packaging of the `Indago` package.
 
 - Own `src/Indago/` — `IIndagoProvider`, attributes, abstractions, DI extensions
 - Ensure all public API changes are tracked in PublicAPI files (RS0017 is a build error)
-- Maintain `IndagoProviderAttribute`, `ServiceRegistrationAttribute`, `ExcludeFromIndagoAttribute`
+- Maintain `IndagoHashAttribute`, `ServiceRegistrationAttribute`, `ExcludeFromIndagoAttribute`
 - Implement `AddIndagoServiceRegistrations` without runtime reflection
 - Guard AOT/trim safety of the runtime library (zero trim warnings under `PublishAot=true`)
 - Manage `Directory.Packages.props` version pins for runtime packages

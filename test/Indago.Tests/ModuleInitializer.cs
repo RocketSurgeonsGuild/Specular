@@ -54,7 +54,7 @@ internal static partial class ModuleInitializer
                 : s
         );
         VerifierSettings.ScrubLinesWithReplace(
-            s => s.Contains("IndagoProviderAttribute", StringComparison.OrdinalIgnoreCase) && s.IndexOf('"') > -1
+            s => s.Contains("IndagoHashAttribute", StringComparison.OrdinalIgnoreCase) && s.IndexOf('"') > -1
                 ? s.Replace(s[s.IndexOf('"')..s.LastIndexOf(')')], "\"{scrubbed}\"")
                 : s
         );

@@ -73,7 +73,7 @@ mise run docs
 **Independent Test** (Scenario 7 from quickstart.md): A developer can follow installation → quickstart → AOT guide without leaving the docs.
 
 - [ ] T010 [P] [US3] Create `docs/guide/index.md` — "What is Indago?" page: explain the problem (runtime reflection cost, AOT incompatibility), the solution (Roslyn source generator emitting a strongly-typed provider), and the key concepts (`IIndagoProvider`, selector expressions, `IndagoProvider.ctpjson`). Read `src/Indago/IIndagoProvider.cs` for API shape. Include a one-paragraph architecture summary linking to `/architecture/how-it-works`.
-- [ ] T011 [P] [US3] Create `docs/guide/installation.md` — NuGet install + project setup: `dotnet add package Indago`, wire `[assembly: IndagoProvider]` attribute, confirm generated file appears under `obj/`. Read `src/Indago/IndagoProviderAttribute.cs` for attribute usage. Include a minimal working csproj snippet.
+- [ ] T011 [P] [US3] Create `docs/guide/installation.md` — NuGet install + project setup: `dotnet add package Indago`, wire `[assembly: IndagoProvider]` attribute, confirm generated file appears under `obj/`. Read `src/Indago/IndagoHashAttribute.cs` for attribute usage. Include a minimal working csproj snippet.
 - [ ] T012 [P] [US3] Create `docs/guide/quickstart.md` — First selector walkthrough: call `provider.GetTypes(s => s.FromAssemblyOf<Program>().AddClasses().AsImplementedInterfaces())`, register results with `AddIndagoServiceRegistrations`, show the generated code structure. Read `src/Indago/IIndagoProvider.cs` and `src/Indago/IndagoProviderServiceCollectionExtensions.cs`.
 - [ ] T013 [P] [US3] Create `docs/guide/aot-publishing.md` — AOT/trim compatibility guide: `dotnet publish -r <rid> --self-contained -p:PublishAot=true`, explain why zero reflection matters, note both `net8.0` and `net10.0` targets. Read `src/Indago/IIndagoProvider.cs` doc comments. End with "Next steps" linking to Reference section.
 
@@ -103,7 +103,7 @@ mise run docs
 **Independent Test** (US3 Scenario 2): A developer navigating to Architecture finds a clear explanation of `IndagoProvider.ctpjson` and `GeneratedHash`.
 
 - [ ] T018 [P] [US3] Create `docs/architecture/how-it-works.md` — Generator pipeline overview: syntax providers (`AssemblyCollection`, `ReflectionCollection`, `ServiceDescriptorCollection`), selector expression hashing (`GetArgumentExpressionHash`), symbol visitor flow in `AssemblyProviders/`, code emission. Include a simple flow diagram in Mermaid. Read `src/Indago.Analyzers/CompiledTypeProviderGenerator.cs` for the pipeline structure.
-- [ ] T019 [P] [US3] Create `docs/architecture/cross-assembly-caching.md` — Cross-assembly caching model: what `IndagoProvider.ctpjson` contains, how `GeneratedHash` in `IndagoProviderAttribute` is used for cache invalidation, the two-project (LibA → AppB) scenario, what happens when cache is missing or corrupt. Read `src/Indago.Analyzers/Configuration/` and `src/Indago/IndagoProviderAttribute.cs`.
+- [ ] T019 [P] [US3] Create `docs/architecture/cross-assembly-caching.md` — Cross-assembly caching model: what `IndagoProvider.ctpjson` contains, how `GeneratedHash` in `IndagoHashAttribute` is used for cache invalidation, the two-project (LibA → AppB) scenario, what happens when cache is missing or corrupt. Read `src/Indago.Analyzers/Configuration/` and `src/Indago/IndagoHashAttribute.cs`.
 
 **Checkpoint**: Both pages render in `mise run docs`; Mermaid diagram in T018 renders in the browser.
 

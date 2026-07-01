@@ -202,27 +202,17 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                     config,
                     out var cacheHash
                 );
-                if (privateAssemblies.Any() && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+                cu = cu.AddSharedTrivia()
+                .AddAttributeLists(attributes)
 
-                cu = cu.AddSharedTrivia().AddAttributeLists(attributes);
-
-                // Only emit the provider implementation (and the attribute that points at it)
-                // when this assembly is configured to do so. The scan-metadata attributes above
-                // are always emitted so that downstream assemblies can reuse the resolved data.
-                if (emitProvider)
-                {
-                    if (privateAssemblies.Any()) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
-
-                    cu = cu
                         .AddAttributeLists(
                              AttributeList(
                                      SingletonSeparatedList(
                                          Attribute(
-                                             ParseName("Indago.Abstractions.IndagoProviderAttribute"),
+                                             ParseName("Indago.Abstractions.IndagoHashAttribute"),
                                              AttributeArgumentList(
                                                  SeparatedList(
                                                      [
-                                                         AttributeArgument(TypeOfExpression(ParseName(assemblyProvider.Identifier.Text))),
                                                          AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
                                                      ]
                                                  )
@@ -231,8 +221,15 @@ public class IndagoProviderGenerator : IIncrementalGenerator
                                      )
                                  )
                                 .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
-                         )
-                        .AddMembers(assemblyProvider);
+                         );
+
+                // Only emit the provider implementation (and the attribute that points at it)
+                // when this assembly is configured to do so. The scan-metadata attributes above
+                // are always emitted so that downstream assemblies can reuse the resolved data.
+                if (emitProvider)
+                {
+                    if (privateAssemblies.Any() && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
+                    cu = cu.AddMembers(assemblyProvider);
                 }
 
                 foreach (var diagnostic in diagnostics)

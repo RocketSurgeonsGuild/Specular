@@ -5,7 +5,7 @@ Stateful log of contracts, APIs, and decisions found during implementation.
 ## Indago consumer API (confirmed from `src/Indago`)
 
 - A consuming assembly obtains its provider via `typeof(Program).Assembly.GetIndagoProvider()`
-  (reads the generator-injected `IndagoProviderAttribute`) or, on `net8.0+`,
+  (reads the generator-injected `IndagoHashAttribute`) or, on `net8.0+`,
   `IIndagoProvider.EntryAssembly`.
 - `IIndagoProvider` surface: `GetAssemblies(action)`, `GetTypes(selector)`,
   `Scan(services, selector)`. Selector lambdas are resolved at compile time via
