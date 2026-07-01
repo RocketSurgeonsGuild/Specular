@@ -18,5 +18,6 @@ internal static class GeneratorBuilderConstants
                                                                      typeof(ServiceRegistrationAttribute).Assembly,
                                                                      typeof(EditorBrowsableAttribute).Assembly,
                                                                      typeof(Attribute).Assembly
-                                                                 );
+                                                                 )
+                 .AddGlobalOption("build_property.IndagoEmitProvider", "true");
 }

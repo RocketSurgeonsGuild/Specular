@@ -12,8 +12,7 @@ public abstract partial class GeneratorTest() : LoggerTest(Defaults.LoggerTest)
         _ = Directory.CreateDirectory(TempPath);
         Builder = GeneratorBuilderConstants
                  .Builder
-                 .WithAssemblyLoadContext(AssemblyLoadContext)
-                 .AddGlobalOption("build_property.IndagoEmitProvider", "true");
+                 .WithAssemblyLoadContext(AssemblyLoadContext);
         if (AssemblyLoadContext is not IDisposable disposable) return;
 
         Disposables.Add(disposable);
