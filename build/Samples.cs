@@ -45,7 +45,7 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
             {
 
                 var hostname = projectPath.NameWithoutExtension;
-                context.Logger.LogInformation("AOT publish [{Host}] {Framework} × {Rid} (zero-warning policy)", hostname, rid);
+                context.Logger.LogInformation("AOT publish [{Host}] × {Rid} (zero-warning policy)", hostname, rid);
 
                 var result = await context.DotNet().Publish(
                     new DotNetPublishOptions
