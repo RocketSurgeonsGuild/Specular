@@ -34,6 +34,7 @@ export default defineConfig({
                     href: 'https://github.com/RocketSurgeonsGuild/Indago',
                 },
             ],
+            customCss: ['./src/styles/api.css'],
             plugins: [
                 starlightAutoDrafts(),
                 starlightGithubAlerts(),
@@ -60,7 +61,7 @@ export default defineConfig({
                         {
                             label: 'API Reference',
                             link: '/api/',
-                            icon: 'seti:brackets',
+                            icon: 'code-branch',
                             items: [{ autogenerate: { directory: 'api' } }],
                         },
                         {

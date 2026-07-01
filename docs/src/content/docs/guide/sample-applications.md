@@ -84,11 +84,3 @@ discovered set — the host asserts its absence.
 Both hosts hold a hard-coded **expected service set** and compare it to what Indago discovered,
 failing the process (and therefore the CI smoke test) on any mismatch. Both are published under the
 zero-warning Native AOT policy as discrete, named pipeline steps.
-
-## The negative fixture
-
-`Indago.Samples.NegativeFixture` is the one project **required to warn**. It deliberately feeds
-`IIndagoProvider.GetTypes(...)` results into `Activator.CreateInstance` to emit a stable trim
-warning (`IL2072`), and a pipeline step asserts the warning is present via an **inverted** assertion —
-so the regression detector itself fails loudly if Indago ever became trim-clean on that path. See
-[AOT Publishing](/guide/aot-publishing/) for the guardrail mechanics.
