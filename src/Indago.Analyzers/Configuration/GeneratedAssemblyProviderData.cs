@@ -22,9 +22,9 @@ public record GeneratedAssemblyProviderData
 
     public ResolvedSourceLocation? GetSourceLocation(IAssemblySymbol assembly, SourceLocation sourceLocation, Func<ResolvedSourceLocation?> factory)
     {
-        return  assembly is null 
+        return assembly is null
             ? throw new ArgumentNullException(nameof(assembly))
-            :  sourceLocation is null
+            : sourceLocation is null
             ? throw new ArgumentNullException(nameof(sourceLocation))
             : factory is null
             ? throw new ArgumentNullException(nameof(factory))
