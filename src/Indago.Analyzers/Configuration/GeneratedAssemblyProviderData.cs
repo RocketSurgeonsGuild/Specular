@@ -13,9 +13,9 @@ public record GeneratedAssemblyProviderData
 {
     public CompiledAssemblyProviderData? GetAssemblyData(IAssemblySymbol assembly)
     {
-        return  assembly is null 
+        return assembly is null
             ? throw new ArgumentNullException(nameof(assembly))
-            :  AssemblyData.TryGetValue(assembly.MetadataName, out var data) && assembly.MatchesCachedVersion(data.CacheVersion)
+            : AssemblyData.TryGetValue(assembly.MetadataName, out var data) && assembly.MatchesCachedVersion(data.CacheVersion)
             ? data
             : null;
     }
@@ -23,18 +23,16 @@ public record GeneratedAssemblyProviderData
     public ResolvedSourceLocation? GetSourceLocation(IAssemblySymbol assembly, SourceLocation sourceLocation, Func<ResolvedSourceLocation?> factory)
     {
         if (assembly is null) throw new ArgumentNullException(nameof(assembly));
-        if (sourceLocation is null) throw new ArgumentNullException(nameof(sourceLocation));
-        return  factory is null 
+        return  sourceLocation is null 
+            ? throw new ArgumentNullException(nameof(sourceLocation))
+            :  factory is null
             ? throw new ArgumentNullException(nameof(factory))
-            :  Partials.TryGetValue(ResultingAssemblyProviderData.GetCacheFileHash(sourceLocation), out var resolvedSourceLocations)
+            : Partials.TryGetValue(ResultingAssemblyProviderData.GetCacheFileHash(sourceLocation), out var resolvedSourceLocations)
      && resolvedSourceLocations.GetSourceLocation(assembly.MetadataName) is { } data
      && assembly.MatchesCachedVersion(data.CacheVersion)
             ? data
             : factory();
     }
 
-    public bool DoesAssemblyContainExpressions(IAssemblySymbol assembly)
-    {
-        return  assembly is null  ? throw new ArgumentNullException(nameof(assembly)) :  EmptyAssemblies.Contains(assembly.MetadataName);
-    }
+    public bool DoesAssemblyContainExpressions(IAssemblySymbol assembly) => assembly is null ? throw new ArgumentNullException(nameof(assembly)) : EmptyAssemblies.Contains(assembly.MetadataName);
 }

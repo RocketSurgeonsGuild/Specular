@@ -18,9 +18,9 @@ public class ResultingAssemblyProviderData
 
     public bool NoExpressions(IAssemblySymbol assembly)
     {
-        return  assembly is null 
+        return assembly is null
             ? throw new ArgumentNullException(nameof(assembly))
-            :  _expressionlessAssemblies.Add(assembly.MetadataName);
+            : _expressionlessAssemblies.Add(assembly.MetadataName);
     }
 
     public void AddSourceLocation(IAssemblySymbol assembly, ResolvedSourceLocation resolvedSource)
