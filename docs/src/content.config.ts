@@ -9,7 +9,12 @@ export const collections = {
         // Custom loader: hand-written Markdown (via Starlight's docsLoader) plus API reference
         // pages parsed from each assembly's compiled XML documentation (all target frameworks).
         loader: dotnetXmlApiLoader({
-            assemblies: [{ projectDir: '../src/Indago' }],
+            assemblies: [
+                {
+                    projectDir: '../src/Indago',
+                    assemblyName: 'Indago',
+                },
+            ],
             includeNamespaces: ['Indago'],
             basePath: 'api',
         }),

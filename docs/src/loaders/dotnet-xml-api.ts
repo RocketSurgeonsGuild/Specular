@@ -14,7 +14,7 @@ export interface DotnetAssembly {
      */
     projectDir: string;
     /** Assembly (and XML file) base name. Defaults to the last segment of {@link projectDir}. */
-    assemblyName?: string;
+    assemblyName: string;
     /** Build configurations to search, in order of preference. The first one with any XML wins. */
     configurations?: string[];
 }
@@ -24,22 +24,12 @@ export interface DotnetAssembly {
  */
 export interface DotnetXmlApiLoaderOptions {
     /** The assemblies to document. Every target framework of each assembly is parsed and merged. */
-    assemblies?: DotnetAssembly[];
+    assemblies: DotnetAssembly[];
     /** Namespaces to include. A member is kept when its full name starts with one of these + '.'. */
-    includeNamespaces?: string[];
+    includeNamespaces: string[];
     /** Slug prefix under which API pages are stored, e.g. `api`. */
     basePath?: string;
 }
-
-/** Assemblies documented by default. Extend via the loader's `assemblies` option. */
-const ASSEMBLIES: DotnetAssembly[] = [{ projectDir: '../src/Indago' }];
-
-const DEFAULTS = {
-    assemblies: ASSEMBLIES,
-    includeNamespaces: ['Indago'],
-    basePath: 'api',
-    configurations: ['Release'],
-} as const;
 
 // ---------------------------------------------------------------------------
 // XML doc parsing
@@ -541,11 +531,11 @@ function renderIndexPage(pages: { id: string; title: string; namespace: string }
  * hand-written Markdown loaded by {@link docsLoader}. Every target framework of each assembly
  * is parsed and merged, and each type and member is tagged with the frameworks it exists in.
  */
-export function dotnetXmlApiLoader(options: DotnetXmlApiLoaderOptions = {}): Loader {
+export function dotnetXmlApiLoader(options: DotnetXmlApiLoaderOptions): Loader {
     const opts = {
-        assemblies: options.assemblies ?? DEFAULTS.assemblies,
-        includeNamespaces: options.includeNamespaces ?? [...DEFAULTS.includeNamespaces],
-        basePath: options.basePath ?? DEFAULTS.basePath,
+        assemblies: options.assemblies ?? [],
+        includeNamespaces: options.includeNamespaces ?? [],
+        basePath: options.basePath ?? 'api',
     };
 
     const base = docsLoader();
@@ -587,7 +577,7 @@ export function dotnetXmlApiLoader(options: DotnetXmlApiLoaderOptions = {}): Loa
 
             for (const assembly of opts.assemblies) {
                 const assemblyName = assembly.assemblyName ?? basename(assembly.projectDir);
-                const configurations = assembly.configurations ?? DEFAULTS.configurations;
+                const configurations = assembly.configurations ?? ['Release', 'Debug'];
                 const binDirAbs = fileURLToPath(new URL(`${assembly.projectDir}/bin`, context.config.root));
                 const xmlFiles = discoverXmlFiles(binDirAbs, assemblyName, configurations);
 
