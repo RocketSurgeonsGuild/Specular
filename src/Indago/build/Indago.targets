@@ -1,4 +1,25 @@
 <Project>
+    <PropertyGroup>
+        <_IndagoApplicationDetected Condition="'$(_IndagoApplicationDetected)' == '' and ('$(OutputType)' != 'Library' or '$(OutputType)' != 'library')">
+            true
+        </_IndagoApplicationDetected>
+        <_IndagoApplicationDetected Condition="'$(_IndagoApplicationDetected)' == '' and ('$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true')">
+            true
+        </_IndagoApplicationDetected>
+        <_IndagoApplicationDetected Condition="'$(_IndagoApplicationDetected)' == ''">false</_IndagoApplicationDetected>
+
+        <ImportConventionsNamespace Condition="'$(ImportConventionsNamespace)' == ''">$(RootNamespace)</ImportConventionsNamespace>
+        <ImportConventionsClassName Condition="'$(ImportConventionsClassName)' == ''">Imports</ImportConventionsClassName>
+        <ImportConventionsMethodName Condition="'$(ImportConventionsMethodName)' == ''">Instance</ImportConventionsMethodName>
+
+        <ExportConventionsNamespace Condition="'$(ExportConventionsNamespace)' == ''">$(RootNamespace).Conventions</ExportConventionsNamespace>
+        <ExportConventionsClassName Condition="'$(ExportConventionsClassName)' == ''">Exports</ExportConventionsClassName>
+        <ExportConventionsMethodName Condition="'$(ExportConventionsMethodName)' == ''">GetConventions</ExportConventionsMethodName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsTestProject)' == 'true' or '$(_IndagoApplicationDetected)' == 'true'">
+        <IndagoEmitProvider Condition="'$(IndagoEmitProvider)' == ''">true</IndagoEmitProvider>
+    </PropertyGroup>
+
     <Target Name="CleanAssemblyCache" BeforeTargets="Clean">
         <Delete Files="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson" Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')" />
     </Target>
