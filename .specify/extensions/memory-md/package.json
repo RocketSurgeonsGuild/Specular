@@ -27,7 +27,7 @@
         "fast-glob": "^3.3.2",
         "gray-matter": "^4.0.3",
         "markdown-it": "^14.1.0",
-        "typescript": "^6.0.3",
+        "typescript": "^7.0.0",
         "yaml": "^2.6.1"
     },
     "devDependencies": {
