@@ -47,7 +47,7 @@
         <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="10.0.6" />
         <PackageVersion Include="TUnit" Version="1.59.0" />
         <PackageVersion Include="Verify.DiffPlex" Version="3.3.0" />
-        <PackageVersion Include="Verify.TUnit" Version="31.24.0" />
+        <PackageVersion Include="Verify.TUnit" Version="31.24.1" />
     </ItemGroup>
     <!-- Sample applications (samples/) — central versions, never packed
     (samples/Directory.Build.props sets IsPackable=false). -->
