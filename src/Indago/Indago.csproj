@@ -16,7 +16,7 @@
         />
     </ItemGroup>
     <ItemGroup Condition="$(TargetFramework)=='netstandard2.0'">
-        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.17" />
+        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.18" />
     </ItemGroup>
     <PropertyGroup Condition="$(TargetFramework)=='net8.0'">
         <!-- Analyzer dll references newer runtime assemblies than net8.0 provides; conflicts are harmless since analyzers run out-of-process -->
