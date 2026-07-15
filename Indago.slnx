@@ -63,7 +63,6 @@
   </Folder>
   <Folder Name="/src/Indago.Analyzers.supports/">
     <File Path=".editorconfig" />
-    <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn4.14.csproj" />
     <Project Path="src/Indago.Analyzers.supports/Indago.Analyzers.roslyn5.0.csproj" />
   </Folder>
   <Folder Name="/test/">
