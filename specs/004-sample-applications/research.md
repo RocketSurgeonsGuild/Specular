@@ -55,20 +55,20 @@ missing>, "<reason>"))` (pattern used by `PublishNuGetPackagesModule`, `TestSolu
 ### D-C. Negative-fixture inverted assertion
 
 - **Decision**: A dedicated `NegativeFixtureAotPublishModule` runs the same `net10.0` ×
-  current-OS RID AOT publish for `Indago.Samples.NegativeFixture`, **excluded** from the normal
-  AOT steps, and **passes only when the publish warns/fails** as expected (the Indago-attributable
+  current-OS RID AOT publish for `Specular.Samples.NegativeFixture`, **excluded** from the normal
+  AOT steps, and **passes only when the publish warns/fails** as expected (the Specular-attributable
   trim/AOT warning is present). If the publish becomes clean, the module fails the build.
 - **Mechanism**: Run the publish **without** treating warnings as errors, capture the command
   result + output, and assert the expected warning signature is present (and/or the publish
   exit indicates the warning). Invert: present ⇒ step passes; absent ⇒ step fails.
 - **Rationale**: Implements FR-020/FR-021 and SC-003; guards the regression detector itself.
 - **Open detail (see NEEDS-decision D2)**: the precise, stable warning signature the fixture
-  emits and how the fixture reliably triggers an _Indago-attributable_ trim/AOT warning.
+  emits and how the fixture reliably triggers an _Specular-attributable_ trim/AOT warning.
 
 ### D-D. Host in-process assertion + pass/fail signalling
 
-- **Decision**: Each host computes the actual Indago-discovered service set (via the generated
-  `IIndagoProvider` / DI container) and compares it to a hard-coded **expected set**. Mismatch ⇒
+- **Decision**: Each host computes the actual Specular-discovered service set (via the generated
+  `ISpecularProvider` / DI container) and compares it to a hard-coded **expected set**. Mismatch ⇒
   visible failure:
     - **Console**: assert at startup; `Environment.Exit(nonzero)` (or non-zero return) on mismatch;
       print the discovery result.
@@ -86,10 +86,10 @@ missing>, "<reason>"))` (pattern used by `PublishNuGetPackagesModule`, `TestSolu
 
 ### D-E. Docs module behavior
 
-- **Decision**: `DocsModule` (`[DependsOn<BuildSolution>]`) does, in order: 1. Assert `src/Indago/bin/Release/net8.0/Indago.dll` **and** `Indago.xml` exist (fail clearly
-  if `Indago.xml` is missing — Edge Case "Docs build consumes bin"). `SolutionSettings.
-Configuration` defaults to `Release`, so `BuildSolution` already produces these. 2. Run `xmldocmd <Indago.dll> docs/src/content/docs/api/ --namespace Indago --source
-https://github.com/RocketSurgeonsGuild/Indago/blob/main/src/Indago/ --clean`
+- **Decision**: `DocsModule` (`[DependsOn<BuildSolution>]`) does, in order: 1. Assert `src/Specular/bin/Release/net8.0/Specular.dll` **and** `Specular.xml` exist (fail clearly
+  if `Specular.xml` is missing — Edge Case "Docs build consumes bin"). `SolutionSettings.
+Configuration` defaults to `Release`, so `BuildSolution` already produces these. 2. Run `xmldocmd <Specular.dll> docs/src/content/docs/api/ --namespace Specular --source
+https://github.com/RocketSurgeonsGuild/Specular/blob/main/src/Specular/ --clean`
   (xmldocmd is the mise dotnet tool `xmldocmd@2.9.0`). 3. Run `node docs/scripts/add-api-frontmatter.mjs` (existing Starlight frontmatter injector). 4. `npm ci` + `npm run build` in `docs/` via `context.Node()`. 5. Copy/emit the built site (`docs/dist`) into `ArtifactSettings.ArtifactsDirectory / "docs"`
   using `FolderExtensions` (`EnsureExists`, `/`, `+`).
 - **Rationale**: FR-022–FR-025, SC-008. Generates from **bin, not publish** (FR-023). Reuses
@@ -126,10 +126,10 @@ https://github.com/RocketSurgeonsGuild/Indago/blob/main/src/Indago/ --clean`
       default lifetime.
     - **Notifications** — attribute-based (`[ServiceRegistration(ServiceLifetime.Scoped)]` /
       `<TService>` generic variants), demonstrating Scoped + Transient lifetimes.
-    - **Diagnostics** — mixed, and includes the `[ExcludeFromIndago]` opt-out type (FR-004).
+    - **Diagnostics** — mixed, and includes the `[ExcludeFromSpecular]` opt-out type (FR-004).
     - Collectively: interface-matching + attribute-based + ≥2 lifetimes + ≥1 opt-out ⇒ ≥3 styles
-      (SC-001). Verified the needed API exists in `src/Indago` (`ServiceRegistrationAttribute`,
-      `ExcludeFromIndagoAttribute`, fluent selectors, `IIndagoProvider.EntryAssembly`).
+      (SC-001). Verified the needed API exists in `src/Specular` (`ServiceRegistrationAttribute`,
+      `ExcludeFromSpecularAttribute`, fluent selectors, `ISpecularProvider.EntryAssembly`).
 
 ---
 
@@ -140,8 +140,8 @@ All seven items below were decided with the maintainer during the post-plan revi
 | ID     | Item                                                                       | Decision (RESOLVED)                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ------ | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **D0** | Working branch.                                                            | **Continue on `feature/docs`** (single PR #114). No new branch is created; ignore the Spec Kit `004-sample-applications` branch name for VCS purposes.                                                                                                                                                                                                                                                                                                                |
-| **D1** | Samples in main `Indago.slnx` vs. a solution filter.                       | **All sample projects (libraries, all four hosts incl. MAUI + Blazor WASM, and the negative-fixture) go in `Indago.slnx`.** Missing-workload hard-fails are prevented via **conditional MSBuild props** (e.g. guard MAUI/WASM-AOT targets/TFMs behind workload-availability conditions) and the pipeline's skip-with-reason, NOT by excluding them from the solution. The default solution build must remain green where workloads are absent.                        |
-| **D2** | Negative-fixture warning signature.                                        | **Deferred to implementation.** Requirement: the fixture must emit _some_ Indago-attributable `IL2xxx`/`IL3xxx` trim/AOT warning; the exact warning code/text is pinned in `contracts/negative-fixture-step.contract.md` when the fixture is built. The inverted assertion matches the pinned signature.                                                                                                                                                              |
+| **D1** | Samples in main `Specular.slnx` vs. a solution filter.                       | **All sample projects (libraries, all four hosts incl. MAUI + Blazor WASM, and the negative-fixture) go in `Specular.slnx`.** Missing-workload hard-fails are prevented via **conditional MSBuild props** (e.g. guard MAUI/WASM-AOT targets/TFMs behind workload-availability conditions) and the pipeline's skip-with-reason, NOT by excluding them from the solution. The default solution build must remain green where workloads are absent.                        |
+| **D2** | Negative-fixture warning signature.                                        | **Deferred to implementation.** Requirement: the fixture must emit _some_ Specular-attributable `IL2xxx`/`IL3xxx` trim/AOT warning; the exact warning code/text is pinned in `contracts/negative-fixture-step.contract.md` when the fixture is built. The inverted assertion matches the pinned signature.                                                                                                                                                              |
 | **D3** | How CI observes Blazor WASM & MAUI host pass/fail.                         | **Added scope: automated runtime execution in CI for both UI hosts.** Blazor WASM is exercised via a **headless browser** harness; MAUI (`net10.0-android`) via an **Android emulator** in CI. These runtime runs assert the expected service set and feed pass/fail to the pipeline, IN ADDITION to the AOT-publish guardrail. (Accepted cost: emulator/browser boot time + potential flakiness; tasks must include harness setup + reasonable stabilization/retry.) |
 | **D4** | Exact MSBuild property set that fails the publish on ANY trim/AOT warning. | **Spike during implementation.** Before wiring real hosts, prove a forced/injected warning fails the publish (red) for each mode (Native AOT, WASM AOT, MAUI-android), then pin the exact property set in `contracts/aot-publish-step.contract.md`.                                                                                                                                                                                                                   |
 | **D5** | Implementation sequencing.                                                 | **Confirmed priority order**: (1) sample libraries + Console host + AOT publish step + Web host + docs pipeline, then (2) Blazor WASM, then (3) MAUI. All in scope; sequencing only.                                                                                                                                                                                                                                                                                  |
@@ -154,7 +154,7 @@ All seven items below were decided with the maintainer during the post-plan revi
 - **Zero-warning policy** (FR-012/015): demo libraries/hosts must keep their dependency closure
   AOT/trim-clean → restrict third-party packages to AOT/trim-safe ones.
 - **No public API change** (FR + Principle III): `samples/Directory.Build.props` disables
-  public-API tracking & packing; RS0017 on `src/Indago` stays green.
+  public-API tracking & packing; RS0017 on `src/Specular` stays green.
 - **`ConsoleUse` analyzer**: build modules must use `context.Logger`, never `System.Console`.
 - **Central Package Management**: all new versions in `Directory.Packages.props`.
-- **Docs depends on Release bin + XML**: `DocsModule` fails clearly if `Indago.xml` is missing.
+- **Docs depends on Release bin + XML**: `DocsModule` fails clearly if `Specular.xml` is missing.

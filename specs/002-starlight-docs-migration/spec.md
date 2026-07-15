@@ -10,7 +10,7 @@
 
 Replace the current VitePress documentation site with an Astro Starlight-based site. The migration includes selecting and integrating beneficial Starlight plugins, and establishing an automated pipeline for generating API reference documentation directly from compiled .NET assemblies and their XML documentation files.
 
-This feature directly fulfills Principle V of the Indago Constitution: _Documentation as a First-Class Deliverable_.
+This feature directly fulfills Principle V of the Specular Constitution: _Documentation as a First-Class Deliverable_.
 
 ---
 
@@ -20,7 +20,7 @@ This feature directly fulfills Principle V of the Indago Constitution: _Document
 
 - Q: Which additional Starlight plugins should be integrated beyond the initial four? → A: starlight-links-validator, starlight-sidebar-topics, starlight-llms-txt, starlight-auto-drafts, starlight-github-alerts, starlight-changelogs, starlight-page-actions, starlight-docsearch-typesense, starlight-plugin-icons, starlight-tags (total of 14 plugins including the original four).
 - Q: Should developer authoring tooling be included in scope? → A: Yes — the VS Code extension `starlight-links` (HiDeoo) for link autocomplete and validation should be wired in as part of the contributor developer experience.
-- Q: Which `starlight-changelogs` provider should be used? → A: `github` provider — pulls release notes directly from GitHub Releases API (owner: `RocketSurgeonsGuild`, repo: `Indago`). No local `CHANGELOG.md` required. `GH_API_TOKEN` env var used optionally for rate-limit headroom in CI.
+- Q: Which `starlight-changelogs` provider should be used? → A: `github` provider — pulls release notes directly from GitHub Releases API (owner: `RocketSurgeonsGuild`, repo: `Specular`). No local `CHANGELOG.md` required. `GH_API_TOKEN` env var used optionally for rate-limit headroom in CI.
 - Q: Should Typesense search be included in this implementation? → A: No — Typesense (FR-012, T021–T024) is deferred. `starlight-docsearch-typesense` removed from package.json, astro.config.mjs, and CI workflow. Default Starlight search remains active. May be re-added in a follow-on.
 - Q: How should dotnet tools (e.g., xmldocmd) be installed? → A: Via mise configuration (`"dotnet:xmldocmd" = "2.9.0"` in `.config/mise.toml`), not via `dotnet tool install` or `.config/dotnet-tools.json`. Mise manages dotnet tools the same way it manages other toolchain versions.
 
@@ -30,27 +30,27 @@ This feature directly fulfills Principle V of the Indago Constitution: _Document
 
 ### User Story 1 — Developer Finds API Reference for a Type (Priority: P1)
 
-A .NET developer evaluating or using Indago needs to look up the API surface for a specific type, method, or attribute. They visit the documentation site and navigate to the API Reference section, where they see complete documentation generated from the library's XML docs, including summaries, parameters, return values, and remarks.
+A .NET developer evaluating or using Specular needs to look up the API surface for a specific type, method, or attribute. They visit the documentation site and navigate to the API Reference section, where they see complete documentation generated from the library's XML docs, including summaries, parameters, return values, and remarks.
 
 **Why this priority**: API reference is the most-visited section of any library documentation site. Without it, developers must read source code or decompile the DLL.
 
-**Independent Test**: Can be fully tested by generating the API reference from the Indago DLLs and verifying that all public types appear with correct summaries, parameters, and return types in the rendered Starlight site.
+**Independent Test**: Can be fully tested by generating the API reference from the Specular DLLs and verifying that all public types appear with correct summaries, parameters, and return types in the rendered Starlight site.
 
 **Acceptance Scenarios**:
 
-1. **Given** a developer visits the documentation site, **When** they navigate to the API Reference section, **Then** they see all public types from `Indago` and `Indago.Analyzers` listed with their XML doc summaries.
+1. **Given** a developer visits the documentation site, **When** they navigate to the API Reference section, **Then** they see all public types from `Specular` and `Specular.Analyzers` listed with their XML doc summaries.
 2. **Given** a public method with `<param>` and `<returns>` XML doc comments, **When** its API page renders, **Then** parameter names, types, and descriptions are displayed correctly.
-3. **Given** a type marked with `[Obsolete]` or `ExcludeFromIndagoAttribute`, **When** the API reference renders, **Then** it is either excluded or visually flagged as deprecated/excluded.
+3. **Given** a type marked with `[Obsolete]` or `ExcludeFromSpecularAttribute`, **When** the API reference renders, **Then** it is either excluded or visually flagged as deprecated/excluded.
 
 ---
 
 ### User Story 2 — New Contributor Reads Guides and Understands the Project (Priority: P2)
 
-A developer new to Indago reads the Getting Started guide, the architecture overview, and the selector expression documentation. The site is fast, searchable via Typesense, and works well on both desktop and mobile. Draft pages are never visible in the production site.
+A developer new to Specular reads the Getting Started guide, the architecture overview, and the selector expression documentation. The site is fast, searchable via Typesense, and works well on both desktop and mobile. Draft pages are never visible in the production site.
 
 **Why this priority**: Onboarding quality directly affects adoption and contribution rate. Starlight's built-in features (dark mode, i18n-ready structure, navigation) combined with Typesense search serve this need.
 
-**Independent Test**: Can be tested by navigating the site on desktop and mobile, using the search to find a concept ("selector", "IIndagoProvider"), and confirming pages render with correct navigation, syntax highlighting, and responsive layout.
+**Independent Test**: Can be tested by navigating the site on desktop and mobile, using the search to find a concept ("selector", "ISpecularProvider"), and confirming pages render with correct navigation, syntax highlighting, and responsive layout.
 
 **Acceptance Scenarios**:
 
@@ -98,7 +98,7 @@ A developer reading documentation can zoom in on diagrams, jump back to the top 
 
 ### User Story 5 — LLM or AI Tool Discovers the Documentation (Priority: P5)
 
-An AI assistant or LLM-powered developer tool queries the Indago documentation to answer questions about the library. The site exposes an `llms.txt` file at a well-known URL, enabling AI tools to efficiently locate and index the documentation content.
+An AI assistant or LLM-powered developer tool queries the Specular documentation to answer questions about the library. The site exposes an `llms.txt` file at a well-known URL, enabling AI tools to efficiently locate and index the documentation content.
 
 **Why this priority**: The LLM-friendly discovery capability is a differentiator for developer experience with modern AI tooling. It does not block the core migration but adds value for an OSS library targeting .NET developers who use AI assistants.
 
@@ -159,7 +159,7 @@ A contributor editing documentation files in VS Code gets autocomplete suggestio
 
 - **FR-009**: The site MUST integrate **starlight-sidebar-topics** to organize the sidebar into distinct topic groups (e.g., Getting Started, Guides, Reference, API, Changelog).
 - **FR-010**: The site MUST integrate **starlight-tags** to allow content pages to be tagged and browsable by tag from a tag index page.
-- **FR-011**: The site MUST integrate **starlight-changelogs** using the **github** provider (owner: `RocketSurgeonsGuild`, repo: `Indago`) to render GitHub Release notes in a structured, navigable format within the docs site. No local `CHANGELOG.md` is maintained; release notes come directly from the GitHub Releases API.
+- **FR-011**: The site MUST integrate **starlight-changelogs** using the **github** provider (owner: `RocketSurgeonsGuild`, repo: `Specular`) to render GitHub Release notes in a structured, navigable format within the docs site. No local `CHANGELOG.md` is maintained; release notes come directly from the GitHub Releases API.
 
 **Starlight Plugin Integration — Search**
 
@@ -183,7 +183,7 @@ A contributor editing documentation files in VS Code gets autocomplete suggestio
 
 **API Reference Generation**
 
-- **FR-020**: The documentation site MUST include an auto-generated API Reference section populated from the compiled Indago assemblies and their XML documentation files.
+- **FR-020**: The documentation site MUST include an auto-generated API Reference section populated from the compiled Specular assemblies and their XML documentation files.
 - **FR-021**: The API reference generator MUST read from DLL + XML doc file pairs (not source code) so it can run after a standard `dotnet build`.
 - **FR-022**: The API reference generator MUST output standard Markdown files compatible with Starlight's content collection (no HTML-only output, no proprietary formats).
 - **FR-023**: The API reference generation MUST be integrated into the docs build pipeline so that the reference is always in sync with the compiled output.
@@ -215,7 +215,7 @@ A contributor editing documentation files in VS Code gets autocomplete suggestio
 - **SC-001**: All existing documentation pages are accessible at the same URL paths after migration, with zero 404 errors for any URL that existed in the VitePress site.
 - **SC-002**: The docs build completes in the same time or faster than the current VitePress build (measured in the CI pipeline).
 - ~~**SC-003**: The full-text search (Typesense) returns results within 1 second~~ — **DEFERRED**: Typesense removed from scope; default Starlight search remains.
-- **SC-004**: The API Reference section covers 100% of public types in `src/Indago` and `src/Indago.Analyzers`, each with at least a name and signature.
+- **SC-004**: The API Reference section covers 100% of public types in `src/Specular` and `src/Specular.Analyzers`, each with at least a name and signature.
 - **SC-005**: The `mise run docs` command starts the dev server successfully on a clean checkout within 2 minutes (including dependency install).
 - **SC-006**: Zero manual steps are required to regenerate API reference after a `dotnet build` — the API docs update automatically as part of the docs build pipeline.
 - **SC-007**: All 13 active Starlight plugins (FR-006 through FR-018 excluding the deferred FR-012) render correctly in both light and dark mode with no console errors.
@@ -235,7 +235,7 @@ A contributor editing documentation files in VS Code gets autocomplete suggestio
 - The `docs/` directory is the sole location for documentation source; no documentation lives outside this directory.
 - Prettier is already configured to format Markdown files; the Starlight migration does not require changes to the Prettier configuration.
 - The `.github/workflows/deploy-docs.yml` CI workflow will need to be updated as part of this migration.
-- The Indago Constitution's references to "VitePress docs site under `docs/`" and "`mise run docs`" will be updated (PATCH amendment) as a follow-on to this feature once the migration is confirmed working.
+- The Specular Constitution's references to "VitePress docs site under `docs/`" and "`mise run docs`" will be updated (PATCH amendment) as a follow-on to this feature once the migration is confirmed working.
 - **Typesense search** (FR-012) is **deferred from this implementation**. The `starlight-docsearch-typesense` package has been removed; default Starlight search is active. Typesense may be re-added in a follow-on when a Cloud account is provisioned.
 - The `starlight-links` VS Code extension requires the Starlight project to be open as a workspace root in VS Code; contributors using other editors will rely on the `starlight-links-validator` build-time check instead.
 

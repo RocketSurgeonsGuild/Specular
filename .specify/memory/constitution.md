@@ -17,20 +17,20 @@
     - TODO(RATIFICATION_DATE): Confirm original adoption date; placeholder set to 2026-06-25.
 -->
 
-# Indago Constitution
+# Specular Constitution
 
 ## Core Principles
 
 ### I. AOT & Trim Safety (NON-NEGOTIABLE)
 
-Indago's foundational promise is zero-runtime-reflection scanning. Every public API, every generator
+Specular's foundational promise is zero-runtime-reflection scanning. Every public API, every generator
 output, and every new feature MUST be compatible with .NET's Native AOT compilation and IL trimming.
 
 - Generated code MUST NOT use `Assembly.GetTypes()`, `Activator.CreateInstance`, or any reflection
   APIs that are unsafe under trim.
-- The source generator (`Indago.Analyzers`) targets `netstandard2.0` and MUST satisfy
+- The source generator (`Specular.Analyzers`) targets `netstandard2.0` and MUST satisfy
   `EnforceExtendedAnalyzerRules`. No runtime-only packages may be referenced from it.
-- Cross-assembly scan results MUST be serialized to `IndagoProvider.ctpjson` via the
+- Cross-assembly scan results MUST be serialized to `SpecularProvider.ctpjson` via the
   source-generated `JsonSourceGenerationContext`; no runtime JSON serializer is permitted.
 - AOT compatibility MUST be verified in CI against each supported target (`net8.0`, `net10.0`).
 - Any deviation from AOT safety requires explicit justification in a plan's Complexity Tracking
@@ -41,7 +41,7 @@ output, and every new feature MUST be compatible with .NET's Native AOT compilat
 All generator behavior changes MUST follow a Red-Green-Refactor cycle anchored on snapshot tests.
 
 - Tests MUST be written (and confirmed to fail) before implementation begins.
-- Generator output is verified via Verify snapshot tests in `test/Indago.Tests/snapshots/`.
+- Generator output is verified via Verify snapshot tests in `test/Specular.Tests/snapshots/`.
   Changing generated code requires updating (not deleting) the relevant `.verified.cs` file.
 - The test fixture in `test/TestAssembly/` is the source of truth for sample types; new scenarios
   MUST add types there first, then add tests, then implement.
@@ -52,14 +52,14 @@ All generator behavior changes MUST follow a Red-Green-Refactor cycle anchored o
 
 ### III. Minimal & Stable Public API Surface
 
-The public surface of `src/Indago` is intentionally small. Changes to it carry a long-tail cost
+The public surface of `src/Specular` is intentionally small. Changes to it carry a long-tail cost
 (source compatibility, binary compatibility, public API tracking file `RS0017`).
 
 - The `RS0017` analyzer is treated as a build error. Any public API addition or removal MUST
   update the tracked public API file in the same PR.
 - Selector expression hashing (`GetArgumentExpressionHash`) is a stable contract; changing the
   hash algorithm is a MAJOR version bump and requires a migration note in the changelog.
-- Default lifetimes and attribute names (`ServiceRegistrationAttribute`, `ExcludeFromIndagoAttribute`)
+- Default lifetimes and attribute names (`ServiceRegistrationAttribute`, `ExcludeFromSpecularAttribute`)
   are stable contracts; renames require a deprecation cycle.
 - Avoid adding overloads or abstractions unless they are demanded by at least one concrete use case
   in tests or docs. YAGNI applies here more strictly than in most libraries.
@@ -72,7 +72,7 @@ All code MUST pass the project's strict analysis configuration before merge.
 - Roslynator, BannedApiAnalyzers, and NETAnalyzers are active on every project.
 - NuGet audit is enabled at the `moderate` severity level for all packages.
 - `ImplicitUsings=enable` is on; explicit `using` statements for non-global namespaces are still
-  required in `Indago.Analyzers` (netstandard2.0 constraint).
+  required in `Specular.Analyzers` (netstandard2.0 constraint).
 - Formatting MUST pass `prettier` (XML/YAML/TOML/PowerShell) and `dotnet format` before commit.
   `hk` (git hooks via mise) enforces this automatically.
 - Comments MUST explain _why_, not _what_. Multi-line comment blocks in implementation code are
@@ -98,9 +98,9 @@ Documentation is not an afterthought. New features are not considered complete u
 ### Roslyn Compatibility Matrix
 
 The generator MUST compile and emit correct output on Roslyn 4.8, 4.14, and 5.0. The
-`src/Indago.Analyzers.supports/` variant projects enforce this at build time.
+`src/Specular.Analyzers.supports/` variant projects enforce this at build time.
 
-- No Roslyn 5.x-only APIs may be used in `Indago.Analyzers` without a fallback or conditional
+- No Roslyn 5.x-only APIs may be used in `Specular.Analyzers` without a fallback or conditional
   compilation guard tested in the 4.8 and 4.14 variant projects.
 - `Polyfill` is the approved mechanism for accessing newer BCL APIs in netstandard2.0 code.
 
@@ -119,7 +119,7 @@ Two build orchestrators coexist — do not conflate them:
 
 - **`mise run build`** (ModularPipelines, `build/Build.cs`) — day-to-day CI pipeline invocation.
 - **`./build.sh`** (Nuke, `.build/Build.cs`) — canonical release pipeline.
-- `src/Indago/build*/` directories are MSBuild props/targets **packed into the NuGet package**,
+- `src/Specular/build*/` directories are MSBuild props/targets **packed into the NuGet package**,
   not build scripts.
 
 ## Development Workflow
@@ -136,10 +136,10 @@ Two build orchestrators coexist — do not conflate them:
 
 ### Roslyn Version Verification
 
-After any generator change, the `Indago.Analyzers.supports` variant builds MUST pass:
+After any generator change, the `Specular.Analyzers.supports` variant builds MUST pass:
 
 ```bash
-dotnet build src/Indago.Analyzers.supports/
+dotnet build src/Specular.Analyzers.supports/
 ```
 
 ### Snapshot Management
@@ -161,7 +161,7 @@ Every PR MUST confirm:
 
 ## Governance
 
-This constitution supersedes all other informal practices and conventions for the Indago project.
+This constitution supersedes all other informal practices and conventions for the Specular project.
 It applies to all contributors and all code paths — generator, runtime library, build tooling,
 tests, and documentation.
 

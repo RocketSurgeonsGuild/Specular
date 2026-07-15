@@ -27,7 +27,7 @@ onto the PR branch. The maintainer wants to:
 
 ### US-1 — Same-repo PR gets auto-linted (primary)
 
-A maintainer opens a PR from a branch in `RocketSurgeonsGuild/Indago`. CI runs the formatter, and if
+A maintainer opens a PR from a branch in `RocketSurgeonsGuild/Specular`. CI runs the formatter, and if
 files change, a **verified** commit authored by the GitHub Actions bot is pushed back to the PR
 branch. No PAT is involved.
 

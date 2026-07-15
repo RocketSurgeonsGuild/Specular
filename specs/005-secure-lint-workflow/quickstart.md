@@ -12,7 +12,7 @@ commit on same-repo PRs, and (c) only checks (never pushes) on fork PRs — all 
 
 ## Scenario 1 — Same-repo PR gets a Verified auto-lint commit (SC-002, FR-003/004)
 
-1. From a branch in `RocketSurgeonsGuild/Indago`, introduce a deliberate formatting violation
+1. From a branch in `RocketSurgeonsGuild/Specular`, introduce a deliberate formatting violation
    (e.g. mis-indent a YAML/JSON file that `hk` formats).
 2. Open a PR targeting `main`.
 3. **Expect**: the Lint job runs `hk fix`, then the "Commit verified lint fix" step creates a commit

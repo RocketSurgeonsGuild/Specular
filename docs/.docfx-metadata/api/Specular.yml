@@ -1,0 +1,428 @@
+### YamlMime:ManagedReference
+items:
+- uid: Specular
+  commentId: N:Specular
+  id: Specular
+  children:
+  - Specular.ISpecularProvider
+  - Specular.RegistrationLifetimeAttribute
+  - Specular.ServiceRegistrationAttribute
+  - Specular.ServiceRegistrationAttribute`1
+  - Specular.ServiceRegistrationAttribute`2
+  - Specular.ServiceRegistrationAttribute`3
+  - Specular.ServiceRegistrationAttribute`4
+  - Specular.ServiceRegistrationAttribute`5
+  - Specular.ServiceRegistrationAttribute`6
+  - Specular.ServiceRegistrationAttribute`7
+  - Specular.ServiceRegistrationAttribute`8
+  - Specular.SpecularProviderServiceCollectionExtensions
+  langs:
+  - csharp
+  - vb
+  name: Specular
+  nameWithType: Specular
+  fullName: Specular
+  type: Namespace
+  assemblies:
+  - Specular
+references:
+- uid: Specular.ISpecularProvider
+  commentId: T:Specular.ISpecularProvider
+  parent: Specular
+  href: Specular.ISpecularProvider.html
+  name: ISpecularProvider
+  nameWithType: ISpecularProvider
+  fullName: Specular.ISpecularProvider
+- uid: Specular.RegistrationLifetimeAttribute
+  commentId: T:Specular.RegistrationLifetimeAttribute
+  href: Specular.RegistrationLifetimeAttribute.html
+  name: RegistrationLifetimeAttribute
+  nameWithType: RegistrationLifetimeAttribute
+  fullName: Specular.RegistrationLifetimeAttribute
+- uid: Specular.ServiceRegistrationAttribute
+  commentId: T:Specular.ServiceRegistrationAttribute
+  parent: Specular
+  href: Specular.ServiceRegistrationAttribute.html
+  name: ServiceRegistrationAttribute
+  nameWithType: ServiceRegistrationAttribute
+  fullName: Specular.ServiceRegistrationAttribute
+- uid: Specular.ServiceRegistrationAttribute`1
+  commentId: T:Specular.ServiceRegistrationAttribute`1
+  href: Specular.ServiceRegistrationAttribute-1.html
+  name: ServiceRegistrationAttribute<TService>
+  nameWithType: ServiceRegistrationAttribute<TService>
+  fullName: Specular.ServiceRegistrationAttribute<TService>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService)
+  name.vb: ServiceRegistrationAttribute(Of TService)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`1
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-1.html
+  - name: <
+  - name: TService
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`1
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`2
+  commentId: T:Specular.ServiceRegistrationAttribute`2
+  href: Specular.ServiceRegistrationAttribute-2.html
+  name: ServiceRegistrationAttribute<TService1, TService2>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`2
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-2.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`2
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`3
+  commentId: T:Specular.ServiceRegistrationAttribute`3
+  href: Specular.ServiceRegistrationAttribute-3.html
+  name: ServiceRegistrationAttribute<TService1, TService2, TService3>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2, TService3>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2, TService3>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2, TService3)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`3
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-3.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`3
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`4
+  commentId: T:Specular.ServiceRegistrationAttribute`4
+  href: Specular.ServiceRegistrationAttribute-4.html
+  name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`4
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-4.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`4
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`5
+  commentId: T:Specular.ServiceRegistrationAttribute`5
+  href: Specular.ServiceRegistrationAttribute-5.html
+  name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`5
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-5.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`5
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-5.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`6
+  commentId: T:Specular.ServiceRegistrationAttribute`6
+  href: Specular.ServiceRegistrationAttribute-6.html
+  name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`6
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-6.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: ','
+  - name: " "
+  - name: TService6
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`6
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-6.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: ','
+  - name: " "
+  - name: TService6
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`7
+  commentId: T:Specular.ServiceRegistrationAttribute`7
+  href: Specular.ServiceRegistrationAttribute-7.html
+  name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6, TService7)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6, TService7)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6, TService7)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`7
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-7.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: ','
+  - name: " "
+  - name: TService6
+  - name: ','
+  - name: " "
+  - name: TService7
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`7
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-7.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: ','
+  - name: " "
+  - name: TService6
+  - name: ','
+  - name: " "
+  - name: TService7
+  - name: )
+- uid: Specular.ServiceRegistrationAttribute`8
+  commentId: T:Specular.ServiceRegistrationAttribute`8
+  href: Specular.ServiceRegistrationAttribute-8.html
+  name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8>
+  nameWithType: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8>
+  fullName: Specular.ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8>
+  nameWithType.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8)
+  fullName.vb: Specular.ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8)
+  name.vb: ServiceRegistrationAttribute(Of TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8)
+  spec.csharp:
+  - uid: Specular.ServiceRegistrationAttribute`8
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-8.html
+  - name: <
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: ','
+  - name: " "
+  - name: TService6
+  - name: ','
+  - name: " "
+  - name: TService7
+  - name: ','
+  - name: " "
+  - name: TService8
+  - name: '>'
+  spec.vb:
+  - uid: Specular.ServiceRegistrationAttribute`8
+    name: ServiceRegistrationAttribute
+    href: Specular.ServiceRegistrationAttribute-8.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TService1
+  - name: ','
+  - name: " "
+  - name: TService2
+  - name: ','
+  - name: " "
+  - name: TService3
+  - name: ','
+  - name: " "
+  - name: TService4
+  - name: ','
+  - name: " "
+  - name: TService5
+  - name: ','
+  - name: " "
+  - name: TService6
+  - name: ','
+  - name: " "
+  - name: TService7
+  - name: ','
+  - name: " "
+  - name: TService8
+  - name: )
+- uid: Specular.SpecularProviderServiceCollectionExtensions
+  commentId: T:Specular.SpecularProviderServiceCollectionExtensions
+  href: Specular.SpecularProviderServiceCollectionExtensions.html
+  name: SpecularProviderServiceCollectionExtensions
+  nameWithType: SpecularProviderServiceCollectionExtensions
+  fullName: Specular.SpecularProviderServiceCollectionExtensions
+- uid: Specular
+  commentId: N:Specular
+  href: Specular.html
+  name: Specular
+  nameWithType: Specular
+  fullName: Specular

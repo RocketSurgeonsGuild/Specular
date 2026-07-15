@@ -45,9 +45,9 @@ With the dev server running, verify each URL from the [URL Structure contract](c
 ```bash
 # Quick check using curl (dev server running)
 for path in "/" "/guide/" "/guide/installation/" "/guide/quickstart/" \
-  "/guide/aot-publishing/" "/reference/iindago-provider/" \
+  "/guide/aot-publishing/" "/reference/ispecular-provider/" \
   "/reference/type-filters/" "/reference/service-registration/" \
-  "/reference/exclude-from-indago/" "/architecture/how-it-works/" \
+  "/reference/exclude-from-specular/" "/architecture/how-it-works/" \
   "/architecture/cross-assembly-caching/"; do
   status=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:4321${path}")
   echo "$status $path"
@@ -71,16 +71,16 @@ mise run docs:api
 **Expected outcome**:
 
 - `docs/src/content/docs/api/` directory is populated with `.md` files
-- At minimum, these types are present: `IIndagoProvider`, `ServiceRegistrationAttribute`, `ExcludeFromIndagoAttribute`
+- At minimum, these types are present: `ISpecularProvider`, `ServiceRegistrationAttribute`, `ExcludeFromSpecularAttribute`
 - No errors in xmldocmd output (warnings for missing XML docs are acceptable)
 
 ```bash
 # Verify key types exist
 ls docs/src/content/docs/api/
-grep -r "IIndagoProvider" docs/src/content/docs/api/
+grep -r "ISpecularProvider" docs/src/content/docs/api/
 ```
 
-**Pass condition**: All public types from `src/Indago` appear as `.md` files in the `api/` directory.
+**Pass condition**: All public types from `src/Specular` appear as `.md` files in the `api/` directory.
 
 ---
 
@@ -131,11 +131,11 @@ _(Requires Typesense credentials configured in environment)_
 ```bash
 export TYPESENSE_HOST=xxx.a1.typesense.net
 export TYPESENSE_API_KEY=<search-only-key>
-export TYPESENSE_COLLECTION_NAME=indago-docs
+export TYPESENSE_COLLECTION_NAME=specular-docs
 cd docs && npm run build && npm run typesense:index
 ```
 
-Then open the built site and search for "IIndagoProvider" — results should appear within 1 second.
+Then open the built site and search for "ISpecularProvider" — results should appear within 1 second.
 
 **Fallback validation** (without Typesense credentials): Verify that the search UI renders without console errors, even if results are empty.
 

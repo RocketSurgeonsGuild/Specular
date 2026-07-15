@@ -14,8 +14,8 @@ import starlightTags from 'starlight-tags';
 import starlightChangelogs from 'starlight-changelogs';
 import starlightLlmsTxt from 'starlight-llms-txt';
 
-// In GitHub Actions, the site is served under /Indago; locally we run at the root.
-const base = process.env.GITHUB_ACTIONS ? '/Indago' : '';
+// In GitHub Actions, the site is served under /Specular; locally we run at the root.
+const base = process.env.GITHUB_ACTIONS ? '/Specular' : '';
 
 export default defineConfig({
     site: 'https://rocketsurgeonsguild.github.io',
@@ -25,13 +25,13 @@ export default defineConfig({
     },
     integrations: [
         starlight({
-            title: 'Indago',
+            title: 'Specular',
             description: 'Compile-time assembly/type-scanning for .NET. AOT-safe, zero runtime reflection.',
             social: [
                 {
                     icon: 'github',
                     label: 'GitHub',
-                    href: 'https://github.com/RocketSurgeonsGuild/Indago',
+                    href: 'https://github.com/RocketSurgeonsGuild/Specular',
                 },
             ],
             customCss: ['./src/styles/api.css'],
@@ -79,7 +79,7 @@ export default defineConfig({
                 starlightImageZoom(),
                 starlightScrollToTop(),
                 starlightPageActions({
-                    editLink: 'https://github.com/RocketSurgeonsGuild/Indago/edit/main/docs/src/content/docs/',
+                    editLink: 'https://github.com/RocketSurgeonsGuild/Specular/edit/main/docs/src/content/docs/',
                 }),
                 starlightIconsPlugin(),
                 starlightTags(),

@@ -2,13 +2,13 @@
 
 **Applies to**: all four demonstration hosts (FR-007–FR-010, SC-002).
 
-Each host performs Indago compile-time scanning of the three sample libraries, computes the
+Each host performs Specular compile-time scanning of the three sample libraries, computes the
 actual discovered service set, and asserts it against a hard-coded expected set. Mismatch MUST be
 visible and machine-detectable by the ModularPipelines run step.
 
 ## Common requirements (MUST)
 
-1. The host MUST use Indago's **compile-time** scanning (generated `IIndagoProvider` / DI
+1. The host MUST use Specular's **compile-time** scanning (generated `ISpecularProvider` / DI
    registration) — **no runtime reflection-based scanning** (FR-007).
 2. The host MUST consume all three shared libraries **without modifying** them (FR-005).
 3. The host MUST hold an explicit `expectedServiceSet` and compare it to the actual discovered set
@@ -58,12 +58,12 @@ their pass/fail observed (not just their publish):
   reference) and confirm the host fails before the correct set is asserted (Complexity Tracking
   C1).
 
-## API surface used (verified present in `src/Indago`)
+## API surface used (verified present in `src/Specular`)
 
-- `IIndagoProvider` and `IIndagoProvider.EntryAssembly` (US2 AC3).
+- `ISpecularProvider` and `ISpecularProvider.EntryAssembly` (US2 AC3).
 - Fluent selectors, e.g. `FromAssemblyOf<>().AddClasses().AsMatchingInterface()` (US1 AC1).
 - `ServiceRegistrationAttribute` / generic variants (attribute-based registration).
-- `ExcludeFromIndagoAttribute` (opt-out).
+- `ExcludeFromSpecularAttribute` (opt-out).
 
 ## Acceptance mapping
 

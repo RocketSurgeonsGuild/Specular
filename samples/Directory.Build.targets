@@ -3,31 +3,31 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))" />
 
     <!--
-        Wire the Indago source generator for projects that actually CALL the provider
-        (GetTypes / Scan). Opt in with <UsesIndagoGenerator>true</UsesIndagoGenerator>.
+        Wire the Specular source generator for projects that actually CALL the provider
+        (GetTypes / Scan). Opt in with <UsesSpecularGenerator>true</UsesSpecularGenerator>.
 
-        Within this repo we consume Indago via ProjectReference, so the analyzer + the packed
-        build props/targets (global `using Indago`, the IndagoProvider.ctpjson AdditionalFile, and
+        Within this repo we consume Specular via ProjectReference, so the analyzer + the packed
+        build props/targets (global `using Specular`, the SpecularProvider.ctpjson AdditionalFile, and
         the CompilerVisible properties) do NOT flow automatically the way they do from the NuGet
         package. We reproduce that wiring here so hosts behave exactly like a real package consumer.
     -->
-    <PropertyGroup Condition="'$(UsesIndagoGenerator)' == 'true'">
+    <PropertyGroup Condition="'$(UsesSpecularGenerator)' == 'true'">
         <ExcludeAssemblyFromCTP>netstandard;System;mscorlib;Microsoft</ExcludeAssemblyFromCTP>
     </PropertyGroup>
-    <ItemGroup Condition="'$(UsesIndagoGenerator)' == 'true'">
+    <ItemGroup Condition="'$(UsesSpecularGenerator)' == 'true'">
         <ProjectReference
-            Include="$(MSBuildThisFileDirectory)../src/Indago.Analyzers/Indago.Analyzers.csproj"
+            Include="$(MSBuildThisFileDirectory)../src/Specular.Analyzers/Specular.Analyzers.csproj"
             OutputItemType="Analyzer"
             ReferenceOutputAssembly="false"
         />
         <CompilerVisibleProperty Include="IntermediateOutputPath" />
         <CompilerVisibleProperty Include="ProjectDir" />
         <CompilerVisibleProperty Include="ExcludeAssemblyFromCTP" />
-        <Using Include="Indago" Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'" />
+        <Using Include="Specular" Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'" />
         <AdditionalFiles
             Visible="false"
-            Include="$(IntermediateOutputPath)\ctp\IndagoProvider.ctpjson"
-            Condition="Exists('$(IntermediateOutputPath)\gap\IndagoProvider.ctpjson')"
+            Include="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson"
+            Condition="Exists('$(IntermediateOutputPath)\gap\SpecularProvider.ctpjson')"
         />
     </ItemGroup>
 </Project>

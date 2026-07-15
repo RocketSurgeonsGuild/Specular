@@ -1,8 +1,8 @@
 # Contract: Negative-Fixture AOT Publish Step (inverted assertion)
 
-**Applies to**: `Indago.Samples.NegativeFixture` only (FR-020/FR-021, SC-003).
+**Applies to**: `Specular.Samples.NegativeFixture` only (FR-020/FR-021, SC-003).
 
-A permanent fixture whose sole purpose is to intentionally emit an **Indago-attributable**
+A permanent fixture whose sole purpose is to intentionally emit an **Specular-attributable**
 trim/AOT warning during AOT publish, validated by an **inverted** assertion so the regression
 detector is itself guarded against silently breaking.
 
@@ -10,7 +10,7 @@ detector is itself guarded against silently breaking.
 
 | Input            | Value                                                                                           |
 | ---------------- | ----------------------------------------------------------------------------------------------- |
-| Fixture project  | `Indago.Samples.NegativeFixture.csproj`                                                         |
+| Fixture project  | `Specular.Samples.NegativeFixture.csproj`                                                         |
 | TFM × RID        | `net10.0` × current-OS RID (same target as the demo hosts, FR-021)                              |
 | Warning policy   | **NOT** warnings-as-errors — the publish must be allowed to warn so the warning can be detected |
 | Expected warning | `IL2072` — pinned below (D2 RESOLVED)                                                           |
@@ -21,7 +21,7 @@ detector is itself guarded against silently breaking.
    one of the four demonstration hosts (FR-020).
 2. The step MUST be a discrete, named pipeline step (parallel to the demo-host steps).
 3. The step MUST run the AOT publish and inspect the result for the expected
-   Indago-attributable trim/AOT warning.
+   Specular-attributable trim/AOT warning.
 4. **Inverted assertion**:
     - Expected warning **present** (publish warns/fails as expected) ⇒ step `PASS`.
     - Publish **clean** OR expected warning **absent** ⇒ step `FAIL` and the overall build fails
@@ -34,7 +34,7 @@ detector is itself guarded against silently breaking.
 
 | Condition                                             | Outcome                          |
 | ----------------------------------------------------- | -------------------------------- |
-| Expected Indago-attributable trim/AOT warning present | `PASS`                           |
+| Expected Specular-attributable trim/AOT warning present | `PASS`                           |
 | Publish clean / expected warning missing              | `FAIL` (fails the build)         |
 | Required toolchain absent                             | `SKIP` (+ reason) — never `PASS` |
 
@@ -52,8 +52,8 @@ detector is itself guarded against silently breaking.
 
 > Pinned by T021/T022, 2026-06-29, SDK `10.0.301`, `Microsoft.DotNet.ILCompiler` `10.0.9`.
 
-**Triggering construct.** `samples/fixtures/Indago.Samples.NegativeFixture/Program.cs` feeds the
-results of Indago's `IIndagoProvider.GetTypes(...)` — whose element `Type` carries **no**
+**Triggering construct.** `samples/fixtures/Specular.Samples.NegativeFixture/Program.cs` feeds the
+results of Specular's `ISpecularProvider.GetTypes(...)` — whose element `Type` carries **no**
 `[DynamicallyAccessedMembers]` annotation by design — into `Activator.CreateInstance(Type)`:
 
 ```csharp
@@ -70,18 +70,18 @@ warning IL2072: 'type' argument does not satisfy 'DynamicallyAccessedMemberTypes
 ```
 
 Project-scoped match: the warning line ends with
-`[…/Indago.Samples.NegativeFixture.csproj]`.
+`[…/Specular.Samples.NegativeFixture.csproj]`.
 
 **Attribution note.** Because the value flows through `foreach`, the trim analyzer names the
-immediate data-flow source as `IEnumerator<Type>.Current` rather than `IIndagoProvider.GetTypes`
-directly; the warning nonetheless arises solely from consuming Indago's un-annotated `GetTypes`
-return. If Indago ever annotates `GetTypes` with `[DynamicallyAccessedMembers]`, this warning
+immediate data-flow source as `IEnumerator<Type>.Current` rather than `ISpecularProvider.GetTypes`
+directly; the warning nonetheless arises solely from consuming Specular's un-annotated `GetTypes`
+return. If Specular ever annotates `GetTypes` with `[DynamicallyAccessedMembers]`, this warning
 disappears and the **inverted assertion FAILS** — which is precisely the regression signal D2 exists
 to provide. A future SDK that renames/renumbers the warning is a deliberate, reviewed edit here.
 
 **Inverted-assertion module behavior.** `NegativeFixtureAotPublishModule` publishes this project
 (`net10.0 × current RID`, NOT warnings-as-errors, `ThrowOnNonZeroExitCode=false`), scans the captured
-publish output for `IL2072` scoped to `Indago.Samples.NegativeFixture.csproj`:
+publish output for `IL2072` scoped to `Specular.Samples.NegativeFixture.csproj`:
 
 - present ⇒ `PASS`; clean/absent ⇒ `FAIL` (fails the build).
 - The trim/AOT analysis (where `IL2072` is emitted) runs **before** the native link, so the inverted

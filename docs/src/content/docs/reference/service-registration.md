@@ -5,7 +5,7 @@ description: Mark classes for automatic DI registration using compile-time scann
 
 # ServiceRegistrationAttribute
 
-`ServiceRegistrationAttribute` is a declarative way to mark a class for DI registration without writing an explicit fluent selector. The Indago generator reads the attribute at build time and includes the type in the generated provider; no runtime reflection occurs.
+`ServiceRegistrationAttribute` is a declarative way to mark a class for DI registration without writing an explicit fluent selector. The Specular generator reads the attribute at build time and includes the type in the generated provider; no runtime reflection occurs.
 
 ## `[ServiceRegistration]`
 
@@ -92,12 +92,12 @@ public RegistrationLifetimeAttribute(ServiceLifetime lifetime)
 | ---------- | ----------------- | ------------------------ |
 | `Lifetime` | `ServiceLifetime` | The overriding lifetime. |
 
-## `AddIndagoServiceRegistrations`
+## `AddSpecularServiceRegistrations`
 
 ```csharp
-public static IServiceCollection AddIndagoServiceRegistrations(
+public static IServiceCollection AddSpecularServiceRegistrations(
     this IServiceCollection services,
-    IIndagoProvider provider
+    ISpecularProvider provider
 )
 ```
 
@@ -107,7 +107,7 @@ Extension method on `IServiceCollection` that uses `provider.Scan()` to find all
 
 ```csharp
 // In Program.cs / Startup.cs
-services.AddIndagoServiceRegistrations(IndagoProvider.Instance);
+services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
 ```
 
 ## Combined example
@@ -130,7 +130,7 @@ public class DualService : IMyService, IAlternate { }
 
 ```csharp
 // Wire up everything in one call
-builder.Services.AddIndagoServiceRegistrations(IndagoProvider.Instance);
+builder.Services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
 ```
 
 ## Notes
@@ -141,6 +141,6 @@ builder.Services.AddIndagoServiceRegistrations(IndagoProvider.Instance);
 
 ## See also
 
-- [IIndagoProvider](./iindago-provider) — the provider that backs `AddIndagoServiceRegistrations`
+- [ISpecularProvider](./ispecular-provider) — the provider that backs `AddSpecularServiceRegistrations`
 - [Type Filters](./type-filters) — the fluent alternative to attribute-based registration
-- [ExcludeFromIndagoAttribute](./exclude-from-indago) — opt an assembly out of all scanning
+- [ExcludeFromSpecularAttribute](./exclude-from-specular) — opt an assembly out of all scanning

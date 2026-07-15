@@ -54,7 +54,7 @@ display the **"Verified"** badge.
 `git add <file_pattern>` and commits the working-tree diff (adds **and** deletions) via
 `createCommitOnBranch` using `GITHUB_TOKEN`. It collapses the manual "collect changes (jq/base64) +
 github-script GraphQL" into one step (~40 fewer lines), and with `empty: false` (default) it no-ops
-on a clean tree, giving the empty-diff fixpoint for free. The Indago workflows already depend on
+on a clean tree, giving the empty-diff fixpoint for free. The Specular workflows already depend on
 several third-party actions (`stefanzweifel`, `WyriHaximus`, `jdx`), so this is consistent with
 existing practice; pin to a specific tag (`@v0.2.22`). The `actions/github-script` inline-mutation
 approach remains the dependency-free fallback if pinning a Docker action is undesirable.

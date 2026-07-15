@@ -5,13 +5,13 @@ description: The fluent selector API for filtering types by class, interface, na
 
 # Type Filters
 
-Indago provides a fluent selector API for describing which assemblies and types the generator should include in a scan. There are two parallel selector hierarchies — one for reflection-based results (`GetAssemblies` / `GetTypes`) and one for DI registration (`Scan`). Both share the same `ITypeFilter` interface for per-type predicates.
+Specular provides a fluent selector API for describing which assemblies and types the generator should include in a scan. There are two parallel selector hierarchies — one for reflection-based results (`GetAssemblies` / `GetTypes`) and one for DI registration (`Scan`). Both share the same `ITypeFilter` interface for per-type predicates.
 
 ## Assembly Selectors
 
 ### `IReflectionAssemblySelector`
 
-Used with `IIndagoProvider.GetAssemblies` and `IIndagoProvider.GetTypes`. Returns an `IReflectionTypeSelector` to continue the chain.
+Used with `ISpecularProvider.GetAssemblies` and `ISpecularProvider.GetTypes`. Returns an `IReflectionTypeSelector` to continue the chain.
 
 | Method                             | Description                                                          |
 | ---------------------------------- | -------------------------------------------------------------------- |
@@ -27,7 +27,7 @@ Used with `IIndagoProvider.GetAssemblies` and `IIndagoProvider.GetTypes`. Return
 
 ### `IServiceDescriptorAssemblySelector`
 
-Used with `IIndagoProvider.Scan`. Has the same set of assembly-selection methods as `IReflectionAssemblySelector`, but each method returns an `IServiceDescriptorTypeSelector` to continue into the DI-specific chain.
+Used with `ISpecularProvider.Scan`. Has the same set of assembly-selection methods as `IReflectionAssemblySelector`, but each method returns an `IServiceDescriptorTypeSelector` to continue into the DI-specific chain.
 
 ## Type Selectors
 
@@ -166,9 +166,9 @@ ITypeFilter NotInfoOf(TypeInfoFilter typeInfoFilter, params TypeInfoFilter[] typ
 
 `TypeInfoFilter` values: `Unknown`, `Abstract`, `Visible`, `ValueType`, `Sealed`, `GenericType`, `Static`.
 
-## `[ExcludeFromIndago]` interaction
+## `[ExcludeFromSpecular]` interaction
 
-Applying `[ExcludeFromIndago]` to an assembly removes the entire assembly from Indago scan results regardless of any selector. See [ExcludeFromIndagoAttribute](./exclude-from-indago) for details.
+Applying `[ExcludeFromSpecular]` to an assembly removes the entire assembly from Specular scan results regardless of any selector. See [ExcludeFromSpecularAttribute](./exclude-from-specular) for details.
 
 ## Complete chained example
 
@@ -199,5 +199,5 @@ IEnumerable<Type> repos = provider.GetTypes(
 
 ## See also
 
-- [IIndagoProvider](./iindago-provider) — the entry point that accepts these selectors
+- [ISpecularProvider](./ispecular-provider) — the entry point that accepts these selectors
 - [ServiceRegistrationAttribute](./service-registration) — attribute-driven alternative

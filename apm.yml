@@ -1,6 +1,6 @@
-name: Indago
+name: Specular
 version: 1.0.0
-description: APM project for Indago
+description: APM project for Specular
 author: David Driscoll
 targets:
     - claude

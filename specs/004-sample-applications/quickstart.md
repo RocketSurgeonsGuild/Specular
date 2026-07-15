@@ -25,7 +25,7 @@ mise run build        # dotnet run build/Build.cs → ModularPipelines
 ```
 
 Expected: solution builds (Release); the **docs module** generates the API reference from
-`src/Indago/bin/Release/net8.0/Indago.dll` + `Indago.xml` and produces the built site under
+`src/Specular/bin/Release/net8.0/Specular.dll` + `Specular.xml` and produces the built site under
 `artifacts/docs`; AOT-publish steps run for the demonstration hosts (or skip-with-reason where a
 workload is unavailable); the negative-fixture step runs its inverted assertion. Each AOT outcome
 is a discrete, named pass/fail/skip line in the build output (SC-006).
@@ -39,14 +39,14 @@ is the in-context test; the opt-out type must never appear in any discovered set
 ## 3. Run the Console host (US2 — P1 MVP)
 
 ```bash
-dotnet run --project samples/hosts/Indago.Samples.Console
+dotnet run --project samples/hosts/Specular.Samples.Console
 echo "exit: $?"     # 0 = expected service set matched; nonzero = mismatch
 ```
 
 Expected: prints the discovered services from all three libraries; exits `0` on match. Then AOT:
 
 ```bash
-dotnet publish samples/hosts/Indago.Samples.Console -f net10.0 -r <current-rid> \
+dotnet publish samples/hosts/Specular.Samples.Console -f net10.0 -r <current-rid> \
   -p:PublishAot=true
 # Must complete with ZERO trim/AOT warnings (warnings-as-errors). Run the published binary; exit 0.
 ```
@@ -56,7 +56,7 @@ dotnet publish samples/hosts/Indago.Samples.Console -f net10.0 -r <current-rid> 
 ## 4. Run the Web minimal-API host (US4 — P2)
 
 ```bash
-dotnet run --project samples/hosts/Indago.Samples.Web
+dotnet run --project samples/hosts/Specular.Samples.Web
 # Startup assertion fails fast on mismatch (process exits nonzero / health check fails).
 # Hit the demonstration endpoint to see discovered services. Then Native AOT publish, zero warnings.
 ```
@@ -64,9 +64,9 @@ dotnet run --project samples/hosts/Indago.Samples.Web
 ## 5. Run the Blazor WASM host (US5 — P3)
 
 ```bash
-dotnet run --project samples/hosts/Indago.Samples.Blazor
+dotnet run --project samples/hosts/Specular.Samples.Blazor
 # A component lists discovered services; mismatch surfaces a detectable failure state.
-dotnet publish samples/hosts/Indago.Samples.Blazor -f net10.0 -p:RunAOTCompilation=true
+dotnet publish samples/hosts/Specular.Samples.Blazor -f net10.0 -p:RunAOTCompilation=true
 # Requires wasm-tools; must publish with zero trim/AOT warnings.
 ```
 
@@ -74,7 +74,7 @@ dotnet publish samples/hosts/Indago.Samples.Blazor -f net10.0 -p:RunAOTCompilati
 
 ```bash
 # net10.0-android is the only CI-exercised target; iOS/MacCatalyst/Windows are skip-with-reason.
-dotnet publish samples/hosts/Indago.Samples.Maui -f net10.0-android
+dotnet publish samples/hosts/Specular.Samples.Maui -f net10.0-android
 # Requires MAUI + Android workloads; must publish with zero trim/AOT warnings.
 ```
 
@@ -84,7 +84,7 @@ dotnet publish samples/hosts/Indago.Samples.Maui -f net10.0-android
   clear `PASS`/`FAIL`/`SKIP` result (SC-006).
 - **Red-state proof**: inject a trim/AOT warning into a demo host and confirm its step (and the
   build) FAILS (zero-warning policy, SC-004).
-- **Negative fixture**: confirm `Indago.Samples.NegativeFixture`'s inverted-assertion step PASSES
+- **Negative fixture**: confirm `Specular.Samples.NegativeFixture`'s inverted-assertion step PASSES
   _because_ it warns, and that making it clean FAILS the build (SC-003,
   `contracts/negative-fixture-step.contract.md`).
 
@@ -122,7 +122,7 @@ mise run docs         # Astro/Starlight dev server (also a VS Code task) — SC-
 - [ ] SC-004 every demo host AOT-publishes for `net10.0` × current RID with zero warnings
 - [ ] SC-005 missing-toolchain → skip-with-reason (never passed); MAUI non-android always skip
 - [ ] SC-006 per-host AOT pass/fail/skip visible in build output
-- [ ] SC-007 each host's Indago usage is documented/referenceable without running it
+- [ ] SC-007 each host's Specular usage is documented/referenceable without running it
 - [ ] SC-008 `mise run build` builds docs from bin into `artifacts/docs`
 - [ ] SC-009 standalone docs publish path removed
 - [ ] SC-010 docs built every CI run; Pages deploy only from `main`

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <!-- Consume Specular exactly like a packaged consumer: wire the analyzer + global using. -->
+        <UsesSpecularGenerator>true</UsesSpecularGenerator>
+        <!-- Native AOT guardrail target (US4). Build/run are unaffected; only publish AOT-compiles. -->
+        <PublishAot>true</PublishAot>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <!-- Zero-warning AOT policy (D4-pinned, identical to the Console host). -->
+        <TrimmerSingleWarn>false</TrimmerSingleWarn>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../../src/Specular/Specular.csproj" />
+        <ProjectReference Include="../../libraries/Specular.Samples.Catalog/Specular.Samples.Catalog.csproj" />
+        <ProjectReference Include="../../libraries/Specular.Samples.Notifications/Specular.Samples.Notifications.csproj" />
+        <ProjectReference Include="../../libraries/Specular.Samples.Diagnostics/Specular.Samples.Diagnostics.csproj" />
+        <!-- Microsoft.Extensions.DependencyInjection is provided by the ASP.NET Core shared framework
+             (an explicit PackageReference trips NU1510 under the zero-warning policy). -->
+    </ItemGroup>
+</Project>

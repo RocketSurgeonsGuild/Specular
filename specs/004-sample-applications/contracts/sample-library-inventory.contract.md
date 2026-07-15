@@ -13,7 +13,7 @@ names are an implementation detail; the coverage matrix below is the contract.
    uses `net10.0` only; libraries are not AOT-published directly (FR-013).
 4. Libraries are independently reusable by every host with **no per-host modification** (FR-005).
 5. Libraries are excluded from the shipped/packaged surface (`IsPackable=false`) and MUST NOT
-   change Indago's public API (Principle III; RS0017 stays green).
+   change Specular's public API (Principle III; RS0017 stays green).
 
 ## Collective coverage matrix (MUST, across the three libraries)
 
@@ -22,24 +22,24 @@ names are an implementation detail; the coverage matrix below is the contract.
 | Interface-matching registration | ≥1 library uses `FromAssemblyOf<>().AddClasses().AsMatchingInterface()` | Catalog                                       |
 | Attribute-based registration    | ≥1 library uses `ServiceRegistrationAttribute` (incl. generic variants) | Notifications                                 |
 | Distinct lifetimes              | ≥2 of {Singleton, Scoped, Transient} demonstrated                       | Notifications (Scoped+Transient), Diagnostics |
-| Opt-out type                    | ≥1 type marked `[ExcludeFromIndago]` and proven excluded                | Diagnostics                                   |
+| Opt-out type                    | ≥1 type marked `[ExcludeFromSpecular]` and proven excluded                | Diagnostics                                   |
 | ≥3 styles/lifetimes total       | satisfied by the sum of the above                                       | — (SC-001)                                    |
 
 ## Per-library inventory (planned — finalize during implementation)
 
-### `Indago.Samples.Catalog` (interface-matching)
+### `Specular.Samples.Catalog` (interface-matching)
 
 - 3–6 `IXxxService` → `XxxService` pairs, default lifetime, registered by interface matching.
 
-### `Indago.Samples.Notifications` (attribute-based, varied lifetimes)
+### `Specular.Samples.Notifications` (attribute-based, varied lifetimes)
 
 - 3–6 services annotated with `[ServiceRegistration(ServiceLifetime.Scoped)]` /
   `[ServiceRegistration<TService>(ServiceLifetime.Transient)]`, demonstrating Scoped + Transient.
 
-### `Indago.Samples.Diagnostics` (mixed + opt-out)
+### `Specular.Samples.Diagnostics` (mixed + opt-out)
 
 - 3–6 services mixing interface-matching and attribute styles; exactly one type carries
-  `[ExcludeFromIndago]` and MUST NOT be discovered by any host.
+  `[ExcludeFromSpecular]` and MUST NOT be discovered by any host.
 
 ## Domain note
 

@@ -1,12 +1,12 @@
-# Indago
+# Specular
 
-Indago is the next-generation library from Rocket Surgeons Guild, focused on modern .NET development. This repository contains only the Indago library and related documentation.
+Specular is the next-generation library from Rocket Surgeons Guild, focused on modern .NET development. This repository contains only the Specular library and related documentation.
 
 I like reflection, I have a recurring joke with a good friend about `.Any()` and how we first met when we were working together. Anyway I reflection really but I hate how much time it takes! I know time is relative and reflection today is really fast.
 
 But wait, there's AOT, you can't rely on reflection in AOT, and heck you can't rely on reflection to have all the assemblies loaded it needs. Sometimes you have to kick it by inspecting the assemblies yourself.
 
-But I also like tools like [Scrutor](https://www.nuget.org/packages/Scrutor) being able to scan assemblies and register services. Makes life so easy! What I wanted to do that but in an AOT friend way. So I created Indago, a library that allows you to scan assemblies and register services in a way that is AOT friendly.
+But I also like tools like [Scrutor](https://www.nuget.org/packages/Scrutor) being able to scan assemblies and register services. Makes life so easy! What I wanted to do that but in an AOT friend way. So I created Specular, a library that allows you to scan assemblies and register services in a way that is AOT friendly.
 
 Using the 🪄 MAGIC 🪄 of roslyn and Source Generators we get something that is really really close to magic.
 
@@ -14,13 +14,13 @@ Using the 🪄 MAGIC 🪄 of roslyn and Source Generators we get something that 
 
 This library works in two parts.
 
-### The .NET Library ( `Indago` )
+### The .NET Library ( `Specular` )
 
-The first part is the interfaces and attributes. `IIndagoProvider` grants you access the scanner. There are helper methods to get access to the scanner for a given assembly ( any thoughts on how to improve this experience are welcome?!? )
+The first part is the interfaces and attributes. `ISpecularProvider` grants you access the scanner. There are helper methods to get access to the scanner for a given assembly ( any thoughts on how to improve this experience are welcome?!? )
 
-Each assembly that emits a provider exposes it as a compile-time singleton, `IndagoProvider.Instance`, so applications can grab the scanner for their own compilation directly without any runtime reflection. However your consumers should almost **ALWAYS** accept the `IIndagoProvider` interface as a dependency, and not rely on the static `IndagoProvider.Instance` singleton. This ensures that the correct scanner is used. THIS IS IMPORTANT but we will get to that in step 2.
+Each assembly that emits a provider exposes it as a compile-time singleton, `SpecularProvider.Instance`, so applications can grab the scanner for their own compilation directly without any runtime reflection. However your consumers should almost **ALWAYS** accept the `ISpecularProvider` interface as a dependency, and not rely on the static `SpecularProvider.Instance` singleton. This ensures that the correct scanner is used. THIS IS IMPORTANT but we will get to that in step 2.
 
-The `IIndagoProvider` interface has 3 methods for scanning.
+The `ISpecularProvider` interface has 3 methods for scanning.
 
 > It's important to note that these methods are never actually executed at runtime. There are limiitations about what you can and can't pass into these methods, because they are compile time only hints for the source generator. You will find you cannot for example pass in a variable, but you can use static values, values that the compiler knows at compile. (strings, open generics, etc.)
 
@@ -30,7 +30,7 @@ You can scan for assemblies!
 
 - `GetAssemblies(selector)` which allows you to get a list of assemblies based on the `IReflectionAssemblySelector`.
   These method calls can be chained together to select multiples, and do many reflection like operations.
-    - `FromAssemblies`: grants a list of all assemblies from the `EntryAssembly` compilation. More specifically the compilation that produced the `IIndagoProvider`. Again this comes around in part 2.
+    - `FromAssemblies`: grants a list of all assemblies from the `EntryAssembly` compilation. More specifically the compilation that produced the `ISpecularProvider`. Again this comes around in part 2.
     - `EntryAssembly`: Gets the entry assembly.
     - `DependenciesFromAssemblyOf<T>()` / `DependenciesFromAssemblyOf(Type type)`: Gets the dependencies of the assembly of the given type.
     - `FromAssemblyOf<T>()` / `FromAssemblyOf(Type type)`: Includes the assembly of the given type.
@@ -75,11 +75,11 @@ After we scan the types, we get to choose how the service is supposed to behave 
 
 We also have baked in support for a few attributes
 
-`ExcludeFromIndagoAttribute`: Lets you exclude a given assembly from being annotated by the source generator. This is useful for assemblies that you don't want to scan, or that you don't want to be scanned by the source generator.
+`ExcludeFromSpecularAttribute`: Lets you exclude a given assembly from being annotated by the source generator. This is useful for assemblies that you don't want to scan, or that you don't want to be scanned by the source generator.
 `RegistrationLifetimeAttribute`: Specifies the lifetime of a service registration. If not set, will use `ServiceRegistrationAttribute`.
 `ServiceRegistrationAttribute`: Specifies the service registration for a given type. If lifetime is not set, will use the lifetime specified at compile time.
 
-### The Source Generator ( `Indago.Analyzers` )
+### The Source Generator ( `Specular.Analyzers` )
 
 Okay so the source generator is where the magic happens.
 
@@ -97,17 +97,17 @@ Okay the explaining part out of the way.
 
 #### The Metadata
 
-Every assembly that references the `Indago` library will have all of the scanned selectors serialized into a string, and stored as AssemblyMetadata attributes at compile time. In essence we're not scanning any assemblies, we're only telling the compiler "this is what I want you to scan for me from this point in the future.".
+Every assembly that references the `Specular` library will have all of the scanned selectors serialized into a string, and stored as AssemblyMetadata attributes at compile time. In essence we're not scanning any assemblies, we're only telling the compiler "this is what I want you to scan for me from this point in the future.".
 
 When the compiler scans this assembly in the future, it will see the metadata and hydrate the queries. Each assembly brings it's own query data (if any) and the compiler will merge the results together later.
 
 #### The Scanner
 
-The scanner uses the compiler API to scan all assemblies and types of the given compilation. It uses all the different pieces of metadata to build up a full list method calls that it needs to build out. Each assembly then gets an `IIndagoProvider` generated for it, and the method calls are generated to return the correct results, using generators (yield return) to return the results.
+The scanner uses the compiler API to scan all assemblies and types of the given compilation. It uses all the different pieces of metadata to build up a full list method calls that it needs to build out. Each assembly then gets an `ISpecularProvider` generated for it, and the method calls are generated to return the correct results, using generators (yield return) to return the results.
 
-> I skipped something in the explination of the types earlier. Every method on the `IndagoProvider` takes in it's arguments but it also uses `CallerLineNumber`, `CallerFilePath` and `CallerArgumentExpression`. It then uses these values in a huge switch statement to determine which list of items to return. If the queries are all on different lines 1 jump, at most you'll have 2 jumps (unless you make some silly single long code!)
+> I skipped something in the explination of the types earlier. Every method on the `SpecularProvider` takes in it's arguments but it also uses `CallerLineNumber`, `CallerFilePath` and `CallerArgumentExpression`. It then uses these values in a huge switch statement to determine which list of items to return. If the queries are all on different lines 1 jump, at most you'll have 2 jumps (unless you make some silly single long code!)
 
-The generated `IIndagoProvider` is exposed as a compile-time singleton (`IndagoProvider.Instance`) and is also described by an assembly attribute used for cross-assembly cache busting. Whether an assembly emits a provider at all is controlled by the `IndagoEmitProvider` MSBuild property (defaults to `true`); library assemblies that are only meant to be scanned can set it to `false` so the consuming application is the one that emits the provider. Inside the generated provider are the scanner results of all of the queries that were found across all assemblies in the compilation.
+The generated `ISpecularProvider` is exposed as a compile-time singleton (`SpecularProvider.Instance`) and is also described by an assembly attribute used for cross-assembly cache busting. Whether an assembly emits a provider at all is controlled by the `SpecularEmitProvider` MSBuild property (defaults to `true`); library assemblies that are only meant to be scanned can set it to `false` so the consuming application is the one that emits the provider. Inside the generated provider are the scanner results of all of the queries that were found across all assemblies in the compilation.
 
 # Status
 
@@ -129,7 +129,7 @@ The generated `IIndagoProvider` is exposed as a compile-time singleton (`IndagoP
 
 | Package | NuGet                                         |
 | ------- | --------------------------------------------- |
-| Indago  | [![nuget-version-indago-badge]][nuget-indago] |
+| Specular  | [![nuget-version-specular-badge]][nuget-specular] |
 
 <!-- nuget packages -->
 
@@ -137,12 +137,12 @@ The generated `IIndagoProvider` is exposed as a compile-time singleton (`IndagoP
 
 <!-- generated references -->
 
-[github-license]: https://github.com/RocketSurgeonsGuild/Indago/blob/main/LICENSE
-[github-license-badge]: https://img.shields.io/github/license/RocketSurgeonsGuild/Indago.svg?style=flat 'License'
-[github]: https://github.com/RocketSurgeonsGuild/Indago/actions?query=workflow%3Aci
-[github-badge]: https://img.shields.io/github/actions/workflow/status/RocketSurgeonsGuild/Indago/ci.yml?branch=main&label=github&logo=github&color=b845fc&logoColor=b845fc&style=flat 'GitHub Actions Status'
-[nuget-indago]: https://www.nuget.org/packages/Indago/
-[nuget-version-indago-badge]: https://img.shields.io/nuget/v/Indago.svg?color=004880&logo=nuget&style=flat-square 'NuGet Version'
+[github-license]: https://github.com/RocketSurgeonsGuild/Specular/blob/main/LICENSE
+[github-license-badge]: https://img.shields.io/github/license/RocketSurgeonsGuild/Specular.svg?style=flat 'License'
+[github]: https://github.com/RocketSurgeonsGuild/Specular/actions?query=workflow%3Aci
+[github-badge]: https://img.shields.io/github/actions/workflow/status/RocketSurgeonsGuild/Specular/ci.yml?branch=main&label=github&logo=github&color=b845fc&logoColor=b845fc&style=flat 'GitHub Actions Status'
+[nuget-specular]: https://www.nuget.org/packages/Specular/
+[nuget-version-specular-badge]: https://img.shields.io/nuget/v/Specular.svg?color=004880&logo=nuget&style=flat-square 'NuGet Version'
 
 <!-- nuke-data
 github:

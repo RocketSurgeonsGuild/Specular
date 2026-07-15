@@ -1,6 +1,6 @@
 # Squad Team
 
-> Indago
+> Specular
 
 ## Coordinator
 
@@ -22,7 +22,7 @@
 
 ## Project Context
 
-- **Project:** Indago
+- **Project:** Specular
 - **Created:** 2026-06-26
-- **Spec:** specs/001-indago-static-assembly-scanner/spec.md
+- **Spec:** specs/001-specular-static-assembly-scanner/spec.md
 - **Stack:** C# / Roslyn IIncrementalGenerator / .NET 8+10 / VitePress / TUnit / Verify

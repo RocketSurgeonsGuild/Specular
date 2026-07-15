@@ -4,24 +4,24 @@
 SC-008/009/010/011).
 
 A named `Module<T>` (e.g. `DocsModule`) authored inline in `build/Build.cs` that generates the API
-reference from the Indago Release **bin** output and builds the Astro/Starlight site into
+reference from the Specular Release **bin** output and builds the Astro/Starlight site into
 `artifacts/docs`. The module stays deploy-agnostic; CI handles the Pages deploy gated to `main`.
 
 ## Dependencies
 
 - `[DependsOn<BuildSolution>]` — the Release build MUST have produced
-  `src/Indago/bin/Release/net8.0/Indago.dll` **and** `Indago.xml` first.
+  `src/Specular/bin/Release/net8.0/Specular.dll` **and** `Specular.xml` first.
   (`SolutionSettings.Configuration` defaults to `Release`.)
 
 ## Required behavior (MUST), in order
 
-1. **Precondition check** — verify `src/Indago/bin/Release/net8.0/Indago.dll` and `Indago.xml`
-   exist. If `Indago.xml` is missing, the module MUST **fail clearly** rather than emit an empty
+1. **Precondition check** — verify `src/Specular/bin/Release/net8.0/Specular.dll` and `Specular.xml`
+   exist. If `Specular.xml` is missing, the module MUST **fail clearly** rather than emit an empty
    or partial API reference (Edge Case "Docs build consumes bin"; FR-023).
 2. **API reference generation** — run `xmldocmd` (mise dotnet tool `xmldocmd@2.9.0`) against the
-   **bin** `Indago.dll` + sibling `Indago.xml`. MUST NOT perform a separate `dotnet publish` to a
+   **bin** `Specular.dll` + sibling `Specular.xml`. MUST NOT perform a separate `dotnet publish` to a
    temp directory (FR-023, SC-008). Reproduce existing flags:
-   `--namespace Indago --source https://github.com/RocketSurgeonsGuild/Indago/blob/main/src/Indago/ --clean`,
+   `--namespace Specular --source https://github.com/RocketSurgeonsGuild/Specular/blob/main/src/Specular/ --clean`,
    output dir `docs/src/content/docs/api/`.
 3. **Frontmatter injection** — run `node docs/scripts/add-api-frontmatter.mjs` (Starlight
    frontmatter injector; idempotent — skips files already having frontmatter).
@@ -59,7 +59,7 @@ reference from the Indago Release **bin** output and builds the Astro/Starlight 
 
 | Condition                                                     | Result                      |
 | ------------------------------------------------------------- | --------------------------- |
-| `Indago.xml` missing                                          | module FAILS clearly        |
+| `Specular.xml` missing                                          | module FAILS clearly        |
 | API ref generated from bin + site built into `artifacts/docs` | PASS (SC-008)               |
 | Separate `dotnet publish` for docs occurs                     | CONTRACT VIOLATION (FR-023) |
 | Deploy from non-`main` / no deploy from `main`                | DEFECT (SC-010)             |

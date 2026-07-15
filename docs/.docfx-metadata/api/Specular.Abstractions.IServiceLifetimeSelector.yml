@@ -1,0 +1,458 @@
+### YamlMime:ManagedReference
+items:
+- uid: Specular.Abstractions.IServiceLifetimeSelector
+  commentId: T:Specular.Abstractions.IServiceLifetimeSelector
+  id: IServiceLifetimeSelector
+  parent: Specular.Abstractions
+  children:
+  - Specular.Abstractions.IServiceLifetimeSelector.WithLifetime(Microsoft.Extensions.DependencyInjection.ServiceLifetime)
+  - Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime
+  - Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime
+  - Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime
+  langs:
+  - csharp
+  - vb
+  name: IServiceLifetimeSelector
+  nameWithType: IServiceLifetimeSelector
+  fullName: Specular.Abstractions.IServiceLifetimeSelector
+  type: Interface
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: The Compiled Lifetime Selector
+  example: []
+  syntax:
+    content: 'public interface IServiceLifetimeSelector : IServiceTypeSelector'
+    content.vb: Public Interface IServiceLifetimeSelector Inherits IServiceTypeSelector
+  inheritedMembers:
+  - Specular.Abstractions.IServiceTypeSelector.AsSelf
+  - Specular.Abstractions.IServiceTypeSelector.As``1
+  - Specular.Abstractions.IServiceTypeSelector.As(System.Type)
+  - Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces
+  - Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+  - Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces
+  - Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+  - Specular.Abstractions.IServiceTypeSelector.AsMatchingInterface
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime
+  commentId: M:Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime
+  id: WithSingletonLifetime
+  parent: Specular.Abstractions.IServiceLifetimeSelector
+  langs:
+  - csharp
+  - vb
+  name: WithSingletonLifetime()
+  nameWithType: IServiceLifetimeSelector.WithSingletonLifetime()
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime()
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Registers each matching concrete type with <xref href="Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton" data-throw-if-not-resolved="false"></xref> lifetime.
+  example: []
+  syntax:
+    content: void WithSingletonLifetime()
+    content.vb: Sub WithSingletonLifetime()
+  overload: Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime*
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime
+  commentId: M:Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime
+  id: WithScopedLifetime
+  parent: Specular.Abstractions.IServiceLifetimeSelector
+  langs:
+  - csharp
+  - vb
+  name: WithScopedLifetime()
+  nameWithType: IServiceLifetimeSelector.WithScopedLifetime()
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime()
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Registers each matching concrete type with <xref href="Microsoft.Extensions.DependencyInjection.ServiceLifetime.Scoped" data-throw-if-not-resolved="false"></xref> lifetime.
+  example: []
+  syntax:
+    content: void WithScopedLifetime()
+    content.vb: Sub WithScopedLifetime()
+  overload: Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime*
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime
+  commentId: M:Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime
+  id: WithTransientLifetime
+  parent: Specular.Abstractions.IServiceLifetimeSelector
+  langs:
+  - csharp
+  - vb
+  name: WithTransientLifetime()
+  nameWithType: IServiceLifetimeSelector.WithTransientLifetime()
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime()
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Registers each matching concrete type with <xref href="Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient" data-throw-if-not-resolved="false"></xref> lifetime.
+  example: []
+  syntax:
+    content: void WithTransientLifetime()
+    content.vb: Sub WithTransientLifetime()
+  overload: Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime*
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithLifetime(Microsoft.Extensions.DependencyInjection.ServiceLifetime)
+  commentId: M:Specular.Abstractions.IServiceLifetimeSelector.WithLifetime(Microsoft.Extensions.DependencyInjection.ServiceLifetime)
+  id: WithLifetime(Microsoft.Extensions.DependencyInjection.ServiceLifetime)
+  parent: Specular.Abstractions.IServiceLifetimeSelector
+  langs:
+  - csharp
+  - vb
+  name: WithLifetime(ServiceLifetime)
+  nameWithType: IServiceLifetimeSelector.WithLifetime(ServiceLifetime)
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithLifetime(Microsoft.Extensions.DependencyInjection.ServiceLifetime)
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Registers each matching concrete type with the specified <code class="paramref">lifetime</code>.
+  example: []
+  syntax:
+    content: void WithLifetime(ServiceLifetime lifetime)
+    parameters:
+    - id: lifetime
+      type: Microsoft.Extensions.DependencyInjection.ServiceLifetime
+    content.vb: Sub WithLifetime(lifetime As ServiceLifetime)
+  overload: Specular.Abstractions.IServiceLifetimeSelector.WithLifetime*
+references:
+- uid: Specular.Abstractions
+  commentId: N:Specular.Abstractions
+  href: Specular.html
+  name: Specular.Abstractions
+  nameWithType: Specular.Abstractions
+  fullName: Specular.Abstractions
+  spec.csharp:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+  spec.vb:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+- uid: Specular.Abstractions.IServiceTypeSelector.AsSelf
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.AsSelf
+  parent: Specular.Abstractions.IServiceTypeSelector
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelf
+  name: AsSelf()
+  nameWithType: IServiceTypeSelector.AsSelf()
+  fullName: Specular.Abstractions.IServiceTypeSelector.AsSelf()
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsSelf
+    name: AsSelf
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelf
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsSelf
+    name: AsSelf
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelf
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.As``1
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.As``1
+  parent: Specular.Abstractions.IServiceTypeSelector
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_As__1
+  name: As<T>()
+  nameWithType: IServiceTypeSelector.As<T>()
+  fullName: Specular.Abstractions.IServiceTypeSelector.As<T>()
+  nameWithType.vb: IServiceTypeSelector.As(Of T)()
+  fullName.vb: Specular.Abstractions.IServiceTypeSelector.As(Of T)()
+  name.vb: As(Of T)()
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.As``1
+    name: As
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_As__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.As``1
+    name: As
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_As__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.As(System.Type)
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.As(System.Type)
+  parent: Specular.Abstractions.IServiceTypeSelector
+  isExternal: true
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_As_System_Type_
+  name: As(Type)
+  nameWithType: IServiceTypeSelector.As(Type)
+  fullName: Specular.Abstractions.IServiceTypeSelector.As(System.Type)
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.As(System.Type)
+    name: As
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_As_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.As(System.Type)
+    name: As
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_As_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces
+  parent: Specular.Abstractions.IServiceTypeSelector
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsImplementedInterfaces
+  name: AsImplementedInterfaces()
+  nameWithType: IServiceTypeSelector.AsImplementedInterfaces()
+  fullName: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces()
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces
+    name: AsImplementedInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsImplementedInterfaces
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces
+    name: AsImplementedInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsImplementedInterfaces
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+  parent: Specular.Abstractions.IServiceTypeSelector
+  isExternal: true
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsImplementedInterfaces_System_Action_Specular_Abstractions_ITypeFilter__
+  name: AsImplementedInterfaces(Action<ITypeFilter>)
+  nameWithType: IServiceTypeSelector.AsImplementedInterfaces(Action<ITypeFilter>)
+  fullName: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action<Specular.Abstractions.ITypeFilter>)
+  nameWithType.vb: IServiceTypeSelector.AsImplementedInterfaces(Action(Of ITypeFilter))
+  fullName.vb: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action(Of Specular.Abstractions.ITypeFilter))
+  name.vb: AsImplementedInterfaces(Action(Of ITypeFilter))
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+    name: AsImplementedInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsImplementedInterfaces_System_Action_Specular_Abstractions_ITypeFilter__
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    href: Specular.Abstractions.ITypeFilter.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsImplementedInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+    name: AsImplementedInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsImplementedInterfaces_System_Action_Specular_Abstractions_ITypeFilter__
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    href: Specular.Abstractions.ITypeFilter.html
+  - name: )
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces
+  parent: Specular.Abstractions.IServiceTypeSelector
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelfWithInterfaces
+  name: AsSelfWithInterfaces()
+  nameWithType: IServiceTypeSelector.AsSelfWithInterfaces()
+  fullName: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces()
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces
+    name: AsSelfWithInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelfWithInterfaces
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces
+    name: AsSelfWithInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelfWithInterfaces
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+  parent: Specular.Abstractions.IServiceTypeSelector
+  isExternal: true
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelfWithInterfaces_System_Action_Specular_Abstractions_ITypeFilter__
+  name: AsSelfWithInterfaces(Action<ITypeFilter>)
+  nameWithType: IServiceTypeSelector.AsSelfWithInterfaces(Action<ITypeFilter>)
+  fullName: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action<Specular.Abstractions.ITypeFilter>)
+  nameWithType.vb: IServiceTypeSelector.AsSelfWithInterfaces(Action(Of ITypeFilter))
+  fullName.vb: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action(Of Specular.Abstractions.ITypeFilter))
+  name.vb: AsSelfWithInterfaces(Action(Of ITypeFilter))
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+    name: AsSelfWithInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelfWithInterfaces_System_Action_Specular_Abstractions_ITypeFilter__
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    href: Specular.Abstractions.ITypeFilter.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsSelfWithInterfaces(System.Action{Specular.Abstractions.ITypeFilter})
+    name: AsSelfWithInterfaces
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsSelfWithInterfaces_System_Action_Specular_Abstractions_ITypeFilter__
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    href: Specular.Abstractions.ITypeFilter.html
+  - name: )
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector.AsMatchingInterface
+  commentId: M:Specular.Abstractions.IServiceTypeSelector.AsMatchingInterface
+  parent: Specular.Abstractions.IServiceTypeSelector
+  href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsMatchingInterface
+  name: AsMatchingInterface()
+  nameWithType: IServiceTypeSelector.AsMatchingInterface()
+  fullName: Specular.Abstractions.IServiceTypeSelector.AsMatchingInterface()
+  spec.csharp:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsMatchingInterface
+    name: AsMatchingInterface
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsMatchingInterface
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IServiceTypeSelector.AsMatchingInterface
+    name: AsMatchingInterface
+    href: Specular.Abstractions.IServiceTypeSelector.html#Specular_Abstractions_IServiceTypeSelector_AsMatchingInterface
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IServiceTypeSelector
+  commentId: T:Specular.Abstractions.IServiceTypeSelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IServiceTypeSelector.html
+  name: IServiceTypeSelector
+  nameWithType: IServiceTypeSelector
+  fullName: Specular.Abstractions.IServiceTypeSelector
+- uid: Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton
+  commentId: F:Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicelifetime#microsoft-extensions-dependencyinjection-servicelifetime-singleton
+  name: Singleton
+  nameWithType: ServiceLifetime.Singleton
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceLifetime.Singleton
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime*
+  commentId: Overload:Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime
+  href: Specular.Abstractions.IServiceLifetimeSelector.html#Specular_Abstractions_IServiceLifetimeSelector_WithSingletonLifetime
+  name: WithSingletonLifetime
+  nameWithType: IServiceLifetimeSelector.WithSingletonLifetime
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithSingletonLifetime
+- uid: Microsoft.Extensions.DependencyInjection.ServiceLifetime.Scoped
+  commentId: F:Microsoft.Extensions.DependencyInjection.ServiceLifetime.Scoped
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicelifetime#microsoft-extensions-dependencyinjection-servicelifetime-scoped
+  name: Scoped
+  nameWithType: ServiceLifetime.Scoped
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceLifetime.Scoped
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime*
+  commentId: Overload:Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime
+  href: Specular.Abstractions.IServiceLifetimeSelector.html#Specular_Abstractions_IServiceLifetimeSelector_WithScopedLifetime
+  name: WithScopedLifetime
+  nameWithType: IServiceLifetimeSelector.WithScopedLifetime
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithScopedLifetime
+- uid: Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient
+  commentId: F:Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicelifetime#microsoft-extensions-dependencyinjection-servicelifetime-transient
+  name: Transient
+  nameWithType: ServiceLifetime.Transient
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceLifetime.Transient
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime*
+  commentId: Overload:Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime
+  href: Specular.Abstractions.IServiceLifetimeSelector.html#Specular_Abstractions_IServiceLifetimeSelector_WithTransientLifetime
+  name: WithTransientLifetime
+  nameWithType: IServiceLifetimeSelector.WithTransientLifetime
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithTransientLifetime
+- uid: Specular.Abstractions.IServiceLifetimeSelector.WithLifetime*
+  commentId: Overload:Specular.Abstractions.IServiceLifetimeSelector.WithLifetime
+  href: Specular.Abstractions.IServiceLifetimeSelector.html#Specular_Abstractions_IServiceLifetimeSelector_WithLifetime_Microsoft_Extensions_DependencyInjection_ServiceLifetime_
+  name: WithLifetime
+  nameWithType: IServiceLifetimeSelector.WithLifetime
+  fullName: Specular.Abstractions.IServiceLifetimeSelector.WithLifetime
+- uid: Microsoft.Extensions.DependencyInjection.ServiceLifetime
+  commentId: T:Microsoft.Extensions.DependencyInjection.ServiceLifetime
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicelifetime
+  name: ServiceLifetime
+  nameWithType: ServiceLifetime
+  fullName: Microsoft.Extensions.DependencyInjection.ServiceLifetime
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection

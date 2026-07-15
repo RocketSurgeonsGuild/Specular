@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Add Indago to your .NET project in under 5 minutes.
+description: Add Specular to your .NET project in under 5 minutes.
 tags:
     - getting-started
 ---
@@ -15,14 +15,14 @@ tags:
 ## 1. Add the NuGet Package
 
 ```bash
-dotnet add package Indago
+dotnet add package Specular
 ```
 
 Or add it manually to your `.csproj`:
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="Indago" />
+    <PackageReference Include="Specular" />
 </ItemGroup>
 ```
 
@@ -30,14 +30,14 @@ Or add it manually to your `.csproj`:
 >
 > ```xml
 > <!-- Directory.Packages.props -->
-> <PackageVersion Include="Indago" Version="x.y.z" />
+> <PackageVersion Include="Specular" Version="x.y.z" />
 > ```
 
 ## 2. No Attribute to Apply
 
-There is nothing to wire up by hand. When the generator runs it stamps your assembly with `[assembly: IndagoHashAttribute("<hash>")]` automatically (the hash drives cross-assembly cache invalidation) and emits the `IndagoProvider` class you scan through. You never write this attribute yourself.
+There is nothing to wire up by hand. When the generator runs it stamps your assembly with `[assembly: SpecularHashAttribute("<hash>")]` automatically (the hash drives cross-assembly cache invalidation) and emits the `SpecularProvider` class you scan through. You never write this attribute yourself.
 
-> **Libraries that are only scanned** — and never call `IIndagoProvider` themselves — can opt out of emitting their own provider by setting `<IndagoEmitProvider>false</IndagoEmitProvider>` in the project file. Application and entry projects emit a provider by default.
+> **Libraries that are only scanned** — and never call `ISpecularProvider` themselves — can opt out of emitting their own provider by setting `<SpecularEmitProvider>false</SpecularEmitProvider>` in the project file. Application and entry projects emit a provider by default.
 
 ## 3. Build the Project
 
@@ -52,25 +52,25 @@ obj/
   Debug/
     net8.0/
       generated/
-        Indago.Analyzers/
-          Indago.Analyzers.IndagoProviderGenerator/
-            IndagoProvider.g.cs
+        Specular.Analyzers/
+          Specular.Analyzers.SpecularProviderGenerator/
+            SpecularProvider.g.cs
 ```
 
-You can inspect `IndagoProvider.g.cs` to see exactly what the generator produced — a concrete class implementing `IIndagoProvider` whose methods return pre-computed arrays of types.
+You can inspect `SpecularProvider.g.cs` to see exactly what the generator produced — a concrete class implementing `ISpecularProvider` whose methods return pre-computed arrays of types.
 
 ## 4. Verify the Setup
 
 Add a quick check to confirm the provider resolves:
 
 ```csharp
-var provider = IndagoProvider.Instance;
-Console.WriteLine(provider.GetType().FullName); // should print "IndagoProvider"
+var provider = SpecularProvider.Instance;
+Console.WriteLine(provider.GetType().FullName); // should print "SpecularProvider"
 ```
 
 ## No Additional Configuration
 
-That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knob is `<IndagoEmitProvider>` (see step 2) for libraries that should not emit their own provider. The `IndagoProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
+That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knob is `<SpecularEmitProvider>` (see step 2) for libraries that should not emit their own provider. The `SpecularProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
 
 ## Next Steps
 

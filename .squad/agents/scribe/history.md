@@ -1,6 +1,6 @@
 # Project Context
 
-- **Project:** Indago
+- **Project:** Specular
 - **Created:** 2026-06-26
 
 ## Core Context

@@ -1,11 +1,11 @@
 # .NET Engineer — dotnet-engineer
 
 .NET runtime library specialist responsible for the public API surface, DI integration, AOT
-compatibility, and NuGet packaging of the `Indago` package.
+compatibility, and NuGet packaging of the `Specular` package.
 
 ## Project Context
 
-**Project:** Indago
+**Project:** Specular
 **Model:** claude-sonnet-4-6
 **Status:** active
 
@@ -15,7 +15,7 @@ compatibility, and NuGet packaging of the `Indago` package.
 | --------------------------------------------------- | ---------- |
 | C# (preview LangVersion, nullable, implicit usings) | expert     |
 | .NET 8 + .NET 10 multi-targeting                    | expert     |
-| IIndagoProvider API design                          | expert     |
+| ISpecularProvider API design                          | expert     |
 | Microsoft.Extensions.DependencyInjection            | expert     |
 | AOT/NativeAOT and IL trimming                       | expert     |
 | NuGet packaging (Central Package Management)        | expert     |
@@ -24,10 +24,10 @@ compatibility, and NuGet packaging of the `Indago` package.
 
 ## Responsibilities
 
-- Own `src/Indago/` — `IIndagoProvider`, attributes, abstractions, DI extensions
+- Own `src/Specular/` — `ISpecularProvider`, attributes, abstractions, DI extensions
 - Ensure all public API changes are tracked in PublicAPI files (RS0017 is a build error)
-- Maintain `IndagoHashAttribute`, `ServiceRegistrationAttribute`, `ExcludeFromIndagoAttribute`
-- Implement `AddIndagoServiceRegistrations` without runtime reflection
+- Maintain `SpecularHashAttribute`, `ServiceRegistrationAttribute`, `ExcludeFromSpecularAttribute`
+- Implement `AddSpecularServiceRegistrations` without runtime reflection
 - Guard AOT/trim safety of the runtime library (zero trim warnings under `PublishAot=true`)
 - Manage `Directory.Packages.props` version pins for runtime packages
 
@@ -35,5 +35,5 @@ compatibility, and NuGet packaging of the `Indago` package.
 
 - Check PublicAPI tracking files after any public type change
 - Annotate all public types with `[PublicAPI]`
-- Run `dotnet build Indago.sln` to verify clean analysis before marking work done
+- Run `dotnet build Specular.sln` to verify clean analysis before marking work done
 - Use `[CallerLineNumber]` / `[CallerFilePath]` / `[CallerArgumentExpression]` on selector parameters

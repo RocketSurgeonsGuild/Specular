@@ -43,7 +43,7 @@ tags:                               # Optional (starlight-tags). Array of string
 ```yaml
 layout: home
 hero:
-    name: Indago
+    name: Specular
     text: Compile-time assembly scanning
     tagline: AOT safe. Zero reflection.
     actions:
@@ -60,7 +60,7 @@ features:
 ```yaml
 template: splash
 hero:
-    title: Indago
+    title: Specular
     tagline: AOT safe. Zero reflection. Build-time performance.
     actions:
         - text: Get Started
@@ -79,11 +79,11 @@ hero:
 ```js
 // Logical shape — exact values filled during implementation
 {
-  site: "https://rocketSurgeonsGuild.github.io/Indago",
-  base: "/Indago",                    // If deployed to GitHub Pages subpath
+  site: "https://rocketSurgeonsGuild.github.io/Specular",
+  base: "/Specular",                    // If deployed to GitHub Pages subpath
   integrations: [
     starlight({
-      title: "Indago",
+      title: "Specular",
       description: "...",
       social: { github: "..." },
       logo: { ... },
@@ -149,11 +149,11 @@ Each public type produces one Markdown file. Representative structure:
 
 ```
 docs/src/content/docs/api/
-├── indago/                          # Namespace directory
-│   ├── iindago-provider.md          # IIndagoProvider interface
-│   ├── indago-provider-service-collection-extensions.md
+├── specular/                          # Namespace directory
+│   ├── ispecular-provider.md          # ISpecularProvider interface
+│   ├── specular-provider-service-collection-extensions.md
 │   └── ...
-└── indago.analyzers/                # Namespace directory (if exposed)
+└── specular.analyzers/                # Namespace directory (if exposed)
     └── ...
 ```
 
@@ -161,9 +161,9 @@ Each generated page has frontmatter:
 
 ```yaml
 ---
-title: "IIndagoProvider"
+title: "ISpecularProvider"
 sidebar:
-  label: "IIndagoProvider"
+  label: "ISpecularProvider"
 ---
 ```
 
@@ -187,10 +187,10 @@ All existing public URLs are preserved. Starlight maps file paths to URLs automa
 | `src/content/docs/guide/installation.md`                  | `/guide/installation/`                  |
 | `src/content/docs/guide/quickstart.md`                    | `/guide/quickstart/`                    |
 | `src/content/docs/guide/aot-publishing.md`                | `/guide/aot-publishing/`                |
-| `src/content/docs/reference/iindago-provider.md`          | `/reference/iindago-provider/`          |
+| `src/content/docs/reference/ispecular-provider.md`          | `/reference/ispecular-provider/`          |
 | `src/content/docs/reference/type-filters.md`              | `/reference/type-filters/`              |
 | `src/content/docs/reference/service-registration.md`      | `/reference/service-registration/`      |
-| `src/content/docs/reference/exclude-from-indago.md`       | `/reference/exclude-from-indago/`       |
+| `src/content/docs/reference/exclude-from-specular.md`       | `/reference/exclude-from-specular/`       |
 | `src/content/docs/architecture/how-it-works.md`           | `/architecture/how-it-works/`           |
 | `src/content/docs/architecture/cross-assembly-caching.md` | `/architecture/cross-assembly-caching/` |
 | `src/content/docs/api/**`                                 | `/api/**` (auto-generated)              |

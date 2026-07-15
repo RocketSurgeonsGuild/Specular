@@ -6,9 +6,9 @@ How to decide who handles what.
 
 | Work Type                     | Route To                          | Examples                                                                                                            |
 | ----------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Generator / source generation | roslyn-engineer                   | `IndagoProviderGenerator`, syntax providers, symbol visitors, `ctpjson` cache, `AssemblyProviders/`, `Descriptors/` |
+| Generator / source generation | roslyn-engineer                   | `SpecularProviderGenerator`, syntax providers, symbol visitors, `ctpjson` cache, `AssemblyProviders/`, `Descriptors/` |
 | Roslyn version compat         | roslyn-engineer                   | Roslyn 4.8/4.14/5.0 variants, `EnforceExtendedAnalyzerRules`, `Polyfill`                                            |
-| Runtime API / DI              | dotnet-engineer                   | `IIndagoProvider`, attributes, `AddIndagoServiceRegistrations`, `src/Indago/`                                       |
+| Runtime API / DI              | dotnet-engineer                   | `ISpecularProvider`, attributes, `AddSpecularServiceRegistrations`, `src/Specular/`                                       |
 | AOT / trim safety             | dotnet-engineer                   | `PublishAot=true`, trim warnings, IL linking                                                                        |
 | NuGet / packaging             | dotnet-engineer                   | `Directory.Packages.props`, csproj, `buildTransitive` targets                                                       |
 | Public API surface            | dotnet-engineer                   | RS0017 PublicAPI files, breaking-change review                                                                      |
@@ -16,7 +16,7 @@ How to decide who handles what.
 | Starlight plugins             | docs-engineer                     | Plugin setup & verification, link validator, tags, changelogs, badges, llms-txt, activating content                |
 | GitHub Actions / Pages        | docs-engineer                     | `deploy-docs.yml`, GitHub Pages deployment, base-path correctness                                                   |
 | Snapshot tests                | qa-engineer                       | `.received.cs` / `.verified.cs` diffs, `dotnet verify accept`                                                       |
-| Generator tests               | qa-engineer                       | `test/Indago.Tests/`, `GeneratorTest` builder, `TestAssembly/` fixtures                                             |
+| Generator tests               | qa-engineer                       | `test/Specular.Tests/`, `GeneratorTest` builder, `TestAssembly/` fixtures                                             |
 | Cross-version CI              | qa-engineer                       | Roslyn 4.8/4.14/5.0 snapshot parity, MTP treenode-filter runs                                                       |
 | Code review                   | roslyn-engineer / dotnet-engineer | PRs touching generator or runtime library respectively                                                              |
 | Session logging               | Scribe                            | Automatic — always background, never blocked                                                                        |
@@ -29,7 +29,7 @@ How to decide who handles what.
 | ------------------------------------------------------------------------------------------ | --------------- |
 | `/\bIIncrementalGenerator\|syntax provider\|symbol visitor\|AssemblyProvider\|ctpjson\b/i` | roslyn-engineer |
 | `/\bRoslyn (4\.8\|4\.14\|5\.0)\|EnforceExtendedAnalyzerRules\|Polyfill\b/i`                | roslyn-engineer |
-| `/\bIIndagoProvider\|ServiceRegistration\|ExcludeFromIndago\|AddIndago\b/i`                | dotnet-engineer |
+| `/\bISpecularProvider\|ServiceRegistration\|ExcludeFromSpecular\|AddSpecular\b/i`                | dotnet-engineer |
 | `/\bPublishAot\|trim warn\|AOT compat\|IL trim\b/i`                                        | dotnet-engineer |
 | `/\bStarlight\|Astro\|astro\.config\|docs\/(guide\|reference\|architecture\|api)\|sidebar\|landing page\|starlight-\w+\b/i` | docs-engineer |
 | `/\blinks?-validator\|deploy-docs\|GitHub Pages\|plugin verification\b/i`                  | docs-engineer   |

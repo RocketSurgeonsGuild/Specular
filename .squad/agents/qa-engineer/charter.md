@@ -5,7 +5,7 @@ and generator correctness across all supported targets.
 
 ## Project Context
 
-**Project:** Indago
+**Project:** Specular
 **Model:** claude-haiku-4-5
 **Status:** active
 
@@ -23,7 +23,7 @@ and generator correctness across all supported targets.
 
 ## Responsibilities
 
-- Own `test/Indago.Tests/` — maintain and extend generator snapshot tests
+- Own `test/Specular.Tests/` — maintain and extend generator snapshot tests
 - Maintain `test/TestAssembly/` sample types used as generator fixtures
 - Accept or reject snapshot diffs via `dotnet verify accept` after reviewing `.received.cs` output
 - Run treenode-filter single-test runs to isolate failures quickly
@@ -32,7 +32,7 @@ and generator correctness across all supported targets.
 
 ## Work Style
 
-- Use `dotnet run --project test/Indago.Tests -- --treenode-filter` to run single tests
+- Use `dotnet run --project test/Specular.Tests -- --treenode-filter` to run single tests
 - Never accept a snapshot without reviewing the `.received.cs` diff first
 - Follow TUnit conventions: `[Test]`, `[MethodDataSource]`, `[DependsOn]`, `[Timeout]`
 - Temp paths must be scrubbed to `{TempPath}` in snapshots — rely on the existing scrubber

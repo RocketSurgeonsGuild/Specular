@@ -1,6 +1,6 @@
 ---
 title: AOT Publishing
-description: Publish your Indago-powered app with .NET Native AOT — zero trim warnings.
+description: Publish your Specular-powered app with .NET Native AOT — zero trim warnings.
 ---
 
 # AOT Publishing
@@ -17,20 +17,20 @@ ILLink: Trim analysis warning IL2026: 'Assembly.GetTypes()' requires unreference
 
 Standard runtime scanners (including Scrutor) call `Assembly.GetTypes()` at startup. The trimmer cannot know at publish time which types will be returned, so it cannot safely remove any of them — or it warns that it might.
 
-## How Indago Avoids This
+## How Specular Avoids This
 
-Indago's generator resolves every scan at **build time**, before the trimmer or AOT compiler ever runs. The generated `IndagoProvider.g.cs` contains only direct `typeof()` expressions and array literals:
+Specular's generator resolves every scan at **build time**, before the trimmer or AOT compiler ever runs. The generated `SpecularProvider.g.cs` contains only direct `typeof()` expressions and array literals:
 
 ```csharp
 // Generated — no reflection APIs
 return new Type[] { typeof(MyService), typeof(OtherService), typeof(ThirdService) };
 ```
 
-`typeof()` is a compile-time constant. The trimmer sees it as a static root, keeps the referenced types, and produces no warnings. There are no calls to `Assembly.GetTypes()`, `Type.GetMethod()`, `Activator.CreateInstance()`, or any other dynamically-dispatched reflection API in the Indago runtime path.
+`typeof()` is a compile-time constant. The trimmer sees it as a static root, keeps the referenced types, and produces no warnings. There are no calls to `Assembly.GetTypes()`, `Type.GetMethod()`, `Activator.CreateInstance()`, or any other dynamically-dispatched reflection API in the Specular runtime path.
 
 ## Supported Target Frameworks
 
-Indago targets `net8.0` and `net10.0` — both of which support Native AOT publishing.
+Specular targets `net8.0` and `net10.0` — both of which support Native AOT publishing.
 
 ## Publishing Command
 
@@ -48,13 +48,13 @@ dotnet publish -c Release -r linux-x64 --self-contained -p:PublishAot=true
 
 ## Verifying Zero Trim Warnings
 
-After publishing, check the output for any trim warnings that mention Indago:
+After publishing, check the output for any trim warnings that mention Specular:
 
 ```bash
-dotnet publish -r linux-x64 --self-contained -p:PublishAot=true 2>&1 | grep -i indago
+dotnet publish -r linux-x64 --self-contained -p:PublishAot=true 2>&1 | grep -i specular
 ```
 
-A clean Indago integration produces no output from that command. If you see trim warnings, they originate from your own code or from other dependencies — not from Indago itself.
+A clean Specular integration produces no output from that command. If you see trim warnings, they originate from your own code or from other dependencies — not from Specular itself.
 
 You can also enable verbose trim analysis to get a full report:
 
@@ -66,7 +66,7 @@ You can also enable verbose trim analysis to get a full report:
 </PropertyGroup>
 ```
 
-## Trim-Safe Patterns with Indago
+## Trim-Safe Patterns with Specular
 
 ### Use `[ServiceRegistration]` instead of convention-based scanning where possible
 

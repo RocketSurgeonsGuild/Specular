@@ -21,7 +21,7 @@
 
 - [x] T001 Remove `docs/.vitepress/` directory, `docs/api-examples.md`, and `docs/markdown-examples.md`
 - [x] T002 Create `docs/package.json` with `astro`, `@astrojs/starlight`, and dev dependencies (Node 20+)
-- [x] T003 [P] Create `docs/astro.config.mjs` with Starlight integration, site title "Indago", description, and GitHub social link
+- [x] T003 [P] Create `docs/astro.config.mjs` with Starlight integration, site title "Specular", description, and GitHub social link
 - [x] T004 [P] Create `docs/src/content/config.ts` defining the `docs` content collection schema (including `draft` and `tags` fields per data-model.md)
 - [x] T005 [P] Create `docs/tsconfig.json` extending Astro's base tsconfig
 
@@ -47,16 +47,16 @@
 
 ## Phase 3: User Story 1 — API Reference (Priority: P1) 🎯 MVP
 
-**Goal**: Auto-generated API reference pages for all public types in `src/Indago`, regenerated automatically after `dotnet build`.
+**Goal**: Auto-generated API reference pages for all public types in `src/Specular`, regenerated automatically after `dotnet build`.
 
-**Independent Test**: Run `mise run docs:api` (after `dotnet build -c Release`), then open `http://localhost:4321/api/` — all public types from `src/Indago` must appear with at least a name and summary. (mise installs xmldocmd automatically.)
+**Independent Test**: Run `mise run docs:api` (after `dotnet build -c Release`), then open `http://localhost:4321/api/` — all public types from `src/Specular` must appear with at least a name and summary. (mise installs xmldocmd automatically.)
 
 - [x] T013 [US1] Add `xmldocmd` to `.config/mise.toml` under `[tools]` as `"dotnet:xmldocmd" = "2.9.0"`; mise manages the tool version (no `.config/dotnet-tools.json` manifest)
-- [x] T014 [US1] Create `mise run docs:api` task in `mise.toml`: runs `xmldocmd src/Indago/bin/Release/net8.0/Indago.dll docs/src/content/docs/api/ --namespace Indago --source https://github.com/RocketSurgeonsGuild/Indago/blob/main/src/Indago/`
+- [x] T014 [US1] Create `mise run docs:api` task in `mise.toml`: runs `xmldocmd src/Specular/bin/Release/net8.0/Specular.dll docs/src/content/docs/api/ --namespace Specular --source https://github.com/RocketSurgeonsGuild/Specular/blob/main/src/Specular/`
 - [x] T015 [US1] Run `dotnet build -c Release && mise run docs:api` to produce initial API reference output in `docs/src/content/docs/api/`
 - [x] T016 [US1] Add `api/` topic group to sidebar config in `docs/astro.config.mjs` (label: "API Reference", autogenerate from `api/`)
-- [x] T017 [P] [US1] Verify `IIndagoProvider` page renders in dev server with correct summary, methods, and parameter descriptions
-- [x] T018 [P] [US1] Verify `ServiceRegistrationAttribute` and `ExcludeFromIndagoAttribute` pages render with summaries and constructor parameters
+- [x] T017 [P] [US1] Verify `ISpecularProvider` page renders in dev server with correct summary, methods, and parameter descriptions
+- [x] T018 [P] [US1] Verify `ServiceRegistrationAttribute` and `ExcludeFromSpecularAttribute` pages render with summaries and constructor parameters
 - [x] T019 [US1] Update `mise run docs:build` task in `mise.toml` to run `docs:api` before the Astro build: `mise run docs:api && cd docs && npm run build`
 - [x] T020 [US1] Update `.github/workflows/deploy-docs.yml` to include `mise run docs:api` step before the Astro build step (mise installs xmldocmd automatically; no `dotnet tool restore` needed)
 
@@ -111,11 +111,11 @@
 - [x] T037 [P] [US4] Install `starlight-heading-badges`; add to plugins in `docs/astro.config.mjs`; add `badge: { text: "New", variant: "tip" }` to frontmatter of `docs/src/content/docs/guide/index.md` as demonstration
 - [x] T038 [P] [US4] Install `starlight-image-zoom`; add to plugins in `docs/astro.config.mjs`
 - [x] T039 [P] [US4] Install `starlight-scroll-to-top`; add to plugins in `docs/astro.config.mjs`
-- [x] T040 [P] [US4] Install `starlight-page-actions`; configure in `docs/astro.config.mjs` with "Edit on GitHub" action pointing to `https://github.com/RocketSurgeonsGuild/Indago/edit/main/docs/src/content/docs/`
+- [x] T040 [P] [US4] Install `starlight-page-actions`; configure in `docs/astro.config.mjs` with "Edit on GitHub" action pointing to `https://github.com/RocketSurgeonsGuild/Specular/edit/main/docs/src/content/docs/`
 - [x] T041 [P] [US4] Install `starlight-plugin-icons`; add to plugins in `docs/astro.config.mjs`
 - [x] T042 [US4] Install `starlight-tags`; add to plugins in `docs/astro.config.mjs`; add representative tags to at least 3 content pages (e.g., `tags: ["di", "aot"]` on quickstart page)
 - [x] T043 [US4] Verify `/tags/` index page renders with all tagged pages listed and links work — verified in spec 003 (T016/T019): a wiring bug was **fixed** (extended the `docs` schema with `starlightTagsExtension`); `/tags/` now lists tags and `/tags/api/` shows 3 pages with working links + related tags
-- [x] T044 [US4] Install `starlight-changelogs`; add to plugins in `docs/astro.config.mjs`; configure `changelogsLoader` in `docs/src/content.config.ts` using `github` provider (`owner: 'RocketSurgeonsGuild'`, `repo: 'Indago'`); no local `CHANGELOG.md` needed
+- [x] T044 [US4] Install `starlight-changelogs`; add to plugins in `docs/astro.config.mjs`; configure `changelogsLoader` in `docs/src/content.config.ts` using `github` provider (`owner: 'RocketSurgeonsGuild'`, `repo: 'Specular'`); no local `CHANGELOG.md` needed
 - [x] T045 [US4] Verify `/changelog/` page renders the changelog in structured format in both light and dark mode — verified in spec 003 (T022/T027): `/changelog/` renders v0.0.2 (Latest) + v0.0.1 with PRs and contributors; build generates the changelog + version pages even without `GH_API_TOKEN` locally
 
 **Checkpoint**: US4 complete — all 14 plugins installed; all render in light and dark mode (SC-007).
@@ -155,7 +155,7 @@
 **Purpose**: Final quality gates, formatting, URL contract verification, and constitution follow-up.
 
 - [x] T052 [P] Run `prettier --check "docs/src/**/*.{md,mdx,ts,mjs}"` from repo root; fix any formatting violations found
-- [x] T053 [P] Run all validation scenarios from [quickstart.md](quickstart.md): dev server, content pages, API generation, link validator, plugin rendering, search, build performance, VS Code extension, prettier — verified in spec 003 (T031): dev server reachable, all section pages resolve (HTTP 200), API generation reproduced (`xmldocmd --clean` preserves `api/index.md`), link validator clean (root + `/Indago` base), all 12 plugins rendered, production build green, prettier `--check` passes
+- [x] T053 [P] Run all validation scenarios from [quickstart.md](quickstart.md): dev server, content pages, API generation, link validator, plugin rendering, search, build performance, VS Code extension, prettier — verified in spec 003 (T031): dev server reachable, all section pages resolve (HTTP 200), API generation reproduced (`xmldocmd --clean` preserves `api/index.md`), link validator clean (root + `/Specular` base), all 12 plugins rendered, production build green, prettier `--check` passes
 - [x] T054 Verify all URL paths from [contracts/url-structure.md](contracts/url-structure.md) return HTTP 200 on the deployed site (or locally via `npm run preview`)
 - [x] T055 Manual verification: open each of the 14 plugins' key features in browser — confirm all render correctly in both light and dark mode (SC-007) — completed in spec 003 (US2): all **12** installed `starlight-*` plugins verified Working/Fixed with evidence in `specs/003-docs-site-fixes/contracts/plugin-verification-matrix.md` (the "14" figure was a stale count; 12 are actually installed)
 - [x] T056 Update `mise.toml` task descriptions to reference Astro/Starlight instead of VitePress in any comments or task names

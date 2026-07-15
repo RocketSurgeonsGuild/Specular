@@ -7,11 +7,11 @@ build has zero broken internal links.
 
 | Topic           | URL (local)      | URL (CI)                | Expected                                                                  |
 | --------------- | ---------------- | ----------------------- | ------------------------------------------------------------------------- |
-| Getting Started | `/guide/`        | `/Indago/guide/`        | HTTP 200, landing page (existing — no regression)                         |
-| Reference       | `/reference/`    | `/Indago/reference/`    | HTTP 200, NEW landing page with links to all 4 reference pages            |
-| Architecture    | `/architecture/` | `/Indago/architecture/` | HTTP 200, NEW landing page with links to both architecture pages          |
-| API Reference   | `/api/`          | `/Indago/api/`          | HTTP 200, NEW landing page introducing the generated API tree             |
-| Changelog       | `/changelog/`    | `/Indago/changelog/`    | HTTP 200 (plugin-generated — no regression; token caveat per research R3) |
+| Getting Started | `/guide/`        | `/Specular/guide/`        | HTTP 200, landing page (existing — no regression)                         |
+| Reference       | `/reference/`    | `/Specular/reference/`    | HTTP 200, NEW landing page with links to all 4 reference pages            |
+| Architecture    | `/architecture/` | `/Specular/architecture/` | HTTP 200, NEW landing page with links to both architecture pages          |
+| API Reference   | `/api/`          | `/Specular/api/`          | HTTP 200, NEW landing page introducing the generated API tree             |
+| Changelog       | `/changelog/`    | `/Specular/changelog/`    | HTTP 200 (plugin-generated — no regression; token caveat per research R3) |
 
 **Pass criteria**: all five return HTTP 200 with meaningful content (not the Starlight 404 page),
 verified live in the integrated browser MCP.
@@ -25,6 +25,6 @@ verified live in the integrated browser MCP.
 
 ## Base-path contract
 
-- Local (`base = ''`) and CI (`base = '/Indago'`) MUST both resolve all five topics.
-- No hand-authored link may hard-code `/Indago`.
+- Local (`base = ''`) and CI (`base = '/Specular'`) MUST both resolve all five topics.
+- No hand-authored link may hard-code `/Specular`.
 - Verification: a `GITHUB_ACTIONS=1 astro build` is link-clean if base correctness is in doubt.

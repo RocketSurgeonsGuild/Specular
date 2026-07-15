@@ -3,7 +3,7 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <PropertyGroup>
-        <IndagoEmitProvider>true</IndagoEmitProvider>
+        <SpecularEmitProvider>true</SpecularEmitProvider>
         <!-- Samples are demonstrations, never shipped or packed. -->
         <IsPackable>false</IsPackable>
         <IsPublishable>true</IsPublishable>
@@ -12,7 +12,7 @@
         <!--
             The samples are not part of the tracked public API surface. Drop the RS0017
             warnings-as-error inherited from the root and silence the public-API analyzer so
-            samples don't need PublicAPI.*.txt tracking files (Principle III: src/Indago's
+            samples don't need PublicAPI.*.txt tracking files (Principle III: src/Specular's
             surface stays the sole tracked contract).
         -->
         <WarningsAsErrors>$(WarningsAsErrors.Replace('RS0017', '').Trim(';'))</WarningsAsErrors>

@@ -1,6 +1,6 @@
 ---
-title: What is Indago?
-description: Indago is a compile-time assembly scanning library for .NET that replaces runtime reflection with Roslyn source generation.
+title: What is Specular?
+description: Specular is a compile-time assembly scanning library for .NET that replaces runtime reflection with Roslyn source generation.
 badge:
     text: New
     variant: tip
@@ -10,7 +10,7 @@ tags:
     - aot
 ---
 
-# What is Indago?
+# What is Specular?
 
 ## The Problem: Runtime Reflection at Startup
 
@@ -31,24 +31,24 @@ This is convenient, but it comes with real costs:
 
 ## The Solution: Compile-Time Scanning
 
-Indago moves the scan to **build time**. A [Roslyn incremental source generator](https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) reads the same fluent selector expressions you already write, evaluates them against the compilation's type graph, and emits a strongly-typed `IIndagoProvider` implementation whose methods return **pre-computed, hard-coded arrays** — no reflection required at runtime.
+Specular moves the scan to **build time**. A [Roslyn incremental source generator](https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) reads the same fluent selector expressions you already write, evaluates them against the compilation's type graph, and emits a strongly-typed `ISpecularProvider` implementation whose methods return **pre-computed, hard-coded arrays** — no reflection required at runtime.
 
 ```
 [Build time]
-selector expression  ──►  Roslyn generator  ──►  IndagoProvider.g.cs
+selector expression  ──►  Roslyn generator  ──►  SpecularProvider.g.cs
                                                    (pre-resolved type lists)
 
 [Runtime]
-IIndagoProvider.GetTypes(...)  ──►  returns the pre-built array  ──►  zero reflection
+ISpecularProvider.GetTypes(...)  ──►  returns the pre-built array  ──►  zero reflection
 ```
 
 The generated file is checked into `obj/` and compiled into your assembly just like any other C# source file. The runtime cost of a scan drops to an array return.
 
 ## Key Concepts
 
-### `IIndagoProvider` — the generated entry point
+### `ISpecularProvider` — the generated entry point
 
-`IIndagoProvider` is the interface your code calls. It exposes three methods:
+`ISpecularProvider` is the interface your code calls. It exposes three methods:
 
 | Method                     | What it returns                                            |
 | -------------------------- | ---------------------------------------------------------- |
@@ -56,7 +56,7 @@ The generated file is checked into `obj/` and compiled into your assembly just l
 | `GetTypes(selector)`       | Types matched by the selector                              |
 | `Scan(services, selector)` | Registers matched types directly into `IServiceCollection` |
 
-The static property `IndagoProvider.Instance` exposes the generated provider for the entry assembly. See [Quickstart](./quickstart/) for usage.
+The static property `SpecularProvider.Instance` exposes the generated provider for the entry assembly. See [Quickstart](./quickstart/) for usage.
 
 ### Selector Expressions
 
@@ -71,19 +71,19 @@ provider.GetTypes(s =>
 
 The generator captures the **text** of the lambda via `[CallerArgumentExpression]` and hashes it to produce a stable key. Each unique selector expression at each call site generates a distinct result set. Changing the selector — even whitespace-significantly — causes the generator to re-evaluate and re-emit.
 
-### `IndagoProvider.ctpjson` — Cross-Assembly Cache
+### `SpecularProvider.ctpjson` — Cross-Assembly Cache
 
-When the generator processes an assembly it writes a cache file (`IndagoProvider.ctpjson`) alongside the output. Downstream assemblies that reference yours can consume this cache instead of re-resolving all types from scratch, keeping incremental builds fast.
+When the generator processes an assembly it writes a cache file (`SpecularProvider.ctpjson`) alongside the output. Downstream assemblies that reference yours can consume this cache instead of re-resolving all types from scratch, keeping incremental builds fast.
 
 ## Comparison to Scrutor
 
 Scrutor walks your assemblies at runtime using `Assembly.GetTypes()`, `Type.IsAssignableTo()`, and similar reflection APIs. This is flexible and works in all .NET environments, but it cannot be used with Native AOT and incurs startup cost proportional to the number of types in scope.
 
-Indago performs the same logical scan at **compile time** using Roslyn's type symbol graph. The runtime implementation is a generated class that returns a pre-computed array — there is no reflection, no assembly enumeration, and no trim warnings. The trade-off is that Indago requires a build step and that selector changes require a recompile (which is already true for all source-generated code).
+Specular performs the same logical scan at **compile time** using Roslyn's type symbol graph. The runtime implementation is a generated class that returns a pre-computed array — there is no reflection, no assembly enumeration, and no trim warnings. The trade-off is that Specular requires a build step and that selector changes require a recompile (which is already true for all source-generated code).
 
 ## Next Steps
 
-- [Installation](./installation/) — add Indago to your project in under 5 minutes
+- [Installation](./installation/) — add Specular to your project in under 5 minutes
 
 ## Contributing to the Docs
 

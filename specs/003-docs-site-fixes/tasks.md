@@ -57,14 +57,14 @@ real page; `astro build` reports zero broken internal links.
 
 ### Implementation for User Story 1
 
-- [x] T005 [P] [US1] Create `docs/src/content/docs/reference/index.md` — section landing page with intro and links to `exclude-from-indago`, `iindago-provider`, `service-registration`, `type-filters`
+- [x] T005 [P] [US1] Create `docs/src/content/docs/reference/index.md` — section landing page with intro and links to `exclude-from-specular`, `ispecular-provider`, `service-registration`, `type-filters`
 - [x] T006 [P] [US1] Create `docs/src/content/docs/architecture/index.md` — section landing page with intro and links to `how-it-works` and `cross-assembly-caching`
-- [x] T007 [P] [US1] Create `docs/src/content/docs/api/index.md` — section landing page introducing the auto-generated API reference and linking into `Indago` / `Indago.Abstractions`
+- [x] T007 [P] [US1] Create `docs/src/content/docs/api/index.md` — section landing page introducing the auto-generated API reference and linking into `Specular` / `Specular.Abstractions`
 - [x] T008 [US1] Verify in the browser that `/reference/`, `/architecture/`, `/api/` now return real pages (HTTP 200) and that `/guide/` and `/changelog/` still render (no regression)
 - [x] T009 [US1] Verify all in-page links on the three new landing pages navigate correctly in the browser
 - [x] T010 [US1] Confirm `docs/scripts/add-api-frontmatter.mjs` (and/or the API generation/build) does not overwrite or delete `docs/src/content/docs/api/index.md`
 - [x] T011 [US1] Run `cd docs && npm run build`; confirm success and that `starlight-links-validator` reports zero broken internal links
-- [x] T012 [US1] Run `cd docs && GITHUB_ACTIONS=1 npm run build`; confirm the site is link-clean under the `/Indago` base path (no hard-coded base prefixes)
+- [x] T012 [US1] Run `cd docs && GITHUB_ACTIONS=1 npm run build`; confirm the site is link-clean under the `/Specular` base path (no hard-coded base prefixes)
 
 **Checkpoint**: All five navigation topics resolve; build is link-clean under both base paths (SC-001, SC-002, SC-006).
 

@@ -5,7 +5,7 @@ site and its plugins, validating links, and deploying to GitHub Pages.
 
 ## Project Context
 
-**Project:** Indago
+**Project:** Specular
 **Model:** claude-haiku-4-5
 **Status:** active
 
@@ -34,7 +34,7 @@ site and its plugins, validating links, and deploying to GitHub Pages.
 - Keep the API reference (auto-generated from compiled DLLs) coexisting with hand-authored pages
 - Own `.github/workflows/deploy-docs.yml` — build and deploy to GitHub Pages on merge to main
 - Keep `docs/tsconfig.json` and `docs/content.config.ts` aligned with the docs toolchain
-- Ensure the site works under both base paths (root locally, `/Indago` in CI)
+- Ensure the site works under both base paths (root locally, `/Specular` in CI)
 
 ## Work Style
 
@@ -42,6 +42,6 @@ site and its plugins, validating links, and deploying to GitHub Pages.
   against the running site before committing
 - Run `astro build` to catch build-time errors and run the link validator (zero broken internal links)
 - For each plugin, confirm its feature renders/behaves on the live site in both light and dark mode
-- Use `base: '/Indago'` (set via `GITHUB_ACTIONS`) for GitHub Pages project-site hosting; never
+- Use `base: '/Specular'` (set via `GITHUB_ACTIONS`) for GitHub Pages project-site hosting; never
   hard-code absolute paths that break under a base prefix
 - Format docs with prettier before committing

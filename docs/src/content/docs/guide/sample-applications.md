@@ -1,13 +1,13 @@
 ---
 title: Sample Applications
-description: Worked examples of Indago compile-time scanning — three reusable libraries and the hosts that consume them, with the exact selector expressions.
+description: Worked examples of Specular compile-time scanning — three reusable libraries and the hosts that consume them, with the exact selector expressions.
 ---
 
 # Sample Applications
 
-The [`samples/`](https://github.com/RocketSurgeonsGuild/Indago/tree/main/samples) tree is a set of
-worked examples that exercise Indago end-to-end. Three reusable **libraries** declare services in
-different registration styles; **hosts** consume all three and assert — in process — that Indago
+The [`samples/`](https://github.com/RocketSurgeonsGuild/Specular/tree/main/samples) tree is a set of
+worked examples that exercise Specular end-to-end. Three reusable **libraries** declare services in
+different registration styles; **hosts** consume all three and assert — in process — that Specular
 discovered exactly the expected service set, then publish under a zero-warning Native AOT guardrail.
 
 You can read the selector expressions below to understand how scanning resolves **without running
@@ -15,14 +15,14 @@ anything** — that is the whole point of a compile-time provider.
 
 ## The three libraries
 
-Each library is a plain class library that references `Indago`. Collectively they cover
+Each library is a plain class library that references `Specular`. Collectively they cover
 interface-matching **and** attribute-based registration, three lifetimes, and one opt-out type.
 
 | Library                        | Style                               | Lifetime(s)          | Notable                               |
 | ------------------------------ | ----------------------------------- | -------------------- | ------------------------------------- |
-| `Indago.Samples.Catalog`       | interface-matching                  | Singleton            | `IXxxService` → `XxxService`          |
-| `Indago.Samples.Notifications` | attribute (`[ServiceRegistration]`) | Transient (`AsSelf`) | generic + non-generic attribute       |
-| `Indago.Samples.Diagnostics`   | interface-matching                  | Scoped               | one `[ExcludeFromSampleScan]` opt-out |
+| `Specular.Samples.Catalog`       | interface-matching                  | Singleton            | `IXxxService` → `XxxService`          |
+| `Specular.Samples.Notifications` | attribute (`[ServiceRegistration]`) | Transient (`AsSelf`) | generic + non-generic attribute       |
+| `Specular.Samples.Diagnostics`   | interface-matching                  | Scoped               | one `[ExcludeFromSampleScan]` opt-out |
 
 ## How a host scans them
 
@@ -78,9 +78,9 @@ discovered set — the host asserts its absence.
 
 | Host                     | Kind                | Proves                                                                 |
 | ------------------------ | ------------------- | ---------------------------------------------------------------------- |
-| `Indago.Samples.Console` | console             | discovery via `IndagoProvider.Instance`; exits non-zero on mismatch    |
-| `Indago.Samples.Web`     | ASP.NET minimal API | fail-fast at startup on mismatch; `/services` endpoint lists discovery |
+| `Specular.Samples.Console` | console             | discovery via `SpecularProvider.Instance`; exits non-zero on mismatch    |
+| `Specular.Samples.Web`     | ASP.NET minimal API | fail-fast at startup on mismatch; `/services` endpoint lists discovery |
 
-Both hosts hold a hard-coded **expected service set** and compare it to what Indago discovered,
+Both hosts hold a hard-coded **expected service set** and compare it to what Specular discovered,
 failing the process (and therefore the CI smoke test) on any mismatch. Both are published under the
 zero-warning Native AOT policy as discrete, named pipeline steps.

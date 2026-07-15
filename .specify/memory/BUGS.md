@@ -4,18 +4,18 @@ Durable lessons from fixed bugs. Newest entries appended; see `INDEX.md` for rou
 
 ---
 
-### 2026-06-29 - IndagoHashAttribute emitted IL2077 under Native AOT
+### 2026-06-29 - SpecularHashAttribute emitted IL2077 under Native AOT
 
 **Status**
 Active
 
 **Why this is durable**
 Constitution Principle I (AOT & Trim Safety) is non-negotiable, yet the provider-resolution path in
-`src/Indago` was trim-unsafe and shipped latent — every zero-warning AOT publish that touched
-`IIndagoProvider.EntryAssembly` would have failed.
+`src/Specular` was trim-unsafe and shipped latent — every zero-warning AOT publish that touched
+`ISpecularProvider.EntryAssembly` would have failed.
 
 **Decision / Finding**
-`IndagoHashAttribute` resolved the source-generated provider via
+`SpecularHashAttribute` resolved the source-generated provider via
 `Activator.CreateInstance(type)` where `type` had no `[DynamicallyAccessedMembers]` annotation, so the
 trim analyzer emitted **IL2077**. Fixed by annotating the constructor parameter and the `Type` getter
 with `[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]`.
@@ -23,9 +23,9 @@ This is a param/return-attribute change only — it does **not** alter the RS001
 
 **Tradeoffs / Prevention**
 
-- Gained: AOT/trim-clean provider resolution; `samples/fixtures/Indago.Samples.NegativeFixture`
+- Gained: AOT/trim-clean provider resolution; `samples/fixtures/Specular.Samples.NegativeFixture`
   (asserts `IL2072`) is the standing regression detector.
-- Reconsider: any `Type` that flows to `Activator`/reflection in `src/Indago` MUST carry the matching
+- Reconsider: any `Type` that flows to `Activator`/reflection in `src/Specular` MUST carry the matching
   `[DynamicallyAccessedMembers]`; verify with a Native AOT publish (analysis runs before the link).
 
 ---

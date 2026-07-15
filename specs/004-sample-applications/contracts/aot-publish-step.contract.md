@@ -1,7 +1,7 @@
 # Contract: AOT Publish Step (demonstration hosts)
 
-**Applies to**: `Indago.Samples.Console`, `Indago.Samples.Web`, `Indago.Samples.Blazor`,
-`Indago.Samples.Maui` (FR-011–FR-017, SC-004/005/006).
+**Applies to**: `Specular.Samples.Console`, `Specular.Samples.Web`, `Specular.Samples.Blazor`,
+`Specular.Samples.Maui` (FR-011–FR-017, SC-004/005/006).
 **Excludes**: the negative-fixture host (see `negative-fixture-step.contract.md`).
 
 This is a behavioral contract for the named ModularPipelines step(s) that AOT-publish each
@@ -24,7 +24,7 @@ not the exact MSBuild property strings (finalized via research D4).
    the build output (FR-014/017, SC-006).
 2. The step MUST publish using the host-appropriate AOT/trim mode (FR-011).
 3. The publish MUST fail the step (and the build) if it **fails** OR emits **any** trim/AOT
-   warning of any kind — Indago-attributable or third-party (FR-012/015, SC-004).
+   warning of any kind — Specular-attributable or third-party (FR-012/015, SC-004).
 4. When the required toolchain/workload is **absent**, the step MUST report `skip` with a clear,
    actionable reason and MUST NOT report `pass` (FR-016, SC-005). Use
    `ModuleConfiguration.WithSkipWhen(() => SkipDecision.Of(<missing>, "<reason>"))`.
@@ -60,7 +60,7 @@ not the exact MSBuild property strings (finalized via research D4).
 
 **Native AOT (Console / Web).** The enforcement properties live **in the host `.csproj`** (scoped to
 the host), NOT passed as global `-p:` on the command line. Passing `PublishAot`/`TreatWarningsAsErrors`
-globally propagates into the `netstandard2.0` dependency closure (`src/Indago`, analyzers) and fails
+globally propagates into the `netstandard2.0` dependency closure (`src/Specular`, analyzers) and fails
 with `NETSDK1207` and unrelated warning-as-error promotions — so the pipeline module publishes the
 host project with **no propagating `-p:` switches**:
 
@@ -78,8 +78,8 @@ produced `error IL2026` and the publish exited non-zero — confirming the prope
 publish on a trim/AOT warning. Removing the injection restores a clean trim/AOT analysis (zero IL
 warnings). Each host repeats this red proof (Console T020, Web T035, …).
 
-**Indago core prerequisite (discovered by T009).** The `IIndagoProvider.EntryAssembly` path resolved
-the generated provider via `Activator.CreateInstance(Type)` in `IndagoHashAttribute`, which emitted
+**Specular core prerequisite (discovered by T009).** The `ISpecularProvider.EntryAssembly` path resolved
+the generated provider via `Activator.CreateInstance(Type)` in `SpecularHashAttribute`, which emitted
 `IL2077` under Native AOT. Fixed by annotating the `Type` with
 `[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]`
 (Constitution Principle I). Without that fix every zero-warning AOT publish that touches

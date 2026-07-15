@@ -1,6 +1,6 @@
 ---
 title: Cross-Assembly Caching
-description: How Indago uses IndagoProvider.ctpjson and GeneratedHash to avoid redundant symbol resolution across project references.
+description: How Specular uses SpecularProvider.ctpjson and GeneratedHash to avoid redundant symbol resolution across project references.
 ---
 
 # Cross-Assembly Caching
@@ -9,9 +9,9 @@ description: How Indago uses IndagoProvider.ctpjson and GeneratedHash to avoid r
 
 In a multi-project solution, the same upstream library types may be referenced by many downstream assemblies. Without caching, every downstream assembly that calls `GetTypes` or `Scan` would force the generator to re-walk the same upstream `ITypeSymbol` graph independently during each project's build. In large solutions this is redundant work that compounds with every additional consuming project.
 
-## The Solution: `IndagoProvider.ctpjson`
+## The Solution: `SpecularProvider.ctpjson`
 
-The constant `Constants.IndagoProviderCacheFileName` (defined in `CompiledTypeProviderGenerator.cs`) equals `"IndagoProvider.ctpjson"`. After the generator resolves all scan results for an assembly, it serialises the full resolution into this JSON file and writes it to the project's intermediate output path under an `obj/ctp/` subdirectory.
+The constant `Constants.SpecularProviderCacheFileName` (defined in `CompiledTypeProviderGenerator.cs`) equals `"SpecularProvider.ctpjson"`. After the generator resolves all scan results for an assembly, it serialises the full resolution into this JSON file and writes it to the project's intermediate output path under an `obj/ctp/` subdirectory.
 
 The JSON is structured as `GeneratedAssemblyProviderData`, which holds:
 
@@ -23,12 +23,12 @@ The serialisation uses `JsonSourceGenerationContext` (source-generated JSON) so 
 
 ## How the Cache Is Consumed
 
-When a downstream assembly builds, MSBuild passes the upstream project's `IndagoProvider.ctpjson` as an `AdditionalText` to the downstream generator run. The generator reads it early in the pipeline:
+When a downstream assembly builds, MSBuild passes the upstream project's `SpecularProvider.ctpjson` as an `AdditionalText` to the downstream generator run. The generator reads it early in the pipeline:
 
 ```csharp
 var generatedJsonProvider = context.AdditionalTextsProvider
     .Where(z => Path.GetFileName(z.Path)
-        .Equals(Constants.IndagoProviderCacheFileName, StringComparison.OrdinalIgnoreCase))
+        .Equals(Constants.SpecularProviderCacheFileName, StringComparison.OrdinalIgnoreCase))
     .Select((text, _) => JsonSerializer.Deserialize(
         text.GetText(_)?.ToString(),
         JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData))
@@ -40,20 +40,20 @@ Inside `AssemblyProviderConfiguration`, before visiting any upstream `ITypeSymbo
 
 ## Cache Invalidation via `GeneratedHash`
 
-Every assembly that has been processed by Indago carries an assembly-level attribute:
+Every assembly that has been processed by Specular carries an assembly-level attribute:
 
 ```csharp
-[assembly: IndagoHashAttribute("abc123…")]
+[assembly: SpecularHashAttribute("abc123…")]
 ```
 
-The constructor argument is the `GeneratedHash` — a hash of the generator's output computed by `AssemblyProviderBuilder`. When Indago reads a cached entry from `ctpjson`, it compares the upstream assembly's `GeneratedHash` (read from its `IndagoHashAttribute` via Roslyn's `GetAttributes()`) against the `CacheVersion` stored in the JSON:
+The constructor argument is the `GeneratedHash` — a hash of the generator's output computed by `AssemblyProviderBuilder`. When Specular reads a cached entry from `ctpjson`, it compares the upstream assembly's `GeneratedHash` (read from its `SpecularHashAttribute` via Roslyn's `GetAttributes()`) against the `CacheVersion` stored in the JSON:
 
 ```csharp
 public bool MatchesCachedVersion(this IAssemblySymbol assembly, string? cacheVersion) =>
     assembly.GetCachedVersion() is not { Length: > 0 } version || version == cacheVersion;
 ```
 
-`GetCachedVersion` first looks for the `IndagoHashAttribute` hash; if absent it falls back to `AssemblyInformationalVersionAttribute`. A mismatch means the upstream types changed after the cache was written — the downstream generator discards the cached entry and re-resolves from source.
+`GetCachedVersion` first looks for the `SpecularHashAttribute` hash; if absent it falls back to `AssemblyInformationalVersionAttribute`. A mismatch means the upstream types changed after the cache was written — the downstream generator discards the cached entry and re-resolves from source.
 
 ## Two-Project Example
 
@@ -64,26 +64,26 @@ sequenceDiagram
     participant AppB
 
     LibA->>MSBuild: Build LibA
-    MSBuild->>LibA: Run IndagoProviderGenerator
-    LibA-->>MSBuild: Emit IndagoProvider.g.cs<br/>[assembly: IndagoProvider(…, "abc123")]
-    LibA-->>MSBuild: Write obj/ctp/IndagoProvider.ctpjson
+    MSBuild->>LibA: Run SpecularProviderGenerator
+    LibA-->>MSBuild: Emit SpecularProvider.g.cs<br/>[assembly: SpecularProvider(…, "abc123")]
+    LibA-->>MSBuild: Write obj/ctp/SpecularProvider.ctpjson
 
     MSBuild->>AppB: Build AppB (passes LibA.ctpjson as AdditionalText)
     AppB->>AppB: Read ctpjson, verify GeneratedHash == "abc123" ✓
     AppB-->>MSBuild: Use cached resolution — skip symbol walk for LibA types
-    AppB-->>MSBuild: Emit IndagoProvider.g.cs for AppB
+    AppB-->>MSBuild: Emit SpecularProvider.g.cs for AppB
 
     Note over LibA,AppB: LibA type changes
 
     LibA->>MSBuild: Rebuild LibA
-    MSBuild->>LibA: Run IndagoProviderGenerator
-    LibA-->>MSBuild: Emit new hash "xyz789" in [assembly: IndagoProvider]
-    LibA-->>MSBuild: Overwrite IndagoProvider.ctpjson
+    MSBuild->>LibA: Run SpecularProviderGenerator
+    LibA-->>MSBuild: Emit new hash "xyz789" in [assembly: SpecularProvider]
+    LibA-->>MSBuild: Overwrite SpecularProvider.ctpjson
 
     MSBuild->>AppB: Rebuild AppB
     AppB->>AppB: Read ctpjson, verify GeneratedHash — "abc123" ≠ "xyz789" ✗
     AppB-->>MSBuild: Discard cache, re-resolve LibA symbols
-    AppB-->>MSBuild: Emit updated IndagoProvider.g.cs for AppB
+    AppB-->>MSBuild: Emit updated SpecularProvider.g.cs for AppB
 ```
 
 ## Failure Modes

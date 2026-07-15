@@ -1,0 +1,70 @@
+﻿{
+  FinalDiagnostics: [
+    {
+      Id: RSGD0008,
+      Title: Inaccessible type unreachable under Native AOT,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: : (0,0)-(0,0),
+      MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
+      Message: 'SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+      Category: Dependency Injection
+    },
+    {
+      Id: RSGD0008,
+      Title: Inaccessible type unreachable under Native AOT,
+      Severity: Info,
+      WarningLevel: 1,
+      Location: : (0,0)-(0,0),
+      MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
+      Message: 'SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+      Category: Dependency Injection
+    }
+  ],
+  GeneratorDiagnostics: {
+    Specular.Analyzers.SpecularProviderGenerator: [
+      {
+        Id: RSGD0008,
+        Title: Inaccessible type unreachable under Native AOT,
+        Severity: Info,
+        WarningLevel: 1,
+        Location: : (0,0)-(0,0),
+        MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
+        Message: 'SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+        Category: Dependency Injection
+      },
+      {
+        Id: RSGD0008,
+        Title: Inaccessible type unreachable under Native AOT,
+        Severity: Info,
+        WarningLevel: 1,
+        Location: : (0,0)-(0,0),
+        MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
+        Message: 'SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+        Category: Dependency Injection
+      }
+    ]
+  },
+  GlobalOptions: {
+    build_property.EnableAotAnalyzer: true,
+    build_property.IntermediateOutputPath: obj/net9.0,
+    build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2,
+    build_property.SpecularEmitProvider: true
+  },
+  References: [
+    <in-memory assembly>,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    mscorlib.dll,
+    netstandard.dll,
+    Specular.dll,
+    System.ComponentModel.dll,
+    System.Core.dll,
+    System.dll,
+    System.Private.CoreLib.dll,
+    System.Private.CoreLib.dll,
+    System.Private.CoreLib.dll,
+    System.Runtime.dll
+  ]
+}

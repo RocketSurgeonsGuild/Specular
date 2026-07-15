@@ -1,0 +1,178 @@
+### YamlMime:ManagedReference
+items:
+- uid: Specular.Abstractions.TypeKindFilter
+  commentId: T:Specular.Abstractions.TypeKindFilter
+  id: TypeKindFilter
+  parent: Specular.Abstractions
+  children:
+  - Specular.Abstractions.TypeKindFilter.Array
+  - Specular.Abstractions.TypeKindFilter.Class
+  - Specular.Abstractions.TypeKindFilter.Delegate
+  - Specular.Abstractions.TypeKindFilter.Enum
+  - Specular.Abstractions.TypeKindFilter.Interface
+  - Specular.Abstractions.TypeKindFilter.Struct
+  langs:
+  - csharp
+  - vb
+  name: TypeKindFilter
+  nameWithType: TypeKindFilter
+  fullName: Specular.Abstractions.TypeKindFilter
+  type: Enum
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Enumeration for possible kinds of type symbols.
+  example: []
+  syntax:
+    content: 'public enum TypeKindFilter : byte'
+    content.vb: Public Enum TypeKindFilter As Byte
+- uid: Specular.Abstractions.TypeKindFilter.Array
+  commentId: F:Specular.Abstractions.TypeKindFilter.Array
+  id: Array
+  parent: Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Array
+  nameWithType: TypeKindFilter.Array
+  fullName: Specular.Abstractions.TypeKindFilter.Array
+  type: Field
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Type is an array type.
+  example: []
+  syntax:
+    content: Array = 1
+    return:
+      type: Specular.Abstractions.TypeKindFilter
+- uid: Specular.Abstractions.TypeKindFilter.Class
+  commentId: F:Specular.Abstractions.TypeKindFilter.Class
+  id: Class
+  parent: Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Class
+  nameWithType: TypeKindFilter.Class
+  fullName: Specular.Abstractions.TypeKindFilter.Class
+  type: Field
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Type is a class.
+  example: []
+  syntax:
+    content: Class = 2
+    return:
+      type: Specular.Abstractions.TypeKindFilter
+- uid: Specular.Abstractions.TypeKindFilter.Delegate
+  commentId: F:Specular.Abstractions.TypeKindFilter.Delegate
+  id: Delegate
+  parent: Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Delegate
+  nameWithType: TypeKindFilter.Delegate
+  fullName: Specular.Abstractions.TypeKindFilter.Delegate
+  type: Field
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Type is a delegate.
+  example: []
+  syntax:
+    content: Delegate = 3
+    return:
+      type: Specular.Abstractions.TypeKindFilter
+- uid: Specular.Abstractions.TypeKindFilter.Enum
+  commentId: F:Specular.Abstractions.TypeKindFilter.Enum
+  id: Enum
+  parent: Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Enum
+  nameWithType: TypeKindFilter.Enum
+  fullName: Specular.Abstractions.TypeKindFilter.Enum
+  type: Field
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Type is an enumeration.
+  example: []
+  syntax:
+    content: Enum = 5
+    return:
+      type: Specular.Abstractions.TypeKindFilter
+- uid: Specular.Abstractions.TypeKindFilter.Interface
+  commentId: F:Specular.Abstractions.TypeKindFilter.Interface
+  id: Interface
+  parent: Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Interface
+  nameWithType: TypeKindFilter.Interface
+  fullName: Specular.Abstractions.TypeKindFilter.Interface
+  type: Field
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Type is an interface.
+  example: []
+  syntax:
+    content: Interface = 7
+    return:
+      type: Specular.Abstractions.TypeKindFilter
+- uid: Specular.Abstractions.TypeKindFilter.Struct
+  commentId: F:Specular.Abstractions.TypeKindFilter.Struct
+  id: Struct
+  parent: Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Struct
+  nameWithType: TypeKindFilter.Struct
+  fullName: Specular.Abstractions.TypeKindFilter.Struct
+  type: Field
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Type is a C# struct or VB Structure
+  example: []
+  syntax:
+    content: Struct = 10
+    return:
+      type: Specular.Abstractions.TypeKindFilter
+references:
+- uid: Specular.Abstractions
+  commentId: N:Specular.Abstractions
+  href: Specular.html
+  name: Specular.Abstractions
+  nameWithType: Specular.Abstractions
+  fullName: Specular.Abstractions
+  spec.csharp:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+  spec.vb:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+- uid: Specular.Abstractions.TypeKindFilter
+  commentId: T:Specular.Abstractions.TypeKindFilter
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.TypeKindFilter.html
+  name: TypeKindFilter
+  nameWithType: TypeKindFilter
+  fullName: Specular.Abstractions.TypeKindFilter

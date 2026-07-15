@@ -31,14 +31,14 @@ scroll-to-top, page-actions, icons, tags, changelogs, llms-txt)
 **Testing**: `astro build` (build-time correctness) + `starlight-links-validator` (zero broken
 internal links) + live browser verification via the integrated browser MCP against `astro dev`
 
-**Target Platform**: Static site → GitHub Pages (served at root locally, under `/Indago` in CI)
+**Target Platform**: Static site → GitHub Pages (served at root locally, under `/Specular` in CI)
 
 **Project Type**: Documentation site (single Astro project under `docs/`)
 
 **Performance Goals**: N/A for this feature (no perf regression; build remains green). Existing site
 performance criteria from spec 002 are unchanged.
 
-**Constraints**: All fixes MUST work under both base paths (root + `/Indago`); MUST NOT hard-code
+**Constraints**: All fixes MUST work under both base paths (root + `/Specular`); MUST NOT hard-code
 absolute paths that break under a base prefix; API section work MUST coexist with the auto-generated
 API tree; the GitHub-token-dependent changelog plugin may not be fully exercisable in local dev and
 its production behavior is documented rather than blocking.
@@ -54,7 +54,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 | ------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **I. AOT & Trim Safety**                          | No                | No generator/runtime/public-API code changes. Docs-only. ✅ N/A                                                                                                                                                |
 | **II. Test-First with Snapshot Verification**     | No                | No generator behavior change; no `.verified.cs` snapshots affected. Verification here is browser + `astro build` + link validator. ✅ N/A                                                                      |
-| **III. Minimal & Stable Public API Surface**      | No                | No `src/Indago` API change; no RS0017 tracking update required. ✅ N/A                                                                                                                                         |
+| **III. Minimal & Stable Public API Surface**      | No                | No `src/Specular` API change; no RS0017 tracking update required. ✅ N/A                                                                                                                                         |
 | **IV. Code Quality & Strict Analysis**            | Partial           | Docs config/content MUST pass prettier. No .NET analysis impact. ✅ Met by prettier gate                                                                                                                       |
 | **V. Documentation as a First-Class Deliverable** | **Yes (primary)** | This feature directly serves Principle V: the docs site MUST render without errors before merge. Adding landing pages, verifying plugins, and a clean build is exactly the bar this principle sets. ✅ Aligned |
 
@@ -91,8 +91,8 @@ docs/
     │   └── index.md                 # EXISTING landing page (template/reference)
     ├── reference/
     │   ├── index.md                 # NEW — section landing page
-    │   ├── exclude-from-indago.md
-    │   ├── iindago-provider.md
+    │   ├── exclude-from-specular.md
+    │   ├── ispecular-provider.md
     │   ├── service-registration.md
     │   └── type-filters.md
     ├── architecture/
@@ -101,7 +101,7 @@ docs/
     │   └── cross-assembly-caching.md
     └── api/
         ├── index.md                 # NEW — section landing page (coexists with generated tree)
-        └── Indago*/...              # Auto-generated API reference (untouched by hand)
+        └── Specular*/...              # Auto-generated API reference (untouched by hand)
 
 .github/workflows/deploy-docs.yml    # Deployment (verify end-to-end — T035)
 .vscode/extensions.json              # Recommended editor extensions (verify — T051)

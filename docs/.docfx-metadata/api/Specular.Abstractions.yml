@@ -1,0 +1,124 @@
+### YamlMime:ManagedReference
+items:
+- uid: Specular.Abstractions
+  commentId: N:Specular.Abstractions
+  id: Specular.Abstractions
+  children:
+  - Specular.Abstractions.ExcludeFromSpecularAttribute
+  - Specular.Abstractions.IReflectionAssemblySelector
+  - Specular.Abstractions.IReflectionTypeSelector
+  - Specular.Abstractions.IServiceDescriptorAssemblySelector
+  - Specular.Abstractions.IServiceDescriptorTypeSelector
+  - Specular.Abstractions.IServiceLifetimeSelector
+  - Specular.Abstractions.IServiceTypeSelector
+  - Specular.Abstractions.ITypeFilter
+  - Specular.Abstractions.SpecularHashAttribute
+  - Specular.Abstractions.TypeInfoFilter
+  - Specular.Abstractions.TypeKindFilter
+  langs:
+  - csharp
+  - vb
+  name: Specular.Abstractions
+  nameWithType: Specular.Abstractions
+  fullName: Specular.Abstractions
+  type: Namespace
+  assemblies:
+  - Specular
+references:
+- uid: Specular.Abstractions.ExcludeFromSpecularAttribute
+  commentId: T:Specular.Abstractions.ExcludeFromSpecularAttribute
+  href: Specular.Abstractions.ExcludeFromSpecularAttribute.html
+  name: ExcludeFromSpecularAttribute
+  nameWithType: ExcludeFromSpecularAttribute
+  fullName: Specular.Abstractions.ExcludeFromSpecularAttribute
+- uid: Specular.Abstractions.IReflectionAssemblySelector
+  commentId: T:Specular.Abstractions.IReflectionAssemblySelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IReflectionAssemblySelector.html
+  name: IReflectionAssemblySelector
+  nameWithType: IReflectionAssemblySelector
+  fullName: Specular.Abstractions.IReflectionAssemblySelector
+- uid: Specular.Abstractions.IReflectionTypeSelector
+  commentId: T:Specular.Abstractions.IReflectionTypeSelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IReflectionTypeSelector.html
+  name: IReflectionTypeSelector
+  nameWithType: IReflectionTypeSelector
+  fullName: Specular.Abstractions.IReflectionTypeSelector
+- uid: Specular.Abstractions.IServiceDescriptorAssemblySelector
+  commentId: T:Specular.Abstractions.IServiceDescriptorAssemblySelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IServiceDescriptorAssemblySelector.html
+  name: IServiceDescriptorAssemblySelector
+  nameWithType: IServiceDescriptorAssemblySelector
+  fullName: Specular.Abstractions.IServiceDescriptorAssemblySelector
+- uid: Specular.Abstractions.IServiceDescriptorTypeSelector
+  commentId: T:Specular.Abstractions.IServiceDescriptorTypeSelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IServiceDescriptorTypeSelector.html
+  name: IServiceDescriptorTypeSelector
+  nameWithType: IServiceDescriptorTypeSelector
+  fullName: Specular.Abstractions.IServiceDescriptorTypeSelector
+- uid: Specular.Abstractions.IServiceLifetimeSelector
+  commentId: T:Specular.Abstractions.IServiceLifetimeSelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IServiceLifetimeSelector.html
+  name: IServiceLifetimeSelector
+  nameWithType: IServiceLifetimeSelector
+  fullName: Specular.Abstractions.IServiceLifetimeSelector
+- uid: Specular.Abstractions.IServiceTypeSelector
+  commentId: T:Specular.Abstractions.IServiceTypeSelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IServiceTypeSelector.html
+  name: IServiceTypeSelector
+  nameWithType: IServiceTypeSelector
+  fullName: Specular.Abstractions.IServiceTypeSelector
+- uid: Specular.Abstractions.ITypeFilter
+  commentId: T:Specular.Abstractions.ITypeFilter
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.ITypeFilter.html
+  name: ITypeFilter
+  nameWithType: ITypeFilter
+  fullName: Specular.Abstractions.ITypeFilter
+- uid: Specular.Abstractions.SpecularHashAttribute
+  commentId: T:Specular.Abstractions.SpecularHashAttribute
+  href: Specular.Abstractions.SpecularHashAttribute.html
+  name: SpecularHashAttribute
+  nameWithType: SpecularHashAttribute
+  fullName: Specular.Abstractions.SpecularHashAttribute
+- uid: Specular.Abstractions.TypeInfoFilter
+  commentId: T:Specular.Abstractions.TypeInfoFilter
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.TypeInfoFilter.html
+  name: TypeInfoFilter
+  nameWithType: TypeInfoFilter
+  fullName: Specular.Abstractions.TypeInfoFilter
+- uid: Specular.Abstractions.TypeKindFilter
+  commentId: T:Specular.Abstractions.TypeKindFilter
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.TypeKindFilter.html
+  name: TypeKindFilter
+  nameWithType: TypeKindFilter
+  fullName: Specular.Abstractions.TypeKindFilter
+- uid: Specular.Abstractions
+  commentId: N:Specular.Abstractions
+  href: Specular.html
+  name: Specular.Abstractions
+  nameWithType: Specular.Abstractions
+  fullName: Specular.Abstractions
+  spec.csharp:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+  spec.vb:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html

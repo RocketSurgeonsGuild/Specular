@@ -1,11 +1,11 @@
 ---
 title: How It Works
-description: A conceptual overview of the Roslyn source generator pipeline that powers Indago's compile-time assembly scanning.
+description: A conceptual overview of the Roslyn source generator pipeline that powers Specular's compile-time assembly scanning.
 ---
 
 # How It Works
 
-Indago replaces runtime reflection-based assembly scanning with a **Roslyn `IIncrementalGenerator`** that runs during your build. By the time your application starts, all type and assembly scan results are pre-computed and baked into generated C# — there is nothing to resolve at runtime.
+Specular replaces runtime reflection-based assembly scanning with a **Roslyn `IIncrementalGenerator`** that runs during your build. By the time your application starts, all type and assembly scan results are pre-computed and baked into generated C# — there is nothing to resolve at runtime.
 
 ## Overview
 
@@ -15,11 +15,11 @@ When you write code like this:
 provider.GetTypes(s => s.FromAssemblyOf<MyService>().AddClasses().AsMatchingInterface())
 ```
 
-Indago's generator finds that call during compilation, evaluates the selector expression against the Roslyn symbol graph, and emits a concrete implementation that returns the pre-computed results directly. No reflection, no startup cost, and full AOT/trimming compatibility.
+Specular's generator finds that call during compilation, evaluates the selector expression against the Roslyn symbol graph, and emits a concrete implementation that returns the pre-computed results directly. No reflection, no startup cost, and full AOT/trimming compatibility.
 
 ## The Three Syntax Providers
 
-`IndagoProviderGenerator` (in `CompiledTypeProviderGenerator.cs`) registers three distinct syntax providers during `Initialize`, one for each method on `IIndagoProvider`:
+`SpecularProviderGenerator` (in `CompiledTypeProviderGenerator.cs`) registers three distinct syntax providers during `Initialize`, one for each method on `ISpecularProvider`:
 
 | Syntax Provider               | Handles                                |
 | ----------------------------- | -------------------------------------- |
@@ -31,7 +31,7 @@ Each provider scans the syntax tree for its corresponding method invocation, ext
 
 ## Call Site Detection
 
-Each `IIndagoProvider` method carries hidden compiler-injected parameters:
+Each `ISpecularProvider` method carries hidden compiler-injected parameters:
 
 ```csharp
 IEnumerable<Type> GetTypes(
@@ -56,16 +56,16 @@ The net result is a precise, build-time enumeration of every type that would hav
 
 ## Code Emission
 
-After resolving all call sites, the generator builds a single `IndagoProvider.g.cs` file containing:
+After resolving all call sites, the generator builds a single `SpecularProvider.g.cs` file containing:
 
-1. A concrete class that implements `IIndagoProvider`, with each method returning a hard-coded collection for its call-site hash.
-2. An `[assembly: IndagoHashAttribute("…hash…")]` attribute that embeds a `GeneratedHash` for cross-assembly cache validation.
+1. A concrete class that implements `ISpecularProvider`, with each method returning a hard-coded collection for its call-site hash.
+2. An `[assembly: SpecularHashAttribute("…hash…")]` attribute that embeds a `GeneratedHash` for cross-assembly cache validation.
 
-The generated provider is exposed through the static `IndagoProvider.Instance` property — you call into it directly, with zero reflection scanning.
+The generated provider is exposed through the static `SpecularProvider.Instance` property — you call into it directly, with zero reflection scanning.
 
 ## Incremental Rebuild
 
-Because Indago uses Roslyn's `IIncrementalGenerator` API, the pipeline is fully incremental. Call sites whose selector expression text has not changed produce no re-computation. Only modified selectors, or changes to the types a selector matches, cause re-emission. In large solutions this means the generator adds negligible time to incremental builds.
+Because Specular uses Roslyn's `IIncrementalGenerator` API, the pipeline is fully incremental. Call sites whose selector expression text has not changed produce no re-computation. Only modified selectors, or changes to the types a selector matches, cause re-emission. In large solutions this means the generator adds negligible time to incremental builds.
 
 ## Pipeline Diagram
 
@@ -79,7 +79,7 @@ flowchart TD
     D & E & F --> G[Hash selector expression at call site]
     G --> H[Symbol visitor walks ITypeSymbol graph]
     H --> I[Apply compiled filters]
-    I --> J[Emit IndagoProvider.g.cs]
+    I --> J[Emit SpecularProvider.g.cs]
     J --> K[Zero reflection at runtime]
 ```
 

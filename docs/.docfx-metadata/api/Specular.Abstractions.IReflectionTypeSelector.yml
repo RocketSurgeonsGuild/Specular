@@ -1,0 +1,649 @@
+### YamlMime:ManagedReference
+items:
+- uid: Specular.Abstractions.IReflectionTypeSelector
+  commentId: T:Specular.Abstractions.IReflectionTypeSelector
+  id: IReflectionTypeSelector
+  parent: Specular.Abstractions
+  children:
+  - Specular.Abstractions.IReflectionTypeSelector.GetTypes
+  - Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Action{Specular.Abstractions.ITypeFilter})
+  - Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Boolean)
+  - Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Boolean,System.Action{Specular.Abstractions.ITypeFilter})
+  langs:
+  - csharp
+  - vb
+  name: IReflectionTypeSelector
+  nameWithType: IReflectionTypeSelector
+  fullName: Specular.Abstractions.IReflectionTypeSelector
+  type: Interface
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: The Compiled Implementation Type Selector
+  example: []
+  syntax:
+    content: 'public interface IReflectionTypeSelector : IReflectionAssemblySelector'
+    content.vb: Public Interface IReflectionTypeSelector Inherits IReflectionAssemblySelector
+  inheritedMembers:
+  - Specular.Abstractions.IReflectionAssemblySelector.EntryAssembly
+  - Specular.Abstractions.IReflectionAssemblySelector.FromAssemblies
+  - Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf``1
+  - Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(System.Type)
+  - Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf``1
+  - Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(System.Type)
+  - Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf``1
+  - Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(System.Type)
+  - Specular.Abstractions.IReflectionAssemblySelector.IncludeSystemAssemblies
+- uid: Specular.Abstractions.IReflectionTypeSelector.GetTypes
+  commentId: M:Specular.Abstractions.IReflectionTypeSelector.GetTypes
+  id: GetTypes
+  parent: Specular.Abstractions.IReflectionTypeSelector
+  langs:
+  - csharp
+  - vb
+  name: GetTypes()
+  nameWithType: IReflectionTypeSelector.GetTypes()
+  fullName: Specular.Abstractions.IReflectionTypeSelector.GetTypes()
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Lists all of the classes in a given assembly
+  example: []
+  syntax:
+    content: IEnumerable<Type> GetTypes()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Function GetTypes() As IEnumerable(Of Type)
+  overload: Specular.Abstractions.IReflectionTypeSelector.GetTypes*
+- uid: Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Boolean)
+  commentId: M:Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Boolean)
+  id: GetTypes(System.Boolean)
+  parent: Specular.Abstractions.IReflectionTypeSelector
+  langs:
+  - csharp
+  - vb
+  name: GetTypes(bool)
+  nameWithType: IReflectionTypeSelector.GetTypes(bool)
+  fullName: Specular.Abstractions.IReflectionTypeSelector.GetTypes(bool)
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: Lists all of the public classes in a given assembly
+  example: []
+  syntax:
+    content: IEnumerable<Type> GetTypes(bool publicOnly)
+    parameters:
+    - id: publicOnly
+      type: System.Boolean
+      description: Specifies whether too add public types only.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Function GetTypes(publicOnly As Boolean) As IEnumerable(Of Type)
+  overload: Specular.Abstractions.IReflectionTypeSelector.GetTypes*
+  nameWithType.vb: IReflectionTypeSelector.GetTypes(Boolean)
+  fullName.vb: Specular.Abstractions.IReflectionTypeSelector.GetTypes(Boolean)
+  name.vb: GetTypes(Boolean)
+- uid: Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Action{Specular.Abstractions.ITypeFilter})
+  commentId: M:Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Action{Specular.Abstractions.ITypeFilter})
+  id: GetTypes(System.Action{Specular.Abstractions.ITypeFilter})
+  parent: Specular.Abstractions.IReflectionTypeSelector
+  langs:
+  - csharp
+  - vb
+  name: GetTypes(Action<ITypeFilter>)
+  nameWithType: IReflectionTypeSelector.GetTypes(Action<ITypeFilter>)
+  fullName: Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Action<Specular.Abstractions.ITypeFilter>)
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: >-
+    Adds all public, non-abstract classes from the selected assemblies that
+
+    matches the requirements specified in the <code class="paramref">action</code>
+
+    to the <xref href="Microsoft.Extensions.DependencyInjection.IServiceCollection" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: IEnumerable<Type> GetTypes(Action<ITypeFilter> action)
+    parameters:
+    - id: action
+      type: System.Action{Specular.Abstractions.ITypeFilter}
+      description: The filtering action.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Function GetTypes(action As Action(Of ITypeFilter)) As IEnumerable(Of Type)
+  overload: Specular.Abstractions.IReflectionTypeSelector.GetTypes*
+  nameWithType.vb: IReflectionTypeSelector.GetTypes(Action(Of ITypeFilter))
+  fullName.vb: Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Action(Of Specular.Abstractions.ITypeFilter))
+  name.vb: GetTypes(Action(Of ITypeFilter))
+- uid: Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Boolean,System.Action{Specular.Abstractions.ITypeFilter})
+  commentId: M:Specular.Abstractions.IReflectionTypeSelector.GetTypes(System.Boolean,System.Action{Specular.Abstractions.ITypeFilter})
+  id: GetTypes(System.Boolean,System.Action{Specular.Abstractions.ITypeFilter})
+  parent: Specular.Abstractions.IReflectionTypeSelector
+  langs:
+  - csharp
+  - vb
+  name: GetTypes(bool, Action<ITypeFilter>)
+  nameWithType: IReflectionTypeSelector.GetTypes(bool, Action<ITypeFilter>)
+  fullName: Specular.Abstractions.IReflectionTypeSelector.GetTypes(bool, System.Action<Specular.Abstractions.ITypeFilter>)
+  type: Method
+  assemblies:
+  - Specular
+  namespace: Specular.Abstractions
+  summary: >-
+    Adds all non-abstract classes from the selected assemblies that
+
+    matches the requirements specified in the <code class="paramref">action</code>
+
+    to the <xref href="Microsoft.Extensions.DependencyInjection.IServiceCollection" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: IEnumerable<Type> GetTypes(bool publicOnly, Action<ITypeFilter> action)
+    parameters:
+    - id: publicOnly
+      type: System.Boolean
+      description: Specifies whether too add public types only.
+    - id: action
+      type: System.Action{Specular.Abstractions.ITypeFilter}
+      description: The filtering action.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Function GetTypes(publicOnly As Boolean, action As Action(Of ITypeFilter)) As IEnumerable(Of Type)
+  overload: Specular.Abstractions.IReflectionTypeSelector.GetTypes*
+  nameWithType.vb: IReflectionTypeSelector.GetTypes(Boolean, Action(Of ITypeFilter))
+  fullName.vb: Specular.Abstractions.IReflectionTypeSelector.GetTypes(Boolean, System.Action(Of Specular.Abstractions.ITypeFilter))
+  name.vb: GetTypes(Boolean, Action(Of ITypeFilter))
+references:
+- uid: Specular.Abstractions
+  commentId: N:Specular.Abstractions
+  href: Specular.html
+  name: Specular.Abstractions
+  nameWithType: Specular.Abstractions
+  fullName: Specular.Abstractions
+  spec.csharp:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+  spec.vb:
+  - uid: Specular
+    name: Specular
+    href: Specular.html
+  - name: .
+  - uid: Specular.Abstractions
+    name: Abstractions
+    href: Specular.Abstractions.html
+- uid: Specular.Abstractions.IReflectionAssemblySelector.EntryAssembly
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.EntryAssembly
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_EntryAssembly
+  name: EntryAssembly()
+  nameWithType: IReflectionAssemblySelector.EntryAssembly()
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.EntryAssembly()
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.EntryAssembly
+    name: EntryAssembly
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_EntryAssembly
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.EntryAssembly
+    name: EntryAssembly
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_EntryAssembly
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblies
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.FromAssemblies
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblies
+  name: FromAssemblies()
+  nameWithType: IReflectionAssemblySelector.FromAssemblies()
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblies()
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblies
+    name: FromAssemblies
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblies
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblies
+    name: FromAssemblies
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblies
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf``1
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf``1
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_DependenciesFromAssemblyOf__1
+  name: DependenciesFromAssemblyOf<T>()
+  nameWithType: IReflectionAssemblySelector.DependenciesFromAssemblyOf<T>()
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf<T>()
+  nameWithType.vb: IReflectionAssemblySelector.DependenciesFromAssemblyOf(Of T)()
+  fullName.vb: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(Of T)()
+  name.vb: DependenciesFromAssemblyOf(Of T)()
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf``1
+    name: DependenciesFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_DependenciesFromAssemblyOf__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf``1
+    name: DependenciesFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_DependenciesFromAssemblyOf__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(System.Type)
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(System.Type)
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  isExternal: true
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_DependenciesFromAssemblyOf_System_Type_
+  name: DependenciesFromAssemblyOf(Type)
+  nameWithType: IReflectionAssemblySelector.DependenciesFromAssemblyOf(Type)
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(System.Type)
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(System.Type)
+    name: DependenciesFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_DependenciesFromAssemblyOf_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.DependenciesFromAssemblyOf(System.Type)
+    name: DependenciesFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_DependenciesFromAssemblyOf_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf``1
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf``1
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblyOf__1
+  name: FromAssemblyOf<T>()
+  nameWithType: IReflectionAssemblySelector.FromAssemblyOf<T>()
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf<T>()
+  nameWithType.vb: IReflectionAssemblySelector.FromAssemblyOf(Of T)()
+  fullName.vb: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(Of T)()
+  name.vb: FromAssemblyOf(Of T)()
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf``1
+    name: FromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblyOf__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf``1
+    name: FromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblyOf__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(System.Type)
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(System.Type)
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  isExternal: true
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblyOf_System_Type_
+  name: FromAssemblyOf(Type)
+  nameWithType: IReflectionAssemblySelector.FromAssemblyOf(Type)
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(System.Type)
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(System.Type)
+    name: FromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblyOf_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.FromAssemblyOf(System.Type)
+    name: FromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_FromAssemblyOf_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf``1
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf``1
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_NotFromAssemblyOf__1
+  name: NotFromAssemblyOf<T>()
+  nameWithType: IReflectionAssemblySelector.NotFromAssemblyOf<T>()
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf<T>()
+  nameWithType.vb: IReflectionAssemblySelector.NotFromAssemblyOf(Of T)()
+  fullName.vb: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(Of T)()
+  name.vb: NotFromAssemblyOf(Of T)()
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf``1
+    name: NotFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_NotFromAssemblyOf__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf``1
+    name: NotFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_NotFromAssemblyOf__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(System.Type)
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(System.Type)
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  isExternal: true
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_NotFromAssemblyOf_System_Type_
+  name: NotFromAssemblyOf(Type)
+  nameWithType: IReflectionAssemblySelector.NotFromAssemblyOf(Type)
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(System.Type)
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(System.Type)
+    name: NotFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_NotFromAssemblyOf_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.NotFromAssemblyOf(System.Type)
+    name: NotFromAssemblyOf
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_NotFromAssemblyOf_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector.IncludeSystemAssemblies
+  commentId: M:Specular.Abstractions.IReflectionAssemblySelector.IncludeSystemAssemblies
+  parent: Specular.Abstractions.IReflectionAssemblySelector
+  href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_IncludeSystemAssemblies
+  name: IncludeSystemAssemblies()
+  nameWithType: IReflectionAssemblySelector.IncludeSystemAssemblies()
+  fullName: Specular.Abstractions.IReflectionAssemblySelector.IncludeSystemAssemblies()
+  spec.csharp:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.IncludeSystemAssemblies
+    name: IncludeSystemAssemblies
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_IncludeSystemAssemblies
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Specular.Abstractions.IReflectionAssemblySelector.IncludeSystemAssemblies
+    name: IncludeSystemAssemblies
+    href: Specular.Abstractions.IReflectionAssemblySelector.html#Specular_Abstractions_IReflectionAssemblySelector_IncludeSystemAssemblies
+  - name: (
+  - name: )
+- uid: Specular.Abstractions.IReflectionAssemblySelector
+  commentId: T:Specular.Abstractions.IReflectionAssemblySelector
+  parent: Specular.Abstractions
+  href: Specular.Abstractions.IReflectionAssemblySelector.html
+  name: IReflectionAssemblySelector
+  nameWithType: IReflectionAssemblySelector
+  fullName: Specular.Abstractions.IReflectionAssemblySelector
+- uid: Specular.Abstractions.IReflectionTypeSelector.GetTypes*
+  commentId: Overload:Specular.Abstractions.IReflectionTypeSelector.GetTypes
+  href: Specular.Abstractions.IReflectionTypeSelector.html#Specular_Abstractions_IReflectionTypeSelector_GetTypes
+  name: GetTypes
+  nameWithType: IReflectionTypeSelector.GetTypes
+  fullName: Specular.Abstractions.IReflectionTypeSelector.GetTypes
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+  commentId: T:Microsoft.Extensions.DependencyInjection.IServiceCollection
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  name: IServiceCollection
+  nameWithType: IServiceCollection
+  fullName: Microsoft.Extensions.DependencyInjection.IServiceCollection
+- uid: System.Action{Specular.Abstractions.ITypeFilter}
+  commentId: T:System.Action{Specular.Abstractions.ITypeFilter}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<ITypeFilter>
+  nameWithType: Action<ITypeFilter>
+  fullName: System.Action<Specular.Abstractions.ITypeFilter>
+  nameWithType.vb: Action(Of ITypeFilter)
+  fullName.vb: System.Action(Of Specular.Abstractions.ITypeFilter)
+  name.vb: Action(Of ITypeFilter)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    href: Specular.Abstractions.ITypeFilter.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    href: Specular.Abstractions.ITypeFilter.html
+  - name: )
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

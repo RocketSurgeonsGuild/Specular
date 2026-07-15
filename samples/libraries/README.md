@@ -1,6 +1,6 @@
 # Sample Libraries — Discovery Coverage Matrix
 
-Three reusable libraries demonstrate the registration styles and lifetimes Indago discovers at
+Three reusable libraries demonstrate the registration styles and lifetimes Specular discovers at
 compile time. Hosts consume them **unmodified**; the expected discovered set below is what every
 host asserts in-process (US2/US4/US5/US6). This file is the inspectable inventory required by
 FR-019 / SC-001 / SC-007 — you can verify coverage without running anything.
@@ -14,7 +14,7 @@ FR-019 / SC-001 / SC-007 — you can verify coverage without running anything.
 | Distinct lifetimes (≥2)            | Singleton (Catalog), Transient (Notifications), Scoped (Diagnostics) |
 | Opt-out type (≥1, proven excluded) | Diagnostics `ExperimentalProbe`                                      |
 
-## `Indago.Samples.Catalog` — interface-matching, Singleton
+## `Specular.Samples.Catalog` — interface-matching, Singleton
 
 Host selector:
 `FromAssemblyOf<IProductService>().AddClasses().AsMatchingInterface().WithSingletonLifetime()`
@@ -26,7 +26,7 @@ Host selector:
 | `IInventoryService` | `InventoryService` | Singleton |
 | `IPricingService`   | `PricingService`   | Singleton |
 
-## `Indago.Samples.Notifications` — attribute-based, Transient (AsSelf)
+## `Specular.Samples.Notifications` — attribute-based, Transient (AsSelf)
 
 Each service carries `[ServiceRegistration(ServiceLifetime.Transient)]`. Host selector filters on the
 attribute and registers the concrete type as itself:
@@ -39,7 +39,7 @@ attribute and registers the concrete type as itself:
 | `PushNotifier`           | Transient | `[ServiceRegistration(Transient)]` |
 | `NotificationDispatcher` | Transient | `[ServiceRegistration(Transient)]` |
 
-## `Indago.Samples.Diagnostics` — interface-matching + opt-out, Scoped
+## `Specular.Samples.Diagnostics` — interface-matching + opt-out, Scoped
 
 Interface-matching selector filters out the opt-out marker:
 `FromAssemblyOf<IHealthCheck>().AddClasses(f => f.WithoutAttribute<ExcludeFromSampleScanAttribute>()).AsMatchingInterface().WithScopedLifetime()`
@@ -50,7 +50,7 @@ Interface-matching selector filters out the opt-out marker:
 | `IMetricsCollector`  | `MetricsCollector`  | Scoped         | interface-matching                  |
 | `IExperimentalProbe` | `ExperimentalProbe` | — **EXCLUDED** | opt-out (`[ExcludeFromSampleScan]`) |
 
-> **Opt-out note**: Indago's built-in `[ExcludeFromIndago]` targets **assemblies**, not types.
+> **Opt-out note**: Specular's built-in `[ExcludeFromSpecular]` targets **assemblies**, not types.
 > Per-type opt-out is expressed at the host call site by filtering a marker attribute. The host
 > MUST NOT register `IExperimentalProbe` / `ExperimentalProbe`.
 

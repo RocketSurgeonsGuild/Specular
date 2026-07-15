@@ -1,0 +1,80 @@
+### YamlMime:TableOfContent
+items:
+- uid: Specular
+  name: Specular
+  type: Namespace
+  items:
+  - uid: Specular.ISpecularProvider
+    name: ISpecularProvider
+    type: Interface
+  - uid: Specular.RegistrationLifetimeAttribute
+    name: RegistrationLifetimeAttribute
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute
+    name: ServiceRegistrationAttribute
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`1
+    name: ServiceRegistrationAttribute<TService>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`2
+    name: ServiceRegistrationAttribute<TService1, TService2>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`3
+    name: ServiceRegistrationAttribute<TService1, TService2, TService3>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`4
+    name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`5
+    name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`6
+    name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`7
+    name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7>
+    type: Class
+  - uid: Specular.ServiceRegistrationAttribute`8
+    name: ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8>
+    type: Class
+  - uid: Specular.SpecularProviderServiceCollectionExtensions
+    name: SpecularProviderServiceCollectionExtensions
+    type: Class
+- uid: Specular.Abstractions
+  name: Specular.Abstractions
+  type: Namespace
+  items:
+  - uid: Specular.Abstractions.ExcludeFromSpecularAttribute
+    name: ExcludeFromSpecularAttribute
+    type: Class
+  - uid: Specular.Abstractions.IReflectionAssemblySelector
+    name: IReflectionAssemblySelector
+    type: Interface
+  - uid: Specular.Abstractions.IReflectionTypeSelector
+    name: IReflectionTypeSelector
+    type: Interface
+  - uid: Specular.Abstractions.IServiceDescriptorAssemblySelector
+    name: IServiceDescriptorAssemblySelector
+    type: Interface
+  - uid: Specular.Abstractions.IServiceDescriptorTypeSelector
+    name: IServiceDescriptorTypeSelector
+    type: Interface
+  - uid: Specular.Abstractions.IServiceLifetimeSelector
+    name: IServiceLifetimeSelector
+    type: Interface
+  - uid: Specular.Abstractions.IServiceTypeSelector
+    name: IServiceTypeSelector
+    type: Interface
+  - uid: Specular.Abstractions.ITypeFilter
+    name: ITypeFilter
+    type: Interface
+  - uid: Specular.Abstractions.SpecularHashAttribute
+    name: SpecularHashAttribute
+    type: Class
+  - uid: Specular.Abstractions.TypeInfoFilter
+    name: TypeInfoFilter
+    type: Enum
+  - uid: Specular.Abstractions.TypeKindFilter
+    name: TypeKindFilter
+    type: Enum
+memberLayout: SamePage

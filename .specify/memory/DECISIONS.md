@@ -18,11 +18,11 @@ wrong breaks the whole solution build or silently weakens the guardrail.
 - The zero-warning AOT property set (`PublishAot=true`, `TrimmerSingleWarn=false`,
   `TreatWarningsAsErrors=true`, `InvariantGlobalization=true`) lives **in each host `.csproj`**, never
   passed as global `-p:` on the command line. Global `-p:` propagates into the `netstandard2.0`
-  dependency closure (`src/Indago`, analyzers) and fails with `NETSDK1207` plus unrelated
+  dependency closure (`src/Specular`, analyzers) and fails with `NETSDK1207` plus unrelated
   warning-as-error promotions. Pinned in `contracts/aot-publish-step.contract.md`.
 - AOT-publish pipeline modules **publish for real in CI (Linux)** and report **skip-with-reason**
   locally (never `pass`): osx-arm64 Native AOT linking needs Homebrew `openssl@3`/`brotli` on the
-  linker path. Set `INDAGO_AOT_LOCAL=1` to opt in locally.
+  linker path. Set `SPECULAR_AOT_LOCAL=1` to opt in locally.
 - The negative fixture's inverted assertion runs everywhere because the trim/AOT analysis (where the
   warning is emitted) happens **before** the native link.
 

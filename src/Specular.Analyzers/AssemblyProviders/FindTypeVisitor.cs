@@ -1,0 +1,32 @@
+using System.Collections.Immutable;
+using Specular.Analyzers.Descriptors;
+using Microsoft.CodeAnalysis;
+
+namespace Specular.Analyzers.AssemblyProviders;
+
+internal sealed class FindTypeVisitor(Compilation compilation, ICompiledTypeFilter<IAssemblySymbol> assemblyFilter, string typeName) : TypeSymbolVisitorBase(
+    compilation,
+    assemblyFilter,
+    new CompiledTypeFilter(ClassFilter.PublicOnly, ImmutableList<ITypeFilterDescriptor>.Empty)
+)
+{
+    public static INamedTypeSymbol? FindType(Compilation compilation, IAssemblySymbol assemblySymbol, string typeName)
+    {
+        var visitor = new FindTypeVisitor(
+            compilation,
+            new CompiledAssemblyFilter(ImmutableList.Create<IAssemblyDescriptor>(new AssemblyDescriptor(assemblySymbol))),
+            typeName
+        );
+        visitor.Visit(assemblySymbol);
+        return visitor._type;
+    }
+
+    private INamedTypeSymbol? _type;
+
+    protected override bool FoundNamedType(INamedTypeSymbol symbol)
+    {
+        if (typeName != Helpers.GetFullMetadataName(symbol)) return false;
+        _type = symbol;
+        return true;
+    }
+}

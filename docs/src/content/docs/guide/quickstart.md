@@ -8,17 +8,17 @@ tags:
 
 # Quickstart
 
-This page assumes you have already [installed Indago](../installation/).
+This page assumes you have already [installed Specular](../installation/).
 
 ## 1. Obtain the Provider
 
-The generator emits an `IndagoProvider` class into your assembly and exposes it through the static `IndagoProvider.Instance` property:
+The generator emits an `SpecularProvider` class into your assembly and exposes it through the static `SpecularProvider.Instance` property:
 
 ```csharp
-IIndagoProvider provider = IndagoProvider.Instance;
+ISpecularProvider provider = SpecularProvider.Instance;
 ```
 
-`IndagoProvider` is `internal`, so `Instance` is available throughout your project. You can hold it in a variable or field, or call it inline — `IIndagoProvider` is a plain interface you can also inject.
+`SpecularProvider` is `internal`, so `Instance` is available throughout your project. You can hold it in a variable or field, or call it inline — `ISpecularProvider` is a plain interface you can also inject.
 
 ## 2. Scan for Types
 
@@ -45,12 +45,12 @@ The full selector fluent API is covered in the Reference section. Common startin
 
 ### Option A — `Scan()` directly into `IServiceCollection`
 
-`IIndagoProvider.Scan()` combines the scan and registration in one call:
+`ISpecularProvider.Scan()` combines the scan and registration in one call:
 
 ```csharp
 // Program.cs
 var builder = WebApplication.CreateBuilder(args);
-var provider = IndagoProvider.Instance;
+var provider = SpecularProvider.Instance;
 
 provider.Scan(builder.Services, s =>
     s.FromAssemblyOf<Program>()
@@ -59,9 +59,9 @@ provider.Scan(builder.Services, s =>
      .WithSingletonLifetime());
 ```
 
-### Option B — `AddIndagoServiceRegistrations()`
+### Option B — `AddSpecularServiceRegistrations()`
 
-`AddIndagoServiceRegistrations` is an `IServiceCollection` extension method that reads `[ServiceRegistration]` attributes applied directly to classes and registers them according to their declared lifetime (default: Singleton):
+`AddSpecularServiceRegistrations` is an `IServiceCollection` extension method that reads `[ServiceRegistration]` attributes applied directly to classes and registers them according to their declared lifetime (default: Singleton):
 
 ```csharp
 // On your service class:
@@ -69,15 +69,15 @@ provider.Scan(builder.Services, s =>
 public class MyService : IMyService { }
 
 // In Program.cs:
-builder.Services.AddIndagoServiceRegistrations(provider);
+builder.Services.AddSpecularServiceRegistrations(provider);
 ```
 
 The signature is:
 
 ```csharp
-public static IServiceCollection AddIndagoServiceRegistrations(
+public static IServiceCollection AddSpecularServiceRegistrations(
     this IServiceCollection services,
-    IIndagoProvider provider);
+    ISpecularProvider provider);
 ```
 
 ## 4. What the Generated Code Looks Like
@@ -85,8 +85,8 @@ public static IServiceCollection AddIndagoServiceRegistrations(
 Conceptually, the generator emits something like this (simplified):
 
 ```csharp
-// IndagoProvider.g.cs  — auto-generated, do not edit
-internal sealed class IndagoProvider : IIndagoProvider
+// SpecularProvider.g.cs  — auto-generated, do not edit
+internal sealed class SpecularProvider : ISpecularProvider
 {
     public IEnumerable<Type> GetTypes(
         Func<IReflectionTypeSelector, IEnumerable<Type>> selector,

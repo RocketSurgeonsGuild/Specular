@@ -1,0 +1,28 @@
+<Project>
+    <PropertyGroup>
+        <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(OutputType)' != 'Library' or '$(OutputType)' != 'library')">
+            true
+        </_SpecularApplicationDetected>
+        <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true')">
+            true
+        </_SpecularApplicationDetected>
+        <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == ''">false</_SpecularApplicationDetected>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsTestProject)' == 'true' or '$(_SpecularApplicationDetected)' == 'true'">
+        <SpecularEmitProvider Condition="'$(SpecularEmitProvider)' == ''">true</SpecularEmitProvider>
+    </PropertyGroup>
+
+    <Target Name="CleanAssemblyCache" BeforeTargets="Clean">
+        <Delete Files="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson" Condition="Exists('$(IntermediateOutputPath)\gap\SpecularProvider.ctpjson')" />
+    </Target>
+    <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
+        <Using Include="Specular" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles
+            Visible="false"
+            Include="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson"
+            Condition="Exists('$(IntermediateOutputPath)\gap\SpecularProvider.ctpjson')"
+        />
+    </ItemGroup>
+</Project>

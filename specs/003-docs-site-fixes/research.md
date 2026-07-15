@@ -19,13 +19,13 @@ template to mirror.
 404 if visited directly, and landing pages give readers a better orientation. (User decision: index
 landing pages.)
 
-## R2 — Base path correctness (root locally vs `/Indago` in CI)
+## R2 — Base path correctness (root locally vs `/Specular` in CI)
 
 **Decision**: Landing pages and any new links use Starlight's link handling; do not hard-code a
-`/Indago` prefix. Verify the built site under the CI base by building with `GITHUB_ACTIONS=1` if link
+`/Specular` prefix. Verify the built site under the CI base by building with `GITHUB_ACTIONS=1` if link
 resolution is in doubt.
 
-**Rationale**: `astro.config.mjs` sets `base = process.env.GITHUB_ACTIONS ? '/Indago' : ''`. Astro
+**Rationale**: `astro.config.mjs` sets `base = process.env.GITHUB_ACTIONS ? '/Specular' : ''`. Astro
 prepends `base` to internal links it controls (nav, sidebar, generated routes). Root-relative links
 written by hand in markdown are the known risk area; the link validator runs at build time and is the
 gate. The existing pages already use root-relative links (e.g. `/guide/quickstart`) and the validator

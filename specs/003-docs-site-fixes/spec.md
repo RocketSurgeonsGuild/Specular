@@ -118,7 +118,7 @@ site and record pass/fail with evidence; file follow-up items for any failures d
 ### Edge Cases
 
 - **Base path differences**: Locally the site is served at the root; in GitHub Actions it is served
-  under `/Indago`. Section landing links and fixes MUST work under both base paths (no hard-coded
+  under `/Specular`. Section landing links and fixes MUST work under both base paths (no hard-coded
   absolute paths that break when a base prefix is applied).
 - **Auto-generated API pages**: The API section is generated from compiled DLLs. A landing page or
   fix MUST NOT be clobbered by the generation step, and MUST coexist with the generated tree.
@@ -139,7 +139,7 @@ site and record pass/fail with evidence; file follow-up items for any failures d
   page at their section root that orients the reader and links into the section's content (mirroring
   the existing `/guide/` landing page).
 - **FR-003**: Section landing pages MUST function correctly under both the local (root) and CI
-  (`/Indago`) base paths.
+  (`/Specular`) base paths.
 - **FR-004**: The production build's link validator MUST report zero broken internal links.
 - **FR-005**: Each installed Starlight plugin MUST have a verified status of Working, Fixed, or
   Removed, with recorded evidence of the determination. The intended outcome is that all installed
