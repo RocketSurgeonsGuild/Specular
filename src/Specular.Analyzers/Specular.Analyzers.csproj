@@ -14,6 +14,7 @@
         <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.18" />
         <PackageReference Include="System.Text.Json" PrivateAssets="all" GeneratePathProperty="true" />
         <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
         <None Include="bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/roslyn5.6/cs" Visible="false" />

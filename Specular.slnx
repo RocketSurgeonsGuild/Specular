@@ -64,6 +64,7 @@
   <Folder Name="/src/Specular.Analyzers.supports/">
     <File Path=".editorconfig" />
     <Project Path="src/Specular.Analyzers.supports/Specular.Analyzers.roslyn5.0.csproj" />
+    <Project Path="src/Specular.Analyzers.supports/Specular.Analyzers.roslyn5.3.csproj" />
   </Folder>
   <Folder Name="/test/">
     <File Path=".editorconfig" />

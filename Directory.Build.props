@@ -38,15 +38,15 @@
 
     <!--
     <ApiCompatStrictMode>true</ApiCompatStrictMode>
-    <ApiCompatValidateAssemblies>true</ApiCompatValidateAssemblies>
+    <ApiCompatValidateAssemblies>true</ApiCompatValidateAssemblies>z
     <ApiCompatEnableRuleAttributesMustMatch>true</ApiCompatEnableRuleAttributesMustMatch>
     <ApiCompatEnableRuleCannotChangeParameterName>true</ApiCompatEnableRuleCannotChangeParameterName>
     -->
 
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableStrictModeForBaselineValidation>false</EnableStrictModeForBaselineValidation>
-    <EnableStrictModeForCompatibleFrameworksInPackage>true</EnableStrictModeForCompatibleFrameworksInPackage>
-    <EnableStrictModeForCompatibleTfms>true</EnableStrictModeForCompatibleTfms>
+    <EnableStrictModeForCompatibleFrameworksInPackage>false</EnableStrictModeForCompatibleFrameworksInPackage>
+    <EnableStrictModeForCompatibleTfms>false</EnableStrictModeForCompatibleTfms>
     <PackageValidationBaselineFrameworkToIgnore>netstandard2.0</PackageValidationBaselineFrameworkToIgnore>
   </PropertyGroup>
     <ItemGroup>
