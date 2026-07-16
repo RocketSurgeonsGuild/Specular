@@ -6,7 +6,7 @@ on:
             - main
         paths:
             - docs/**
-            - src/Specular/**
+            - src/**
             - .github/workflows/deploy-docs.yml
     workflow_dispatch:
 
