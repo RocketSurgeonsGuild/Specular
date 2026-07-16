@@ -1,0 +1,32 @@
+/* Specular brand theme — generated from the logo exploration (#7351f0 accent). */
+:root {
+    --sl-color-accent-low: #241d3d;
+    --sl-color-accent: #7351f0;
+    --sl-color-accent-high: #a78bfa;
+    --sl-color-white: #efeef6;
+    --sl-color-gray-1: #d9d5e8;
+    --sl-color-gray-2: #9a94b3;
+    --sl-color-gray-3: #7d7695;
+    --sl-color-gray-4: #4d4568;
+    --sl-color-gray-5: #2c2547;
+    --sl-color-gray-6: #1d1830;
+    --sl-color-black: #14101f;
+}
+:root[data-theme='light'] {
+    --sl-color-accent-low: #f1eefa;
+    --sl-color-accent: #5f3fd9;
+    --sl-color-accent-high: #362a80;
+    --sl-color-white: #241e3d;
+    --sl-color-gray-1: #2f2a4a;
+    --sl-color-gray-2: #464060;
+    --sl-color-gray-3: #6b6584;
+    --sl-color-gray-4: #9b95b3;
+    --sl-color-gray-5: #cfcae0;
+    --sl-color-gray-6: #e5e1f0;
+    --sl-color-gray-7: #f1eefa;
+    --sl-color-black: #faf9fd;
+}
+/* Slightly rounder cards to match the mark */
+.sl-markdown-content .card, .sidebar-pane details {
+    border-radius: 0.6rem;
+}

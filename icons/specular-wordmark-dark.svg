@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="66" viewBox="0 0 300 66">
+  <circle cx="30" cy="33" r="19" fill="#7351f0"></circle>
+  <path d="M 16.3 45.7 A 19 19 0 0 0 49 33 A 23.2 23.2 0 0 1 16.3 45.7 Z" fill="#000000" opacity="0.22"></path>
+  <text x="30" y="40.5" fill="#ffffff" font-size="21" font-weight="800" font-family="&#39;Sora&#39;,sans-serif" text-anchor="middle">S</text>
+  <line x1="18.4" y1="24.6" x2="23.7" y2="18.2" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" opacity="0.9"></line>
+  <text x="53" y="42" fill="#efeef6" font-size="26" font-weight="800" font-family="&#39;Sora&#39;,sans-serif" letter-spacing="-0.5" text-anchor="start">pecular</text>
+</svg>
