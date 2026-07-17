@@ -27,6 +27,12 @@ export default defineConfig({
         starlight({
             title: 'Specular',
             description: 'Compile-time assembly/type-scanning for .NET. AOT-safe, zero runtime reflection.',
+            logo: {
+                light: './src/assets/specular-wordmark-light.png',
+                dark: './src/assets/specular-wordmark-dark.png',
+                replacesTitle: true,
+            },
+            favicon: '/favicon.svg',
             social: [
                 {
                     icon: 'github',
@@ -34,7 +40,7 @@ export default defineConfig({
                     href: 'https://github.com/RocketSurgeonsGuild/Specular',
                 },
             ],
-            customCss: ['./src/styles/api.css'],
+            customCss: ['./src/styles/theme.css', './src/styles/api.css'],
             plugins: [
                 starlightAutoDrafts(),
                 starlightGithubAlerts(),

@@ -3,12 +3,12 @@
         <Company>Rocket Surgeons Guild</Company>
         <Copyright>Copyright Rocket Surgeons Guild © $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
         <Authors>David Driscoll,Rocket Surgeons Guild contributors</Authors>
-        <PackageProjectUrl>https://rocketsurgeonsguild.github.io/</PackageProjectUrl>
+    <PackageProjectUrl>https://rocketsurgeonsguild.github.io/Specular/</PackageProjectUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <PackageIcon>images/packageicon.png</PackageIcon>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>Readme.md</PackageReadmeFile>
-        <!--
+    <!--
             in package
             Title
             Description
@@ -23,8 +23,8 @@
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <ImplicitUsings>enable</ImplicitUsings>
         <AnalysisLevel>latest</AnalysisLevel>
-        <!--        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
-        <!--        <WarningsNotAsErrors></WarningsNotAsErrors>-->
+    <!--        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>-->
+    <!--        <WarningsNotAsErrors></WarningsNotAsErrors>-->
         <WarningsAsErrors>RS0017</WarningsAsErrors>
 
         <NuGetAudit>true</NuGetAudit>
@@ -51,12 +51,12 @@
   </PropertyGroup>
     <ItemGroup>
         <None
-            Include="$(MSBuildThisFileDirectory).temp/packageicon.png"
-            Condition="Exists('$(MSBuildThisFileDirectory).temp/packageicon.png')"
-            Pack="true"
-            PackagePath="/images/"
-            Visible="false"
-        />
+      Include="$(MSBuildThisFileDirectory)icons/specular-icon-512.png"
+      Condition="Exists('$(MSBuildThisFileDirectory)icons/specular-icon-512.png')"
+      Pack="true"
+      PackagePath="/images/packageicon.png"
+      Visible="false"
+    />
         <None Include="$(MSBuildThisFileDirectory)/LICENSE" Pack="true" PackagePath="/" Visible="false" />
         <None Include="$(MSBuildThisFileDirectory)/Readme.md" Pack="true" PackagePath="/" Visible="false" />
     </ItemGroup>
