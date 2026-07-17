@@ -40,7 +40,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.10" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="System.Text.Json" Version="10.0.10" />
-    <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0-rc.1" />
+    <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.FakeItEasy" Version="10.0.6" />
