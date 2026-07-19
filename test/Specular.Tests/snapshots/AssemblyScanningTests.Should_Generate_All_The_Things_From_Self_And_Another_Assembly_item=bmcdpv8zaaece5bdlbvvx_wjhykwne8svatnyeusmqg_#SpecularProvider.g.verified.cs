@@ -32,36 +32,28 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: 9IUdfQbcsMAYS17mByAMdQ==
             case 16:
-                items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
-                items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: 9IUdfQbcsMAYS17mByAMdQ==
+                    case "Input0.cs":
+                        items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
+                        items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorTypeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
+                        items.Add(typeof(global::TestAssembly.IGenericService<>));
+                        items.Add(typeof(global::TestAssembly.IOther));
+                        items.Add(typeof(global::TestAssembly.IRequest<>));
+                        items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                        items.Add(typeof(global::TestAssembly.IService));
+                        items.Add(typeof(global::TestAssembly.IServiceB));
+                        items.Add(typeof(global::TestAssembly.IValidator));
+                        items.Add(typeof(global::TestAssembly.IValidator<>));
+                        break;
+                }
+
                 break;
         }
 

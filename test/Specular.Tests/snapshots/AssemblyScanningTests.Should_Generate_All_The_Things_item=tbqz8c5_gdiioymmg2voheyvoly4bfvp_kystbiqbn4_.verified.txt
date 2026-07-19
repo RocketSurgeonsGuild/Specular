@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -142,6 +144,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: xbYAbKX/QnnClXoKl6q/Aw==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IService>().AssignableTo<IServiceB>()).AsSelf().AsImplementedInterfaces().WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -157,7 +161,24 @@
               Type: TestAssembly.Service
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Service,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IServiceB,
+              ImplementationType: TestAssembly.Service
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

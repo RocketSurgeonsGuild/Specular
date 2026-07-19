@@ -39,8 +39,14 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: a8a5Us+LBXHvnbZedXasXw==
             case 16:
-                services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
-                services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: a8a5Us+LBXHvnbZedXasXw==
+                    case "Input0.cs":
+                        services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
+                        break;
+                }
+
                 break;
         }
 

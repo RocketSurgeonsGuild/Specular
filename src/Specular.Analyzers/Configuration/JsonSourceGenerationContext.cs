@@ -24,4 +24,5 @@ namespace Specular.Analyzers.Configuration;
 [JsonSerializable(typeof(GeneratedAssemblyProviderData))]
 [JsonSerializable(typeof(GeneratedLocationAssemblyResolvedSourceCollection))]
 [JsonSerializable(typeof(ScanReportTypeData))]
+[JsonSerializable(typeof(ServiceDescriptorScanReportEntryData))]
 public partial class JsonSourceGenerationContext : JsonSerializerContext;

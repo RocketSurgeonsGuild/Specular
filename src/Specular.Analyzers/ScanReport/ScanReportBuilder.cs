@@ -1,136 +1,244 @@
 using System.Collections.Immutable;
-using System.Globalization;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.Configuration;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers.ScanReport;
 
-// Emits SpecularScanReport.g.cs: a standalone, internal snapshot of every scanner-expression call site
-// (GetAssemblies/GetTypes/Scan), the assemblies/types it resolved, and a Mermaid rendering of the same
-// data. Deliberately kept separate from AssemblyProviderBuilder/SpecularProvider.g.cs so it works even
-// when <SpecularEmitProvider>false</SpecularEmitProvider> is set, and so it introduces no new public API.
 internal static class ScanReportBuilder
 {
-    public static SourceText GetScanReport(
+    public static ClassDeclarationSyntax GetScanReport(
         ImmutableList<ResolvedSourceLocation> assemblySources,
         ImmutableList<ResolvedSourceLocation> reflectionSources,
-        ImmutableList<ResolvedSourceLocation> serviceDescriptorSources,
-        Compilation compilation,
-        ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
+        ImmutableList<ResolvedSourceLocation> serviceDescriptorSources
     )
     {
-        var entries = assemblySources
-                     .Concat(reflectionSources)
-                     .Concat(serviceDescriptorSources)
-                     .GroupBy(z => z.Location)
-                     .Select(group => BuildEntry(group, compilation, assemblySymbols))
-                     .OrderBy(z => z.FilePath, StringComparer.Ordinal)
-                     .ThenBy(z => z.LineNumber)
-                     .ThenBy(z => z.ExpressionHash, StringComparer.Ordinal)
-                     .ToImmutableArray();
+        var assemblyReports = assemblySources
+                             .GroupBy(z => z.Location)
+                             .OrderBy(z => z.Key.FilePath, StringComparer.Ordinal)
+                             .ThenBy(z => z.Key.LineNumber)
+                             .ThenBy(z => z.Key.ExpressionHash, StringComparer.Ordinal)
+                             .Select(group =>
+                                         new AssemblyReport(
+                                             group.Key,
+                                             group.SelectMany(z => z.DiscoveredAssemblies).Distinct(StringComparer.Ordinal).OrderBy(z => z, StringComparer.Ordinal).ToImmutableArray()
+                                         )
+                              )
+                             .ToImmutableArray();
+        var typeReports = reflectionSources
+                         .GroupBy(z => z.Location)
+                         .OrderBy(z => z.Key.FilePath, StringComparer.Ordinal)
+                         .ThenBy(z => z.Key.LineNumber)
+                         .ThenBy(z => z.Key.ExpressionHash, StringComparer.Ordinal)
+                         .Select(group =>
+                                     new TypeReport(
+                                         group.Key,
+                                         group
+                                            .Where(z => z.ScannedAssemblyName is { })
+                                            .GroupBy(z => z.ScannedAssemblyName!, StringComparer.Ordinal)
+                                            .OrderBy(z => z.Key, StringComparer.Ordinal)
+                                            .Select(assembly => new TypeAssemblyReport(
+                                                        assembly.Key,
+                                                        assembly.SelectMany(z => z.DiscoveredTypes).Distinct().OrderBy(z => z.Type, StringComparer.Ordinal).ToImmutableArray()
+                                                    )
+                                             )
+                                            .ToImmutableArray()
+                                     )
+                          )
+                         .ToImmutableArray();
+        var serviceReports = serviceDescriptorSources
+                            .GroupBy(z => z.Location)
+                            .OrderBy(z => z.Key.FilePath, StringComparer.Ordinal)
+                            .ThenBy(z => z.Key.LineNumber)
+                            .ThenBy(z => z.Key.ExpressionHash, StringComparer.Ordinal)
+                            .Select(group =>
+                                        new ServiceDescriptorReport(
+                                            group.Key,
+                                            group
+                                               .Where(z => z.ScannedAssemblyName is { })
+                                               .GroupBy(z => z.ScannedAssemblyName!, StringComparer.Ordinal)
+                                               .OrderBy(z => z.Key, StringComparer.Ordinal)
+                                               .Select(assembly => new ServiceDescriptorAssemblyReport(
+                                                           assembly.Key,
+                                                           assembly
+                                                              .SelectMany(z => z.DiscoveredServiceDescriptors)
+                                                              .Distinct()
+                                                              .OrderBy(z => z.ServiceType, StringComparer.Ordinal)
+                                                              .ThenBy(z => z.ImplementationType, StringComparer.Ordinal)
+                                                              .ThenBy(z => z.Lifetime, StringComparer.Ordinal)
+                                                              .ToImmutableArray()
+                                                       )
+                                                )
+                                               .ToImmutableArray()
+                                        )
+                             )
+                            .ToImmutableArray();
 
-        var sb = new StringBuilder();
-        sb.Append(
-            """
-            #nullable enable
-            using System;
-            using System.Collections.Generic;
-            using System.Reflection;
+        var reportDelcaration = ClassDeclaration("SpecularScanReport")
+                               .AddAttributeLists(Helpers.CompilerGeneratedAttributes)
+                               .WithModifiers(TokenList(Token(SyntaxKind.InternalKeyword), Token(SyntaxKind.SealedKeyword)))
+                               .WithMembers(
+                                    SingletonList<MemberDeclarationSyntax>(
+                                        MethodDeclaration(IdentifierName("ScanResults"), Identifier("GetScanResults"))
+                                           .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
+                                           .WithExpressionBody(
+                                                ArrowExpressionClause(
+                                                    ImplicitObjectCreationExpression()
+                                                       .WithArgumentList(
+                                                            ArgumentList(
+                                                                SeparatedList(
+                                                                    [
+                                                                        Argument(CreateAssemblyReports(assemblyReports)),
+                                                                        Argument(CreateTypeReports(typeReports)),
+                                                                        Argument(CreateServiceDescriptorReports(serviceReports))
+                                                                    ]
+                                                                )
+                                                            )
+                                                        )
+                                                )
+                                            )
+                                    )
+                                );
 
-            namespace Specular;
+        return reportDelcaration.NormalizeWhitespace();
+    }
 
-            [System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute]
-            internal enum ScannerExpressionKind
-            {
-                Assembly, Reflection, ServiceDescriptor
-            }
-
-            [System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-            internal sealed record ScanReportType(string AssemblyName, string TypeName, string? Type);
-
-            [System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-            internal sealed record ScanReportAssembly(string AssemblyName, Assembly? Assembly);
-
-            [System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-            internal sealed record ScannerExpression(ScannerExpressionKind Kind, string FilePath, int LineNumber, IReadOnlyList<ScanReportAssembly> DiscoveredAssemblies, IReadOnlyList<ScanReportType> DiscoveredTypes);
-
-            [System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-            internal static class SpecularScanReport
-            {
-                public static IReadOnlyList<ScannerExpression> Entries { get; } = new ScannerExpression[]
-                {
-
-            """
+    private static ExpressionSyntax CreateAssemblyReports(ImmutableArray<AssemblyReport> reports)
+    {
+        return CollectionExpression(
+            SeparatedList<CollectionElementSyntax>(
+                reports.Select(report => ExpressionElement(
+                                   ImplicitObjectCreationExpression()
+                                      .AddArgumentListArguments(
+                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(report.Location.SourceAssemblyName))),
+                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(report.Location.SourceExpression))),
+                                           Argument(
+                                               CollectionExpression(
+                                                   SeparatedList<CollectionElementSyntax>(
+                                                       report.Assemblies.Select(assembly => ExpressionElement(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(assembly))))
+                                                   )
+                                               )
+                                           )
+                                       )
+                               )
+                )
+            )
         );
-
-        foreach (var entry in entries)
-        {
-            sb.Append("        new(ScannerExpressionKind.").Append(entry.Kind).Append(", ");
-            sb.Append(ToLiteral(entry.FilePath)).Append(", ");
-            sb.Append(entry.LineNumber.ToString(CultureInfo.InvariantCulture)).Append(", ");
-
-            sb.Append("new ScanReportAssembly[] { ");
-            sb.Append(string.Join(", ", entry.Assemblies.Select(a => $"new({ToLiteral(a.AssemblyName)}, {ToLiteral(a.Expression)})")));
-            sb.Append(" }, ");
-
-            sb.Append("new ScanReportType[] { ");
-            sb.Append(string.Join(", ", entry.Types.Select(t => $"new({ToLiteral(t.Assembly)}, {ToLiteral(t.Type)}, {ToLiteral(t.Expression)})")));
-            sb.Append(" }),\n");
-        }
-
-        sb.Append("    };\n\n");
-        sb.Append("    public const string MermaidDiagram = @\"").Append(MermaidReportBuilder.Build(entries).Replace("\"", "\"\"")).Append("\";\n");
-        sb.Append("}\n");
-        sb.Append("#nullable restore\n");
-
-        return CSharpSyntaxTree.ParseText(sb.ToString()).GetRoot().NormalizeWhitespace().GetText(Encoding.UTF8);
     }
 
-    private static Entry BuildEntry(IGrouping<SourceLocation, ResolvedSourceLocation> group, Compilation compilation, ImmutableDictionary<string, IAssemblySymbol> assemblySymbols)
+    private static ExpressionSyntax CreateTypeReports(ImmutableArray<TypeReport> reports)
     {
-        var location = group.Key;
-
-        var types = group
-                   .SelectMany(z => z.DiscoveredTypes.IsDefault ? Enumerable.Empty<ScanReportTypeData>() : z.DiscoveredTypes)
-                   .Distinct()
-                   .OrderBy(z => z.Assembly, StringComparer.Ordinal)
-                   .ThenBy(z => z.Type, StringComparer.Ordinal)
-                   .Select(z => (z.Assembly, z.Type, Expression: ResolveTypeExpression(z, compilation, assemblySymbols)))
-                   .ToImmutableArray();
-
-        var assemblies = group
-                        .SelectMany(z => z.DiscoveredAssemblies.IsDefault ? Enumerable.Empty<string>() : z.DiscoveredAssemblies)
-                        .Distinct(StringComparer.Ordinal)
-                        .OrderBy(z => z, StringComparer.Ordinal)
-                        .Select(z => (AssemblyName: z, Expression: ResolveAssemblyExpression(z, compilation, assemblySymbols)))
-                        .ToImmutableArray();
-
-        return new(location.Kind.ToString(), location.FilePath, location.LineNumber, location.ExpressionHash, assemblies, types);
+        return CollectionExpression(
+            SeparatedList<CollectionElementSyntax>(
+                reports.Select(report => ExpressionElement(
+                                   ImplicitObjectCreationExpression()
+                                      .AddArgumentListArguments(
+                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(report.Location.SourceAssemblyName))),
+                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(report.Location.SourceExpression))),
+                                           Argument(
+                                               CollectionExpression(
+                                                   SeparatedList<CollectionElementSyntax>(
+                                                       report
+                                                          .Assemblies
+                                                          .Select(assembly =>
+                                                                  {
+                                                                      var typeReports = assembly
+                                                                                       .Types
+                                                                                       .Select(type => ExpressionElement(
+                                                                                                   ImplicitObjectCreationExpression()
+                                                                                                      .AddArgumentListArguments(
+                                                                                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(type.Type)))
+                                                                                                       )
+                                                                                               )
+                                                                                        );
+                                                                      return ExpressionElement(
+                                                                          ImplicitObjectCreationExpression()
+                                                                             .AddArgumentListArguments(
+                                                                                  Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(assembly.AssemblyName))),
+                                                                                  Argument(CollectionExpression(SeparatedList<CollectionElementSyntax>(typeReports)))
+                                                                              )
+                                                                      );
+                                                                  }
+                                                           )
+                                                   )
+                                               )
+                                           )
+                                       )
+                               )
+                )
+            )
+        );
     }
 
-    private static string? ResolveTypeExpression(ScanReportTypeData data, Compilation compilation, ImmutableDictionary<string, IAssemblySymbol> assemblySymbols)
+    private static ExpressionSyntax CreateServiceDescriptorReports(ImmutableArray<ServiceDescriptorReport> reports)
     {
-        var symbol = AssemblyProviderConfiguration.findType(assemblySymbols, compilation, data.Assembly, data.Type);
-        return symbol is { } ? $"typeof({symbol.ToDisplayString()})" : "";
+        return CollectionExpression(
+            SeparatedList<CollectionElementSyntax>(
+                reports.Select(report => ExpressionElement(
+                                   ImplicitObjectCreationExpression()
+                                      .AddArgumentListArguments(
+                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(report.Location.SourceAssemblyName))),
+                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(report.Location.SourceExpression))),
+                                           Argument(
+                                               CollectionExpression(
+                                                   SeparatedList<CollectionElementSyntax>(
+                                                       report.Assemblies
+                                                             .Select(assembly =>
+                                                                     {
+                                                                         var typeReports = assembly
+                                                                                          .Entries.Select(type => ExpressionElement(
+                                                                                                              ImplicitObjectCreationExpression()
+                                                                                                                 .AddArgumentListArguments(
+                                                                                                                      Argument(
+                                                                                                                          MemberAccessExpression(
+                                                                                                                              SyntaxKind.SimpleMemberAccessExpression,
+                                                                                                                              IdentifierName("ServiceLifetime"),
+                                                                                                                              IdentifierName(type.Lifetime)
+                                                                                                                          )
+                                                                                                                      ),
+                                                                                                                      Argument(
+                                                                                                                          LiteralExpression(
+                                                                                                                              SyntaxKind.StringLiteralExpression,
+                                                                                                                              Literal(type.ServiceType)
+                                                                                                                          )
+                                                                                                                      ),
+                                                                                                                      Argument(
+                                                                                                                          LiteralExpression(
+                                                                                                                              SyntaxKind.StringLiteralExpression,
+                                                                                                                              Literal(type.ImplementationType)
+                                                                                                                          )
+                                                                                                                      )
+                                                                                                                  )
+                                                                                                          )
+                                                                                           );
+                                                                         return ExpressionElement(
+                                                                             ImplicitObjectCreationExpression()
+                                                                                .AddArgumentListArguments(
+                                                                                     Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(assembly.AssemblyName))),
+                                                                                     Argument(CollectionExpression(SeparatedList<CollectionElementSyntax>(typeReports)))
+                                                                                 )
+                                                                         );
+                                                                     }
+                                                              )
+                                                   )
+                                               )
+                                           )
+                                       )
+                               )
+                )
+            )
+        );
     }
 
-    private static string? ResolveAssemblyExpression(string assemblyName, Compilation compilation, ImmutableDictionary<string, IAssemblySymbol> assemblySymbols) =>
-        assemblySymbols.TryGetValue(assemblyName, out var assembly) && StatementGeneration.GetAssemblyExpression(compilation, assembly) is { } expression
-            ? expression.NormalizeWhitespace().ToFullString()
-            : "";
+    private sealed record AssemblyReport(SourceLocation Location, ImmutableArray<string> Assemblies);
 
-    private static string ToLiteral(string value) => Literal(value).ToFullString();
+    private sealed record TypeReport(SourceLocation Location, ImmutableArray<TypeAssemblyReport> Assemblies);
 
-    internal readonly record struct Entry(
-        string Kind,
-        string FilePath,
-        int LineNumber,
-        string ExpressionHash,
-        ImmutableArray<(string AssemblyName, string? Expression)> Assemblies,
-        ImmutableArray<(string Assembly, string Type, string Expression)> Types
-    );
+    private sealed record TypeAssemblyReport(string AssemblyName, ImmutableArray<ScanReportTypeData> Types);
+
+    private sealed record ServiceDescriptorReport(SourceLocation Location, ImmutableArray<ServiceDescriptorAssemblyReport> Assemblies);
+
+    private sealed record ServiceDescriptorAssemblyReport(string AssemblyName, ImmutableArray<ServiceDescriptorScanReportEntryData> Entries);
 }

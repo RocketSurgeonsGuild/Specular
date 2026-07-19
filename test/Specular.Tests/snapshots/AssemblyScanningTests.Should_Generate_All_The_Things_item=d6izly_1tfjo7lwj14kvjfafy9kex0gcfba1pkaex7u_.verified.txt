@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -142,6 +144,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: a8a5Us+LBXHvnbZedXasXw==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableTo(typeof(IRequestHandler<, >))).AsImplementedInterfaces().WithSingletonLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -158,7 +162,14 @@
               Type: TestAssembly.RequestHandler
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.IRequestHandler`2,
+              ImplementationType: TestAssembly.RequestHandler
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

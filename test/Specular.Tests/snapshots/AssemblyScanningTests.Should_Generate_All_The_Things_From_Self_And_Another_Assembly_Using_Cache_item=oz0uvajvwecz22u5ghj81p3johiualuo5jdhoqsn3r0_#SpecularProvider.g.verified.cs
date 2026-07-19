@@ -27,10 +27,15 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: y1nZVGCnh7EvCDUbXmZVJg==
             case 16:
-                items.Add(OtherProject);
-                items.Add(TestProject);
-                items.Add(OtherProject);
-                items.Add(TestProject);
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: y1nZVGCnh7EvCDUbXmZVJg==
+                    case "Input0.cs":
+                        items.Add(OtherProject);
+                        items.Add(TestProject);
+                        break;
+                }
+
                 break;
         }
 

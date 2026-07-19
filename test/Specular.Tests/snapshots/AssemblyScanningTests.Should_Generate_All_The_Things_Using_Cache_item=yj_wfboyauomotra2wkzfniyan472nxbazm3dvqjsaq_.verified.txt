@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -142,23 +144,17 @@
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: 0fBeWD2wBlWIjLnT36cIow==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().InfoOf(TypeInfoFilter.ValueType).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
 {
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
-    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
 },
-          PrivateAssemblies: [
-            Specular
-          ],
           CacheVersion: {Scrubbed},
           DiscoveredTypes: [
-            {
-              Assembly: Specular,
-              Type: Specular.ScannerExpressionKind
-            },
             {
               Assembly: Specular,
               Type: Specular.Abstractions.TypeInfoFilter
@@ -168,7 +164,7 @@
               Type: Specular.Abstractions.TypeKindFilter
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: Specular
         }
       }
     }

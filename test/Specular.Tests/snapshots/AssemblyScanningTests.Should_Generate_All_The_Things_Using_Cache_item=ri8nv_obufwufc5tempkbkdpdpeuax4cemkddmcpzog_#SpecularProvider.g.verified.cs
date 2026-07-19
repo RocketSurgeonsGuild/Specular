@@ -43,6 +43,15 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));

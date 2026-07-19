@@ -62,7 +62,7 @@ internal static class AssemblyCollection
 
                 var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList());
 
-                var source = Helpers.CreateSourceLocation(SourceLocationKind.Assembly, methodCallSyntax, cancellationToken);
+                var source = Helpers.CreateSourceLocation(SourceLocationKind.Assembly, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
                 // disallow list?
                 if (source.FileName == "ConventionContextHelpers.cs") continue;
 
@@ -134,11 +134,18 @@ internal static class AssemblyCollection
                                       .Where(z => item.AssemblyFilter.IsMatch(compilation, z))
                                       .ToArray();
 
-                if (filterAssemblies.Length == 0) continue;
-
                 var descriptors = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                var discoveredAssemblies = filterAssemblies.Select(z => z.MetadataName).ToImmutableArray();
-                results.Add(new(item.Location, descriptors, pa.Select(z => z.MetadataName).ToImmutableHashSet(), "", DiscoveredAssemblies: discoveredAssemblies));
+                var discoveredAssemblies = filterAssemblies.Select(z => z.MetadataName).ToImmutableList();
+                results.Add(new(
+                    item.Location,
+                    descriptors,
+                    pa.Select(z => z.MetadataName).ToImmutableHashSet(),
+                    "",
+                    [],
+                    discoveredAssemblies,
+                    [],
+                    item.Location.SourceAssemblyName
+                ));
             }
             catch (Exception e)
             {

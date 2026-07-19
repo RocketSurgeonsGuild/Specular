@@ -22,6 +22,13 @@ internal sealed class SpecularProvider : ISpecularProvider
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Assembly>();
+        switch (lineNumber)
+        {
+            // FilePath: Input0.cs Expression: /wvNd0rNqfzrIH57jso7mA==
+            case 16:
+                break;
+        }
+
         return items;
     }
 

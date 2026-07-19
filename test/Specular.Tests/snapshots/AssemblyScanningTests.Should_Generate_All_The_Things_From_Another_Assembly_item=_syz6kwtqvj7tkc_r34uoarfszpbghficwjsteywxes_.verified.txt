@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 16,
               ExpressionHash: jm/nkIDlrjpFn5pT15jCnw==,
+              SourceAssemblyName: OtherProject,
+              SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IOther))).As(typeof(IGenericService<>)).WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -92,6 +94,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -215,6 +219,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: jm/nkIDlrjpFn5pT15jCnw==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IOther))).As(typeof(IGenericService<>)).WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -238,7 +244,7 @@
               Type: TestAssembly.GenericServiceB
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

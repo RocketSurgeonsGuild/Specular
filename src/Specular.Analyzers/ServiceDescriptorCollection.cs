@@ -50,9 +50,19 @@ internal static class ServiceDescriptorCollection
 
                 if (reducedTypes.Count == 0) return null;
 
-                var localBlock = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                var discoveredTypes = reducedTypes.Select(z => new ScanReportTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z))).ToImmutableArray();
-                return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion(), discoveredTypes);
+                var descriptorGeneration = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa);
+                var localBlock = descriptorGeneration.Block.NormalizeWhitespace().ToFullString().Replace("\r", "");
+                var discoveredTypes = reducedTypes.Select(z => new ScanReportTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z))).ToImmutableList();
+                return new(
+                    item.Location,
+                    localBlock,
+                    pa.Select(z => z.MetadataName).ToImmutableHashSet(),
+                    targetAssembly.GetCachedVersion(),
+                    discoveredTypes,
+                    DiscoveredAssemblies: [],
+                    DiscoveredServiceDescriptors: descriptorGeneration.ReportEntries,
+                    ScannedAssemblyName: targetAssembly.MetadataName
+                );
             }
         }
         catch (Exception e)
@@ -140,7 +150,7 @@ internal static class ServiceDescriptorCollection
                     cancellationToken
                 );
 
-                var source = Helpers.CreateSourceLocation(SourceLocationKind.ServiceDescriptor, methodCallSyntax, cancellationToken);
+                var source = Helpers.CreateSourceLocation(SourceLocationKind.ServiceDescriptor, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
                 var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList(), source);
                 var typeFilter = new CompiledTypeFilter(classFilter, typeFilters.ToImmutableList(), source);
                 var serviceDescriptorFilter = new CompiledServiceTypeDescriptors(serviceDescriptors.ToImmutableArray(), lifetime);
@@ -170,7 +180,7 @@ internal static class ServiceDescriptorCollection
         return items.ToImmutable();
     }
 
-    private static BlockSyntax GenerateDescriptors(
+    private static ServiceDescriptorGeneration GenerateDescriptors(
         AssemblyProviderConfiguration configuration,
         HashSet<Diagnostic> diagnostics,
         IEnumerable<INamedTypeSymbol> types,
@@ -187,6 +197,13 @@ internal static class ServiceDescriptorCollection
         var serviceRegistrationAttribute = compilation.GetTypeByMetadataName("Specular.ServiceRegistrationAttribute")!;
 
         var services = new List<InvocationExpressionSyntax>();
+        var reportEntries = ImmutableList.CreateBuilder<ServiceDescriptorScanReportEntryData>();
+
+        void AddService(INamedTypeSymbol serviceType, INamedTypeSymbol implementationType, string lifetime, InvocationExpressionSyntax descriptor)
+        {
+            services.Add(descriptor);
+            reportEntries.Add(new(lifetime, Helpers.GetFullMetadataName(serviceType), Helpers.GetFullMetadataName(implementationType)));
+        }
 
         foreach (var type in types.OrderBy(z => z.ToDisplayString()))
         {
@@ -280,7 +297,7 @@ internal static class ServiceDescriptorCollection
                 }
             }
 
-            if (abort) return Block();
+            if (abort) return new(Block(), []);
 
             foreach ((var lifetime, var serviceType) in lifetimeRegistrations.Select(z => z.First()))
             {
@@ -290,7 +307,10 @@ internal static class ServiceDescriptorCollection
 
                 if (emittedTypes.Contains(serviceType)) continue;
 
-                services.Add(
+                AddService(
+                    serviceType,
+                    type,
+                    lifetime,
                     !SymbolEqualityComparer.Default.Equals(serviceType, type)
                         ? StatementGeneration.GenerateServiceFactory(
                             compilation,
@@ -310,7 +330,10 @@ internal static class ServiceDescriptorCollection
 
             if (asSelf && !emittedTypes.Contains(type))
             {
-                services.Add(
+                AddService(
+                    type,
+                    type,
+                    serviceTypes.GetLifetime(),
                     StatementGeneration.GenerateServiceType(
                         compilation,
                         type,
@@ -329,7 +352,10 @@ internal static class ServiceDescriptorCollection
                 var @interface = type.AllInterfaces.FirstOrDefault(z => z.Name == name);
                 if (@interface is { } && !emittedTypes.Contains(@interface))
                 {
-                    services.Add(
+                    AddService(
+                        @interface,
+                        type,
+                        serviceTypes.GetLifetime(),
                         typeIsOpenGeneric || !asSelf
                             ? StatementGeneration.GenerateServiceType(
                                 compilation,
@@ -366,7 +392,10 @@ internal static class ServiceDescriptorCollection
                 {
                     if (emittedTypes.Contains(@interface)) continue;
 
-                    services.Add(
+                    AddService(
+                        @interface,
+                        type,
+                        serviceTypes.GetLifetime(),
                         typeIsOpenGeneric || !asSelf
                             ? StatementGeneration.GenerateServiceType(
                                 compilation,
@@ -393,11 +422,15 @@ internal static class ServiceDescriptorCollection
 
                 if (!Helpers.HasImplicitGenericConversion(compilation, asType, type)) continue;
 
-                services.Add(
+                var closedServiceType = Helpers.GetClosedGenericConversion(compilation, asType, type);
+                AddService(
+                    closedServiceType,
+                    type,
+                    serviceTypes.GetLifetime(),
                     !asSelf
                         ? StatementGeneration.GenerateServiceType(
                             compilation,
-                            Helpers.GetClosedGenericConversion(compilation, asType, type),
+                            closedServiceType,
                             type,
                             serviceTypes.GetLifetime()
                         )
@@ -417,7 +450,10 @@ internal static class ServiceDescriptorCollection
                 {
                     if (emittedTypes.Contains(@interface)) continue;
 
-                    services.Add(
+                    AddService(
+                        @interface,
+                        type,
+                        lifetimeValue,
                         StatementGeneration.GenerateServiceFactory(
                             compilation,
                             @interface,
@@ -443,8 +479,10 @@ internal static class ServiceDescriptorCollection
             );
         }
 
-        return block;
+        return new(block, reportEntries.ToImmutable());
     }
+
+    private sealed record ServiceDescriptorGeneration(BlockSyntax Block, ImmutableList<ServiceDescriptorScanReportEntryData> ReportEntries);
 
     private static string? GetLifetimeValue(AttributeData? attribute)
     {

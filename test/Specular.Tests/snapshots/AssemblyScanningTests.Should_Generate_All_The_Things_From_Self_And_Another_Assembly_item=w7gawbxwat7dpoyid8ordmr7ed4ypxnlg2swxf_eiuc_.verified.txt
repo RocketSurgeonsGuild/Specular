@@ -19,6 +19,8 @@
               Kind: Reflection,
               LineNumber: 16,
               ExpressionHash: l4cim5mnIPk4MmmE29qzUw==,
+              SourceAssemblyName: OtherProject,
+              SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class, TypeKindFilter.Enum).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
               FileName: Input0.cs
             },
             Assembly: {
@@ -93,6 +95,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -216,6 +220,8 @@
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: l4cim5mnIPk4MmmE29qzUw==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class, TypeKindFilter.Enum).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
@@ -259,13 +265,15 @@
               Type: Specular.Abstractions.ITypeFilter
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: Specular
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: l4cim5mnIPk4MmmE29qzUw==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class, TypeKindFilter.Enum).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
@@ -314,7 +322,7 @@
               Type: TestAssembly.IValidator`1
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

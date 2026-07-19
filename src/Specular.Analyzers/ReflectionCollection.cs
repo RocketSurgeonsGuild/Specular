@@ -85,8 +85,17 @@ internal static class ReflectionCollection
             if (reducedTypes.Count == 0) return null;
 
             var localBlock = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-            var discoveredTypes = reducedTypes.Select(z => new ScanReportTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z))).ToImmutableArray();
-            return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion(), discoveredTypes);
+            var discoveredTypes = reducedTypes.Select(z => new ScanReportTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z))).ToImmutableList();
+            return new(
+                item.Location,
+                localBlock,
+                pa.Select(z => z.MetadataName).ToImmutableHashSet(),
+                targetAssembly.GetCachedVersion(),
+                discoveredTypes,
+                [],
+                [],
+                ScannedAssemblyName: targetAssembly.MetadataName
+            );
         }
     }
 
@@ -148,7 +157,7 @@ internal static class ReflectionCollection
                     cancellationToken
                 );
 
-                var source = Helpers.CreateSourceLocation(SourceLocationKind.Reflection, methodCallSyntax, cancellationToken);
+                var source = Helpers.CreateSourceLocation(SourceLocationKind.Reflection, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
                 var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList(), source);
                 var typeFilter = new CompiledTypeFilter(classFilter, typeFilters.ToImmutableList(), source);
 

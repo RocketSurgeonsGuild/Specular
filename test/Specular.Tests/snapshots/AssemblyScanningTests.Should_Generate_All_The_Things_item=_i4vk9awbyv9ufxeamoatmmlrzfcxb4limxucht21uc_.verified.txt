@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -142,6 +144,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: HH9aVmBgFQ5bSAugUwbZsw==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IValidator))).AsImplementedInterfaces(z => z.AssignableTo(typeof(IValidator<>))).WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -158,7 +162,14 @@
               Type: TestAssembly.Nested+Validator
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IValidator`1,
+              ImplementationType: TestAssembly.Nested+Validator
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

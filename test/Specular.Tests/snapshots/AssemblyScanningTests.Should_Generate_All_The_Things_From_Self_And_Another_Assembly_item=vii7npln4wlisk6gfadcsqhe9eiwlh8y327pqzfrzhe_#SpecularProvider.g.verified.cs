@@ -32,8 +32,14 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: cNBTr21Y/0DD1+cR1se7TQ==
             case 16:
-                items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(typeof(global::Specular.SpecularSupport));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: cNBTr21Y/0DD1+cR1se7TQ==
+                    case "Input0.cs":
+                        items.Add(typeof(global::Specular.SpecularSupport));
+                        break;
+                }
+
                 break;
         }
 

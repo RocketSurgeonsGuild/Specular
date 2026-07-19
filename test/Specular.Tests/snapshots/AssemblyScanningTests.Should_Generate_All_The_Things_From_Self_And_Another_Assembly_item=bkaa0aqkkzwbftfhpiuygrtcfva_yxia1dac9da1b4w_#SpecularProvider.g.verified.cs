@@ -27,16 +27,18 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: EroujZtERsWBDGh52iQ5LQ==
             case 16:
-                items.Add(OtherProject);
-                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
-                items.Add(OtherProject);
-                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: EroujZtERsWBDGh52iQ5LQ==
+                    case "Input0.cs":
+                        items.Add(OtherProject);
+                        items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
+                        items.Add(typeof(global::System.IServiceProvider).Assembly);
+                        items.Add(typeof(global::TestAssembly.IService).Assembly);
+                        items.Add(TestProject);
+                        break;
+                }
+
                 break;
         }
 

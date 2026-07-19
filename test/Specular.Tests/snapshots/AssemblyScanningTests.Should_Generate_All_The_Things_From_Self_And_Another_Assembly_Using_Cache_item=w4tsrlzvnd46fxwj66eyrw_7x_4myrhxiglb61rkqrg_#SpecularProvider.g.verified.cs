@@ -26,7 +26,6 @@ internal sealed class SpecularProvider : ISpecularProvider
         return items;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
@@ -34,52 +33,14 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
             case 16:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(OtherProject.GetType("Specular.ScannerExpression")!);
-                items.Add(OtherProject.GetType("Specular.ScannerExpressionKind")!);
-                items.Add(OtherProject.GetType("Specular.ScanReportAssembly")!);
-                items.Add(OtherProject.GetType("Specular.ScanReportType")!);
-                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(OtherProject.GetType("Specular.ScannerExpression")!);
-                items.Add(OtherProject.GetType("Specular.ScannerExpressionKind")!);
-                items.Add(OtherProject.GetType("Specular.ScanReportAssembly")!);
-                items.Add(OtherProject.GetType("Specular.ScanReportType")!);
-                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
-                items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
-                items.Add(Specular.GetType("Specular.ScannerExpression")!);
-                items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
-                items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
-                items.Add(Specular.GetType("Specular.ScanReportType")!);
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
-                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
-                items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
-                items.Add(Specular.GetType("Specular.ScannerExpression")!);
-                items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
-                items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
-                items.Add(Specular.GetType("Specular.ScanReportType")!);
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
+                    case "Input0.cs":
+                        items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                        break;
+                }
+
                 break;
         }
 
@@ -91,7 +52,6 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScanReportAssembly", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScanReportType", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScannerExpression", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScannerExpressionKind", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScanReportAssembly", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScanReportType", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScannerExpression", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScannerExpressionKind", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _OtherProject;
     private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));

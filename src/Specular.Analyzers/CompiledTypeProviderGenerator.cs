@@ -249,7 +249,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
                 if (generateScanReport)
                 {
-                    TryAddScanReport(context, diagnostics, assemblySources, reflectionSources, serviceDescriptorSources, request.compilation, assemblySymbols);
+                    TryAddScanReport(context, diagnostics, assemblySources, reflectionSources, serviceDescriptorSources);
                 }
 
                 foreach (var diagnostic in diagnostics)
@@ -331,15 +331,28 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         HashSet<Diagnostic> diagnostics,
         ImmutableList<ResolvedSourceLocation> assemblySources,
         ImmutableList<ResolvedSourceLocation> reflectionSources,
-        ImmutableList<ResolvedSourceLocation> serviceDescriptorSources,
-        Compilation compilation,
-        ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
+        ImmutableList<ResolvedSourceLocation> serviceDescriptorSources
     )
     {
         try
         {
-            var scanReport = ScanReport.ScanReportBuilder.GetScanReport(assemblySources, reflectionSources, serviceDescriptorSources, compilation, assemblySymbols);
-            context.AddSource("SpecularScanReport.g.cs", scanReport);
+            var scanReport = ScanReport.ScanReportBuilder.GetScanReport(assemblySources, reflectionSources, serviceDescriptorSources);
+            var cu = CompilationUnit()
+               .WithUsings(
+                    List(
+                        [
+                            UsingDirective(ParseName("System")),
+                            UsingDirective(ParseName("System.Collections.Generic")),
+                            UsingDirective(ParseName("System.Reflection")),
+                            UsingDirective(ParseName("Microsoft.Extensions.DependencyInjection")),
+                            UsingDirective(ParseName("Specular")),
+                            UsingDirective(ParseName("Specular.Abstractions")),
+                            UsingDirective(ParseName("Specular.Diagnostics")),
+                        ]
+                    )
+                )
+               .AddMembers(scanReport);
+            context.AddSource("SpecularScanReport.g.cs", cu.GetText());
         }
         catch (Exception e)
         {

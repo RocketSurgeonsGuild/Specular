@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 16,
               ExpressionHash: RF0U3ve7NmkBVhOpOoW7bQ==,
+              SourceAssemblyName: OtherProject,
+              SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IService>()).AsSelf().AsImplementedInterfaces().WithSingletonLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -93,6 +95,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -216,6 +220,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: RF0U3ve7NmkBVhOpOoW7bQ==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IService>()).AsSelf().AsImplementedInterfaces().WithSingletonLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -246,7 +252,44 @@
               Type: TestAssembly.ServiceB
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.Nested+ServiceA,
+              ImplementationType: TestAssembly.Nested+ServiceA
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.Nested+ServiceA
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.Service,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.IServiceB,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.ServiceB,
+              ImplementationType: TestAssembly.ServiceB
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.ServiceB
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

@@ -76,15 +76,22 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: 4VaAjHpBsAH5j0EYKpAqQw==
             case 42:
                 items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
+                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
@@ -97,10 +104,7 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.Nested));
@@ -117,9 +121,20 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
             case 82:
                 items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
@@ -128,11 +143,14 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 break;
             // FilePath: Input0.cs Expression: fsFGHt8fY/Soe/yfBavpPA==
             case 102:
                 items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(OtherProject.GetType("Program")!);
+                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
@@ -144,6 +162,15 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
@@ -154,6 +181,7 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -177,15 +205,22 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: /W5+1QbQLNSoqBDFr/pvdA==
             case 122:
                 items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
+                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
@@ -198,10 +233,7 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.Nested));
@@ -218,14 +250,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: 5gXgnlFcQRYQSxrJGJuZeA==
             case 132:
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
                 items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
@@ -237,10 +261,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: s3+YB+Nc72MZzZXRrB9ZBQ==
             case 147:
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
                 items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -248,12 +268,17 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
                 items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
                 items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -278,10 +303,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: yj9cWza0VGt3OBTGaxhaYg==
             case 158:
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
                 items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -291,10 +312,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -319,10 +336,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: qOfjb0SDPwHcKNlpG9ytrQ==
             case 169:
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
                 items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -332,12 +345,17 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.IOther));
@@ -358,10 +376,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: LS+xdTOmvs+8M+1OjvEf0g==
             case 200:
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
                 items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -371,11 +385,16 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -400,10 +419,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: dODyg69BE0Nso/u2dEJZBw==
             case 211:
                 items.Add(OtherProject.GetType("Program")!);
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
                 items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
                 items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -413,11 +428,16 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
                 items.Add(typeof(global::TestAssembly.GenericServiceB));
                 items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -508,6 +528,15 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
@@ -541,16 +570,8 @@ internal sealed class SpecularProvider : ISpecularProvider
                 break;
             // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
             case 92:
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::TestAssembly.Nested));
                 break;
             // FilePath: Input0.cs Expression: /Q4AySzV41Tdwlkpfg/GKA==
@@ -589,6 +610,15 @@ internal sealed class SpecularProvider : ISpecularProvider
                 items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
                 items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
                 items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
@@ -778,7 +808,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Info", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Metadata", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Project", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Info", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Metadata", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Project", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _OtherProject;
     private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));

@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 16,
               ExpressionHash: nNzkffztFbvyPeXlZPkOkQ==,
+              SourceAssemblyName: OtherProject,
+              SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IOther))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo(typeof(IGenericService<>))).WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -119,6 +121,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -242,6 +246,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: nNzkffztFbvyPeXlZPkOkQ==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IOther))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo(typeof(IGenericService<>))).WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -272,7 +278,44 @@
               Type: TestAssembly.GenericServiceB
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.GenericService,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.GenericServiceB,
+              ImplementationType: TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Nested+GenericServiceA,
+              ImplementationType: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.Nested+GenericServiceA
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

@@ -32,30 +32,25 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: /Q4AySzV41Tdwlkpfg/GKA==
             case 16:
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: /Q4AySzV41Tdwlkpfg/GKA==
+                    case "Input0.cs":
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
+                        items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
+                        items.Add(typeof(global::TestAssembly.IGenericService<>));
+                        items.Add(typeof(global::TestAssembly.IRequest<>));
+                        items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                        items.Add(typeof(global::TestAssembly.IValidator<>));
+                        break;
+                }
+
                 break;
         }
 

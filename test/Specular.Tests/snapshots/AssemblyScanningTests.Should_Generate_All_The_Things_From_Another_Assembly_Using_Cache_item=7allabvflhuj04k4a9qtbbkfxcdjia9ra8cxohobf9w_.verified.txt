@@ -18,7 +18,8 @@
             Location: {
               LineNumber: 16,
               ExpressionHash: ApaVlALM8kzVxm/WHvukVQ==,
-              SelectorText: z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>(),
+              SourceAssemblyName: OtherProject,
+              SourceExpression: z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -46,25 +47,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
-              SelectorText:
-z => z
-                .FromAssemblies()
-                .AddClasses(
-                     f => f
-                        .WithAnyAttribute(
-                             typeof(ServiceRegistrationAttribute),
-                             typeof(ServiceRegistrationAttribute<,>),
-                             typeof(ServiceRegistrationAttribute<,,>),
-                             typeof(ServiceRegistrationAttribute<,,>),
-                             typeof(ServiceRegistrationAttribute<,,,>),
-                             typeof(ServiceRegistrationAttribute<,,,,>),
-                             typeof(ServiceRegistrationAttribute<,,,,,>),
-                             typeof(ServiceRegistrationAttribute<,,,,,,>),
-                             typeof(ServiceRegistrationAttribute<,,,,,,,>)
-                         )
-                 )
-                 .AsSelf()
-                 .WithSingletonLifetime(),
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {

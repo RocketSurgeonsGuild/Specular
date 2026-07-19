@@ -34,72 +34,44 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: yj9cWza0VGt3OBTGaxhaYg==
             case 16:
-                items.Add(typeof(global::Program));
-                items.Add(typeof(global::Program));
-                items.Add(OtherProject.GetType("Program")!);
-                items.Add(OtherProject.GetType("Specular.SpecularScanReport")!);
-                items.Add(OtherProject.GetType("Program")!);
-                items.Add(OtherProject.GetType("Specular.SpecularScanReport")!);
-                items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
-                items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-                items.Add(Specular.GetType("Specular.SpecularScanReport")!);
-                items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
-                items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
-                items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
-                items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-                items.Add(Specular.GetType("Specular.SpecularScanReport")!);
-                items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: yj9cWza0VGt3OBTGaxhaYg==
+                    case "Input0.cs":
+                        items.Add(typeof(global::Program));
+                        items.Add(OtherProject.GetType("Program")!);
+                        items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
+                        items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorTypeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
+                        items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
+                        items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+                        items.Add(typeof(global::Specular.SpecularSupport));
+                        items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                        items.Add(typeof(global::TestAssembly.GenericServiceB));
+                        items.Add(typeof(global::TestAssembly.IGenericService<>));
+                        items.Add(typeof(global::TestAssembly.IOther));
+                        items.Add(typeof(global::TestAssembly.IRequest<>));
+                        items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                        items.Add(typeof(global::TestAssembly.IService));
+                        items.Add(typeof(global::TestAssembly.IServiceB));
+                        items.Add(typeof(global::TestAssembly.IValidator));
+                        items.Add(typeof(global::TestAssembly.IValidator<>));
+                        items.Add(typeof(global::TestAssembly.Nested));
+                        items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                        items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+                        items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                        items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+                        items.Add(typeof(global::TestAssembly.Service));
+                        items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
+                        break;
+                }
+
                 break;
         }
 
@@ -111,13 +83,10 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.SpecularScanReport", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.SpecularScanReport", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _OtherProject;
     private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));
-
-    private Assembly _Specular;
-    private Assembly Specular => _Specular ??= _context.LoadFromAssemblyName(new AssemblyName("Specular, Version=version, Culture=neutral, PublicKeyToken=null"));
 
     private Assembly _TestAssembly;
     private Assembly TestAssembly => _TestAssembly ??= _context.LoadFromAssemblyName(new AssemblyName("TestAssembly, Version=version, Culture=neutral, PublicKeyToken=null"));

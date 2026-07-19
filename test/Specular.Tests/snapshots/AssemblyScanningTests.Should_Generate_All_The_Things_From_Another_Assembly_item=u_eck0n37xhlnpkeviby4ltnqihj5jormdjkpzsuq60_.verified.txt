@@ -19,6 +19,8 @@
               Kind: Reflection,
               LineNumber: 16,
               ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+              SourceAssemblyName: OtherProject,
+              SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.ValueType).NotAssignableTo<Attribute>().NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
               FileName: Input0.cs
             },
             Assembly: {
@@ -97,6 +99,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -220,15 +224,13 @@
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.ValueType).NotAssignableTo<Attribute>().NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
 {
     items.Add(OtherProject.GetType("Program")!);
-    items.Add(OtherProject.GetType("Specular.ScannerExpression")!);
-    items.Add(OtherProject.GetType("Specular.ScanReportAssembly")!);
-    items.Add(OtherProject.GetType("Specular.ScanReportType")!);
-    items.Add(OtherProject.GetType("Specular.SpecularScanReport")!);
 },
           PrivateAssemblies: [
             OtherProject
@@ -238,31 +240,17 @@
             {
               Assembly: OtherProject,
               Type: Program
-            },
-            {
-              Assembly: OtherProject,
-              Type: Specular.ScanReportType
-            },
-            {
-              Assembly: OtherProject,
-              Type: Specular.ScanReportAssembly
-            },
-            {
-              Assembly: OtherProject,
-              Type: Specular.ScannerExpression
-            },
-            {
-              Assembly: OtherProject,
-              Type: Specular.SpecularScanReport
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: OtherProject
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.ValueType).NotAssignableTo<Attribute>().NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
@@ -274,16 +262,18 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
-    items.Add(Specular.GetType("Specular.ScannerExpression")!);
-    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
-    items.Add(Specular.GetType("Specular.ScanReportType")!);
+    items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
+    items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
+    items.Add(typeof(global::Specular.Diagnostics.ScanResults));
+    items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
+    items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
+    items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
+    items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
+    items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
+    items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          PrivateAssemblies: [
-            Specular
-          ],
           CacheVersion: {Scrubbed},
           DiscoveredTypes: [
             {
@@ -293,22 +283,6 @@
             {
               Assembly: Specular,
               Type: Specular.SpecularSupport
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.ScanReportType
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.ScanReportAssembly
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.ScannerExpression
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.SpecularScanReport
             },
             {
               Assembly: Specular,
@@ -337,15 +311,53 @@
             {
               Assembly: Specular,
               Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.ScanResults
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.AssemblyScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.AssemblyScanReportEntry
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.TypeScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.TypeScanAssemblyReportEntry
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.TypeScanReportEntry
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.ServiceDescriptorScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Diagnostics.ServiceDescriptorScanReportEntry
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: Specular
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+            SourceAssemblyName: OtherProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.ValueType).NotAssignableTo<Attribute>().NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
@@ -457,7 +469,7 @@
               Type: TestAssembly.IValidator`1
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

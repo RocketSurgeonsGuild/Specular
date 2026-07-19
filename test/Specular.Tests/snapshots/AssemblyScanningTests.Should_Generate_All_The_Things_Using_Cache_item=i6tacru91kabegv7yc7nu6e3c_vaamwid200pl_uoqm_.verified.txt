@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -142,6 +144,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: QR7ilMUHdBOqlpGLxKKLDQ==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo<IServiceB>()).WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -169,7 +173,29 @@
               Type: TestAssembly.ServiceB
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Nested+ServiceA,
+              ImplementationType: TestAssembly.Nested+ServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Service,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IServiceB,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.ServiceB,
+              ImplementationType: TestAssembly.ServiceB
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

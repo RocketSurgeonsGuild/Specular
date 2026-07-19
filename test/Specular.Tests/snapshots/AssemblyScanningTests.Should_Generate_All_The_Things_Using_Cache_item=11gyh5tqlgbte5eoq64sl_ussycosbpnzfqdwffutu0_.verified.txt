@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -137,54 +139,13 @@
   PartialsCached: {
     u5ZpEgelNMlflDAf0sMVhA==: {
       ResolvedSources: {
-        Specular: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 16,
-            ExpressionHash: 5gXgnlFcQRYQSxrJGJuZeA==,
-            FileName: Input0.cs
-          },
-          Expression:
-{
-    items.Add(Specular.GetType("Specular.ScannerExpression")!);
-    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
-    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
-    items.Add(Specular.GetType("Specular.ScanReportType")!);
-    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
-},
-          PrivateAssemblies: [
-            Specular
-          ],
-          CacheVersion: {Scrubbed},
-          DiscoveredTypes: [
-            {
-              Assembly: Specular,
-              Type: Specular.ScannerExpressionKind
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.ScanReportType
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.ScanReportAssembly
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.ScannerExpression
-            },
-            {
-              Assembly: Specular,
-              Type: Specular.SpecularScanReport
-            }
-          ],
-          DiscoveredAssemblies: null
-        },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 16,
             ExpressionHash: 5gXgnlFcQRYQSxrJGJuZeA==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.Visible).NotAssignableTo<Attribute>().NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
             FileName: Input0.cs
           },
           Expression:
@@ -231,7 +192,7 @@
               Type: TestAssembly.GenericService
             }
           ],
-          DiscoveredAssemblies: null
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

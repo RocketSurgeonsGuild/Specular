@@ -19,6 +19,8 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SourceAssemblyName: Specular,
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -142,6 +144,8 @@
             Kind: ServiceDescriptor,
             LineNumber: 16,
             ExpressionHash: MeX+mF+ej5803TONO0SaMw==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().AddClasses(x => x.InNamespaces("TestAssembly")).AsSelf().AsImplementedInterfaces().WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -224,7 +228,144 @@
               Type: TestAssembly.GenericServiceB
             }
           ],
-          DiscoveredAssemblies: null
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.GenericService,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IOther,
+              ImplementationType: TestAssembly.GenericService
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.GenericServiceB,
+              ImplementationType: TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IOther,
+              ImplementationType: TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Nested+GenericServiceA,
+              ImplementationType: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IGenericService`1,
+              ImplementationType: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IOther,
+              ImplementationType: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Nested+MyRecord,
+              ImplementationType: TestAssembly.Nested+MyRecord
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: System.IEquatable`1,
+              ImplementationType: TestAssembly.Nested+MyRecord
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Nested+ServiceA,
+              ImplementationType: TestAssembly.Nested+ServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.Nested+ServiceA
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Nested+Validator,
+              ImplementationType: TestAssembly.Nested+Validator
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IValidator,
+              ImplementationType: TestAssembly.Nested+Validator
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IValidator`1,
+              ImplementationType: TestAssembly.Nested+Validator
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Request,
+              ImplementationType: TestAssembly.Request
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IRequest`1,
+              ImplementationType: TestAssembly.Request
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.RequestHandler,
+              ImplementationType: TestAssembly.RequestHandler
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IRequestHandler`2,
+              ImplementationType: TestAssembly.RequestHandler
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Response,
+              ImplementationType: TestAssembly.Response
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.Service,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IServiceB,
+              ImplementationType: TestAssembly.Service
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.ServiceB,
+              ImplementationType: TestAssembly.ServiceB
+            },
+            {
+              Lifetime: Scoped,
+              ServiceType: TestAssembly.IService,
+              ImplementationType: TestAssembly.ServiceB
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
         }
       }
     }

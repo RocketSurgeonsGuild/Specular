@@ -39,9 +39,16 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: fKfq36ZCDNfEou+qyyLEbw==
             case 16:
-                services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Nested.ServiceA>());
-                services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Service>());
-                services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IService), TestAssembly.GetType("TestAssembly.ServiceB")!));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: fKfq36ZCDNfEou+qyyLEbw==
+                    case "Input0.cs":
+                        services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Nested.ServiceA>());
+                        services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService, global::TestAssembly.Service>());
+                        services.Add(ServiceDescriptor.Scoped(typeof(global::TestAssembly.IService), TestAssembly.GetType("TestAssembly.ServiceB")!));
+                        break;
+                }
+
                 break;
         }
 

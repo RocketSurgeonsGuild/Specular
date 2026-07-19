@@ -38,9 +38,9 @@ public partial class ScanReportTests : GeneratorTest
              .UseParameters(item.FileSafeName);
     }
 
-    // Exercises all three scanner-expression kinds (GetAssemblies/GetTypes/Scan) and a mix of
-    // public, internal, and generic discovered types so the scan report's typeof()-vs-name-only
-    // fallback and Mermaid label escaping both have something real to render.
+    // Exercises all three scanner-expression kinds (GetAssemblies/GetTypes/Scan), including a
+    // multiline selector and an empty type scan, so the report captures the original scan intent
+    // as well as the resolved results.
     private const string ScanReportSource =
         """
         using Specular;
@@ -54,8 +54,16 @@ public partial class ScanReportTests : GeneratorTest
             {
                 var services = new ServiceCollection();
                 var provider = SpecularProvider.Instance;
-                provider.GetAssemblies(z => z.FromAssemblyOf<IService>());
-                provider.GetTypes(z => z.FromAssemblyOf<IService>().GetTypes(x => x.AssignableTo<IService>()));
+                provider.GetAssemblies(
+                    z => z
+                        .FromAssemblyOf<IService>()
+                );
+                provider.GetTypes(
+                    z => z
+                        .FromAssemblyOf<IService>()
+                        .GetTypes(x => x.AssignableTo<IService>())
+                );
+                provider.GetTypes(z => z.FromAssemblyOf<IService>().GetTypes(x => x.InNamespaces("No.Matching.Namespace")));
                 provider.Scan(services, z => z.FromAssemblies().AddClasses(x => x.AssignableTo(typeof(IGenericService<>))).AsSelfWithInterfaces().WithScopedLifetime());
             }
         }
