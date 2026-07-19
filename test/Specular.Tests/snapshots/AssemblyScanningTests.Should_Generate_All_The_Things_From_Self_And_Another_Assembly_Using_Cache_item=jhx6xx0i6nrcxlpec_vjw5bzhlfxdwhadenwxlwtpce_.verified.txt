@@ -18,6 +18,7 @@
             Location: {
               LineNumber: 16,
               ExpressionHash: 8IGLe4J/MYHkM0PrcVVuwg==,
+              SelectorText: z => z.FromAssemblies(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -35,6 +36,7 @@
             Location: {
               LineNumber: 17,
               ExpressionHash: Z9rFHKTvVtL4pjKVS65ieA==,
+              SelectorText: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -54,6 +56,7 @@
             Location: {
               LineNumber: 18,
               ExpressionHash: EroujZtERsWBDGh52iQ5LQ==,
+              SelectorText: z => z.FromAssemblies().NotFromAssemblyOf<IService>(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -73,6 +76,7 @@
             Location: {
               LineNumber: 19,
               ExpressionHash: /wvNd0rNqfzrIH57jso7mA==,
+              SelectorText: z => z.EntryAssembly(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -92,6 +96,7 @@
             Location: {
               LineNumber: 20,
               ExpressionHash: ApaVlALM8kzVxm/WHvukVQ==,
+              SelectorText: z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -111,6 +116,7 @@
             Location: {
               LineNumber: 21,
               ExpressionHash: y1nZVGCnh7EvCDUbXmZVJg==,
+              SelectorText: z => z.DependenciesFromAssemblyOf<IService>(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -133,6 +139,17 @@
               Kind: Reflection,
               LineNumber: 22,
               ExpressionHash: cizxMQ3lnxFjX801wlpqbw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -199,6 +216,17 @@
               Kind: Reflection,
               LineNumber: 32,
               ExpressionHash: l4cim5mnIPk4MmmE29qzUw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class, TypeKindFilter.Enum)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -266,6 +294,17 @@
               Kind: Reflection,
               LineNumber: 42,
               ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate)
+                         .NotKindOf(TypeKindFilter.Interface)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -335,6 +374,17 @@
               Kind: Reflection,
               LineNumber: 52,
               ExpressionHash: 9IUdfQbcsMAYS17mByAMdQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -400,6 +450,17 @@
               Kind: Reflection,
               LineNumber: 62,
               ExpressionHash: 8EyoKKcMOOrD7HWlzslgwg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Visible)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -465,6 +526,17 @@
               Kind: Reflection,
               LineNumber: 72,
               ExpressionHash: 0fBeWD2wBlWIjLnT36cIow==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.ValueType)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -530,6 +602,17 @@
               Kind: Reflection,
               LineNumber: 82,
               ExpressionHash: PCRHvamF6J3xug7jJLIREw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Sealed)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -595,6 +678,17 @@
               Kind: Reflection,
               LineNumber: 92,
               ExpressionHash: +FkT4btNbS4PRfcftoFbtA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -660,6 +754,17 @@
               Kind: Reflection,
               LineNumber: 102,
               ExpressionHash: fsFGHt8fY/Soe/yfBavpPA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -725,6 +830,17 @@
               Kind: Reflection,
               LineNumber: 112,
               ExpressionHash: /Q4AySzV41Tdwlkpfg/GKA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.GenericType)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -790,6 +906,17 @@
               Kind: Reflection,
               LineNumber: 122,
               ExpressionHash: /W5+1QbQLNSoqBDFr/pvdA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -855,6 +982,18 @@
               Kind: Reflection,
               LineNumber: 132,
               ExpressionHash: 5gXgnlFcQRYQSxrJGJuZeA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Visible)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -926,6 +1065,11 @@
               Kind: Reflection,
               LineNumber: 143,
               ExpressionHash: wKWjmvTVoUad3a7CtkcMoA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(x => x.WithAnyAttribute(typeof(ServiceRegistrationAttribute))),
               FileName: Input0.cs
             },
             Assembly: {
@@ -968,6 +1112,18 @@
               Kind: Reflection,
               LineNumber: 147,
               ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.ValueType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1039,6 +1195,18 @@
               Kind: Reflection,
               LineNumber: 158,
               ExpressionHash: yj9cWza0VGt3OBTGaxhaYg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Sealed)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1110,6 +1278,18 @@
               Kind: Reflection,
               LineNumber: 169,
               ExpressionHash: qOfjb0SDPwHcKNlpG9ytrQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.GenericType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1181,6 +1361,17 @@
               Kind: Reflection,
               LineNumber: 180,
               ExpressionHash: Edc9cxDaKw/uRcTfQ0BxWQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithAttribute(typeof(EditorBrowsableAttribute))
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1246,6 +1437,17 @@
               Kind: Reflection,
               LineNumber: 190,
               ExpressionHash: cNBTr21Y/0DD1+cR1se7TQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithAttribute<EditorBrowsableAttribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1311,6 +1513,18 @@
               Kind: Reflection,
               LineNumber: 200,
               ExpressionHash: LS+xdTOmvs+8M+1OjvEf0g==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute(typeof(EditorBrowsableAttribute))
+                         .NotAssignableTo(typeof(Attribute))
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1382,6 +1596,18 @@
               Kind: Reflection,
               LineNumber: 211,
               ExpressionHash: dODyg69BE0Nso/u2dEJZBw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute<EditorBrowsableAttribute>()
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1453,6 +1679,17 @@
               Kind: Reflection,
               LineNumber: 222,
               ExpressionHash: VQq5/RegT9R1vluhrjfHnA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .InNamespaceOf(typeof(ServiceCollectionServiceExtensions))
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1517,6 +1754,17 @@
               Kind: Reflection,
               LineNumber: 232,
               ExpressionHash: D2Tf7qe7bbEVpSaNNFFMdg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InNamespaceOf<IServiceCollection>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1581,6 +1829,17 @@
               Kind: Reflection,
               LineNumber: 242,
               ExpressionHash: jHc3BWAp6NTCWVbYg4pRTA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InNamespaces("Microsoft.Extensions.DependencyInjection")
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1645,6 +1904,17 @@
               Kind: Reflection,
               LineNumber: 252,
               ExpressionHash: btOVlu+Naw13LAV9tKR6WA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     true,
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1705,6 +1975,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 262,
               ExpressionHash: lk0ALym+V2W6xQDXO/AkYw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IServiceB>(), false)
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1774,6 +2051,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 268,
               ExpressionHash: CSc+6hElAjxc8UqHDR2nGg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>(), false)
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1841,6 +2125,12 @@
               Kind: ServiceDescriptor,
               LineNumber: 274,
               ExpressionHash: fKfq36ZCDNfEou+qyyLEbw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>())
+                .As<IService>()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1903,6 +2193,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 279,
               ExpressionHash: RF0U3ve7NmkBVhOpOoW7bQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>())
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -1970,6 +2267,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 285,
               ExpressionHash: H/jKai1h1B6jnFlFcyi7Tg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>())
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2039,6 +2343,12 @@
               Kind: ServiceDescriptor,
               LineNumber: 291,
               ExpressionHash: Cig2XJLApDe8z9wMh/IDUA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo(typeof(IGenericService<>)))
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2108,6 +2418,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 296,
               ExpressionHash: GC4f7Eu/9wIch8wpSP2wyQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo(typeof(IGenericService<>)))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2177,6 +2494,12 @@
               Kind: ServiceDescriptor,
               LineNumber: 302,
               ExpressionHash: a8a5Us+LBXHvnbZedXasXw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo(typeof(IRequestHandler<,>)))
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2241,6 +2564,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 307,
               ExpressionHash: xbYAbKX/QnnClXoKl6q/Aw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>().AssignableTo<IServiceB>())
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2316,6 +2646,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 313,
               ExpressionHash: e8KAWIaBqxCKvrQ5PGf0qg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB)))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2394,6 +2731,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 319,
               ExpressionHash: QR7ilMUHdBOqlpGLxKKLDQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB)))
+                .AsSelf()
+                .AsImplementedInterfaces(z => z.AssignableTo<IServiceB>())
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2492,6 +2836,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 325,
               ExpressionHash: nNzkffztFbvyPeXlZPkOkQ==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IOther)))
+                .AsSelf()
+                .AsImplementedInterfaces(z => z.AssignableTo(typeof(IGenericService<>)))
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2585,6 +2936,12 @@
               Kind: ServiceDescriptor,
               LineNumber: 331,
               ExpressionHash: HH9aVmBgFQ5bSAugUwbZsw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IValidator)))
+                .AsImplementedInterfaces(z => z.AssignableTo(typeof(IValidator<>)))
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2682,6 +3039,12 @@
               Kind: ServiceDescriptor,
               LineNumber: 336,
               ExpressionHash: nGdrAptlVCEX9H6kHx0auw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IService)))
+                .As<IService>()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2748,6 +3111,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 341,
               ExpressionHash: iOVNY6dfLzra3vCDdW4AxA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IOther)))
+                .AsSelf()
+                .As(typeof(IGenericService<>))
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2818,6 +3188,12 @@
               Kind: ServiceDescriptor,
               LineNumber: 347,
               ExpressionHash: jm/nkIDlrjpFn5pT15jCnw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IOther)))
+                .As(typeof(IGenericService<>))
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2884,6 +3260,21 @@
               Kind: ServiceDescriptor,
               LineNumber: 352,
               ExpressionHash: 8PKITxXbtylCwtC8RjJaLg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(
+                     f => f
+                        .WithAnyAttribute(
+                             typeof(ServiceRegistrationAttribute),
+                             typeof(ServiceRegistrationAttribute<,>),
+                             typeof(ServiceRegistrationAttribute<,,>),
+                             typeof(ServiceRegistrationAttribute<,,>),
+                             typeof(ServiceRegistrationAttribute<,,,>)
+                         )
+                 )
+                .AsSelf()
+                .WithSingletonLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -2966,6 +3357,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 366,
               ExpressionHash: MeX+mF+ej5803TONO0SaMw==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.InNamespaces("TestAssembly"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -3035,6 +3433,13 @@
               Kind: ServiceDescriptor,
               LineNumber: 372,
               ExpressionHash: NS4L/okk/PoVEOMIBVficg==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>().AssignableTo<IServiceB>().EndsWith("Factory"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -3125,6 +3530,25 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(
+                     f => f
+                        .WithAnyAttribute(
+                             typeof(ServiceRegistrationAttribute),
+                             typeof(ServiceRegistrationAttribute<,>),
+                             typeof(ServiceRegistrationAttribute<,,>),
+                             typeof(ServiceRegistrationAttribute<,,>),
+                             typeof(ServiceRegistrationAttribute<,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,,>)
+                         )
+                 )
+                 .AsSelf()
+                 .WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -3248,6 +3672,17 @@
             Kind: Reflection,
             LineNumber: 52,
             ExpressionHash: 9IUdfQbcsMAYS17mByAMdQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3260,13 +3695,55 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 52,
             ExpressionHash: 9IUdfQbcsMAYS17mByAMdQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3280,7 +3757,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3291,6 +3803,17 @@
             Kind: Reflection,
             LineNumber: 112,
             ExpressionHash: /Q4AySzV41Tdwlkpfg/GKA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.GenericType)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3304,13 +3827,59 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 112,
             ExpressionHash: /Q4AySzV41Tdwlkpfg/GKA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.GenericType)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3320,7 +3889,26 @@
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3331,6 +3919,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 268,
             ExpressionHash: CSc+6hElAjxc8UqHDR2nGg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>(), false)
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3346,7 +3941,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3357,6 +3967,17 @@
             Kind: Reflection,
             LineNumber: 72,
             ExpressionHash: 0fBeWD2wBlWIjLnT36cIow==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.ValueType)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3364,7 +3985,18 @@
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3375,6 +4007,12 @@
             Kind: ServiceDescriptor,
             LineNumber: 336,
             ExpressionHash: nGdrAptlVCEX9H6kHx0auw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IService)))
+                .As<IService>()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3383,7 +4021,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3394,6 +4047,12 @@
             Kind: ServiceDescriptor,
             LineNumber: 347,
             ExpressionHash: jm/nkIDlrjpFn5pT15jCnw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IOther)))
+                .As(typeof(IGenericService<>))
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3402,7 +4061,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3413,6 +4087,12 @@
             Kind: ServiceDescriptor,
             LineNumber: 331,
             ExpressionHash: HH9aVmBgFQ5bSAugUwbZsw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IValidator)))
+                .AsImplementedInterfaces(z => z.AssignableTo(typeof(IValidator<>)))
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3422,7 +4102,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3433,6 +4120,18 @@
             Kind: Reflection,
             LineNumber: 200,
             ExpressionHash: LS+xdTOmvs+8M+1OjvEf0g==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute(typeof(EditorBrowsableAttribute))
+                         .NotAssignableTo(typeof(Attribute))
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3442,13 +4141,32 @@
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 200,
             ExpressionHash: LS+xdTOmvs+8M+1OjvEf0g==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute(typeof(EditorBrowsableAttribute))
+                         .NotAssignableTo(typeof(Attribute))
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3471,13 +4189,84 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 200,
             ExpressionHash: LS+xdTOmvs+8M+1OjvEf0g==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute(typeof(EditorBrowsableAttribute))
+                         .NotAssignableTo(typeof(Attribute))
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3510,7 +4299,106 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3521,6 +4409,12 @@
             Kind: ServiceDescriptor,
             LineNumber: 274,
             ExpressionHash: fKfq36ZCDNfEou+qyyLEbw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>())
+                .As<IService>()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3529,7 +4423,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3540,6 +4449,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 325,
             ExpressionHash: nNzkffztFbvyPeXlZPkOkQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IOther)))
+                .AsSelf()
+                .AsImplementedInterfaces(z => z.AssignableTo(typeof(IGenericService<>)))
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3555,38 +4471,47 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
     eHCQsdYcJvAPkmMddpTiQg==: {
       ResolvedSources: {
-        OtherProject: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 82,
-            ExpressionHash: PCRHvamF6J3xug7jJLIREw==,
-            FileName: Input0.cs
-          },
-          Expression:
-{
-    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-},
-          PrivateAssemblies: [
-            OtherProject
-          ],
-          CacheVersion: {Scrubbed}
-        },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 82,
             ExpressionHash: PCRHvamF6J3xug7jJLIREw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Sealed)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
@@ -3599,26 +4524,54 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
 },
-          PrivateAssemblies: [
-            Specular
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
           ],
-          CacheVersion: {Scrubbed}
-        },
-        TestAssembly: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 82,
-            ExpressionHash: PCRHvamF6J3xug7jJLIREw==,
-            FileName: Input0.cs
-          },
-          Expression:
-{
-    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-},
-          PrivateAssemblies: [
-            TestAssembly
-          ],
-          CacheVersion: {Scrubbed}
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3629,6 +4582,17 @@
             Kind: Reflection,
             LineNumber: 62,
             ExpressionHash: 8EyoKKcMOOrD7HWlzslgwg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Visible)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3657,13 +4621,119 @@
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 62,
             ExpressionHash: 8EyoKKcMOOrD7HWlzslgwg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Visible)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3682,7 +4752,62 @@
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
     items.Add(typeof(global::TestAssembly.Service));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3693,6 +4818,17 @@
             Kind: Reflection,
             LineNumber: 32,
             ExpressionHash: l4cim5mnIPk4MmmE29qzUw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class, TypeKindFilter.Enum)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3705,13 +4841,55 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 32,
             ExpressionHash: l4cim5mnIPk4MmmE29qzUw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class, TypeKindFilter.Enum)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3725,7 +4903,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3736,6 +4949,17 @@
             Kind: Reflection,
             LineNumber: 22,
             ExpressionHash: cizxMQ3lnxFjX801wlpqbw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3750,13 +4974,63 @@
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 22,
             ExpressionHash: cizxMQ3lnxFjX801wlpqbw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate, TypeKindFilter.Class)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -3770,7 +5044,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3781,6 +5090,12 @@
             Kind: ServiceDescriptor,
             LineNumber: 302,
             ExpressionHash: a8a5Us+LBXHvnbZedXasXw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo(typeof(IRequestHandler<,>)))
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3790,7 +5105,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3801,13 +5123,31 @@
             Kind: Reflection,
             LineNumber: 190,
             ExpressionHash: cNBTr21Y/0DD1+cR1se7TQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithAttribute<EditorBrowsableAttribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3818,6 +5158,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 341,
             ExpressionHash: iOVNY6dfLzra3vCDdW4AxA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IOther)))
+                .AsSelf()
+                .As(typeof(IGenericService<>))
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3829,7 +5176,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3840,6 +5202,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 279,
             ExpressionHash: RF0U3ve7NmkBVhOpOoW7bQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>())
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3855,7 +5224,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3866,6 +5250,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 313,
             ExpressionHash: e8KAWIaBqxCKvrQ5PGf0qg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB)))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -3881,7 +5272,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3892,28 +5298,55 @@
             Kind: Reflection,
             LineNumber: 122,
             ExpressionHash: /W5+1QbQLNSoqBDFr/pvdA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 122,
             ExpressionHash: /W5+1QbQLNSoqBDFr/pvdA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(Specular.GetType("MyAssembly")!);
     items.Add(Specular.GetType("MyAssembly+Info")!);
     items.Add(Specular.GetType("MyAssembly+Metadata")!);
@@ -3938,18 +5371,111 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 122,
             ExpressionHash: /W5+1QbQLNSoqBDFr/pvdA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Abstract)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(TestAssembly.GetType("MyAssembly")!);
     items.Add(TestAssembly.GetType("MyAssembly+Info")!);
     items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
@@ -3970,7 +5496,74 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -3981,28 +5574,55 @@
             Kind: Reflection,
             LineNumber: 102,
             ExpressionHash: fsFGHt8fY/Soe/yfBavpPA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 102,
             ExpressionHash: fsFGHt8fY/Soe/yfBavpPA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
     items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
     items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
@@ -4025,21 +5645,115 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
 },
-          PrivateAssemblies: [
-            Specular
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
           ],
-          CacheVersion: {Scrubbed}
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 102,
             ExpressionHash: fsFGHt8fY/Soe/yfBavpPA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -4063,7 +5777,86 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4074,6 +5867,17 @@
             Kind: Reflection,
             LineNumber: 92,
             ExpressionHash: +FkT4btNbS4PRfcftoFbtA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4088,13 +5892,51 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 92,
             ExpressionHash: +FkT4btNbS4PRfcftoFbtA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .InfoOf(TypeInfoFilter.Static)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4108,7 +5950,30 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4119,6 +5984,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 262,
             ExpressionHash: lk0ALym+V2W6xQDXO/AkYw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IServiceB>(), false)
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4127,7 +5999,14 @@
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4138,6 +6017,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 307,
             ExpressionHash: xbYAbKX/QnnClXoKl6q/Aw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>().AssignableTo<IServiceB>())
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4146,7 +6032,14 @@
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4157,6 +6050,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 366,
             ExpressionHash: MeX+mF+ej5803TONO0SaMw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.InNamespaces("TestAssembly"))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4192,7 +6092,54 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4203,13 +6150,31 @@
             Kind: Reflection,
             LineNumber: 180,
             ExpressionHash: Edc9cxDaKw/uRcTfQ0BxWQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithAttribute(typeof(EditorBrowsableAttribute))
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4220,6 +6185,18 @@
             Kind: Reflection,
             LineNumber: 147,
             ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.ValueType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4229,13 +6206,32 @@
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 147,
             ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.ValueType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4257,13 +6253,80 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 147,
             ExpressionHash: s3+YB+Nc72MZzZXRrB9ZBQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.ValueType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4296,7 +6359,106 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4307,28 +6469,55 @@
             Kind: Reflection,
             LineNumber: 42,
             ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate)
+                         .NotKindOf(TypeKindFilter.Interface)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
 },
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 42,
             ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate)
+                         .NotKindOf(TypeKindFilter.Interface)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(Specular.GetType("MyAssembly")!);
     items.Add(Specular.GetType("MyAssembly+Info")!);
     items.Add(Specular.GetType("MyAssembly+Metadata")!);
@@ -4353,18 +6542,111 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 42,
             ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotKindOf(TypeKindFilter.Delegate)
+                         .NotKindOf(TypeKindFilter.Interface)
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(TestAssembly.GetType("MyAssembly")!);
     items.Add(TestAssembly.GetType("MyAssembly+Info")!);
     items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
@@ -4385,7 +6667,74 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4396,6 +6745,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 285,
             ExpressionHash: H/jKai1h1B6jnFlFcyi7Tg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo<IService>())
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4411,7 +6767,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4422,6 +6793,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 296,
             ExpressionHash: GC4f7Eu/9wIch8wpSP2wyQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo(typeof(IGenericService<>)))
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4440,7 +6818,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4451,6 +6844,18 @@
             Kind: Reflection,
             LineNumber: 132,
             ExpressionHash: 5gXgnlFcQRYQSxrJGJuZeA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Visible)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4460,13 +6865,32 @@
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 132,
             ExpressionHash: 5gXgnlFcQRYQSxrJGJuZeA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Visible)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4479,13 +6903,44 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 132,
             ExpressionHash: 5gXgnlFcQRYQSxrJGJuZeA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Visible)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4505,7 +6960,54 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4516,6 +7018,17 @@
             Kind: Reflection,
             LineNumber: 252,
             ExpressionHash: btOVlu+Naw13LAV9tKR6WA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     true,
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4544,13 +7057,119 @@
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 252,
             ExpressionHash: btOVlu+Naw13LAV9tKR6WA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     true,
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4569,7 +7188,62 @@
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
     items.Add(typeof(global::TestAssembly.Service));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4580,6 +7254,12 @@
             Kind: ServiceDescriptor,
             LineNumber: 291,
             ExpressionHash: Cig2XJLApDe8z9wMh/IDUA==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableTo(typeof(IGenericService<>)))
+                .AsSelfWithInterfaces()
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4598,7 +7278,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4609,6 +7304,13 @@
             Kind: ServiceDescriptor,
             LineNumber: 319,
             ExpressionHash: QR7ilMUHdBOqlpGLxKKLDQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB)))
+                .AsSelf()
+                .AsImplementedInterfaces(z => z.AssignableTo<IServiceB>())
+                .WithScopedLifetime(),
             FileName: Input0.cs
           },
           Expression:
@@ -4621,7 +7323,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4632,6 +7349,18 @@
             Kind: Reflection,
             LineNumber: 211,
             ExpressionHash: dODyg69BE0Nso/u2dEJZBw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute<EditorBrowsableAttribute>()
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4641,13 +7370,32 @@
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 211,
             ExpressionHash: dODyg69BE0Nso/u2dEJZBw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute<EditorBrowsableAttribute>()
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4670,13 +7418,84 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 211,
             ExpressionHash: dODyg69BE0Nso/u2dEJZBw==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .WithoutAttribute<EditorBrowsableAttribute>()
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4709,7 +7528,106 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4720,6 +7638,18 @@
             Kind: Reflection,
             LineNumber: 169,
             ExpressionHash: qOfjb0SDPwHcKNlpG9ytrQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.GenericType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4729,13 +7659,32 @@
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 169,
             ExpressionHash: qOfjb0SDPwHcKNlpG9ytrQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.GenericType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4759,13 +7708,88 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 169,
             ExpressionHash: qOfjb0SDPwHcKNlpG9ytrQ==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.GenericType)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4794,7 +7818,90 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -4805,6 +7912,18 @@
             Kind: Reflection,
             LineNumber: 158,
             ExpressionHash: yj9cWza0VGt3OBTGaxhaYg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Sealed)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4814,13 +7933,32 @@
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Program
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         Specular: {
           Location: {
             Kind: Reflection,
             LineNumber: 158,
             ExpressionHash: yj9cWza0VGt3OBTGaxhaYg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Sealed)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4842,13 +7980,80 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: MyAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: Specular,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
             Kind: Reflection,
             LineNumber: 158,
             ExpressionHash: yj9cWza0VGt3OBTGaxhaYg==,
+            SelectorText:
+z => z
+                .FromAssemblies()
+                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
+                .GetTypes(
+                     x => x
+                         .NotAssignableTo<ISpecularProvider>()
+                         .NotInfoOf(TypeInfoFilter.Sealed)
+                         .NotAssignableTo<Attribute>()
+                         .NotInNamespaces("JetBrains.Annotations", "Polyfills", "System")
+                         .NotStartsWith("Polyfill")
+                 ),
             FileName: Input0.cs
           },
           Expression:
@@ -4881,7 +8086,106 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Metadata
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Project
+            },
+            {
+              Assembly: TestAssembly,
+              Type: MyAssembly+Info
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

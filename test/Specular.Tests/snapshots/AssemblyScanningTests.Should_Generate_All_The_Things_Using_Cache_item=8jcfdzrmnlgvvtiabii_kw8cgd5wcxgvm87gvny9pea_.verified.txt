@@ -155,7 +155,42 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -171,7 +206,26 @@
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

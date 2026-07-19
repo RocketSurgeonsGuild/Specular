@@ -255,7 +255,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

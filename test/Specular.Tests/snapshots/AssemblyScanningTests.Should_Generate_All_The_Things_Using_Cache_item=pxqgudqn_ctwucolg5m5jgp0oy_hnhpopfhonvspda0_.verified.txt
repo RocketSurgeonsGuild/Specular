@@ -157,7 +157,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

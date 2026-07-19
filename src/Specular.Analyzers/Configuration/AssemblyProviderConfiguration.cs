@@ -1,11 +1,11 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text.Json;
-using Specular.Analyzers.AssemblyProviders;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Specular.Analyzers.AssemblyProviders;
+using Specular.Analyzers.Descriptors;
 
 namespace Specular.Analyzers.Configuration;
 
@@ -161,7 +161,7 @@ internal sealed partial class AssemblyProviderConfiguration
 
     private static byte[] DecompressString(string base64String) => Convert.FromBase64String(base64String);
 
-    private static INamedTypeSymbol? findType(
+    internal static INamedTypeSymbol? findType(
         ImmutableDictionary<string, IAssemblySymbol> assemblySymbols,
         Compilation compilation,
         string assemblyName,

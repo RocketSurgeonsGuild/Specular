@@ -226,7 +226,38 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -246,7 +277,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

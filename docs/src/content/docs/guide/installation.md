@@ -70,7 +70,7 @@ Console.WriteLine(provider.GetType().FullName); // should print "SpecularProvide
 
 ## No Additional Configuration
 
-That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knob is `<SpecularEmitProvider>` (see step 2) for libraries that should not emit their own provider. The `SpecularProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
+That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knobs are `<SpecularEmitProvider>` (see step 2) for libraries that should not emit their own provider, and `<SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>` to opt out of the [scan report](../architecture/scan-report.md) (on by default). The `SpecularProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
 
 ## Next Steps
 

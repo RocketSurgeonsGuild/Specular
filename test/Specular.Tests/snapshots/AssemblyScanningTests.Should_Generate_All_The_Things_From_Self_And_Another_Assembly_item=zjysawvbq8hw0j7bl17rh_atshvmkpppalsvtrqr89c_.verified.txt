@@ -253,7 +253,54 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

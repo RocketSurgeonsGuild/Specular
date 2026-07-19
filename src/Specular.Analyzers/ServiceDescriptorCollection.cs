@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.AssemblyProviders;
-using Specular.Analyzers.Configuration;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Specular.Analyzers.AssemblyProviders;
+using Specular.Analyzers.Configuration;
+using Specular.Analyzers.Descriptors;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
@@ -23,7 +23,6 @@ internal static class ServiceDescriptorCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
-    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ResolvedSourceLocation? ResolveSource(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -52,7 +51,8 @@ internal static class ServiceDescriptorCollection
                 if (reducedTypes.Count == 0) return null;
 
                 var localBlock = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion());
+                var discoveredTypes = reducedTypes.Select(z => new ScanReportTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z))).ToImmutableArray();
+                return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion(), discoveredTypes);
             }
         }
         catch (Exception e)

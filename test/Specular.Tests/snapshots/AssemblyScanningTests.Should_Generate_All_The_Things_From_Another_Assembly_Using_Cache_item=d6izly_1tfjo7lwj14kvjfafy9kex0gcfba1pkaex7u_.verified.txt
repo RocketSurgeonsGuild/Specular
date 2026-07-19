@@ -222,7 +222,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

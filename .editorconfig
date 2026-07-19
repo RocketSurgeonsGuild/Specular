@@ -2503,6 +2503,8 @@ dotnet_diagnostic.IDE0330.severity = warning
 dotnet_diagnostic.IDE1005.severity = warning
 # Options: csharp_style_conditional_delegate_call
 
+dotnet_diagnostic.IDE1100.severity = none
+
 ###################################################################################################################
 ###                     Roslynator
 ###        Reference: https://josefpihrt.github.io/docs/roslynator/configuration

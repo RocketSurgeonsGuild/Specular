@@ -220,7 +220,14 @@
 {
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

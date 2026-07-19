@@ -34,27 +34,15 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
             case 16:
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
+                items.Add(OtherProject.GetType("Specular.SpecularScanReport")!);
+                items.Add(OtherProject.GetType("Specular.SpecularScanReport")!);
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+                items.Add(Specular.GetType("Specular.SpecularScanReport")!);
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(Specular.GetType("MyAssembly")!);
-                items.Add(Specular.GetType("MyAssembly+Info")!);
-                items.Add(Specular.GetType("MyAssembly+Metadata")!);
-                items.Add(Specular.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+                items.Add(Specular.GetType("Specular.SpecularScanReport")!);
                 items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(TestAssembly.GetType("MyAssembly")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-                items.Add(TestAssembly.GetType("MyAssembly+Project")!);
                 items.Add(typeof(global::TestAssembly.Nested));
                 break;
         }
@@ -67,13 +55,13 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Info", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Metadata", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Project", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Info", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Metadata", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "MyAssembly+Project", "TestAssembly")]
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.SpecularScanReport", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.SpecularScanReport", "Specular")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
+    private Assembly _OtherProject;
+    private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));
+
     private Assembly _Specular;
     private Assembly Specular => _Specular ??= _context.LoadFromAssemblyName(new AssemblyName("Specular, Version=version, Culture=neutral, PublicKeyToken=null"));
-
-    private Assembly _TestAssembly;
-    private Assembly TestAssembly => _TestAssembly ??= _context.LoadFromAssemblyName(new AssemblyName("TestAssembly, Version=version, Culture=neutral, PublicKeyToken=null"));
 }
 #pragma warning restore CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
 #nullable restore

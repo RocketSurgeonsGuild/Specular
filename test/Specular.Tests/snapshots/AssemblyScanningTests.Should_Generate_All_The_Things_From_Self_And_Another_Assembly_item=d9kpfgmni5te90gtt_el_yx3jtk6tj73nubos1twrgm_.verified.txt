@@ -209,6 +209,29 @@
   PartialsCached: {
     zAqgnX/H+MZsdiz/NC/Jdg==: {
       ResolvedSources: {
+        OtherProject: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: +FkT4btNbS4PRfcftoFbtA==,
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(OtherProject.GetType("Specular.SpecularScanReport")!);
+},
+          PrivateAssemblies: [
+            OtherProject
+          ],
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: OtherProject,
+              Type: Specular.SpecularScanReport
+            }
+          ],
+          DiscoveredAssemblies: null
+        },
         Specular: {
           Location: {
             Kind: Reflection,
@@ -218,17 +241,29 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -239,16 +274,16 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::TestAssembly.Nested));
 },
-          PrivateAssemblies: [
-            TestAssembly
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            }
           ],
-          CacheVersion: {Scrubbed}
+          DiscoveredAssemblies: null
         }
       }
     }

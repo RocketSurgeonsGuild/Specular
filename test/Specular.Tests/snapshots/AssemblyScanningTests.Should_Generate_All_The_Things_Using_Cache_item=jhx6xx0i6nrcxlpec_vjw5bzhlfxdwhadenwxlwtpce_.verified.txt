@@ -9,7 +9,232 @@
     System.Runtime,
     TestAssembly
   ],
-  FinalDiagnostics: [],
+  FinalDiagnostics: [
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,104)-(25,157),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,189)-(25,239),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,262)-(25,310),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,332)-(25,334),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (26,104)-(26,157),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (26,189)-(26,239),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (26,262)-(26,310),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (26,332)-(26,334),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (27,104)-(27,157),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (27,189)-(27,239),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (27,262)-(27,310),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (27,332)-(27,334),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (28,107)-(28,109),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (29,107)-(29,109),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    }
+  ],
   GeneratedCache: {
     Specular: {
       InternalServiceDescriptorRequests: [
@@ -154,7 +379,38 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -174,7 +430,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -198,7 +489,42 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -214,7 +540,26 @@
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -240,7 +585,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -257,8 +617,27 @@
 {
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
 },
-          CacheVersion: {Scrubbed}
+          PrivateAssemblies: [
+            Specular
+          ],
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -280,7 +659,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -302,7 +696,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -322,7 +731,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -337,10 +753,6 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
     items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -350,12 +762,80 @@
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -366,10 +846,6 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -394,7 +870,90 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -416,7 +975,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -442,7 +1016,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -461,6 +1050,10 @@
     items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
@@ -473,7 +1066,74 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -489,7 +1149,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -528,7 +1195,102 @@
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -553,7 +1315,62 @@
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
     items.Add(typeof(global::TestAssembly.Service));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -576,7 +1393,38 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -596,7 +1444,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -620,8 +1503,55 @@
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
 },
-          CacheVersion: {Scrubbed}
+          PrivateAssemblies: [
+            Specular
+          ],
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -641,7 +1571,42 @@
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -661,7 +1626,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -678,7 +1650,14 @@
 {
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -703,7 +1682,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -729,7 +1723,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -755,7 +1764,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -771,15 +1795,15 @@
           Expression:
 {
     items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
     items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
     items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
@@ -790,12 +1814,104 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -807,10 +1923,6 @@
           Expression:
 {
     items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.Nested));
@@ -827,7 +1939,62 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -855,6 +2022,10 @@
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
     items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
@@ -868,7 +2039,114 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -903,7 +2181,90 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -918,17 +2279,29 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -939,16 +2312,16 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::TestAssembly.Nested));
 },
-          PrivateAssemblies: [
-            TestAssembly
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            }
           ],
-          CacheVersion: {Scrubbed}
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -967,7 +2340,14 @@
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -986,7 +2366,14 @@
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IService>(a => a.GetRequiredService<global::TestAssembly.Service>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IServiceB>(a => a.GetRequiredService<global::TestAssembly.Service>()));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1032,7 +2419,54 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1049,7 +2483,14 @@
 {
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1064,10 +2505,6 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
     items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -1075,13 +2512,72 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceLifetimeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1092,10 +2588,6 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -1120,7 +2612,90 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1136,15 +2711,15 @@
           Expression:
 {
     items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
     items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
     items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
@@ -1155,12 +2730,104 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1172,10 +2839,6 @@
           Expression:
 {
     items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.Nested));
@@ -1192,7 +2855,62 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1218,7 +2936,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1247,7 +2980,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1262,15 +3010,39 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1281,10 +3053,6 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
     items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
@@ -1296,7 +3064,38 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1335,7 +3134,102 @@
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
     items.Add(typeof(global::Specular.SpecularSupport));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.RegistrationLifetimeAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ExcludeFromSpecularAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1360,7 +3254,62 @@
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
     items.Add(typeof(global::TestAssembly.Service));
 },
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1389,7 +3338,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1412,7 +3376,22 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1427,10 +3406,6 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
     items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -1440,12 +3415,80 @@
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1456,10 +3499,6 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -1484,7 +3523,90 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1499,10 +3621,6 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
     items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -1512,13 +3630,85 @@
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1529,10 +3719,6 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IOther));
@@ -1553,7 +3739,74 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     },
@@ -1568,10 +3821,6 @@
           },
           Expression:
 {
-    items.Add(Specular.GetType("MyAssembly")!);
-    items.Add(Specular.GetType("MyAssembly+Info")!);
-    items.Add(Specular.GetType("MyAssembly+Metadata")!);
-    items.Add(Specular.GetType("MyAssembly+Project")!);
     items.Add(typeof(global::Specular.Abstractions.IReflectionAssemblySelector));
     items.Add(typeof(global::Specular.Abstractions.IReflectionTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.IServiceDescriptorAssemblySelector));
@@ -1580,12 +3829,56 @@
     items.Add(typeof(global::Specular.Abstractions.IServiceTypeSelector));
     items.Add(typeof(global::Specular.Abstractions.ITypeFilter));
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
+    items.Add(Specular.GetType("Specular.SpecularScanReport")!);
     items.Add(typeof(global::Specular.SpecularSupport));
 },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularSupport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.SpecularScanReport
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IReflectionTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorAssemblySelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceDescriptorTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceLifetimeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.IServiceTypeSelector
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.ITypeFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -1596,10 +3889,6 @@
           },
           Expression:
 {
-    items.Add(TestAssembly.GetType("MyAssembly")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Info")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Metadata")!);
-    items.Add(TestAssembly.GetType("MyAssembly+Project")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
@@ -1624,7 +3913,90 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Service
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+ServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+GenericServiceA
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+MyRecord
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Nested+Validator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.ServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequest`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IRequestHandler`2
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Request
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.Response
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.RequestHandler
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IOther
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IGenericService`1
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericService
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.GenericServiceB
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator
+            },
+            {
+              Assembly: TestAssembly,
+              Type: TestAssembly.IValidator`1
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }

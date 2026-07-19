@@ -9,7 +9,72 @@
     System.Runtime,
     TestAssembly
   ],
-  FinalDiagnostics: [],
+  FinalDiagnostics: [
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,104)-(25,157),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,189)-(25,239),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,262)-(25,310),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1503,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs: (25,332)-(25,334),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1503),
+      MessageFormat: Argument {0}: cannot convert from '{1}' to '{2}',
+      Message: Argument 2: cannot convert from 'string' to 'System.Reflection.Assembly?',
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    }
+  ],
   GeneratedCache: {
     Specular: {
       InternalServiceDescriptorRequests: [

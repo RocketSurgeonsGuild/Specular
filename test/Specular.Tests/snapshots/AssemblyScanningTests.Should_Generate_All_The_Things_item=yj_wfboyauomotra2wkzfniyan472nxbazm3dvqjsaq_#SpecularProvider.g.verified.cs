@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Specular;
 using Specular.Abstractions;
+using System.Runtime.Loader;
 
 [assembly: System.Reflection.AssemblyMetadata("AssemblyProvider.ReflectionTypes","{scrubbed}")]
 [assembly: Specular.Abstractions.SpecularHashAttribute("{scrubbed}")]
@@ -25,6 +26,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         return items;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
@@ -34,6 +36,7 @@ internal sealed class SpecularProvider : ISpecularProvider
             case 16:
                 items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
                 items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+                items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
                 break;
         }
 
@@ -44,6 +47,11 @@ internal sealed class SpecularProvider : ISpecularProvider
     {
         return services;
     }
+
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Specular.ScannerExpressionKind", "Specular")]
+    private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
+    private Assembly _Specular;
+    private Assembly Specular => _Specular ??= _context.LoadFromAssemblyName(new AssemblyName("Specular, Version=version, Culture=neutral, PublicKeyToken=null"));
 }
 #pragma warning restore CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
 #nullable restore

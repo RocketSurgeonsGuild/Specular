@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.AssemblyProviders;
-using Specular.Analyzers.Configuration;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Specular.Analyzers.AssemblyProviders;
+using Specular.Analyzers.Configuration;
+using Specular.Analyzers.Descriptors;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
@@ -137,7 +137,8 @@ internal static class AssemblyCollection
                 if (filterAssemblies.Length == 0) continue;
 
                 var descriptors = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                results.Add(new(item.Location, descriptors, pa.Select(z => z.MetadataName).ToImmutableHashSet(), ""));
+                var discoveredAssemblies = filterAssemblies.Select(z => z.MetadataName).ToImmutableArray();
+                results.Add(new(item.Location, descriptors, pa.Select(z => z.MetadataName).ToImmutableHashSet(), "", DiscoveredAssemblies: discoveredAssemblies));
             }
             catch (Exception e)
             {

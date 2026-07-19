@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
-using Specular.Analyzers.Configuration;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Specular.Analyzers.Configuration;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
@@ -88,6 +88,12 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                 var emitProvider = !request.options.GlobalOptions.TryGetValue("build_property.SpecularEmitProvider", out var emitProviderValue)
                  || !bool.TryParse(emitProviderValue, out var parsedEmitProvider)
                  || parsedEmitProvider;
+                // Emits SpecularScanReport.g.cs (discovered scanner expressions, assemblies, and types, plus a
+                // Mermaid rendering) by default; opt out with <SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>.
+                var generateScanReport =
+                    !request.options.GlobalOptions.TryGetValue("build_property.SpecularGenerateDiagnostics", out var generateScanReportValue)
+                 || !bool.TryParse(generateScanReportValue, out var parsedGenerateScanReport)
+                 || parsedGenerateScanReport;
                 var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
                 var diagnostics = new HashSet<Diagnostic>();
 
@@ -241,6 +247,11 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                     cu = cu.AddMembers(assemblyProvider);
                 }
 
+                if (generateScanReport)
+                {
+                    TryAddScanReport(context, diagnostics, assemblySources, reflectionSources, serviceDescriptorSources, request.compilation, assemblySymbols);
+                }
+
                 foreach (var diagnostic in diagnostics)
                 {
                     context.ReportDiagnostic(diagnostic);
@@ -312,5 +323,36 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         var parseOptions = compilation.SyntaxTrees.Select(z => z.Options).FirstOrDefault() as CSharpParseOptions;
         var shellTree = CSharpSyntaxTree.ParseText(shellSource, parseOptions);
         return compilation.AddSyntaxTrees(shellTree);
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
+    private static void TryAddScanReport(
+        SourceProductionContext context,
+        HashSet<Diagnostic> diagnostics,
+        ImmutableList<ResolvedSourceLocation> assemblySources,
+        ImmutableList<ResolvedSourceLocation> reflectionSources,
+        ImmutableList<ResolvedSourceLocation> serviceDescriptorSources,
+        Compilation compilation,
+        ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
+    )
+    {
+        try
+        {
+            var scanReport = ScanReport.ScanReportBuilder.GetScanReport(assemblySources, reflectionSources, serviceDescriptorSources, compilation, assemblySymbols);
+            context.AddSource("SpecularScanReport.g.cs", scanReport);
+        }
+        catch (Exception e)
+        {
+            diagnostics.Add(
+                Diagnostic.Create(
+                    Diagnostics.UnhandledException,
+                    null,
+                    e.Message,
+                    e.StackTrace?.Replace("\r", "").Replace("\n", ""),
+                    e.GetType().Name,
+                    e.ToString()
+                )
+            );
+        }
     }
 }

@@ -18,6 +18,7 @@
             Location: {
               LineNumber: 16,
               ExpressionHash: Z9rFHKTvVtL4pjKVS65ieA==,
+              SelectorText: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>(),
               FileName: Input0.cs
             },
             Assembly: {
@@ -45,6 +46,25 @@
               Kind: ServiceDescriptor,
               LineNumber: 19,
               ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              SelectorText:
+z => z
+                .FromAssemblies()
+                .AddClasses(
+                     f => f
+                        .WithAnyAttribute(
+                             typeof(ServiceRegistrationAttribute),
+                             typeof(ServiceRegistrationAttribute<,>),
+                             typeof(ServiceRegistrationAttribute<,,>),
+                             typeof(ServiceRegistrationAttribute<,,>),
+                             typeof(ServiceRegistrationAttribute<,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,,>)
+                         )
+                 )
+                 .AsSelf()
+                 .WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {

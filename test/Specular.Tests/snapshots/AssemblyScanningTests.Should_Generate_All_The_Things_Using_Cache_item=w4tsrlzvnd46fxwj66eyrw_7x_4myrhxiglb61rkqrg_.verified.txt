@@ -150,6 +150,10 @@
     items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
     items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
     items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
+    items.Add(Specular.GetType("Specular.ScannerExpression")!);
+    items.Add(Specular.GetType("Specular.ScannerExpressionKind")!);
+    items.Add(Specular.GetType("Specular.ScanReportAssembly")!);
+    items.Add(Specular.GetType("Specular.ScanReportType")!);
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
@@ -162,7 +166,74 @@
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: Specular,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`1
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`2
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`3
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`4
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`5
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`6
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`7
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ServiceRegistrationAttribute`8
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpressionKind
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportType
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScanReportAssembly
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.ScannerExpression
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              Assembly: Specular,
+              Type: Specular.Abstractions.TypeKindFilter
+            }
+          ],
+          DiscoveredAssemblies: null
         },
         TestAssembly: {
           Location: {
@@ -178,7 +249,14 @@
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed}
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Assembly: TestAssembly,
+              Type: Microsoft.CodeAnalysis.EmbeddedAttribute
+            }
+          ],
+          DiscoveredAssemblies: null
         }
       }
     }
