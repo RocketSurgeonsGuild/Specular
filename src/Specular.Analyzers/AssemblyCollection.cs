@@ -134,15 +134,14 @@ internal static class AssemblyCollection
                                       .Where(z => item.AssemblyFilter.IsMatch(compilation, z))
                                       .ToArray();
 
-                var descriptors = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                var discoveredAssemblies = filterAssemblies.Select(z => z.MetadataName).ToImmutableList();
+                var (descriptors, reportEntries) = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa);
                 results.Add(new(
                     item.Location,
-                    descriptors,
+                    descriptors.NormalizeWhitespace().ToFullString().Replace("\r", ""),
                     pa.Select(z => z.MetadataName).ToImmutableHashSet(),
                     "",
                     [],
-                    discoveredAssemblies,
+                    reportEntries,
                     [],
                     item.Location.SourceAssemblyName
                 ));
@@ -168,11 +167,13 @@ internal static class AssemblyCollection
 
     public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter);
 
-    private static BlockSyntax GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
+    private sealed record AssemblyScanGeneration(BlockSyntax Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
+    private static AssemblyScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
         var block = Block();
-        foreach (var assembly in assemblies.OrderBy(z => z.ToDisplayString()))
+        var reportEntries = ImmutableList.CreateBuilder<AssemblyScanReportEntryData>();
+        foreach (var assembly in assemblies.OrderBy(z => z.MetadataName))
         {
             // TODO: Make this always use the load context?
             if (StatementGeneration.GetAssemblyExpression(compilation, assembly) is not { } assemblyExpression)
@@ -192,6 +193,7 @@ internal static class AssemblyCollection
                            .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(StatementGeneration.GetPrivateAssembly(assembly)))))
                     )
                 );
+                reportEntries.Add(new(assembly.Identity.Name));
                 continue;
             }
 
@@ -201,9 +203,10 @@ internal static class AssemblyCollection
                        .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(assemblyExpression))))
                 )
             );
+            reportEntries.Add(new(assembly.Identity.Name));
         }
 
-        return block;
+        return new(block, reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetMethod(node) is { method: { }, selector: { } };

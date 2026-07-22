@@ -1,7 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
 using Specular.Samples.Catalog;
 using Specular.Samples.Diagnostics;
 using Specular.Samples.Notifications;
-using Microsoft.Extensions.DependencyInjection;
 
 // Specular.Samples.Console — proves compile-time scanning of the three sample libraries end-to-end.
 //

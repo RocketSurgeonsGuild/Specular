@@ -7,7 +7,7 @@
       WarningLevel: 1,
       Location: : (0,0)-(0,0),
       MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-      Message: 'SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+      Message: 'global::SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
       Category: Dependency Injection
     },
     {
@@ -17,20 +17,7 @@
       WarningLevel: 1,
       Location: : (0,0)-(0,0),
       MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-      Message: 'SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
-      Category: Dependency Injection
-    },
-    {
-      Id: RSGD0006,
-      Title: Unhandled exception,
-      Severity: Warning,
-      WarningLevel: 1,
-      Location: : (0,0)-(0,0),
-      MessageFormat: Unhandled exception has occured {2} {0} -- Stack Trace: {1} {3},
-      Message:
-Unhandled exception has occured ArgumentException The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source') -- Stack Trace:    at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355 System.ArgumentException: The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source')
-   at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83
-   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355,
+      Message: 'global::SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
       Category: Dependency Injection
     }
   ],
@@ -43,7 +30,7 @@ Unhandled exception has occured ArgumentException The SourceText with hintName '
         WarningLevel: 1,
         Location: : (0,0)-(0,0),
         MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-        Message: 'SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+        Message: 'global::SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
         Category: Dependency Injection
       },
       {
@@ -53,20 +40,7 @@ Unhandled exception has occured ArgumentException The SourceText with hintName '
         WarningLevel: 1,
         Location: : (0,0)-(0,0),
         MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-        Message: 'SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
-        Category: Dependency Injection
-      },
-      {
-        Id: RSGD0006,
-        Title: Unhandled exception,
-        Severity: Warning,
-        WarningLevel: 1,
-        Location: : (0,0)-(0,0),
-        MessageFormat: Unhandled exception has occured {2} {0} -- Stack Trace: {1} {3},
-        Message:
-Unhandled exception has occured ArgumentException The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source') -- Stack Trace:    at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355 System.ArgumentException: The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source')
-   at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83
-   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355,
+        Message: 'global::SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
         Category: Dependency Injection
       }
     ]
@@ -85,6 +59,7 @@ Unhandled exception has occured ArgumentException The SourceText with hintName '
     mscorlib.dll,
     netstandard.dll,
     Specular.dll,
+    System.Collections.Immutable.dll,
     System.ComponentModel.dll,
     System.Core.dll,
     System.dll,

@@ -1,23 +1,27 @@
 using System.Text.RegularExpressions;
-using Specular.Analyzers.AssemblyProviders;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Specular.Analyzers.AssemblyProviders;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
 
 internal static class StatementGeneration
 {
-    public static InvocationExpressionSyntax GenerateServiceFactory(
+    public static InvocationExpressionSyntax? GenerateServiceFactory(
         Compilation compilation,
         INamedTypeSymbol serviceType,
         INamedTypeSymbol implementationType,
         string lifetime
     )
     {
-        var serviceTypeExpression = GetTypeOfExpression(compilation, serviceType);
+        var serviceTypeExpression = GetTypeOfExpression(compilation, serviceType, true);
+        if (serviceTypeExpression is null)
+        {
+            return null;
+        }
         var isImplementationAccessible = compilation.IsSymbolAccessibleWithin(implementationType, compilation.Assembly);
 
         if (isImplementationAccessible)
@@ -50,12 +54,17 @@ internal static class StatementGeneration
         else
         {
             var isServiceAccessible = compilation.IsSymbolAccessibleWithin(serviceType, compilation.Assembly);
+            var typeofExpression = GetTypeOfExpression(compilation, implementationType, serviceType, true);
+            if (typeofExpression is null)
+            {
+                return null;
+            }
             var baseInvocation = InvocationExpression(
                     MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("a"), IdentifierName("GetRequiredService"))
                 )
                .WithArgumentList(
                     ArgumentList(
-                        SingletonSeparatedList(Argument(GetTypeOfExpression(compilation, implementationType, serviceType)))
+                        SingletonSeparatedList(Argument(typeofExpression))
                     )
                 );
             var implementationTypeExpression = SimpleLambdaExpression(Parameter(Identifier("a")))
@@ -75,16 +84,18 @@ internal static class StatementGeneration
         }
     }
 
-    public static InvocationExpressionSyntax GenerateServiceType(
+    public static InvocationExpressionSyntax? GenerateServiceType(
         Compilation compilation,
         INamedTypeSymbol serviceType,
         INamedTypeSymbol implementationType,
         string lifetime
     )
     {
-        var serviceTypeExpression = GetTypeOfExpression(compilation, serviceType);
-        var implementationTypeExpression = GetTypeOfExpression(compilation, implementationType, serviceType);
-        return GenerateServiceType(
+        var serviceTypeExpression = GetTypeOfExpression(compilation, serviceType, true);
+        var implementationTypeExpression = GetTypeOfExpression(compilation, implementationType, serviceType, true);
+        return  serviceTypeExpression is null || implementationTypeExpression is null 
+            ?   null  
+            :  GenerateServiceType(
             compilation,
             serviceType,
             serviceTypeExpression,
@@ -126,7 +137,8 @@ internal static class StatementGeneration
                             IdentifierName("ServiceDescriptor"),
                             GenericName(lifetime).WithTypeArgumentList(TypeArgumentList(SeparatedList([serviceTypeSyntax])))
                         )
-                    ).WithArgumentList(ArgumentList(SeparatedList([Argument(implementationTypeExpression)]))),
+                    )
+                   .WithArgumentList(ArgumentList(SeparatedList([Argument(implementationTypeExpression)]))),
             _ => InvocationExpression(
                     MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("ServiceDescriptor"), IdentifierName(lifetime))
                 )
@@ -192,57 +204,68 @@ internal static class StatementGeneration
     }
 
 
-    public static ExpressionSyntax? GetAssemblyExpression(Compilation compilation, IAssemblySymbol assembly) =>
-        FindTypeInAssembly.FindType(compilation, assembly) is { } keyholdType
-            ? MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                GetTypeOfExpression(compilation, keyholdType),
-                IdentifierName("Assembly")
-            )
-            : null;
-
-    public static ExpressionSyntax GetTypeOfExpression(Compilation compilation, INamedTypeSymbol type)
+    public static ExpressionSyntax? GetAssemblyExpression(Compilation compilation, IAssemblySymbol assembly)
     {
-        return type.IsGenericType && type.IsOpenGenericType()
-            ? getPrivateType(compilation, type)
-            : !compilation.IsSymbolAccessibleWithin(type, compilation.Assembly) && type.IsGenericType && !type.IsOpenGenericType()
-                ? PostfixUnaryExpression(
-                    SyntaxKind.SuppressNullableWarningExpression,
-                    InvocationExpression(
-                            MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                getPrivateType(compilation, type.ConstructUnboundGenericType()),
-                                IdentifierName("MakeGenericType")
-                            )
-                        )
-                       .WithArgumentList(
-                            // ReSharper disable once NullableWarningSuppressionIsUsed
-                            ArgumentList(SeparatedList(type.TypeArguments.Select(t => Argument(getPrivateType(compilation, ( t as INamedTypeSymbol )!)))))
-                        )
-                )
-                : getPrivateType(compilation, type);
+        if (FindTypeInAssembly.FindType(compilation, assembly) is not { } keyholdType) return null;
+        var typeExpression = GetTypeOfExpression(compilation, keyholdType, false);
+        return  typeExpression is null 
+            ?   null  
+            : (ExpressionSyntax)MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, typeExpression, IdentifierName("Assembly"));
+    }
 
-        static ExpressionSyntax getPrivateType(Compilation compilation, INamedTypeSymbol type)
+    public static ExpressionSyntax? GetTypeOfExpression(Compilation compilation, INamedTypeSymbol type, bool allowPrivateTypeLookup)
+    {
+        if (type.IsGenericType && type.IsOpenGenericType())
+        {
+            return getPrivateType(compilation, type, allowPrivateTypeLookup);
+        }
+
+        if (!compilation.IsSymbolAccessibleWithin(type, compilation.Assembly) && type.IsGenericType && !type.IsOpenGenericType())
+        {
+            var genericPrivateType = getPrivateType(compilation, type.ConstructUnboundGenericType(), allowPrivateTypeLookup);
+            return  genericPrivateType is null 
+                ?   null  
+                : (ExpressionSyntax)PostfixUnaryExpression(
+                SyntaxKind.SuppressNullableWarningExpression,
+                InvocationExpression(
+                        MemberAccessExpression(
+                            SyntaxKind.SimpleMemberAccessExpression,
+                            genericPrivateType,
+                            IdentifierName("MakeGenericType")
+                        )
+                    )
+                   .WithArgumentList(
+                        // ReSharper disable once NullableWarningSuppressionIsUsed
+                        ArgumentList(SeparatedList(type.TypeArguments.Select(t => Argument(getPrivateType(compilation, ( t as INamedTypeSymbol )!, allowPrivateTypeLookup)!))))
+                    )
+            );
+        }
+
+        return getPrivateType(compilation, type, allowPrivateTypeLookup);
+
+        static ExpressionSyntax? getPrivateType(Compilation compilation, INamedTypeSymbol type, bool allowPrivateTypeLookup)
         {
             return compilation.IsSymbolAccessibleWithin(type, compilation.Assembly)
                 ? TypeOfExpression(ParseTypeName(Helpers.GetTypeOfName(type)))
-                : PostfixUnaryExpression(
-                    SyntaxKind.SuppressNullableWarningExpression,
-                    InvocationExpression(
-                            MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
-                                GetPrivateAssembly(type.ContainingAssembly),
-                                IdentifierName("GetType")
-                            )
-                        )
-                       .WithArgumentList(
-                            ArgumentList(
-                                SingletonSeparatedList(
-                                    Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(Helpers.GetFullMetadataName(type))))
+                : allowPrivateTypeLookup
+                    ? PostfixUnaryExpression(
+                        SyntaxKind.SuppressNullableWarningExpression,
+                        InvocationExpression(
+                                MemberAccessExpression(
+                                    SyntaxKind.SimpleMemberAccessExpression,
+                                    GetPrivateAssembly(type.ContainingAssembly),
+                                    IdentifierName("GetType")
                                 )
                             )
-                        )
-                );
+                           .WithArgumentList(
+                                ArgumentList(
+                                    SingletonSeparatedList(
+                                        Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(Helpers.GetFullMetadataName(type))))
+                                    )
+                                )
+                            )
+                    )
+                    : null;
         }
     }
 
@@ -285,15 +308,16 @@ internal static class StatementGeneration
 
     public static string AssemblyVariableName(IAssemblySymbol symbol) => SpecialCharacterRemover.Replace(symbol.MetadataName, "");
 
-    public static ExpressionSyntax GetTypeOfExpression(
+    public static ExpressionSyntax? GetTypeOfExpression(
         Compilation compilation,
         INamedTypeSymbol type,
-        INamedTypeSymbol relatedType
+        INamedTypeSymbol relatedType,
+        bool allowPrivateTypeLookup
     )
     {
         if (!type.IsUnboundGenericType)
         {
-            return GetTypeOfExpression(compilation, type);
+            return GetTypeOfExpression(compilation, type, allowPrivateTypeLookup);
         }
 
         if (relatedType.IsGenericType && relatedType.Arity == type.Arity)
@@ -314,7 +338,7 @@ internal static class StatementGeneration
             }
         }
 
-        return GetTypeOfExpression(compilation, type);
+        return GetTypeOfExpression(compilation, type, allowPrivateTypeLookup);
     }
 
     private static readonly Regex SpecialCharacterRemover = new("[^\\w\\d]", RegexOptions.Compiled);

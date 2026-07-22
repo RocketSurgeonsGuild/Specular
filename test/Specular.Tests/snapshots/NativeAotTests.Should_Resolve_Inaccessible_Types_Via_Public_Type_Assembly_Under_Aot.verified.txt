@@ -1,35 +1,7 @@
 ﻿{
-  FinalDiagnostics: [
-    {
-      Id: RSGD0006,
-      Title: Unhandled exception,
-      Severity: Warning,
-      WarningLevel: 1,
-      Location: : (0,0)-(0,0),
-      MessageFormat: Unhandled exception has occured {2} {0} -- Stack Trace: {1} {3},
-      Message:
-Unhandled exception has occured ArgumentException The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source') -- Stack Trace:    at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355 System.ArgumentException: The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source')
-   at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83
-   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355,
-      Category: Dependency Injection
-    }
-  ],
+  FinalDiagnostics: [],
   GeneratorDiagnostics: {
-    Specular.Analyzers.SpecularProviderGenerator: [
-      {
-        Id: RSGD0006,
-        Title: Unhandled exception,
-        Severity: Warning,
-        WarningLevel: 1,
-        Location: : (0,0)-(0,0),
-        MessageFormat: Unhandled exception has occured {2} {0} -- Stack Trace: {1} {3},
-        Message:
-Unhandled exception has occured ArgumentException The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source') -- Stack Trace:    at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355 System.ArgumentException: The SourceText with hintName 'SpecularScanReport.g.cs' must have an explicit encoding set. (Parameter 'source')
-   at Microsoft.CodeAnalysis.AdditionalSourcesCollection.Add(String hintName, SourceText source) in /_/src/Compilers/Core/Portable/SourceGeneration/AdditionalSourcesCollection.cs:line 83
-   at Specular.Analyzers.SpecularProviderGenerator.TryAddScanReport(SourceProductionContext context, HashSet`1 diagnostics, ImmutableList`1 assemblySources, ImmutableList`1 reflectionSources, ImmutableList`1 serviceDescriptorSources) in {SolutionDirectory}src/Specular.Analyzers/CompiledTypeProviderGenerator.cs:line 355,
-        Category: Dependency Injection
-      }
-    ]
+    Specular.Analyzers.SpecularProviderGenerator: []
   },
   GlobalOptions: {
     build_property.IntermediateOutputPath: obj/net9.0,
@@ -45,6 +17,7 @@ Unhandled exception has occured ArgumentException The SourceText with hintName '
     mscorlib.dll,
     netstandard.dll,
     Specular.dll,
+    System.Collections.Immutable.dll,
     System.ComponentModel.dll,
     System.Core.dll,
     System.dll,

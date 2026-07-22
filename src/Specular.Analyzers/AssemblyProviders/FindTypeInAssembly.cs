@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
+using Specular.Analyzers.Descriptors;
 
 namespace Specular.Analyzers.AssemblyProviders;
 
@@ -24,6 +24,8 @@ internal sealed class FindTypeInAssembly(Compilation compilation, ICompiledTypeF
 
     protected override bool FoundNamedType(INamedTypeSymbol symbol)
     {
+        // avoid attributes that can kill us with compiler errors.
+        if (symbol.GetAttributes().Any(z => z is { AttributeClass.MetadataName: "ObsoleteAttribute" or "ExperimentalAttribute" })) return false;
         _type = symbol;
         return true;
     }

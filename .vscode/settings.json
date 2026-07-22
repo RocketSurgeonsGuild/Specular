@@ -23,7 +23,7 @@
         "statusBar.debuggingForeground": "#e7e7e7",
         "statusBar.foreground": "#e7e7e7",
         "statusBarItem.hoverBackground": "#9d0667",
-        "statusBarItem.remoteBackground": "#6c0447",
+        "statusBarItem.remoteBackground": "#517b05",
         "statusBarItem.remoteForeground": "#e7e7e7",
         "tab.activeBorder": "#ce0887",
         "statusBar.border": "#6c0447",
@@ -33,7 +33,12 @@
         "titleBar.activeForeground": "#e7e7e7",
         "titleBar.border": "#6c0447",
         "titleBar.inactiveBackground": "#6c044799",
-        "titleBar.inactiveForeground": "#e7e7e799"
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "activityBarTop.activeBackground": "#ce0887",
+        "activityBarTop.background": "#ce0887",
+        "activityBarTop.foreground": "#e7e7e7",
+        "activityBarTop.inactiveForeground": "#e7e7e799",
+        "commandCenter.foreground": "#e7e7e7"
     },
     "peacock.color": "#9d0667",
     "pkl.cli.path": "${env:HOME}/.local/share/mise/shims/pkl",

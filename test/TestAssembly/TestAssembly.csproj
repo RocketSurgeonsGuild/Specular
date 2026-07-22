@@ -5,4 +5,8 @@
         <Nullable>enable</Nullable>
         <IsTestProject>false</IsTestProject>
     </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Specular\Specular.csproj" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    </ItemGroup>
 </Project>

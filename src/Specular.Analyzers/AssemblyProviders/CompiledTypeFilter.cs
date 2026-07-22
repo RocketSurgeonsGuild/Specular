@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
+using Specular.Analyzers.Descriptors;
 
 namespace Specular.Analyzers.AssemblyProviders;
 
@@ -11,41 +11,47 @@ internal sealed class CompiledTypeFilter(ClassFilter classFilter, ImmutableList<
     public bool Aborted { get; } = typeFilterDescriptors.OfType<CompiledAbortTypeFilterDescriptor>().Any();
     public string Hash { get; } = sourceLocation?.ExpressionHash ?? Guid.NewGuid().ToString("N");
 
-    public bool IsMatch(Compilation compilation, INamedTypeSymbol targetType)
+    public bool IsMatch(Compilation compilation, INamedTypeSymbol targetSymbol)
     {
-        return !Aborted && ( ClassFilter != ClassFilter.PublicOnly || targetType.DeclaredAccessibility == Accessibility.Public ) && ( TypeFilterDescriptors.Count == 0 || TypeFilterDescriptors.All(GetFilterDescriptor) );
+        if (Aborted) return false;
+        if (ClassFilter == ClassFilter.PublicOnly && targetSymbol.DeclaredAccessibility != Accessibility.Public)
+        {
+            return false;
+        }
+
+        return  TypeFilterDescriptors.Count == 0  ?  true  :  TypeFilterDescriptors.All(GetFilterDescriptor);
         bool GetFilterDescriptor(ITypeFilterDescriptor filterDescriptor)
         {
             return filterDescriptor switch
             {
                 AssignableToTypeFilterDescriptor { Type: var assignableToType } =>
-                    Helpers.HasImplicitGenericConversion(compilation, assignableToType, targetType),
+                    Helpers.HasImplicitGenericConversion(compilation, assignableToType, targetSymbol),
                 NotAssignableToTypeFilterDescriptor { Type: var notAssignableToType } =>
-                    !Helpers.HasImplicitGenericConversion(compilation, notAssignableToType, targetType),
+                    !Helpers.HasImplicitGenericConversion(compilation, notAssignableToType, targetSymbol),
                 AssignableToAnyTypeFilterDescriptor { Types: var assignableToAnyTypes } =>
-                    assignableToAnyTypes.Any(z => Helpers.HasImplicitGenericConversion(compilation, z, targetType)),
+                    assignableToAnyTypes.Any(z => Helpers.HasImplicitGenericConversion(compilation, z, targetSymbol)),
                 NotAssignableToAnyTypeFilterDescriptor { Types: var notAssignableToAnyTypes } =>
-                    notAssignableToAnyTypes.All(z => !Helpers.HasImplicitGenericConversion(compilation, z, targetType)),
+                    notAssignableToAnyTypes.All(z => !Helpers.HasImplicitGenericConversion(compilation, z, targetSymbol)),
                 WithAttributeFilterDescriptor { Attribute: var attribute } =>
-                    targetType.GetAttributes().Any(z => SymbolEqualityComparer.Default.Equals(z.AttributeClass, attribute)),
+                    targetSymbol.GetAttributes().Any(z => SymbolEqualityComparer.Default.Equals(z.AttributeClass, attribute)),
                 WithAnyAttributeFilterDescriptor { Attributes: var attributes } =>
-                    handleWithAnyAttributeFilter(attributes, targetType),
+                    handleWithAnyAttributeFilter(attributes, targetSymbol),
                 WithoutAttributeFilterDescriptor { Attribute: var attribute } =>
-                    targetType.GetAttributes().All(z => !SymbolEqualityComparer.Default.Equals(z.AttributeClass, attribute)),
+                    targetSymbol.GetAttributes().All(z => !SymbolEqualityComparer.Default.Equals(z.AttributeClass, attribute)),
                 WithAttributeStringFilterDescriptor { AttributeClassName: var attribute } =>
-                    targetType.GetAttributes().Any(z => Helpers.GetFullMetadataName(z.AttributeClass) == attribute),
+                    targetSymbol.GetAttributes().Any(z => Helpers.GetFullMetadataName(z.AttributeClass) == attribute),
                 WithAnyAttributeStringFilterDescriptor { AttributeClassNames: var attributes } =>
-                    targetType.GetAttributes().Join(attributes, z => Helpers.GetFullMetadataName(z.AttributeClass), z => z, (_, _) => true).Any(),
+                    targetSymbol.GetAttributes().Join(attributes, z => Helpers.GetFullMetadataName(z.AttributeClass), z => z, (_, _) => true).Any(),
                 WithoutAttributeStringFilterDescriptor { AttributeClassName: var attribute } =>
-                    targetType.GetAttributes().All(z => Helpers.GetFullMetadataName(z.AttributeClass) != attribute),
+                    targetSymbol.GetAttributes().All(z => Helpers.GetFullMetadataName(z.AttributeClass) != attribute),
                 NamespaceFilterDescriptor { Filter: var filterName, Namespaces: var filterNamespaces } =>
-                    handleNamespaceFilter(filterName, filterNamespaces, targetType),
+                    handleNamespaceFilter(filterName, filterNamespaces, targetSymbol),
                 NameFilterDescriptor { Include: var include, Filter: var filterName, Names: var filterNames } =>
-                    handleNameFilter(include, filterName, filterNames, targetType),
+                    handleNameFilter(include, filterName, filterNames, targetSymbol),
                 TypeKindFilterDescriptor { Include: var include, TypeKinds: var typeKinds } =>
-                    handleKindFilter(include, typeKinds, targetType),
+                    handleKindFilter(include, typeKinds, targetSymbol),
                 TypeInfoFilterDescriptor { Include: var include, TypeInfos: var typeInfos } =>
-                    handleInfoFilter(include, typeInfos, targetType),
+                    handleInfoFilter(include, typeInfos, targetSymbol),
                 _ => throw new NotSupportedException(filterDescriptor.GetType().FullName),
             };
         }

@@ -53,7 +53,7 @@ public partial class ScanReportTests : GeneratorTest
             public static void Main(string[] args)
             {
                 var services = new ServiceCollection();
-                var provider = SpecularProvider.Instance;
+                ISpecularProvider provider = SpecularProvider.Instance;
                 provider.GetAssemblies(
                     z => z
                         .FromAssemblyOf<IService>()

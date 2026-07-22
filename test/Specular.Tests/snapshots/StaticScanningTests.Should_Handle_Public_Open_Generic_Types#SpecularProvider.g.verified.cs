@@ -33,6 +33,15 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection ISpecularProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
+        switch (lineNumber)
+        {
+            // FilePath: Input0.cs Expression: Vy+MITMy9cw5mMXheMaG0A==
+            case 22:
+                services.Add(ServiceDescriptor.Scoped(typeof(global::Service<>), typeof(global::Service<>)));
+                services.Add(ServiceDescriptor.Scoped(typeof(global::IService<>), typeof(global::Service<>)));
+                break;
+        }
+
         return services;
     }
 }

@@ -23,7 +23,11 @@ internal static class ScanReportBuilder
                              .Select(group =>
                                          new AssemblyReport(
                                              group.Key,
-                                             group.SelectMany(z => z.DiscoveredAssemblies).Distinct(StringComparer.Ordinal).OrderBy(z => z, StringComparer.Ordinal).ToImmutableArray()
+                                             group
+                                                .SelectMany(z => z.DiscoveredAssemblies)
+                                                .DistinctBy(z => z.Assembly)
+                                                  .OrderBy(z => z.Assembly, StringComparer.Ordinal)
+                                                  .ToImmutableArray()
                                          )
                               )
                              .ToImmutableArray();
@@ -79,10 +83,14 @@ internal static class ScanReportBuilder
         var reportDelcaration = ClassDeclaration("SpecularScanReport")
                                .AddAttributeLists(Helpers.CompilerGeneratedAttributes)
                                .WithModifiers(TokenList(Token(SyntaxKind.InternalKeyword), Token(SyntaxKind.SealedKeyword)))
+                               .NormalizeWhitespace()
                                .WithMembers(
                                     SingletonList<MemberDeclarationSyntax>(
                                         MethodDeclaration(IdentifierName("ScanResults"), Identifier("GetScanResults"))
-                                           .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)))
+                                           .WithModifiers(
+                                                TokenList(Token(SyntaxKind.PublicKeyword).WithTrailingTrivia(TriviaList(Space)), Token(SyntaxKind.StaticKeyword).WithTrailingTrivia(TriviaList(Space)))
+                                            )
+                                           .NormalizeWhitespace()
                                            .WithExpressionBody(
                                                 ArrowExpressionClause(
                                                     ImplicitObjectCreationExpression()
@@ -99,10 +107,12 @@ internal static class ScanReportBuilder
                                                         )
                                                 )
                                             )
+                                           .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
                                     )
-                                );
+                                )
+            ;
 
-        return reportDelcaration.NormalizeWhitespace();
+        return reportDelcaration;
     }
 
     private static ExpressionSyntax CreateAssemblyReports(ImmutableArray<AssemblyReport> reports)
@@ -117,7 +127,18 @@ internal static class ScanReportBuilder
                                            Argument(
                                                CollectionExpression(
                                                    SeparatedList<CollectionElementSyntax>(
-                                                       report.Assemblies.Select(assembly => ExpressionElement(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(assembly))))
+                                                       report.Assemblies.Select(reportItem => ExpressionElement(
+                                                                                    ImplicitObjectCreationExpression()
+                                                                                       .AddArgumentListArguments(
+                                                                                            Argument(
+                                                                                                LiteralExpression(
+                                                                                                    SyntaxKind.StringLiteralExpression,
+                                                                                                    Literal(reportItem.Assembly)
+                                                                                                )
+                                                                                            )
+                                                                                        )
+                                                                                )
+                                                       )
                                                    )
                                                )
                                            )
@@ -146,10 +167,10 @@ internal static class ScanReportBuilder
                                                                   {
                                                                       var typeReports = assembly
                                                                                        .Types
-                                                                                       .Select(type => ExpressionElement(
+                                                                                       .Select(reportItem => ExpressionElement(
                                                                                                    ImplicitObjectCreationExpression()
                                                                                                       .AddArgumentListArguments(
-                                                                                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(type.Type)))
+                                                                                                           Argument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(reportItem.Type)))
                                                                                                        )
                                                                                                )
                                                                                         );
@@ -188,26 +209,26 @@ internal static class ScanReportBuilder
                                                              .Select(assembly =>
                                                                      {
                                                                          var typeReports = assembly
-                                                                                          .Entries.Select(type => ExpressionElement(
+                                                                                          .Entries.Select(reportItem => ExpressionElement(
                                                                                                               ImplicitObjectCreationExpression()
                                                                                                                  .AddArgumentListArguments(
                                                                                                                       Argument(
                                                                                                                           MemberAccessExpression(
                                                                                                                               SyntaxKind.SimpleMemberAccessExpression,
                                                                                                                               IdentifierName("ServiceLifetime"),
-                                                                                                                              IdentifierName(type.Lifetime)
+                                                                                                                              IdentifierName(reportItem.Lifetime)
                                                                                                                           )
                                                                                                                       ),
                                                                                                                       Argument(
                                                                                                                           LiteralExpression(
                                                                                                                               SyntaxKind.StringLiteralExpression,
-                                                                                                                              Literal(type.ServiceType)
+                                                                                                                              Literal(reportItem.ServiceType)
                                                                                                                           )
                                                                                                                       ),
                                                                                                                       Argument(
                                                                                                                           LiteralExpression(
                                                                                                                               SyntaxKind.StringLiteralExpression,
-                                                                                                                              Literal(type.ImplementationType)
+                                                                                                                              Literal(reportItem.ImplementationType)
                                                                                                                           )
                                                                                                                       )
                                                                                                                   )
@@ -232,11 +253,11 @@ internal static class ScanReportBuilder
         );
     }
 
-    private sealed record AssemblyReport(SourceLocation Location, ImmutableArray<string> Assemblies);
+    private sealed record AssemblyReport(SourceLocation Location, ImmutableArray<AssemblyScanReportEntryData> Assemblies);
 
     private sealed record TypeReport(SourceLocation Location, ImmutableArray<TypeAssemblyReport> Assemblies);
 
-    private sealed record TypeAssemblyReport(string AssemblyName, ImmutableArray<ScanReportTypeData> Types);
+    private sealed record TypeAssemblyReport(string AssemblyName, ImmutableArray<TypeScanReportEntryData> Types);
 
     private sealed record ServiceDescriptorReport(SourceLocation Location, ImmutableArray<ServiceDescriptorAssemblyReport> Assemblies);
 

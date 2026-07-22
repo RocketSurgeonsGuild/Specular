@@ -34,6 +34,20 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection ISpecularProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
+        switch (lineNumber)
+        {
+            // FilePath: Input0.cs Expression: RF0U3ve7NmkBVhOpOoW7bQ==
+            case 17:
+                services.Add(ServiceDescriptor.Singleton<global::Service, global::Service>());
+                services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::Service>()));
+                break;
+            // FilePath: Input0.cs Expression: pM2RBv4kcpvWD3+rZocxmA==
+            case 27:
+                services.Add(ServiceDescriptor.Singleton<global::ServiceB, global::ServiceB>());
+                services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
+                break;
+        }
+
         return services;
     }
 }

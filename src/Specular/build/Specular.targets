@@ -1,19 +1,22 @@
 <Project>
     <PropertyGroup>
-        <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(OutputType)' != 'Library' or '$(OutputType)' != 'library')">
-            true
-        </_SpecularApplicationDetected>
-        <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true')">
-            true
-        </_SpecularApplicationDetected>
-        <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == ''">false</_SpecularApplicationDetected>
+      <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(OutputType)' != 'Library' or '$(OutputType)' != 'library')">true</_SpecularApplicationDetected>
+      <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true')">true</_SpecularApplicationDetected>
+      <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == ''">false</_SpecularApplicationDetected>
     </PropertyGroup>
     <PropertyGroup Condition="'$(IsTestProject)' == 'true' or '$(_SpecularApplicationDetected)' == 'true'">
-        <SpecularEmitProvider Condition="'$(SpecularEmitProvider)' == ''">true</SpecularEmitProvider>
+      <SpecularEmitProvider Condition="'$(SpecularEmitProvider)' == ''">true</SpecularEmitProvider>
+      <SpecularGenerateDiagnostics Condition="'$(SpecularGenerateDiagnostics)' == ''">true</SpecularGenerateDiagnostics>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+      <SpecularGenerateDiagnostics Condition="'$(SpecularGenerateDiagnostics)' == ''">true</SpecularGenerateDiagnostics>
+    </PropertyGroup>
+    <PropertyGroup>
+      <SpecularGenerateDiagnostics Condition="'$(SpecularGenerateDiagnostics)' == ''">false</SpecularGenerateDiagnostics>
     </PropertyGroup>
 
-    <Target Name="CleanAssemblyCache" BeforeTargets="Clean">
-        <Delete Files="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson" Condition="Exists('$(IntermediateOutputPath)\gap\SpecularProvider.ctpjson')" />
+    <Target Name="CleanSpecularCache" BeforeTargets="Clean">
+        <Delete Files="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson" Condition="Exists('$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson')" />
     </Target>
     <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
         <Using Include="Specular" />
@@ -22,7 +25,7 @@
         <AdditionalFiles
             Visible="false"
             Include="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson"
-            Condition="Exists('$(IntermediateOutputPath)\gap\SpecularProvider.ctpjson')"
+            Condition="Exists('$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson')"
         />
     </ItemGroup>
 </Project>

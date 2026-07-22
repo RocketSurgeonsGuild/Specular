@@ -1,3 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
+using Specular;
+
 namespace TestAssembly;
 
 public interface IService;
@@ -27,14 +30,17 @@ internal class Request : IRequest<Response>;
 
 internal class Response;
 
+[ServiceRegistration(ServiceLifetime.Singleton)]
 internal class RequestHandler : IRequestHandler<Request, Response>;
 
 public interface IOther;
 
 public interface IGenericService<T>;
 
+[ServiceRegistration]
 internal class GenericService : IGenericService<int>, IGenericService<string>, IOther;
 
+[ServiceRegistration]
 public class GenericServiceB : IGenericService<decimal>, IOther;
 
 public interface IValidator;

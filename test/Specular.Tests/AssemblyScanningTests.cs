@@ -13,6 +13,10 @@ public partial class AssemblyScanningTests : GeneratorTest
         var result = await Builder
                           .AddSources(item.Source)
                           .AddReferences(typeof(IService))
+#pragma warning disable SYSLIB0011
+                          // we need to explictly test this gets ignored with the obsolete flag
+                          .AddReferences(typeof(System.Runtime.Serialization.Formatter))
+#pragma warning restore SYSLIB0011
                           .AddCacheOptions(item.GetTempDirectory())
                           .AddGlobalOption("build_property.ExcludeAssemblyFromCTP", "Microsoft")
                           .Build()

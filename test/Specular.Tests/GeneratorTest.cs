@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Runtime.Loader;
 using Rocket.Surgery.Extensions.Testing;
 using Rocket.Surgery.Extensions.Testing.SourceGenerators;
@@ -12,7 +13,8 @@ public abstract partial class GeneratorTest() : LoggerTest(Defaults.LoggerTest)
         _ = Directory.CreateDirectory(TempPath);
         Builder = GeneratorBuilderConstants
                  .Builder
-                 .WithAssemblyLoadContext(AssemblyLoadContext);
+                 .WithAssemblyLoadContext(AssemblyLoadContext)
+                 .AddReferences(typeof(ImmutableList<>));
         if (AssemblyLoadContext is not IDisposable disposable) return;
 
         Disposables.Add(disposable);

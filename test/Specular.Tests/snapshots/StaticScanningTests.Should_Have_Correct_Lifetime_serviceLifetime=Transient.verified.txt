@@ -13,10 +13,33 @@
     mscorlib.dll,
     netstandard.dll,
     Specular.dll,
+    System.Collections.Immutable.dll,
     System.ComponentModel.dll,
     System.Core.dll,
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
+  ],
+  Services: [
+    {
+      Lifetime: Transient,
+      ServiceType: Service,
+      ImplementationType: Service
+    },
+    {
+      Lifetime: Transient,
+      ServiceType: IService,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,IService]
+    },
+    {
+      Lifetime: Transient,
+      ServiceType: ServiceB,
+      ImplementationType: ServiceB
+    },
+    {
+      Lifetime: Transient,
+      ServiceType: IServiceB,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,IServiceB]
+    }
   ]
 }

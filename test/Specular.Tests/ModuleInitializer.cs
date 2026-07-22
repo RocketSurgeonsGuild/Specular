@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using DiffEngine;
 using EmptyFiles;
-using Specular.Analyzers;
-using Specular.Analyzers.Configuration;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Rocket.Surgery.Extensions.Testing.SourceGenerators;
+using Specular.Analyzers;
+using Specular.Analyzers.Configuration;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Specular.Tests;
@@ -20,7 +20,7 @@ internal static partial class ModuleInitializer
         FileExtensions.AddTextExtension(Path.GetExtension(Constants.SpecularProviderCacheFileName));
         TempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         VerifierSettings.ScrubLinesWithReplace(s => s.Replace(TempDirectory, "{TempDirectory}").Replace(TempDirectory.Replace("\\", "/"), "{TempDirectory}"));
-        VerifyGeneratorTextContext.Initialize(DiagnosticSeverity.Warning, Customizers.Default, Customizers.ExcludeParseOptions);
+        VerifyGeneratorTextContext.Initialize(DiagnosticSeverity.Warning, Customizers.Default, (results, targets, data) => targets.RemoveAll(z => z.Name == "Microsoft.CodeAnalysis.EmbeddedAttribute.cs"), Customizers.ExcludeParseOptions);
         VerifierSettings.DontScrubUserProfile();
 
         VerifierSettings.AssignTargetAssembly(typeof(ModuleInitializer).Assembly);

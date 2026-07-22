@@ -52,13 +52,12 @@ internal static class ServiceDescriptorCollection
 
                 var descriptorGeneration = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa);
                 var localBlock = descriptorGeneration.Block.NormalizeWhitespace().ToFullString().Replace("\r", "");
-                var discoveredTypes = reducedTypes.Select(z => new ScanReportTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z))).ToImmutableList();
                 return new(
                     item.Location,
                     localBlock,
                     pa.Select(z => z.MetadataName).ToImmutableHashSet(),
                     targetAssembly.GetCachedVersion(),
-                    discoveredTypes,
+                    [],
                     DiscoveredAssemblies: [],
                     DiscoveredServiceDescriptors: descriptorGeneration.ReportEntries,
                     ScannedAssemblyName: targetAssembly.MetadataName
@@ -199,21 +198,8 @@ internal static class ServiceDescriptorCollection
         var services = new List<InvocationExpressionSyntax>();
         var reportEntries = ImmutableList.CreateBuilder<ServiceDescriptorScanReportEntryData>();
 
-        void AddService(INamedTypeSymbol serviceType, INamedTypeSymbol implementationType, string lifetime, InvocationExpressionSyntax descriptor)
+        foreach (var type in types.OrderBy(Helpers.GetFullMetadataName))
         {
-            services.Add(descriptor);
-            reportEntries.Add(new(lifetime, Helpers.GetFullMetadataName(serviceType), Helpers.GetFullMetadataName(implementationType)));
-        }
-
-        foreach (var type in types.OrderBy(z => z.ToDisplayString()))
-        {
-            if (configuration.IsAot && StatementGeneration.GetUnreachableType(compilation, type) is { } unreachable)
-            {
-                _ = diagnostics.Add(
-                    Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, Location.None, unreachable.ToDisplayString(), unreachable.ContainingAssembly.Identity.Name)
-                );
-                continue;
-            }
 #pragma warning disable RS1024
             var emittedTypes = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 #pragma warning restore RS1024
@@ -249,6 +235,14 @@ internal static class ServiceDescriptorCollection
                            .Aggregate(lifetimeValue, (acc, attribute) => GetLifetimeValue(attribute) ?? acc);
             lifetimeValue = GetLifetimeValue(discoveredLifetime) ?? lifetimeValue;
 
+            if (configuration.IsAot && StatementGeneration.GetUnreachableType(compilation, type) is { } unreachable)
+            {
+                _ = diagnostics.Add(
+                    Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.Identity.Name)
+                );
+                continue;
+            }
+
             var lifetimeRegistrations = serviceRegistrationAttributes
                                        .SelectMany(
                                             attributeData =>
@@ -280,8 +274,9 @@ internal static class ServiceDescriptorCollection
                                                          Type: serviceType);
                                             }
                                         )
-                                       .GroupBy(z => z.Type.ToDisplayString())
+                                       .GroupBy(z => Helpers.GetFullMetadataName(z.Type))
                                        .ToArray();
+
 
             var abort = false;
             foreach (var registration in lifetimeRegistrations)
@@ -301,46 +296,51 @@ internal static class ServiceDescriptorCollection
 
             foreach ((var lifetime, var serviceType) in lifetimeRegistrations.Select(z => z.First()))
             {
-                // todo: start here
-                // need diagnostics for double registration
-                // need to get services from the generic arguments of the class
-
                 if (emittedTypes.Contains(serviceType)) continue;
+                var statement = !SymbolEqualityComparer.Default.Equals(serviceType, type)
+                    ? StatementGeneration.GenerateServiceFactory(
+                        compilation,
+                        serviceType,
+                        type,
+                        lifetime
+                    )
+                    : StatementGeneration.GenerateServiceType(
+                        compilation,
+                        serviceType,
+                        type,
+                        lifetime
+                    );
+                if (statement is null)
+                {
+                    _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                }
+                else
+                {
+                    services.Add(statement);
+                    reportEntries.Add(new(lifetime, Helpers.GetGenericDisplayName(serviceType), Helpers.GetGenericDisplayName(type)));
+                }
 
-                AddService(
-                    serviceType,
-                    type,
-                    lifetime,
-                    !SymbolEqualityComparer.Default.Equals(serviceType, type)
-                        ? StatementGeneration.GenerateServiceFactory(
-                            compilation,
-                            serviceType,
-                            type,
-                            lifetime
-                        )
-                        : StatementGeneration.GenerateServiceType(
-                            compilation,
-                            serviceType,
-                            type,
-                            lifetime
-                        )
-                );
                 _ = emittedTypes.Add(serviceType);
             }
 
             if (asSelf && !emittedTypes.Contains(type))
             {
-                AddService(
+                var statement = StatementGeneration.GenerateServiceType(
+                    compilation,
                     type,
                     type,
-                    serviceTypes.GetLifetime(),
-                    StatementGeneration.GenerateServiceType(
-                        compilation,
-                        type,
-                        type,
-                        serviceTypes.GetLifetime()
-                    )
+                    serviceTypes.GetLifetime()
                 );
+                if (statement is null)
+                {
+                    _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                }
+                else
+                {
+                    services.Add(statement);
+                    reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(type), Helpers.GetGenericDisplayName(type)));
+                }
+
                 if (!compilation.IsSymbolAccessibleWithin(type, compilation.Assembly)) _ = privateAssemblies.Add(type.ContainingAssembly);
 
                 _ = emittedTypes.Add(type);
@@ -352,24 +352,29 @@ internal static class ServiceDescriptorCollection
                 var @interface = type.AllInterfaces.FirstOrDefault(z => z.Name == name);
                 if (@interface is { } && !emittedTypes.Contains(@interface))
                 {
-                    AddService(
-                        @interface,
-                        type,
-                        serviceTypes.GetLifetime(),
-                        typeIsOpenGeneric || !asSelf
-                            ? StatementGeneration.GenerateServiceType(
-                                compilation,
-                                @interface,
-                                type,
-                                serviceTypes.GetLifetime()
-                            )
-                            : StatementGeneration.GenerateServiceFactory(
-                                compilation,
-                                @interface,
-                                type,
-                                serviceTypes.GetLifetime()
-                            )
-                    );
+                    var statement = typeIsOpenGeneric || !asSelf
+                        ? StatementGeneration.GenerateServiceType(
+                            compilation,
+                            @interface,
+                            type,
+                            serviceTypes.GetLifetime()
+                        )
+                        : StatementGeneration.GenerateServiceFactory(
+                            compilation,
+                            @interface,
+                            type,
+                            serviceTypes.GetLifetime()
+                        );
+                    if (statement is null)
+                    {
+                        _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                    }
+                    else
+                    {
+                        services.Add(statement);
+                        reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(type), Helpers.GetGenericDisplayName(type)));
+                    }
+
                     if (!compilation.IsSymbolAccessibleWithin(@interface, compilation.Assembly)) _ = privateAssemblies.Add(type.ContainingAssembly);
 
                     _ = emittedTypes.Add(@interface);
@@ -388,79 +393,94 @@ internal static class ServiceDescriptorCollection
                         : type.AllInterfaces
                 );
 
-                foreach (var @interface in interfaces.OrderBy(z => z.ToDisplayString()))
+                foreach (var @interface in interfaces.OrderBy(Helpers.GetFullMetadataName))
                 {
                     if (emittedTypes.Contains(@interface)) continue;
 
-                    AddService(
-                        @interface,
-                        type,
-                        serviceTypes.GetLifetime(),
-                        typeIsOpenGeneric || !asSelf
-                            ? StatementGeneration.GenerateServiceType(
-                                compilation,
-                                @interface,
-                                type,
-                                serviceTypes.GetLifetime()
-                            )
-                            : StatementGeneration.GenerateServiceFactory(
-                                compilation,
-                                @interface,
-                                type,
-                                serviceTypes.GetLifetime()
-                            )
-                    );
+                    var statement = typeIsOpenGeneric || !asSelf
+                        ? StatementGeneration.GenerateServiceType(
+                            compilation,
+                            @interface,
+                            type,
+                            serviceTypes.GetLifetime()
+                        )
+                        : StatementGeneration.GenerateServiceFactory(
+                            compilation,
+                            @interface,
+                            type,
+                            serviceTypes.GetLifetime()
+                        );
+                    if (statement is null)
+                    {
+                        _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                    }
+                    else
+                    {
+                        services.Add(statement);
+                        reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(@interface), Helpers.GetGenericDisplayName(type)));
+                    }
+
                     if (!compilation.IsSymbolAccessibleWithin(@interface, compilation.Assembly)) _ = privateAssemblies.Add(type.ContainingAssembly);
 
                     _ = emittedTypes.Add(@interface);
                 }
             }
 
-            foreach (var asType in asSpecificTypes.OrderBy(z => z.ToDisplayString()))
+            foreach (var asType in asSpecificTypes.OrderBy( Helpers.GetFullMetadataName ))
             {
                 if (emittedTypes.Contains(asType)) continue;
 
                 if (!Helpers.HasImplicitGenericConversion(compilation, asType, type)) continue;
 
                 var closedServiceType = Helpers.GetClosedGenericConversion(compilation, asType, type);
-                AddService(
-                    closedServiceType,
-                    type,
-                    serviceTypes.GetLifetime(),
-                    !asSelf
-                        ? StatementGeneration.GenerateServiceType(
-                            compilation,
-                            closedServiceType,
-                            type,
-                            serviceTypes.GetLifetime()
-                        )
-                        : StatementGeneration.GenerateServiceFactory(
-                            compilation,
-                            Helpers.GetClosedGenericConversion(compilation, asType, type),
-                            type,
-                            serviceTypes.GetLifetime()
-                        )
-                );
+                var statement = !asSelf
+                    ? StatementGeneration.GenerateServiceType(
+                        compilation,
+                        closedServiceType,
+                        type,
+                        serviceTypes.GetLifetime()
+                    )
+                    : StatementGeneration.GenerateServiceFactory(
+                        compilation,
+                        Helpers.GetClosedGenericConversion(compilation, asType, type),
+                        type,
+                        serviceTypes.GetLifetime()
+                    );
+                if (statement is null)
+                {
+                    _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                }
+                else
+                {
+                    services.Add(statement);
+                    reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(closedServiceType), Helpers.GetGenericDisplayName(type)));
+                }
+
                 _ = emittedTypes.Add(asType);
             }
 
             if (emittedTypes.Count == 0 && ( lifetimeRegistrations.Any() || discoveredLifetime is { } ) && !asMatchingInterface)
             {
-                foreach (var @interface in type.AllInterfaces.OrderBy(z => z.ToDisplayString()))
+                foreach (var @interface in type.AllInterfaces.OrderBy( Helpers.GetFullMetadataName ))
                 {
                     if (emittedTypes.Contains(@interface)) continue;
 
-                    AddService(
+                    var statement = StatementGeneration.GenerateServiceFactory(
+                        compilation,
                         @interface,
                         type,
-                        lifetimeValue,
-                        StatementGeneration.GenerateServiceFactory(
-                            compilation,
-                            @interface,
-                            type,
-                            lifetimeValue
-                        )
+                        lifetimeValue
                     );
+                    if (statement is null)
+                    {
+                        _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                    }
+                    else
+                    {
+                        services.Add(statement);
+                        reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(@interface), Helpers.GetGenericDisplayName(type)));
+                    }
+
                     _ = emittedTypes.Add(@interface);
                 }
             }

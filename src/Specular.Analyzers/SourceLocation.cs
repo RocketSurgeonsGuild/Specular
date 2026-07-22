@@ -36,8 +36,8 @@ public record ResolvedSourceLocation
     string Expression,
     ImmutableHashSet<string> PrivateAssemblies,
     string? CacheVersion,
-    ImmutableList<ScanReportTypeData> DiscoveredTypes,
-    ImmutableList<string> DiscoveredAssemblies,
+    ImmutableList<TypeScanReportEntryData> DiscoveredTypes,
+    ImmutableList<AssemblyScanReportEntryData> DiscoveredAssemblies,
     ImmutableList<ServiceDescriptorScanReportEntryData> DiscoveredServiceDescriptors,
     string? ScannedAssemblyName
 );
