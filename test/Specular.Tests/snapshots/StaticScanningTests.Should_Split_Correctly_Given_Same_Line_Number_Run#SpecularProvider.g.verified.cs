@@ -1,4 +1,4 @@
-//HintName: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs
+﻿//HintName: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs
 #nullable enable
 #pragma warning disable CA1002, CA1034, CA1822, CS0105, CS1573, CA5351, CS8618, CS8669, IL2026, IL2072
 using System;
@@ -34,6 +34,27 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection ISpecularProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
     {
+        switch (lineNumber)
+        {
+            // FilePath: Input1.cs Expression: 5eMbUdKffIDeG8HjnS42og==
+            case 12:
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input1.cs Expression: 5eMbUdKffIDeG8HjnS42og==
+                    case "Input1.cs":
+                        services.Add(ServiceDescriptor.Singleton<global::Service, global::Service>());
+                        services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::Service>()));
+                        break;
+                    // FilePath: Input2.cs Expression: lk0ALym+V2W6xQDXO/AkYw==
+                    case "Input2.cs":
+                        services.Add(ServiceDescriptor.Scoped<global::ServiceB, global::ServiceB>());
+                        services.Add(ServiceDescriptor.Scoped<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
+                        break;
+                }
+
+                break;
+        }
+
         return services;
     }
 }

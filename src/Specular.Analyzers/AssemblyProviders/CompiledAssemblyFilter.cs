@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
+using Specular.Analyzers.Descriptors;
 
 namespace Specular.Analyzers.AssemblyProviders;
 
@@ -19,23 +19,26 @@ internal sealed class CompiledAssemblyFilter(ImmutableList<IAssemblyDescriptor> 
     ];
 
     private readonly bool _includeSystemAssemblies = assemblyDescriptors.OfType<IncludeSystemAssembliesDescriptor>().Any();
-    private readonly bool _allAssemblies = assemblyDescriptors.OfType<AllAssemblyDescriptor>().Any();
 
     public string Hash => sourceLocation?.ExpressionHash ?? Guid.NewGuid().ToString("N");
 
-    public bool IsMatch(Compilation compilation, IAssemblySymbol targetType)
+    public bool IsMatch(Compilation compilation, IAssemblySymbol targetSymbol)
     {
-        if (!_includeSystemAssemblies && coreAssemblies.Contains(targetType.Name)) return false;
-        if (_allAssemblies) return true;
+        if (!_includeSystemAssemblies && coreAssemblies.Contains(targetSymbol.Name)) return false;
 
-        var referencedAssemblySymbols = targetType.Modules
-            .SelectMany(z => z.ReferencedAssemblySymbols)
-            .ToImmutableHashSet(SymbolEqualityComparer.Default);
+        var referencedAssemblySymbols = targetSymbol
+                                       .Modules
+                                       .SelectMany(z => z.ReferencedAssemblySymbols)
+                                       .ToImmutableHashSet(SymbolEqualityComparer.Default);
 
-        return AssemblyDescriptors.Any(filter => filter switch
+        return AssemblyDescriptors
+           .All(filter => filter switch
                           {
-                              AssemblyDescriptor { Assembly: var assembly, } => SymbolEqualityComparer.Default.Equals(assembly, targetType),
+                              AssemblyDescriptor { Assembly: var assembly, } => SymbolEqualityComparer.Default.Equals(assembly, targetSymbol),
+                              NotAssemblyDescriptor { Assembly: var assembly, } => !SymbolEqualityComparer.Default.Equals(assembly, targetSymbol),
                               AssemblyDependenciesDescriptor { Assembly: var assembly, } => referencedAssemblySymbols.Contains(assembly),
+                              AllAssemblyDescriptor => true,
+                              IncludeSystemAssembliesDescriptor => true,
                               _ => false,
                           }
             );

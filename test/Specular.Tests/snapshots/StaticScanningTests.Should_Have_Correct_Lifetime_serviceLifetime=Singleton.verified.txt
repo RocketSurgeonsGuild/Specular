@@ -13,10 +13,33 @@
     mscorlib.dll,
     netstandard.dll,
     Specular.dll,
+    System.Collections.Immutable.dll,
     System.ComponentModel.dll,
     System.Core.dll,
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
+  ],
+  Services: [
+    {
+      Lifetime: Singleton,
+      ServiceType: Service,
+      ImplementationType: Service
+    },
+    {
+      Lifetime: Singleton,
+      ServiceType: IService,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,IService]
+    },
+    {
+      Lifetime: Singleton,
+      ServiceType: ServiceB,
+      ImplementationType: ServiceB
+    },
+    {
+      Lifetime: Singleton,
+      ServiceType: IServiceB,
+      ImplementationFactory: System.Func`2[System.IServiceProvider,IServiceB]
+    }
   ]
 }

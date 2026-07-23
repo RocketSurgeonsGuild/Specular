@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
-
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,7 +12,11 @@ namespace Specular.Analyzers;
 
 internal static class AssemblyProviderBuilder
 {
-    [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
+    [SuppressMessage(
+        "Security",
+        "CA5351:Do Not Use Broken Cryptographic Algorithms",
+        Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security."
+    )]
     public static TypeDeclarationSyntax GetAssemblyProvider(
         ImmutableList<ResolvedSourceLocation> assemblyRequests,
         ImmutableList<ResolvedSourceLocation> reflectionRequests,
@@ -55,12 +58,11 @@ internal static class AssemblyProviderBuilder
             : ScanMethod;
 
         var privateMembers = privateAssemblies
-                            .OrderBy(
-                                 z =>
-                                 {
-                                     addStringToHash(hasher, z.MetadataName);
-                                     return z.MetadataName;
-                                 }
+                            .OrderBy(z =>
+                                     {
+                                         addStringToHash(hasher, z.MetadataName);
+                                         return z.MetadataName;
+                                     }
                              )
                             .SelectMany(z => StatementGeneration.AssemblyDeclaration(compilation, isAot, z))
                             .ToList();
@@ -185,12 +187,12 @@ internal static class AssemblyProviderBuilder
     }
 
     private static bool MethodUsesPrivateReflection(MethodDeclarationSyntax method, Dictionary<string, IAssemblySymbol> privateAssemblyByVariable) =>
-        method.DescendantNodes()
-              .OfType<InvocationExpressionSyntax>()
-              .Any(
-                   invocation => invocation.Expression is MemberAccessExpressionSyntax { Name.Identifier.ValueText: "GetType", Expression: IdentifierNameSyntax receiver }
-                    && privateAssemblyByVariable.ContainsKey(receiver.Identifier.ValueText)
-               );
+        method
+           .DescendantNodes()
+           .OfType<InvocationExpressionSyntax>()
+           .Any(invocation => invocation.Expression is MemberAccessExpressionSyntax { Name.Identifier.ValueText: "GetType", Expression: IdentifierNameSyntax receiver }
+                 && privateAssemblyByVariable.ContainsKey(receiver.Identifier.ValueText)
+            );
 
     private static AttributeListSyntax BuildTrimSuppressionAttributeList() =>
         AttributeList(
@@ -212,7 +214,12 @@ internal static class AssemblyProviderBuilder
                         {
                             AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Trimming"))),
                             AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(checkId))),
-                            AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal("Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")))
+                            AttributeArgument(
+                                    LiteralExpression(
+                                        SyntaxKind.StringLiteralExpression,
+                                        Literal("Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")
+                                    )
+                                )
                                .WithNameEquals(NameEquals(IdentifierName("Justification"))),
                         }
                     )
@@ -222,26 +229,25 @@ internal static class AssemblyProviderBuilder
     private static AttributeListSyntax BuildDynamicDependencyAttributeList(IReadOnlyList<(string Assembly, string Type)> dependencies) =>
         AttributeList(
             SeparatedList(
-                dependencies.Select(
-                    dependency => Attribute(ParseName("global::System.Diagnostics.CodeAnalysis.DynamicDependency"))
-                       .WithArgumentList(
-                            AttributeArgumentList(
-                                SeparatedList(
-                                    new[]
-                                    {
-                                        AttributeArgument(
-                                            MemberAccessExpression(
-                                                SyntaxKind.SimpleMemberAccessExpression,
-                                                ParseName("global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes"),
-                                                IdentifierName("All")
+                dependencies.Select(dependency => Attribute(ParseName("global::System.Diagnostics.CodeAnalysis.DynamicDependency"))
+                                       .WithArgumentList(
+                                            AttributeArgumentList(
+                                                SeparatedList(
+                                                    new[]
+                                                    {
+                                                        AttributeArgument(
+                                                            MemberAccessExpression(
+                                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                                ParseName("global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes"),
+                                                                IdentifierName("All")
+                                                            )
+                                                        ),
+                                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(dependency.Type))),
+                                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(dependency.Assembly))),
+                                                    }
+                                                )
                                             )
-                                        ),
-                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(dependency.Type))),
-                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(dependency.Assembly))),
-                                    }
-                                )
-                            )
-                        )
+                                        )
                 )
             )
         );
@@ -249,34 +255,45 @@ internal static class AssemblyProviderBuilder
     private static MethodDeclarationSyntax GenerateMethodBody(MethodDeclarationSyntax baseMethod, IEnumerable<ResolvedSourceLocation> locations)
     {
         var item = baseMethod.Body?.Statements.ToArray() ?? Array.Empty<StatementSyntax>();
-        var returnStatement = item.OfType<ReturnStatementSyntax>().Take(1).Cast<StatementSyntax>();
+        var returnStatement = item.OfType<ReturnStatementSyntax>().Take(1).Cast<StatementSyntax>().ToImmutableList();
 
         return baseMethod
            .WithBody(
                 Block(
-                    ImmutableList.CreateRange(item.Except(returnStatement))
-                    .Add(
-                        SwitchGenerator.GenerateSwitchStatement(
+                    ImmutableList
+                       .CreateRange(item.Except(returnStatement))
+                       .Add(
+                            SwitchGenerator.GenerateSwitchStatement(
                                 locations
-                                     .GroupBy(z => z.Location)
-                                     .Select(
-                                          z => z.Aggregate(
-                                              new ResolvedSourceLocation(z.First().Location, "", ImmutableHashSet<string>.Empty, null),
-                                              (location, sourceLocation) => new(
-                                                  location.Location,
-                                                  location.Expression + "\n" + sourceLocation.Expression,
-                                                  location.PrivateAssemblies.Concat(sourceLocation.PrivateAssemblies).ToImmutableHashSet(),
-                                                  null
-                                              )
-                                          )
-                                      )
-                                      .ToImmutableList()
-
-                            ))
-                            .AddRange(returnStatement)
-                    )
-
-
+                                   .GroupBy(z => z.Location)
+                                   .Select(z => z.Aggregate(
+                                               new ResolvedSourceLocation(
+                                                   z.First().Location,
+                                                   "",
+                                                   ImmutableHashSet<string>.Empty,
+                                                   null,
+                                                   [],
+                                                   [],
+                                                   [],
+                                                   z.First().ScannedAssemblyName
+                                               ),
+                                               (location, sourceLocation) => new(
+                                                   location.Location,
+                                                   location.Expression + "\n" + sourceLocation.Expression,
+                                                   location.PrivateAssemblies.Concat(sourceLocation.PrivateAssemblies).ToImmutableHashSet(),
+                                                   null,
+                                                   location.DiscoveredTypes.AddRange(sourceLocation.DiscoveredTypes),
+                                                   location.DiscoveredAssemblies.AddRange(sourceLocation.DiscoveredAssemblies),
+                                                   location.DiscoveredServiceDescriptors.AddRange(sourceLocation.DiscoveredServiceDescriptors),
+                                                   location.ScannedAssemblyName
+                                               )
+                                           )
+                                    )
+                                   .ToImmutableList()
+                            )
+                        )
+                       .AddRange(returnStatement)
+                )
             );
     }
 

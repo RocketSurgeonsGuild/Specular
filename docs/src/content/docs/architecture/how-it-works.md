@@ -86,3 +86,5 @@ flowchart TD
 ## Next Steps
 
 To understand how scan results are shared across project references without redundant symbol resolution, see [Cross-Assembly Caching](./cross-assembly-caching.md).
+
+To list every discovered scanner expression, assembly, and type as compile-time metadata (plus a Mermaid diagram of the same data), see [Scan Report](./scan-report.md).

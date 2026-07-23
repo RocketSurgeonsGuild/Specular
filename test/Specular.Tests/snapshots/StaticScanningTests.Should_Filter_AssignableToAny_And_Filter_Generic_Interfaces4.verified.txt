@@ -13,10 +13,18 @@
     mscorlib.dll,
     netstandard.dll,
     Specular.dll,
+    System.Collections.Immutable.dll,
     System.ComponentModel.dll,
     System.Core.dll,
     System.dll,
     System.Private.CoreLib.dll,
     System.Runtime.dll
+  ],
+  Services: [
+    {
+      Lifetime: Scoped,
+      ServiceType: IValidator`1[[Nested+MyRecord, TestProject, Version=version, Culture=neutral, PublicKeyToken=null]],
+      ImplementationType: Nested+Validator
+    }
   ]
 }

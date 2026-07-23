@@ -261,7 +261,12 @@ internal static class Helpers
            .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)));
 
     [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
-    internal static SourceLocation CreateSourceLocation(SourceLocationKind kind, InvocationExpressionSyntax methodCallSyntax, CancellationToken cancellationToken)
+    internal static SourceLocation CreateSourceLocation(
+        SourceLocationKind kind,
+        InvocationExpressionSyntax methodCallSyntax,
+        string sourceAssemblyName,
+        CancellationToken cancellationToken
+    )
     {
         if (methodCallSyntax is { Expression: MemberAccessExpressionSyntax memberAccess, ArgumentList.Arguments: [{ Expression: { } argumentExpression }] }) { }
         else if (methodCallSyntax is
@@ -275,6 +280,7 @@ internal static class Helpers
             throw new InvalidOperationException("Invalid method call syntax");
         }
 
+        var normalizedExpression = argumentExpression.NormalizeWhitespace().ToFullString();
         var expression = string.Concat(
             argumentExpression
                .ToFullString()
@@ -293,7 +299,9 @@ internal static class Helpers
                .LineNumber
           + 1,
             memberAccess.SyntaxTree.FilePath,
-            hash
+            hash,
+            sourceAssemblyName,
+            normalizedExpression
         );
         return source;
     }

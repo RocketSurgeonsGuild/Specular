@@ -3,8 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Specular.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Specular.Abstractions;
 using TestAssembly;
 
 namespace Specular.Tests;
@@ -62,7 +62,7 @@ public partial class AssemblyScanningTestData
                     public static void Main(string[] args)
                     {
                         var services = new ServiceCollection();
-                        var provider = SpecularProvider.Instance;
+                        ISpecularProvider provider = SpecularProvider.Instance;
                         {{{string.Join("\n", expressions)}}}
                     }
                 }
@@ -75,12 +75,12 @@ public partial class AssemblyScanningTestData
     private static IEnumerable<(string Expression, string TypeName)> GetAssemblyRequests() =>
     [
         ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies()),
+        ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies().IncludeSystemAssemblies()),
         ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>()),
         ToExpression<Action<IReflectionTypeSelector>>(z => z.FromAssemblies().NotFromAssemblyOf<IService>()),
         ToExpression<Action<IReflectionTypeSelector>>(z => z.EntryAssembly()),
         ToExpression<Action<IReflectionTypeSelector>>(z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()),
-        ToExpression<Action<IReflectionTypeSelector>>(z => z.DependenciesFromAssemblyOf<IService>()),
-        //yield return TestMethod(z => z.IncludeSystemAssemblies().FromAssemblies());
+        ToExpression<Action<IReflectionTypeSelector>>(z => z.DependenciesFromAssemblyOf<IService>())
     ];
 
     private static IEnumerable<(string Expression, string TypeName)> GetReflectionRequests() =>
@@ -298,7 +298,6 @@ public partial class AssemblyScanningTestData
         ToExpression<Func<IReflectionTypeSelector, IEnumerable<Type>>>(
             z => z
                 .FromAssemblies()
-                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
                 .GetTypes(
                      x => x
                          .NotAssignableTo<ISpecularProvider>()
@@ -312,7 +311,6 @@ public partial class AssemblyScanningTestData
         ToExpression<Func<IReflectionTypeSelector, IEnumerable<Type>>>(
             z => z
                 .FromAssemblies()
-                .NotFromAssemblyOf<ServiceRegistrationAttribute>()
                 .GetTypes(
                      x => x
                          .NotAssignableTo<ISpecularProvider>()
@@ -583,7 +581,11 @@ public partial class AssemblyScanningTestData
                              typeof(ServiceRegistrationAttribute<,>),
                              typeof(ServiceRegistrationAttribute<,,>),
                              typeof(ServiceRegistrationAttribute<,,>),
-                             typeof(ServiceRegistrationAttribute<,,,>)
+                             typeof(ServiceRegistrationAttribute<,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,>),
+                             typeof(ServiceRegistrationAttribute<,,,,,,,>)
                          )
                  )
                 .AsSelf()

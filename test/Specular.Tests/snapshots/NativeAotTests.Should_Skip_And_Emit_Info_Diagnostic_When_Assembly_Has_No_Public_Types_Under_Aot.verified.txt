@@ -7,7 +7,7 @@
       WarningLevel: 1,
       Location: : (0,0)-(0,0),
       MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-      Message: 'SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+      Message: 'global::SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
       Category: Dependency Injection
     },
     {
@@ -17,7 +17,7 @@
       WarningLevel: 1,
       Location: : (0,0)-(0,0),
       MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-      Message: 'SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+      Message: 'global::SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
       Category: Dependency Injection
     }
   ],
@@ -30,7 +30,7 @@
         WarningLevel: 1,
         Location: : (0,0)-(0,0),
         MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-        Message: 'SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+        Message: 'global::SecretLib.ISecret' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
         Category: Dependency Injection
       },
       {
@@ -40,7 +40,7 @@
         WarningLevel: 1,
         Location: : (0,0)-(0,0),
         MessageFormat: '{0}' could not be resolved under Native AOT because assembly '{1}' exposes no public type to anchor it; the registration was skipped,
-        Message: 'SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
+        Message: 'global::SecretLib.SecretService' could not be resolved under Native AOT because assembly 'SecretLibrary' exposes no public type to anchor it; the registration was skipped,
         Category: Dependency Injection
       }
     ]
@@ -59,6 +59,7 @@
     mscorlib.dll,
     netstandard.dll,
     Specular.dll,
+    System.Collections.Immutable.dll,
     System.ComponentModel.dll,
     System.Core.dll,
     System.dll,

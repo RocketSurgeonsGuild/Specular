@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
+using Specular.Analyzers.Configuration;
 
 namespace Specular.Analyzers;
 
@@ -16,7 +17,11 @@ public record SourceLocation
     int LineNumber,
     string FilePath,
     [property: JsonPropertyName("e")]
-    string ExpressionHash)
+    string ExpressionHash,
+    [property: JsonPropertyName("sa")]
+    string SourceAssemblyName = "",
+    [property: JsonPropertyName("se")]
+    string SourceExpression = "")
 {
     [JsonIgnore]
     public string FileName => Path.GetFileName(FilePath);
@@ -30,5 +35,9 @@ public record ResolvedSourceLocation
     SourceLocation Location,
     string Expression,
     ImmutableHashSet<string> PrivateAssemblies,
-    string? CacheVersion
+    string? CacheVersion,
+    ImmutableList<TypeScanReportEntryData> DiscoveredTypes,
+    ImmutableList<AssemblyScanReportEntryData> DiscoveredAssemblies,
+    ImmutableList<ServiceDescriptorScanReportEntryData> DiscoveredServiceDescriptors,
+    string? ScannedAssemblyName
 );

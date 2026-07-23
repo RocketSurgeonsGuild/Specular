@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.AssemblyProviders;
-using Specular.Analyzers.Configuration;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Specular.Analyzers.AssemblyProviders;
+using Specular.Analyzers.Configuration;
+using Specular.Analyzers.Descriptors;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
@@ -62,7 +62,7 @@ internal static class AssemblyCollection
 
                 var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList());
 
-                var source = Helpers.CreateSourceLocation(SourceLocationKind.Assembly, methodCallSyntax, cancellationToken);
+                var source = Helpers.CreateSourceLocation(SourceLocationKind.Assembly, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
                 // disallow list?
                 if (source.FileName == "ConventionContextHelpers.cs") continue;
 
@@ -134,10 +134,17 @@ internal static class AssemblyCollection
                                       .Where(z => item.AssemblyFilter.IsMatch(compilation, z))
                                       .ToArray();
 
-                if (filterAssemblies.Length == 0) continue;
-
-                var descriptors = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-                results.Add(new(item.Location, descriptors, pa.Select(z => z.MetadataName).ToImmutableHashSet(), ""));
+                var (descriptors, reportEntries) = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa);
+                results.Add(new(
+                    item.Location,
+                    descriptors.NormalizeWhitespace().ToFullString().Replace("\r", ""),
+                    pa.Select(z => z.MetadataName).ToImmutableHashSet(),
+                    "",
+                    [],
+                    reportEntries,
+                    [],
+                    item.Location.SourceAssemblyName
+                ));
             }
             catch (Exception e)
             {
@@ -160,11 +167,13 @@ internal static class AssemblyCollection
 
     public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter);
 
-    private static BlockSyntax GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
+    private sealed record AssemblyScanGeneration(BlockSyntax Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
+    private static AssemblyScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
         var block = Block();
-        foreach (var assembly in assemblies.OrderBy(z => z.ToDisplayString()))
+        var reportEntries = ImmutableList.CreateBuilder<AssemblyScanReportEntryData>();
+        foreach (var assembly in assemblies.OrderBy(z => z.MetadataName))
         {
             // TODO: Make this always use the load context?
             if (StatementGeneration.GetAssemblyExpression(compilation, assembly) is not { } assemblyExpression)
@@ -184,6 +193,7 @@ internal static class AssemblyCollection
                            .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(StatementGeneration.GetPrivateAssembly(assembly)))))
                     )
                 );
+                reportEntries.Add(new(assembly.Identity.Name));
                 continue;
             }
 
@@ -193,9 +203,10 @@ internal static class AssemblyCollection
                        .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(assemblyExpression))))
                 )
             );
+            reportEntries.Add(new(assembly.Identity.Name));
         }
 
-        return block;
+        return new(block, reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetMethod(node) is { method: { }, selector: { } };

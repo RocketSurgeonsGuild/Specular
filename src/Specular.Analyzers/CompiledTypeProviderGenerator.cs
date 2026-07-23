@@ -1,10 +1,11 @@
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
-using Specular.Analyzers.Configuration;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Specular.Analyzers.Configuration;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
@@ -35,79 +36,68 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                                 .Select((z, _) => (assemblies: z.Left.Left, reflection: z.Left.Right, serviceDescriptors: z.Right));
         var generatedJsonProvider = context
                                    .AdditionalTextsProvider.Where(z => Path.GetFileName(z.Path).Equals(Constants.SpecularProviderCacheFileName, StringComparison.OrdinalIgnoreCase))
-                                   .Select(
-                                        (text, _) =>
-                                        {
-                                            var source = text.GetText(_)?.ToString();
-                                            return source is not { Length: > 100 }
-                                                ? new(
-                                                    ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
-                                                    ImmutableHashSet<string>.Empty,
-                                                    ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
-                                                )
-                                                : JsonSerializer.Deserialize(
-                                                    source,
-                                                    JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData
-                                                );
-                                        }
+                                   .Select((text, _) =>
+                                           {
+                                               var source = text.GetText(_)?.ToString();
+                                               return source is not { Length: > 100 }
+                                                   ? new(
+                                                       ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
+                                                       ImmutableHashSet<string>.Empty,
+                                                       ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
+                                                   )
+                                                   : JsonSerializer.Deserialize(
+                                                       source,
+                                                       JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData
+                                                   );
+                                           }
                                     )
                                    .Collect()
-                                   .Select(
-                                        (z, _) => z.SingleOrDefault()
-                                         ?? new(
-                                                ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
-                                                ImmutableHashSet<string>.Empty,
-                                                ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
-                                            )
+                                   .Select((z, _) => z.SingleOrDefault()
+                                            ?? new(
+                                                   ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
+                                                   ImmutableHashSet<string>.Empty,
+                                                   ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
+                                               )
                                     );
+
         context.RegisterImplementationSourceOutput(
             context
                .CompilationProvider
                .Combine(context.AnalyzerConfigOptionsProvider)
                .Combine(collectionProvider)
                .Combine(generatedJsonProvider)
-               .Select(
-                    (tuple, _) => (
-                        compilation: tuple.Left.Left.Left,
-                        options: tuple.Left.Left.Right,
-                        tuple.Left.Right.assemblies,
-                        tuple.Left.Right.reflection,
-                        tuple.Left.Right.serviceDescriptors,
-                        additionalFiles: tuple.Right
-                    )
+               .Select((tuple, _) => (
+                           compilation: tuple.Left.Left.Left,
+                           options: tuple.Left.Left.Right,
+                           tuple.Left.Right.assemblies,
+                           tuple.Left.Right.reflection,
+                           tuple.Left.Right.serviceDescriptors,
+                           additionalFiles: tuple.Right
+                       )
                 ),
             static (context, request) =>
             {
+                static bool getMsBuildBoolean(AnalyzerConfigOptions options, string propertyName, bool @default) =>
+                    options.TryGetValue($"build_property.{propertyName}", out var value) && bool.TryParse(value, out var parsedValue) ? parsedValue : @default;
+
                 HashSet<string> excludedAssemblies = request.options.GlobalOptions.TryGetValue("build_property.ExcludeAssemblyFromCTP", out var assemblies)
                     ? [.. assemblies.Split([';', ','], StringSplitOptions.RemoveEmptyEntries)]
                     : [];
-                // Whether this assembly should emit its own ISpecularProvider implementation.
-                // Libraries that are only meant to be scanned can opt out by setting
-                // <SpecularEmitProvider>false</SpecularEmitProvider>; the consuming application
-                // then emits the provider. Defaults to true to preserve existing behaviour.
-                var emitProvider = !request.options.GlobalOptions.TryGetValue("build_property.SpecularEmitProvider", out var emitProviderValue)
-                 || !bool.TryParse(emitProviderValue, out var parsedEmitProvider)
-                 || parsedEmitProvider;
+
+                var emitProvider = getMsBuildBoolean(request.options.GlobalOptions, "SpecularEmitProvider", true);
+                var generateScanReport = getMsBuildBoolean(request.options.GlobalOptions, "SpecularGenerateDiagnostics", true);
                 var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
                 var diagnostics = new HashSet<Diagnostic>();
 
-                // The generated SpecularProvider type does not exist while this generator runs, so consumer scan
-                // calls written against `SpecularProvider.Instance` (or a local typed from it) fail to bind, which
-                // would silently drop every scan expression. Build a semantic-only compilation that includes a
-                // minimal SpecularProvider shell purely so those selector lambdas bind and can be parsed. This
-                // augmented compilation is used ONLY for interpreting selector expressions - never for enumerating
-                // the types being scanned - so the shell can never appear in scan results.
-                var semanticCompilation = CreateSemanticCompilation(request.compilation);
-
-                var assemblyRequests = AssemblyCollection.GetAssemblyItems(semanticCompilation, diagnostics, request.assemblies, context.CancellationToken);
+                var assemblyRequests = AssemblyCollection.GetAssemblyItems(request.compilation, diagnostics, request.assemblies, context.CancellationToken);
                 var reflectionRequests = ReflectionCollection.GetReflectionItems(
-                    semanticCompilation,
+                    request.compilation,
                     diagnostics,
                     request.reflection,
                     context.CancellationToken
                 );
                 var serviceDescriptorRequests = ServiceDescriptorCollection.GetServiceDescriptorItems(
-                    semanticCompilation,
+                    request.compilation,
                     diagnostics,
                     request.serviceDescriptors,
                     context.CancellationToken
@@ -119,14 +109,13 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                                      .References
                                      .Select(request.compilation.GetAssemblyOrModuleSymbol)
                                      .Concat([request.compilation.Assembly])
-                                     .Select(
-                                          symbol =>
-                                          {
-                                              if (symbol is IAssemblySymbol assemblySymbol) return assemblySymbol;
-                                              if (symbol is IModuleSymbol moduleSymbol) return moduleSymbol.ContainingAssembly;
-                                              // ReSharper disable once NullableWarningSuppressionIsUsed
-                                              return null!;
-                                          }
+                                     .Select(symbol =>
+                                             {
+                                                 if (symbol is IAssemblySymbol assemblySymbol) return assemblySymbol;
+                                                 if (symbol is IModuleSymbol moduleSymbol) return moduleSymbol.ContainingAssembly;
+                                                 // ReSharper disable once NullableWarningSuppressionIsUsed
+                                                 return null!;
+                                             }
                                       )
                                      .Where(z => z is { })
                                      .Where(z => excludedAssemblies.All(a => !z.MetadataName.StartsWith(a, StringComparison.OrdinalIgnoreCase)))
@@ -211,26 +200,26 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                     config,
                     out var cacheHash
                 );
-                cu = cu.AddSharedTrivia()
-                .AddAttributeLists(attributes)
-
-                        .AddAttributeLists(
-                             AttributeList(
-                                     SingletonSeparatedList(
-                                         Attribute(
-                                             ParseName("Specular.Abstractions.SpecularHashAttribute"),
-                                             AttributeArgumentList(
-                                                 SeparatedList(
-                                                     [
-                                                         AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
-                                                     ]
-                                                 )
+                cu = cu
+                    .AddSharedTrivia()
+                    .AddAttributeLists(attributes)
+                    .AddAttributeLists(
+                         AttributeList(
+                                 SingletonSeparatedList(
+                                     Attribute(
+                                         ParseName("Specular.Abstractions.SpecularHashAttribute"),
+                                         AttributeArgumentList(
+                                             SeparatedList(
+                                                 [
+                                                     AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
+                                                 ]
                                              )
                                          )
                                      )
                                  )
-                                .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
-                         );
+                             )
+                            .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
+                     );
 
                 // Only emit the provider implementation (and the attribute that points at it)
                 // when this assembly is configured to do so. The scan-metadata attributes above
@@ -239,6 +228,11 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                 {
                     if (privateAssemblies.Count != 0 && !config.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
                     cu = cu.AddMembers(assemblyProvider);
+                }
+
+                if (generateScanReport)
+                {
+                    TryAddScanReport(context, diagnostics, assemblySources, reflectionSources, serviceDescriptorSources);
                 }
 
                 foreach (var diagnostic in diagnostics)
@@ -274,7 +268,8 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
                 return;
 
-                static IEnumerable<IAssemblySymbol> joinAssemblies(IEnumerable<KeyValuePair<string, IAssemblySymbol>> assemblies, IEnumerable<ResolvedSourceLocation> sources) => sources.SelectMany(z => z.PrivateAssemblies).Join(assemblies, z => z, z => z.Key, (_, a) => a.Value);
+                static IEnumerable<IAssemblySymbol> joinAssemblies(IEnumerable<KeyValuePair<string, IAssemblySymbol>> assemblies, IEnumerable<ResolvedSourceLocation> sources) =>
+                    sources.SelectMany(z => z.PrivateAssemblies).Join(assemblies, z => z, z => z.Key, (_, a) => a.Value);
             }
         );
     }
@@ -294,23 +289,106 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         return cacheDirectory;
     }
 #pragma warning restore RS1035
-
-    // Produces a compilation augmented with a minimal SpecularProvider shell so that consumer scan calls written
-    // against the generated `SpecularProvider.Instance` bind during generation. Used only for parsing selector
-    // expressions - never for enumerating the types being scanned.
-    private static Compilation CreateSemanticCompilation(Compilation compilation)
+    private class TypeInferenceRewriter : CSharpSyntaxRewriter
     {
-        // If the consuming compilation already declares an SpecularProvider, do not inject the shell.
-        if (compilation.GetTypeByMetadataName("SpecularProvider") is { }) return compilation;
+        private int indentLevel = 1;
 
-        const string shellSource =
-            "internal sealed class SpecularProvider\n"
-          + "{\n"
-          + "    public static global::Specular.ISpecularProvider Instance { get; }\n"
-          + "}\n";
+        //        public override SyntaxNode? VisitImplicitObjectCreationExpression(ImplicitObjectCreationExpressionSyntax node)
+        //        {
+        //            try
+        //            {
+        //                indentLevel++;
+        //
+        //                return base.VisitImplicitObjectCreationExpression(((node.ReplaceNode(node.ArgumentList, Indent(node.ArgumentList)))));
+        //            }
+        //            finally
+        //            {
+        //                indentLevel--;
+        //            }
+        //        }
 
-        var parseOptions = compilation.SyntaxTrees.Select(z => z.Options).FirstOrDefault() as CSharpParseOptions;
-        var shellTree = CSharpSyntaxTree.ParseText(shellSource, parseOptions);
-        return compilation.AddSyntaxTrees(shellTree);
+        public override SyntaxNode? VisitExpressionElement(ExpressionElementSyntax node)
+        {
+            try
+            {
+                indentLevel++;
+
+                return base.VisitExpressionElement( Indent(node) );
+            }
+            finally
+            {
+                indentLevel--;
+            }
+        }
+
+        public override SyntaxNode? VisitCollectionExpression(CollectionExpressionSyntax node)
+        {
+            try
+            {
+                indentLevel++;
+
+                return base.VisitCollectionExpression(Outdent(Indent(node)));
+            }
+            finally
+            {
+                indentLevel--;
+            }
+        }
+
+        private T Indent<T>(T node) where T : SyntaxNode
+            => node.WithLeadingTrivia(TriviaList([.. node.GetLeadingTrivia(), LineFeed, .. Enumerable.Range(0, indentLevel).SelectMany(_ => Enumerable.Range(0, 4).Select(z => Space))]));
+        private T Outdent<T>(T node) where T : SyntaxNode
+            => node.WithTrailingTrivia(TriviaList([.. node.GetTrailingTrivia(), LineFeed, .. Enumerable.Range(0, indentLevel - 1).SelectMany(_ => Enumerable.Range(0, 4).Select(z => Space))]));
+    }
+
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
+    private static void TryAddScanReport(
+        SourceProductionContext context,
+        HashSet<Diagnostic> diagnostics,
+        ImmutableList<ResolvedSourceLocation> assemblySources,
+        ImmutableList<ResolvedSourceLocation> reflectionSources,
+        ImmutableList<ResolvedSourceLocation> serviceDescriptorSources
+    )
+    {
+        try
+        {
+            var scanReport = ScanReport.ScanReportBuilder.GetScanReport(assemblySources, reflectionSources, serviceDescriptorSources);
+            var cu = CompilationUnit()
+                    .WithUsings(
+                         List(
+                             [
+                                 UsingDirective(ParseName("System")),
+                                 UsingDirective(ParseName("System.Collections.Generic")),
+                                 UsingDirective(ParseName("System.Reflection")),
+                                 UsingDirective(ParseName("Microsoft.Extensions.DependencyInjection")),
+                                 UsingDirective(ParseName("Specular")),
+                                 UsingDirective(ParseName("Specular.Abstractions")),
+                                 UsingDirective(ParseName("Specular.Diagnostics")),
+                             ]
+                         )
+                     )
+                    .AddMembers(scanReport)
+                    .NormalizeWhitespace();
+
+            TypeInferenceRewriter rewriter = new();
+
+            var rewritten = rewriter.Visit(cu.SyntaxTree.GetRoot());
+
+
+            context.AddSource("SpecularScanReport.g.cs", rewritten.GetText(Encoding.UTF8));
+        }
+        catch (Exception e)
+        {
+            diagnostics.Add(
+                Diagnostic.Create(
+                    Diagnostics.UnhandledException,
+                    null,
+                    e.Message,
+                    e.StackTrace?.Replace("\r", "").Replace("\n", ""),
+                    e.GetType().Name,
+                    e.ToString()
+                )
+            );
+        }
     }
 }

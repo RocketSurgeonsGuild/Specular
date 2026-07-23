@@ -5,5 +5,5 @@ namespace Specular.Analyzers.AssemblyProviders;
 internal interface ICompiledTypeFilter<in TSymbol>
 {
     string Hash { get; }
-    bool IsMatch(Compilation compilation, TSymbol targetType);
+    bool IsMatch(Compilation compilation, TSymbol targetSymbol);
 }

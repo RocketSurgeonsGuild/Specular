@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.AssemblyProviders;
-using Specular.Analyzers.Configuration;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Specular.Analyzers.AssemblyProviders;
+using Specular.Analyzers.Configuration;
+using Specular.Analyzers.Descriptors;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
@@ -84,8 +84,17 @@ internal static class ReflectionCollection
                               .GetTypes();
             if (reducedTypes.Count == 0) return null;
 
-            var localBlock = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa).NormalizeWhitespace().ToFullString().Replace("\r", "");
-            return new(item.Location, localBlock, pa.Select(z => z.MetadataName).ToImmutableHashSet(), targetAssembly.GetCachedVersion());
+            var (localBlock, results) = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa);
+            return new(
+                item.Location,
+                localBlock.NormalizeWhitespace().ToFullString().Replace("\r", ""),
+                pa.Select(z => z.MetadataName).ToImmutableHashSet(),
+                targetAssembly.GetCachedVersion(),
+                results,
+                [],
+                [],
+                ScannedAssemblyName: targetAssembly.MetadataName
+            );
         }
     }
 
@@ -147,7 +156,7 @@ internal static class ReflectionCollection
                     cancellationToken
                 );
 
-                var source = Helpers.CreateSourceLocation(SourceLocationKind.Reflection, methodCallSyntax, cancellationToken);
+                var source = Helpers.CreateSourceLocation(SourceLocationKind.Reflection, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
                 var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList(), source);
                 var typeFilter = new CompiledTypeFilter(classFilter, typeFilters.ToImmutableList(), source);
 
@@ -176,32 +185,49 @@ internal static class ReflectionCollection
         return items.ToImmutable();
     }
 
-    private static BlockSyntax GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<INamedTypeSymbol> types, HashSet<IAssemblySymbol> privateAssemblies)
+
+    private sealed record TypeScanGeneration(BlockSyntax Block, ImmutableList<TypeScanReportEntryData> ReportEntries);
+
+    private static TypeScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<INamedTypeSymbol> types, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
         var block = Block();
-        foreach (var type in types.OrderBy(z => z.ToDisplayString()))
+        var reportEntries = ImmutableList.CreateBuilder<TypeScanReportEntryData>();
+        foreach (var type in types.OrderBy(Helpers.GetGenericDisplayName))
         {
             if (configuration.IsAot && StatementGeneration.GetUnreachableType(compilation, type) is { } unreachable)
             {
                 _ = diagnostics.Add(
-                    Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, Location.None, unreachable.ToDisplayString(), unreachable.ContainingAssembly.Identity.Name)
+                    Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, Location.None, Helpers.GetGenericDisplayName(type), type.ContainingAssembly.Identity.Name)
                 );
                 continue;
             }
 
-            block = block.AddStatements(
-                ExpressionStatement(
-                    InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                       .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(StatementGeneration.GetTypeOfExpression(compilation, type)))))
-                )
-            );
+            var privateType = StatementGeneration.GetTypeOfExpression(compilation, type, true);
+            if (privateType is { })
+            {
+                block = block.AddStatements(
+                    ExpressionStatement(
+                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
+                           .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(privateType))))
+                    )
+                );
+                reportEntries.Add(new(Helpers.GetGenericDisplayName(type)));
+            }
+            else
+            {
+                // add a comment stating we could reach the private type
+                block = block.AddStatements(
+                    EmptyStatement().WithTrailingTrivia(TriviaList(Comment($"// Could not generate typeof expression for {Helpers.GetGenericDisplayName(type)}")))
+                );
+            }
+
             if (compilation.IsSymbolAccessibleWithin(type, compilation.Assembly)) continue;
 
             _ = privateAssemblies.Add(type.ContainingAssembly);
         }
 
-        return block;
+        return new(block, reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetTypesMethod(node) is { method: { }, selector: { } };
