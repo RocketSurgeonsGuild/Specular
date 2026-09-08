@@ -11,7 +11,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
         <PackageReference Include="Polyfill" PrivateAssets="all" />
-        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.19" />
+        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.20" />
         <PackageReference Include="System.Text.Json" PrivateAssets="all" GeneratePathProperty="true" />
         <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
