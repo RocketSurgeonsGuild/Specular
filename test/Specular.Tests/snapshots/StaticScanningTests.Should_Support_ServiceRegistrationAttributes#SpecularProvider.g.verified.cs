@@ -45,7 +45,7 @@ internal sealed class SpecularProvider : ISpecularProvider
                 services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::ServiceB>()));
                 services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
                 break;
-            // FilePath: {CurrentDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
+            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
             case 19:
                 services.Add(ServiceDescriptor.Transient<global::Nested.ServiceA, global::Nested.ServiceA>());
                 services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Nested.ServiceA>()));

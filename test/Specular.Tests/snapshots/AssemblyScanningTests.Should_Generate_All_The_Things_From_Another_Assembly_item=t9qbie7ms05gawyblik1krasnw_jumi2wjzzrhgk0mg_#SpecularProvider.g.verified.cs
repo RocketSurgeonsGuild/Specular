@@ -39,7 +39,7 @@ internal sealed class SpecularProvider : ISpecularProvider
             // FilePath: Input0.cs Expression: nGdrAptlVCEX9H6kHx0auw==
             case 16:
                 break;
-            // FilePath: {CurrentDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
+            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
             case 19:
                 services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));

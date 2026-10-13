@@ -168,7 +168,9 @@ internal sealed class SpecularScanReport
                             new(ServiceLifetime.Transient, "global::System.Diagnostics.ProcessTextOutput", "global::System.Diagnostics.ProcessTextOutput"), 
                             new(ServiceLifetime.Transient, "global::System.IO.ReadOnlyMemoryStream", "global::System.IO.ReadOnlyMemoryStream"), 
                             new(ServiceLifetime.Transient, "global::System.IO.StringStream", "global::System.IO.StringStream"), 
-                            new(ServiceLifetime.Transient, "global::System.IO.WritableMemoryStream", "global::System.IO.WritableMemoryStream")]
+                            new(ServiceLifetime.Transient, "global::System.IO.WritableMemoryStream", "global::System.IO.WritableMemoryStream"), 
+                            new(ServiceLifetime.Transient, "global::System.Runtime.CompilerServices.IsClosedTypeAttribute", "global::System.Runtime.CompilerServices.IsClosedTypeAttribute"), 
+                            new(ServiceLifetime.Transient, "global::System.Runtime.CompilerServices.UnionAttribute", "global::System.Runtime.CompilerServices.UnionAttribute")]
                     ), 
                     new("System.Collections.Immutable", 
                         [

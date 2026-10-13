@@ -990,7 +990,7 @@ internal sealed class SpecularProvider : ISpecularProvider
                 }
 
                 break;
-            // FilePath: {CurrentDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
+            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
             case 19:
                 services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
@@ -1009,7 +1009,7 @@ internal sealed class SpecularProvider : ISpecularProvider
     [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "FxResources.System.Collections.Immutable.SR", "System.Collections.Immutable"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _mscorlib;
-    private Assembly mscorlib => _mscorlib ??= _context.LoadFromAssemblyName(new AssemblyName("mscorlib, Version=version, Culture=neutral, PublicKey=00000000000000000400000000000000"));
+    private Assembly mscorlib => _mscorlib ??= _context.LoadFromAssemblyName(new AssemblyName("mscorlib, Version=version, Culture=neutral, PublicKey=Guid_1"));
 
     private Assembly _netstandard;
     private Assembly netstandard => _netstandard ??= _context.LoadFromAssemblyName(new AssemblyName("netstandard, Version=version, Culture=neutral, PublicKey=00240000048000009400000006020000002400005253413100040000010001004b86c4cb78549b34bab61a3b1800e23bfeb5b3ec390074041536a7e3cbd97f5f04cf0f857155a8928eaa29ebfd11cfbbad3ba70efea7bda3226c6a8d370a4cd303f714486b6ebc225985a638471e6ef571cc92a4613c00b8fa65d61ccee0cbe5f36330c9a01f4183559f1bef24cc2917c6d913e3a541333a1d05d9bed22b38cb"));
@@ -1021,13 +1021,13 @@ internal sealed class SpecularProvider : ISpecularProvider
     private Assembly Specular => _Specular ??= _context.LoadFromAssemblyName(new AssemblyName("Specular, Version=version, Culture=neutral, PublicKeyToken=null"));
 
     private Assembly _System;
-    private Assembly System => _System ??= _context.LoadFromAssemblyName(new AssemblyName("System, Version=version, Culture=neutral, PublicKey=00000000000000000400000000000000"));
+    private Assembly System => _System ??= _context.LoadFromAssemblyName(new AssemblyName("System, Version=version, Culture=neutral, PublicKey=Guid_1"));
 
     private Assembly _SystemCollectionsImmutable;
     private Assembly SystemCollectionsImmutable => _SystemCollectionsImmutable ??= _context.LoadFromAssemblyName(new AssemblyName("System.Collections.Immutable, Version=version, Culture=neutral, PublicKey=002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad236132102900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc093344d5ad293"));
 
     private Assembly _SystemCore;
-    private Assembly SystemCore => _SystemCore ??= _context.LoadFromAssemblyName(new AssemblyName("System.Core, Version=version, Culture=neutral, PublicKey=00000000000000000400000000000000"));
+    private Assembly SystemCore => _SystemCore ??= _context.LoadFromAssemblyName(new AssemblyName("System.Core, Version=version, Culture=neutral, PublicKey=Guid_1"));
 
     private Assembly _SystemPrivateCoreLib;
     private Assembly SystemPrivateCoreLib => _SystemPrivateCoreLib ??= _context.LoadFromAssemblyName(new AssemblyName("System.Private.CoreLib, Version=version, Culture=neutral, PublicKey=00240000048000009400000006020000002400005253413100040000010001008d56c76f9e8649383049f383c44be0ec204181822a6c31cf5eb7ef486944d032188ea1d3920763712ccb12d75fb77e9811149e6148e5d32fbaab37611c1878ddc19e20ef135d0cb2cff2bfec3d115810c3d9069638fe4be215dbf795861920e5ab6f7db2e2ceef136ac23d5dd2bf031700aec232f6c6b1c785b4305c123b37ab"));
