@@ -49,6 +49,10 @@
     <EnableStrictModeForCompatibleTfms>false</EnableStrictModeForCompatibleTfms>
     <PackageValidationBaselineFrameworkToIgnore>netstandard2.0</PackageValidationBaselineFrameworkToIgnore>
   </PropertyGroup>
+  <PropertyGroup>
+    <Verify_SponsorshipExemption>OpenSource</Verify_SponsorshipExemption>
+    <Verify_SponsorshipExemptionUntil>$([System.DateTime]::Today.AddDays(300).ToString("yyyy-MM"))</Verify_SponsorshipExemptionUntil>
+  </PropertyGroup>
     <ItemGroup>
         <None
       Include="$(MSBuildThisFileDirectory)icons/specular-icon-512.png"

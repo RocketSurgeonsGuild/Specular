@@ -19,11 +19,13 @@ internal static partial class ModuleInitializer
     {
         FileExtensions.AddTextExtension(Path.GetExtension(Constants.SpecularProviderCacheFileName));
         TempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-        VerifierSettings.ScrubLinesWithReplace(s => s.Replace(TempDirectory, "{TempDirectory}").Replace(TempDirectory.Replace("\\", "/"), "{TempDirectory}"));
+        VerifierSettings.ScrubReplace(TempDirectory, "{TempDirectory}");
+        VerifierSettings.ScrubReplace(TempDirectory.Replace("\\", "/"), "{TempDirectory}");
         VerifyGeneratorTextContext.Initialize(DiagnosticSeverity.Warning, Customizers.Default, (results, targets, data) => targets.RemoveAll(z => z.Name == "Microsoft.CodeAnalysis.EmbeddedAttribute.cs"), Customizers.ExcludeParseOptions);
         VerifierSettings.DontScrubUserProfile();
 
         VerifierSettings.AssignTargetAssembly(typeof(ModuleInitializer).Assembly);
+        ScrubSolutionAndProjectDirectories();
         VerifyDiffPlex.Initialize();
 
         VerifierSettings.ScrubInlineGuids();
@@ -82,6 +84,33 @@ internal static partial class ModuleInitializer
                 _ = builder.Append(result);
             }
         );
+    }
+
+    // Verify sorts its directory replacements by length, so when the working directory equals the solution
+    // directory (dotnet test from the repo root) {CurrentDirectory} wins the tie, while Rider's working
+    // directory is the bin folder and yields {SolutionDirectory}. Engine scrubbers run before Verify's
+    // directory pass, so replacing these first makes the output independent of the working directory.
+    private static void ScrubSolutionAndProjectDirectories()
+    {
+        var pairs = new List<(string Find, string Replacement)>();
+
+        void Add(string directory, string replacement)
+        {
+            var trimmed = directory.TrimEnd('/', '\\');
+            if (trimmed.Length <= 1) return;
+            // the trailing separator is consumed, matching Verify's own `{SolutionDirectory}src/...` form
+            pairs.Add((trimmed.Replace('\\', '/') + "/", replacement));
+            pairs.Add((trimmed.Replace('/', '\\') + "\\", replacement));
+        }
+
+        var assembly = typeof(ModuleInitializer).Assembly;
+        Add(AttributeReader.GetProjectDirectory(assembly), "{ProjectDirectory}");
+        if (AttributeReader.TryGetSolutionDirectory(assembly, out var solutionDirectory))
+        {
+            Add(solutionDirectory, "{SolutionDirectory}");
+        }
+
+        VerifierSettings.ScrubReplace(StringComparison.Ordinal, false, [.. pairs.Distinct()]);
     }
 
     public static string TempDirectory { get; private set; } = null!;
