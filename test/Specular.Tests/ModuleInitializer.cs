@@ -19,7 +19,8 @@ internal static partial class ModuleInitializer
     {
         FileExtensions.AddTextExtension(Path.GetExtension(Constants.SpecularProviderCacheFileName));
         TempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-        VerifierSettings.ScrubLinesWithReplace(s => s.Replace(TempDirectory, "{TempDirectory}").Replace(TempDirectory.Replace("\\", "/"), "{TempDirectory}"));
+        VerifierSettings.ScrubReplace(TempDirectory, "{TempDirectory}");
+        VerifierSettings.ScrubReplace(TempDirectory.Replace("\\", "/"), "{TempDirectory}");
         VerifyGeneratorTextContext.Initialize(DiagnosticSeverity.Warning, Customizers.Default, (results, targets, data) => targets.RemoveAll(z => z.Name == "Microsoft.CodeAnalysis.EmbeddedAttribute.cs"), Customizers.ExcludeParseOptions);
         VerifierSettings.DontScrubUserProfile();
 

@@ -23,7 +23,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         await Verify(result.AddCacheFiles())
-             .AddScrubber(z => z.Replace(item.GetTempDirectory(), "{TempPath}"))
+             .ScrubReplace(item.GetTempDirectory(), "{TempPath}")
              .UseParameters(item.FileSafeName);
     }
 
@@ -54,7 +54,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         await Verify(result.AddCacheFiles())
-             .AddScrubber(z => z.Replace(item.GetTempDirectory(), "{TempPath}"))
+             .ScrubReplace(item.GetTempDirectory(), "{TempPath}")
              .UseParameters(item.FileSafeName);
     }
 
@@ -87,7 +87,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         await Verify(result.AddCacheFiles())
-             .AddScrubber(z => z.Replace(item.GetTempDirectory(), "{TempPath}"))
+             .ScrubReplace(item.GetTempDirectory(), "{TempPath}")
              .UseParameters(item.FileSafeName);
     }
 
@@ -120,7 +120,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         await Verify(result.AddCacheFiles())
-             .AddScrubber(z => z.Replace(item.GetTempDirectory(), "{TempPath}"))
+             .ScrubReplace(item.GetTempDirectory(), "{TempPath}")
              .UseParameters(item.FileSafeName);
     }
 
@@ -140,7 +140,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         await Verify(result.AddCacheFiles())
-             .AddScrubber(z => z.Replace(item.GetTempDirectory(), "{TempPath}"))
+             .ScrubReplace(item.GetTempDirectory(), "{TempPath}")
              .UseParameters(item.FileSafeName);
     }
 
@@ -175,7 +175,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         await Verify(result.AddCacheFiles())
-             .AddScrubber(z => z.Replace(item.GetTempDirectory(), "{TempPath}"))
+             .ScrubReplace(item.GetTempDirectory(), "{TempPath}")
              .UseParameters(item.FileSafeName);
     }
 }
