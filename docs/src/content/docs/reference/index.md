@@ -17,5 +17,6 @@ This section documents Specular's **public API surface**: the interface your cod
 
 - [ISpecularProvider](./ispecular-provider/) — the generated entry point, accessed via the static `SpecularProvider.Instance` singleton. Exposes `GetAssemblies`, `GetTypes`, and `Scan`.
 - [ServiceRegistrationAttribute](./service-registration/) — declaratively mark a type for dependency-injection registration with a chosen lifetime.
+- [KeyedServiceRegistrationAttribute](./keyed-service-registration/) — the keyed-service counterpart to `ServiceRegistrationAttribute`.
 - [ExcludeFromSpecularAttribute](./exclude-from-specular/) — opt a type out of scanning so the generator skips it.
 - [Type Filters](./type-filters/) — the fluent selector methods (`AddClasses`, `AsImplementedInterfaces`, namespace and attribute filters, and more) used to build a scan.

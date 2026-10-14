@@ -37,12 +37,17 @@ public interface IOther;
 
 public interface IGenericService<T>;
 
-[ServiceRegistration]
+[ServiceRegistration(ServiceLifetime.Singleton)]
 internal class GenericService : IGenericService<int>, IGenericService<string>, IOther;
 
-[ServiceRegistration]
+[ServiceRegistration(ServiceLifetime.Singleton)]
 public class GenericServiceB : IGenericService<decimal>, IOther;
 
 public interface IValidator;
 
 public interface IValidator<T> : IValidator;
+
+public interface IKeyedService;
+
+[KeyedServiceRegistration("test-key", ServiceLifetime.Singleton, typeof(IKeyedService))]
+public class KeyedService : IKeyedService;

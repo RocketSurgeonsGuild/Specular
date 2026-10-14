@@ -2446,7 +2446,7 @@ public static class Nested
     [ServiceRegistration(ServiceLifetime.Transient)]
     public class ServiceA : IService { }
 }
-[ServiceRegistration]
+[ServiceRegistration(ServiceLifetime.Singleton)]
 public class ServiceB : IService, IServiceB { }
 "
                            )

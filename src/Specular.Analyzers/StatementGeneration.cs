@@ -14,7 +14,8 @@ internal static class StatementGeneration
         Compilation compilation,
         INamedTypeSymbol serviceType,
         INamedTypeSymbol implementationType,
-        string lifetime
+        string lifetime,
+        ExpressionSyntax? key = null
     )
     {
         var serviceTypeExpression = GetTypeOfExpression(compilation, serviceType, true);
@@ -26,13 +27,13 @@ internal static class StatementGeneration
 
         if (isImplementationAccessible)
         {
-            var implementationTypeExpression = SimpleLambdaExpression(Parameter(Identifier("a")))
-               .WithExpressionBody(
-                    InvocationExpression(
+            var implementationTypeExpression = KeyAwareLambda(
+                key,
+                InvocationExpression(
                         MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression,
                             IdentifierName("a"),
-                            GenericName("GetRequiredService")
+                            GenericName(key is null ? "GetRequiredService" : "GetRequiredKeyedService")
                                .WithTypeArgumentList(
                                     TypeArgumentList(
                                         SingletonSeparatedList<TypeSyntax>(IdentifierName(Helpers.GetTypeOfName(implementationType)))
@@ -40,7 +41,8 @@ internal static class StatementGeneration
                                 )
                         )
                     )
-                );
+                   .WithArgumentList(key is null ? ArgumentList() : ArgumentList(SingletonSeparatedList(Argument(key))))
+            );
 
             return GenerateServiceType(
                 compilation,
@@ -48,7 +50,8 @@ internal static class StatementGeneration
                 serviceTypeExpression,
                 implementationType,
                 implementationTypeExpression,
-                lifetime
+                lifetime,
+                key
             );
         }
         else
@@ -60,35 +63,54 @@ internal static class StatementGeneration
                 return null;
             }
             var baseInvocation = InvocationExpression(
-                    MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("a"), IdentifierName("GetRequiredService"))
+                    MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        IdentifierName("a"),
+                        IdentifierName(key is null ? "GetRequiredService" : "GetRequiredKeyedService")
+                    )
                 )
                .WithArgumentList(
                     ArgumentList(
-                        SingletonSeparatedList(Argument(typeofExpression))
+                        key is null
+                            ? SingletonSeparatedList(Argument(typeofExpression))
+                            : SeparatedList([Argument(typeofExpression), Argument(key)])
                     )
                 );
-            var implementationTypeExpression = SimpleLambdaExpression(Parameter(Identifier("a")))
-               .WithExpressionBody(
-                    isServiceAccessible
-                        ? CastExpression(IdentifierName(Helpers.GetTypeOfName(serviceType)), baseInvocation)
-                        : baseInvocation
-                );
+            var implementationTypeExpression = KeyAwareLambda(
+                key,
+                isServiceAccessible
+                    ? CastExpression(IdentifierName(Helpers.GetTypeOfName(serviceType)), baseInvocation)
+                    : baseInvocation
+            );
             return GenerateServiceType(
                 compilation,
                 serviceType,
                 serviceTypeExpression,
                 implementationType,
                 implementationTypeExpression,
-                lifetime
+                lifetime,
+                key
             );
         }
     }
+
+    /// <summary>
+    ///     Keyed factory delegates target <c>Func&lt;IServiceProvider, object?, TService&gt;</c>, which requires a
+    ///     second, unused parameter for the service key (the key itself is embedded as a literal in the body).
+    /// </summary>
+    private static LambdaExpressionSyntax KeyAwareLambda(ExpressionSyntax? key, ExpressionSyntax body) =>
+        key is null
+            ? SimpleLambdaExpression(Parameter(Identifier("a"))).WithExpressionBody(body)
+            : ParenthesizedLambdaExpression()
+               .WithParameterList(ParameterList(SeparatedList([Parameter(Identifier("a")), Parameter(Identifier("_"))])))
+               .WithExpressionBody(body);
 
     public static InvocationExpressionSyntax? GenerateServiceType(
         Compilation compilation,
         INamedTypeSymbol serviceType,
         INamedTypeSymbol implementationType,
-        string lifetime
+        string lifetime,
+        ExpressionSyntax? key = null
     )
     {
         var serviceTypeExpression = GetTypeOfExpression(compilation, serviceType, true);
@@ -101,7 +123,8 @@ internal static class StatementGeneration
             serviceTypeExpression,
             implementationType,
             implementationTypeExpression,
-            lifetime
+            lifetime,
+            key
         );
     }
 
@@ -111,9 +134,11 @@ internal static class StatementGeneration
         ExpressionSyntax serviceTypeExpression,
         INamedTypeSymbol implementationType,
         ExpressionSyntax implementationTypeExpression,
-        string lifetime
+        string lifetime,
+        ExpressionSyntax? key = null
     )
     {
+        var methodName = key is null ? lifetime : $"Keyed{lifetime}";
         var isServiceTypeAccessible = compilation.IsSymbolAccessibleWithin(serviceType, compilation.Assembly);
         return (isServiceTypeAccessible, serviceTypeExpression, implementationTypeExpression) switch
         {
@@ -125,24 +150,37 @@ internal static class StatementGeneration
                     MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
                         IdentifierName("ServiceDescriptor"),
-                        GenericName(lifetime)
+                        GenericName(methodName)
                            .WithTypeArgumentList(TypeArgumentList(SeparatedList([serviceTypeSyntax, implementationTypeSyntax])))
                     )
-                ),
-            (true, TypeOfExpressionSyntax { Type: { } serviceTypeSyntax }, SimpleLambdaExpressionSyntax { ExpressionBody: { } })
+                )
+                   .WithArgumentList(key is null ? ArgumentList() : ArgumentList(SingletonSeparatedList(Argument(key)))),
+            (true, TypeOfExpressionSyntax { Type: { } serviceTypeSyntax }, LambdaExpressionSyntax { ExpressionBody: { } })
                 when !IsOpenGenericType(serviceType) =>
                 InvocationExpression(
                         MemberAccessExpression(
                             SyntaxKind.SimpleMemberAccessExpression,
                             IdentifierName("ServiceDescriptor"),
-                            GenericName(lifetime).WithTypeArgumentList(TypeArgumentList(SeparatedList([serviceTypeSyntax])))
+                            GenericName(methodName).WithTypeArgumentList(TypeArgumentList(SeparatedList([serviceTypeSyntax])))
                         )
                     )
-                   .WithArgumentList(ArgumentList(SeparatedList([Argument(implementationTypeExpression)]))),
+                   .WithArgumentList(
+                        ArgumentList(
+                            key is null
+                                ? SeparatedList([Argument(implementationTypeExpression)])
+                                : SeparatedList([Argument(key), Argument(implementationTypeExpression)])
+                        )
+                    ),
             _ => InvocationExpression(
-                    MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("ServiceDescriptor"), IdentifierName(lifetime))
+                    MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("ServiceDescriptor"), IdentifierName(methodName))
                 )
-               .WithArgumentList(ArgumentList(SeparatedList([Argument(serviceTypeExpression), Argument(implementationTypeExpression!)]))),
+               .WithArgumentList(
+                    ArgumentList(
+                        key is null
+                            ? SeparatedList([Argument(serviceTypeExpression), Argument(implementationTypeExpression!)])
+                            : SeparatedList([Argument(serviceTypeExpression), Argument(key), Argument(implementationTypeExpression!)])
+                    )
+                ),
         };
     }
 

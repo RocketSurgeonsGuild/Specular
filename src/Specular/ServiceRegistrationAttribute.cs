@@ -4,24 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Specular;
 
 /// <summary>
-///     Defines the lifetime that should be used service registrations created using the <see cref="ISpecularProvider" />
-/// </summary>
-/// <remarks>
-///     Constructor to specify the lifetime
-/// </remarks>
-/// <param name="lifetime"></param>
-[PublicAPI]
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-public class RegistrationLifetimeAttribute(ServiceLifetime lifetime) : Attribute
-{
-
-    /// <summary>
-    ///     The lifetime
-    /// </summary>
-    public ServiceLifetime Lifetime { get; } = lifetime;
-}
-
-/// <summary>
 ///     Attribute used to define the service registration of a given type
 /// </summary>
 /// <remarks>
@@ -31,15 +13,8 @@ public class RegistrationLifetimeAttribute(ServiceLifetime lifetime) : Attribute
 /// <param name="lifetime"></param>
 [PublicAPI]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceTypes) : Attribute
+public abstract class ServiceRegistrationBaseAttribute(ServiceLifetime lifetime, params Type[] serviceTypes) : Attribute
 {
-    /// <summary>
-    ///     Constructor to specify the service type including optional runtime
-    /// </summary>
-    /// <remarks>The default lifetime is <see cref="ServiceLifetime.Singleton" /></remarks>
-    /// <param name="serviceTypes"></param>
-    public ServiceRegistrationAttribute(params Type[] serviceTypes) : this(ServiceLifetime.Singleton, serviceTypes) { }
-
     /// <summary>
     ///     The service type
     /// </summary>
@@ -51,6 +26,19 @@ public class ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[
     public ServiceLifetime Lifetime { get; } = lifetime;
 }
 
+
+/// <summary>
+///     Attribute used to define the service registration of a given type
+/// </summary>
+/// <remarks>
+///     Constructor to specify the service type including optional runtime
+/// </remarks>
+/// <param name="serviceTypes"></param>
+/// <param name="lifetime"></param>
+[PublicAPI]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public sealed class ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceTypes) : ServiceRegistrationBaseAttribute(lifetime, serviceTypes);
+
 /// <summary>
 ///     Attribute used to define the service registration of a given type
 /// </summary>
@@ -60,7 +48,7 @@ public class ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(lifetime, typeof(TService));
+public sealed class ServiceRegistrationAttribute<TService>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(lifetime, typeof(TService));
 
 /// <summary>
 ///     Attribute used to define the service registration of a given type
@@ -72,7 +60,7 @@ public sealed class ServiceRegistrationAttribute<TService>(ServiceLifetime lifet
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(lifetime, typeof(TService1), typeof(TService2));
+public sealed class ServiceRegistrationAttribute<TService1, TService2>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(lifetime, typeof(TService1), typeof(TService2));
 
 /// <summary>
 ///     Attribute used to define the service registration of a given type
@@ -85,7 +73,7 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2>(ServiceLi
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(
+public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(
     lifetime,
     typeof(TService1),
     typeof(TService2),
@@ -104,7 +92,7 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(
+public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(
     lifetime,
     typeof(TService1),
     typeof(TService2),
@@ -125,7 +113,7 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(
+public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(
     lifetime,
     typeof(TService1),
     typeof(TService2),
@@ -148,7 +136,7 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(
+public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(
     lifetime,
     typeof(TService1),
     typeof(TService2),
@@ -173,7 +161,7 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(
+public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(
     lifetime,
     typeof(TService1),
     typeof(TService2),
@@ -200,7 +188,7 @@ public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3
 /// </remarks>
 /// <param name="lifetime"></param>
 [PublicAPI]
-public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8>(ServiceLifetime lifetime = ServiceLifetime.Singleton) : ServiceRegistrationAttribute(
+public sealed class ServiceRegistrationAttribute<TService1, TService2, TService3, TService4, TService5, TService6, TService7, TService8>(ServiceLifetime lifetime) : ServiceRegistrationBaseAttribute(
     lifetime,
     typeof(TService1),
     typeof(TService2),
