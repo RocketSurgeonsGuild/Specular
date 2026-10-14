@@ -37,23 +37,37 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: SpecularProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
             case 20:
-                services.Add(ServiceDescriptor.Transient<global::Nested.ServiceA, global::Nested.ServiceA>());
-                services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Nested.ServiceA>()));
-                services.Add(ServiceDescriptor.Scoped<global::Service, global::Service>());
-                services.Add(ServiceDescriptor.Scoped<global::IServiceB>(a => a.GetRequiredService<global::Service>()));
-                services.Add(ServiceDescriptor.Singleton<global::ServiceB, global::ServiceB>());
-                services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::ServiceB>()));
-                services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
-                break;
-            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
-            case 19:
-                services.Add(ServiceDescriptor.Transient<global::Nested.ServiceA, global::Nested.ServiceA>());
-                services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Nested.ServiceA>()));
-                services.Add(ServiceDescriptor.Scoped<global::Service, global::Service>());
-                services.Add(ServiceDescriptor.Scoped<global::IServiceB>(a => a.GetRequiredService<global::Service>()));
-                services.Add(ServiceDescriptor.Singleton<global::ServiceB, global::ServiceB>());
-                services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::ServiceB>()));
-                services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: SpecularProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
+                    case "SpecularProviderServiceCollectionExtensions.cs":
+                        switch (SpecularSupport.GetArgumentExpressionHash(argumentExpression))
+                        {
+                            // FilePath: SpecularProviderServiceCollectionExtensions.cs Expression: 8PKITxXbtylCwtC8RjJaLg==
+                            case "8PKITxXbtylCwtC8RjJaLg==":
+                                services.Add(ServiceDescriptor.Transient<global::Nested.ServiceA, global::Nested.ServiceA>());
+                                services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Nested.ServiceA>()));
+                                services.Add(ServiceDescriptor.Scoped<global::Service, global::Service>());
+                                services.Add(ServiceDescriptor.Scoped<global::IServiceB>(a => a.GetRequiredService<global::Service>()));
+                                services.Add(ServiceDescriptor.Singleton<global::ServiceB, global::ServiceB>());
+                                services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::ServiceB>()));
+                                services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
+                                break;
+                            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: QGmxhNh0sTcsPjKev+mVvQ==
+                            case "QGmxhNh0sTcsPjKev+mVvQ==":
+                                services.Add(ServiceDescriptor.Transient<global::Nested.ServiceA, global::Nested.ServiceA>());
+                                services.Add(ServiceDescriptor.Transient<global::IService>(a => a.GetRequiredService<global::Nested.ServiceA>()));
+                                services.Add(ServiceDescriptor.Scoped<global::Service, global::Service>());
+                                services.Add(ServiceDescriptor.Scoped<global::IServiceB>(a => a.GetRequiredService<global::Service>()));
+                                services.Add(ServiceDescriptor.Singleton<global::ServiceB, global::ServiceB>());
+                                services.Add(ServiceDescriptor.Singleton<global::IService>(a => a.GetRequiredService<global::ServiceB>()));
+                                services.Add(ServiceDescriptor.Singleton<global::IServiceB>(a => a.GetRequiredService<global::ServiceB>()));
+                                break;
+                        }
+
+                        break;
+                }
+
                 break;
         }
 
