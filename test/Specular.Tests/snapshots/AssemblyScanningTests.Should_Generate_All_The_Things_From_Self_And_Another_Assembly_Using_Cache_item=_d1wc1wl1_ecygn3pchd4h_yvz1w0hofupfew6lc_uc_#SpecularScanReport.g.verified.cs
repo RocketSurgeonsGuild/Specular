@@ -36,6 +36,7 @@ internal sealed class SpecularScanReport
                             new("global::TestAssembly.GenericService"), 
                             new("global::TestAssembly.GenericServiceB"), 
                             new("global::TestAssembly.IGenericService<>"), 
+                            new("global::TestAssembly.IKeyedService"), 
                             new("global::TestAssembly.IOther"), 
                             new("global::TestAssembly.IRequest<>"), 
                             new("global::TestAssembly.IRequestHandler<,>"), 
@@ -43,6 +44,7 @@ internal sealed class SpecularScanReport
                             new("global::TestAssembly.IServiceB"), 
                             new("global::TestAssembly.IValidator"), 
                             new("global::TestAssembly.IValidator<>"), 
+                            new("global::TestAssembly.KeyedService"), 
                             new("global::TestAssembly.Nested+GenericServiceA"), 
                             new("global::TestAssembly.Nested+MyRecord"), 
                             new("global::TestAssembly.Nested+ServiceA"), 
@@ -61,7 +63,7 @@ internal sealed class SpecularScanReport
             )]
     , 
         [
-            new("Specular", "z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime()", 
+            new("Specular", "z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime()", 
                 [
                     new("TestAssembly", 
                         [
@@ -69,9 +71,11 @@ internal sealed class SpecularScanReport
                             new(ServiceLifetime.Singleton, "global::TestAssembly.GenericServiceB", "global::TestAssembly.GenericServiceB"), 
                             new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Decimal>", "global::TestAssembly.GenericServiceB"), 
                             new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Int32>", "global::TestAssembly.GenericService"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IKeyedService", "global::TestAssembly.KeyedService"), 
                             new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericService"), 
                             new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericServiceB"), 
                             new(ServiceLifetime.Singleton, "global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>", "global::TestAssembly.RequestHandler"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.KeyedService", "global::TestAssembly.KeyedService"), 
                             new(ServiceLifetime.Singleton, "global::TestAssembly.RequestHandler", "global::TestAssembly.RequestHandler")]
                     )]
             )]

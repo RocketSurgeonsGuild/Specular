@@ -61,11 +61,11 @@ provider.Scan(builder.Services, s =>
 
 ### Option B — `AddSpecularServiceRegistrations()`
 
-`AddSpecularServiceRegistrations` is an `IServiceCollection` extension method that reads `[ServiceRegistration]` attributes applied directly to classes and registers them according to their declared lifetime (default: Singleton):
+`AddSpecularServiceRegistrations` is an `IServiceCollection` extension method that reads `[ServiceRegistration]` attributes applied directly to classes and registers them according to their declared lifetime:
 
 ```csharp
 // On your service class:
-[ServiceRegistration<IMyService>]
+[ServiceRegistration<IMyService>(ServiceLifetime.Singleton)]
 public class MyService : IMyService { }
 
 // In Program.cs:

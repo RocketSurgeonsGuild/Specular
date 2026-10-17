@@ -74,7 +74,7 @@ You can also enable verbose trim analysis to get a full report:
 
 ```csharp
 // Trim-safe: generator emits typeof(OrderService) directly
-[ServiceRegistration<IOrderService>]
+[ServiceRegistration<IOrderService>(ServiceLifetime.Singleton)]
 public class OrderService : IOrderService { }
 ```
 

@@ -112,7 +112,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (248,31)-(248,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (260,31)-(260,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -128,7 +128,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (262,31)-(262,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (274,31)-(274,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -144,7 +144,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (297,31)-(297,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (311,31)-(311,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -160,7 +160,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (326,31)-(326,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (341,31)-(341,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -176,7 +176,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (347,31)-(347,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (362,31)-(362,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -192,7 +192,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (381,31)-(381,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (398,31)-(398,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -208,7 +208,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (414,31)-(414,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (433,31)-(433,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -224,7 +224,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (444,31)-(444,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (465,31)-(465,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -240,7 +240,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (478,31)-(478,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (501,31)-(501,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -256,7 +256,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (512,31)-(512,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (537,31)-(537,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -272,7 +272,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (523,31)-(523,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (548,31)-(548,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -288,7 +288,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (534,31)-(534,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (559,31)-(559,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -304,7 +304,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (546,31)-(546,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (571,31)-(571,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -320,7 +320,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (564,31)-(564,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (590,31)-(590,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -336,7 +336,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (582,31)-(582,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (609,31)-(609,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -352,7 +352,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (600,31)-(600,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (628,31)-(628,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -368,7 +368,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (623,31)-(623,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (653,31)-(653,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -384,7 +384,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (637,31)-(637,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (667,31)-(667,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -400,7 +400,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (650,31)-(650,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (680,31)-(680,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -416,7 +416,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (683,31)-(683,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (715,31)-(715,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -432,7 +432,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (696,31)-(696,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (728,31)-(728,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -448,7 +448,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (713,31)-(713,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (745,31)-(745,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -464,39 +464,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (726,31)-(726,33),
-      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
-      MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
-      Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
-      Category: Compiler,
-      CustomTags: [
-        Compiler,
-        Telemetry,
-        NotConfigurable
-      ]
-    },
-    {
-      Id: CS1061,
-      Title: ,
-      Severity: Error,
-      WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (743,31)-(743,33),
-      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
-      MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
-      Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
-      Category: Compiler,
-      CustomTags: [
-        Compiler,
-        Telemetry,
-        NotConfigurable
-      ]
-    },
-    {
-      Id: CS1061,
-      Title: ,
-      Severity: Error,
-      WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (760,31)-(760,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (758,31)-(758,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -528,7 +496,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (780,31)-(780,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (775,31)-(775,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -544,7 +512,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (800,31)-(800,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (792,31)-(792,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -576,7 +544,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (825,31)-(825,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (832,31)-(832,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -592,7 +560,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (842,31)-(842,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (844,31)-(844,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -608,7 +576,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (856,31)-(856,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (857,31)-(857,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -624,7 +592,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (875,31)-(875,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (874,31)-(874,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -640,7 +608,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (886,31)-(886,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (888,31)-(888,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -656,7 +624,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (899,31)-(899,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (907,31)-(907,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -672,7 +640,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (919,31)-(919,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (918,31)-(918,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -704,7 +672,7 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (938,31)-(938,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (931,31)-(931,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -720,7 +688,39 @@
       Title: ,
       Severity: Error,
       WarningLevel: 0,
-      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (956,31)-(956,33),
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (951,31)-(951,33),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
+      MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
+      Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1061,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (970,31)-(970,33),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
+      MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
+      Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS1061,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (988,31)-(988,33),
       HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS1061),
       MessageFormat: '{0}' does not contain a definition for '{1}' and no accessible extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?),
       Message: 'Assembly' does not contain a definition for 'IO' and no accessible extension method 'IO' accepting a first argument of type 'Assembly' could be found (are you missing a using directive or an assembly reference?),
@@ -3982,10 +3982,10 @@
           Assembly: {
             Location: {
               Kind: ServiceDescriptor,
-              LineNumber: 19,
-              ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              LineNumber: 20,
+              ExpressionHash: QGmxhNh0sTcsPjKev+mVvQ==,
               SourceAssemblyName: Specular,
-              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -4021,6 +4021,60 @@
               WithAttributeFilters: null,
               WithAttributeStringFilters: null,
               WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`1,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`5,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`6,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`7,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`8,
+                  UnboundGenericType: true
+                },
                 {
                   Include: true,
                   Assembly: Specular,
@@ -4151,6 +4205,7 @@
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -4158,6 +4213,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
@@ -4186,6 +4242,9 @@
               Type: global::TestAssembly.IGenericService<>
             },
             {
+              Type: global::TestAssembly.IKeyedService
+            },
+            {
               Type: global::TestAssembly.IOther
             },
             {
@@ -4205,6 +4264,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested+GenericServiceA
@@ -4333,6 +4395,16 @@
     items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
     items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
     items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<, >));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Specular.KeyedServiceRegistrationBaseAttribute));
     items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
@@ -4343,6 +4415,7 @@
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
     items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
+    items.Add(typeof(global::Specular.ServiceRegistrationBaseAttribute));
     items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
     items.Add(typeof(global::Specular.SpecularSupport));
     items.Add(Specular.GetType("SpecularScanReport")!);
@@ -4395,6 +4468,36 @@
               Type: global::Specular.Diagnostics.TypeScanReportEntry
             },
             {
+              Type: global::Specular.KeyedServiceRegistrationAttribute
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,,,,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,,,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<,>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationAttribute<>
+            },
+            {
+              Type: global::Specular.KeyedServiceRegistrationBaseAttribute
+            },
+            {
               Type: global::Specular.RegistrationLifetimeAttribute
             },
             {
@@ -4423,6 +4526,9 @@
             },
             {
               Type: global::Specular.ServiceRegistrationAttribute<>
+            },
+            {
+              Type: global::Specular.ServiceRegistrationBaseAttribute
             },
             {
               Type: global::Specular.SpecularProviderServiceCollectionExtensions
@@ -4474,6 +4580,7 @@
     items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -4498,6 +4605,9 @@
             },
             {
               Type: global::TestAssembly.GenericServiceB
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -4720,6 +4830,7 @@
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -4727,6 +4838,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -4753,6 +4865,9 @@
               Type: global::TestAssembly.IGenericService<>
             },
             {
+              Type: global::TestAssembly.IKeyedService
+            },
+            {
               Type: global::TestAssembly.IOther
             },
             {
@@ -4772,6 +4887,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -4938,6 +5056,7 @@
 {
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -4945,6 +5064,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
@@ -4957,6 +5077,9 @@
             },
             {
               Type: global::TestAssembly.IGenericService<>
+            },
+            {
+              Type: global::TestAssembly.IKeyedService
             },
             {
               Type: global::TestAssembly.IOther
@@ -4978,6 +5101,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -5339,6 +5465,7 @@
           Expression:
 {
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -5351,6 +5478,9 @@
           DiscoveredTypes: [
             {
               Type: global::TestAssembly.IGenericService<>
+            },
+            {
+              Type: global::TestAssembly.IKeyedService
             },
             {
               Type: global::TestAssembly.IOther
@@ -5391,13 +5521,13 @@
           },
           Expression:
 {
-    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
@@ -5408,17 +5538,17 @@
           CacheVersion: {Scrubbed},
           DiscoveredServiceDescriptors: [
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericService,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericService
             },
@@ -5428,17 +5558,17 @@
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericServiceB,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
@@ -5475,13 +5605,13 @@
           },
           Expression:
 {
-    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
 },
@@ -5491,17 +5621,17 @@
           CacheVersion: {Scrubbed},
           DiscoveredServiceDescriptors: [
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericService,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericService
             },
@@ -5511,17 +5641,17 @@
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericServiceB,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
@@ -5534,6 +5664,90 @@
               Lifetime: Scoped,
               ServiceType: global::TestAssembly.IGenericService<global::System.String>,
               ImplementationType: global::TestAssembly.Nested+GenericServiceA
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
+        }
+      }
+    },
+    MMNcCWWfhJvVVl35NFMXOw==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: ServiceDescriptor,
+            LineNumber: 20,
+            ExpressionHash: QGmxhNh0sTcsPjKev+mVvQ==,
+            SourceAssemblyName: Specular,
+            SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
+            FileName: SpecularProviderServiceCollectionExtensions.cs
+          },
+          Expression:
+{
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.KeyedService, global::TestAssembly.KeyedService>("test-key"));
+    services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.IKeyedService>("test-key", (a, _) => a.GetRequiredKeyedService<global::TestAssembly.KeyedService>("test-key")));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.RequestHandler")!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
+    services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.RequestHandler")!)));
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed},
+          DiscoveredServiceDescriptors: [
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.GenericService,
+              ImplementationType: global::TestAssembly.GenericService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
+              ImplementationType: global::TestAssembly.GenericService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IOther,
+              ImplementationType: global::TestAssembly.GenericService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.GenericServiceB,
+              ImplementationType: global::TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
+              ImplementationType: global::TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IOther,
+              ImplementationType: global::TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.KeyedService,
+              ImplementationType: global::TestAssembly.KeyedService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IKeyedService,
+              ImplementationType: global::TestAssembly.KeyedService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.RequestHandler,
+              ImplementationType: global::TestAssembly.RequestHandler
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>,
+              ImplementationType: global::TestAssembly.RequestHandler
             }
           ],
           ScannedAssemblyName: TestAssembly
@@ -5648,6 +5862,7 @@
     items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -5672,6 +5887,9 @@
             },
             {
               Type: global::TestAssembly.GenericServiceB
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -5721,13 +5939,15 @@
           },
           Expression:
 {
-    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.KeyedService, global::TestAssembly.KeyedService>("test-key"));
+    services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.IKeyedService>("test-key", (a, _) => a.GetRequiredKeyedService<global::TestAssembly.KeyedService>("test-key")));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
@@ -5755,17 +5975,17 @@
           CacheVersion: {Scrubbed},
           DiscoveredServiceDescriptors: [
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericService,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericService
             },
@@ -5775,19 +5995,29 @@
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericServiceB,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericServiceB
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.KeyedService,
+              ImplementationType: global::TestAssembly.KeyedService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IKeyedService,
+              ImplementationType: global::TestAssembly.KeyedService
             },
             {
               Lifetime: Scoped,
@@ -5909,6 +6139,7 @@
 {
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -5916,6 +6147,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(typeof(global::TestAssembly.Nested.ServiceA));
@@ -5928,6 +6160,9 @@
             },
             {
               Type: global::TestAssembly.IGenericService<>
+            },
+            {
+              Type: global::TestAssembly.IKeyedService
             },
             {
               Type: global::TestAssembly.IOther
@@ -5949,6 +6184,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -6034,10 +6272,12 @@
 {
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IService));
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -6061,6 +6301,9 @@
               Type: global::TestAssembly.GenericServiceB
             },
             {
+              Type: global::TestAssembly.IKeyedService
+            },
+            {
               Type: global::TestAssembly.IOther
             },
             {
@@ -6071,6 +6314,9 @@
             },
             {
               Type: global::TestAssembly.IValidator
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -6224,12 +6470,12 @@
           },
           Expression:
 {
-    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
 },
           PrivateAssemblies: [
@@ -6238,32 +6484,32 @@
           CacheVersion: {Scrubbed},
           DiscoveredServiceDescriptors: [
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericService,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericServiceB,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
@@ -6291,6 +6537,7 @@
           Expression:
 {
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -6303,6 +6550,9 @@
           DiscoveredTypes: [
             {
               Type: global::TestAssembly.IGenericService<>
+            },
+            {
+              Type: global::TestAssembly.IKeyedService
             },
             {
               Type: global::TestAssembly.IOther
@@ -6343,12 +6593,12 @@
           },
           Expression:
 {
-    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
 },
           PrivateAssemblies: [
             TestAssembly
@@ -6356,32 +6606,32 @@
           CacheVersion: {Scrubbed},
           DiscoveredServiceDescriptors: [
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericService,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericServiceB,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericServiceB
             }
@@ -6458,6 +6708,7 @@
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -6465,6 +6716,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -6491,6 +6743,9 @@
               Type: global::TestAssembly.IGenericService<>
             },
             {
+              Type: global::TestAssembly.IKeyedService
+            },
+            {
               Type: global::TestAssembly.IOther
             },
             {
@@ -6510,6 +6765,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -6559,13 +6817,13 @@
           },
           Expression:
 {
-    services.Add(ServiceDescriptor.Scoped(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => (global::TestAssembly.IGenericService<global::System.String>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.Nested.GenericServiceA, global::TestAssembly.Nested.GenericServiceA>());
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IGenericService<global::System.String>>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
     services.Add(ServiceDescriptor.Scoped<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.Nested.GenericServiceA>()));
@@ -6576,17 +6834,17 @@
           CacheVersion: {Scrubbed},
           DiscoveredServiceDescriptors: [
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericService,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericService
             },
@@ -6596,17 +6854,17 @@
               ImplementationType: global::TestAssembly.GenericService
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.GenericServiceB,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
             {
-              Lifetime: Scoped,
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.IOther,
               ImplementationType: global::TestAssembly.GenericServiceB
             },
@@ -6644,6 +6902,7 @@
           Expression:
 {
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -6656,6 +6915,9 @@
           DiscoveredTypes: [
             {
               Type: global::TestAssembly.IGenericService<>
+            },
+            {
+              Type: global::TestAssembly.IKeyedService
             },
             {
               Type: global::TestAssembly.IOther
@@ -6677,78 +6939,6 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
-            }
-          ],
-          ScannedAssemblyName: TestAssembly
-        }
-      }
-    },
-    VQFGmSzNczaH6cENLibAiA==: {
-      ResolvedSources: {
-        TestAssembly: {
-          Location: {
-            Kind: ServiceDescriptor,
-            LineNumber: 19,
-            ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
-            SourceAssemblyName: Specular,
-            SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
-            FileName: SpecularProviderServiceCollectionExtensions.cs
-          },
-          Expression:
-{
-    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
-    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
-    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
-    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
-    services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.RequestHandler")!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
-    services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.RequestHandler")!)));
-},
-          PrivateAssemblies: [
-            TestAssembly
-          ],
-          CacheVersion: {Scrubbed},
-          DiscoveredServiceDescriptors: [
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.GenericService,
-              ImplementationType: global::TestAssembly.GenericService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
-              ImplementationType: global::TestAssembly.GenericService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IOther,
-              ImplementationType: global::TestAssembly.GenericService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.GenericServiceB,
-              ImplementationType: global::TestAssembly.GenericServiceB
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
-              ImplementationType: global::TestAssembly.GenericServiceB
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IOther,
-              ImplementationType: global::TestAssembly.GenericServiceB
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.RequestHandler,
-              ImplementationType: global::TestAssembly.RequestHandler
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>,
-              ImplementationType: global::TestAssembly.RequestHandler
             }
           ],
           ScannedAssemblyName: TestAssembly
@@ -6871,6 +7061,7 @@
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -6878,6 +7069,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -6904,6 +7096,9 @@
               Type: global::TestAssembly.IGenericService<>
             },
             {
+              Type: global::TestAssembly.IKeyedService
+            },
+            {
               Type: global::TestAssembly.IOther
             },
             {
@@ -6923,6 +7118,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
@@ -7116,6 +7314,7 @@
     items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
     items.Add(typeof(global::TestAssembly.GenericServiceB));
     items.Add(typeof(global::TestAssembly.IGenericService<>));
+    items.Add(typeof(global::TestAssembly.IKeyedService));
     items.Add(typeof(global::TestAssembly.IOther));
     items.Add(typeof(global::TestAssembly.IRequest<>));
     items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
@@ -7123,6 +7322,7 @@
     items.Add(typeof(global::TestAssembly.IServiceB));
     items.Add(typeof(global::TestAssembly.IValidator));
     items.Add(typeof(global::TestAssembly.IValidator<>));
+    items.Add(typeof(global::TestAssembly.KeyedService));
     items.Add(typeof(global::TestAssembly.Nested));
     items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
     items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
@@ -7149,6 +7349,9 @@
               Type: global::TestAssembly.IGenericService<>
             },
             {
+              Type: global::TestAssembly.IKeyedService
+            },
+            {
               Type: global::TestAssembly.IOther
             },
             {
@@ -7168,6 +7371,9 @@
             },
             {
               Type: global::TestAssembly.IValidator<>
+            },
+            {
+              Type: global::TestAssembly.KeyedService
             },
             {
               Type: global::TestAssembly.Nested
