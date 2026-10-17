@@ -19,7 +19,7 @@
     <GlobalPackageReference Include="Roslynator.CodeFixes" Version="5.0.1" />
     <GlobalPackageReference Include="Roslynator.Refactorings" Version="5.0.1" />
     <GlobalPackageReference Include="FakeItEasy.Analyzer.CSharp" Version="6.1.1" />
-    <GlobalPackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.170" />
+    <GlobalPackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.171" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.1.12" />
@@ -47,7 +47,7 @@
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="10.0.6" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="10.0.6" />
     <PackageVersion Include="TUnit" Version="1.75.0" />
-    <PackageVersion Include="Verify.TUnit" Version="33.3.3" />
+    <PackageVersion Include="Verify.TUnit" Version="33.3.4" />
   </ItemGroup>
   <!-- Sample applications (samples/) — central versions, never packed
     (samples/Directory.Build.props sets IsPackable=false). -->

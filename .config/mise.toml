@@ -3,7 +3,7 @@
 "github:eljulians/skillfile" = { version = "v1.9.2", bin = "skillfile" }
 hk = "2.6.0"
 pkl = "0.32.1"
-node = "24.21.0"
+node = "24.22.0"
 actionlint = "1.7.12"
 biome = "2.5.2"
 
@@ -20,7 +20,7 @@ biome = "2.5.2"
 "dotnet:NuGet.Mcp.Server" = "1.4.3"
 "dotnet:docfx" = "2.78.5"
 "dotnet:hertzole.docfx2astro" = "1.4.1"
-tombi = "1.8.4"
+tombi = "1.8.5"
 oxfmt = "0.73.0"
 
 [tasks]
