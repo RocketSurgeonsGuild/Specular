@@ -1,6 +1,6 @@
-name: Dovetail
+name: Specular
 version: 1.0.0
-description: APM project for Dovetail
+description: APM project for Specular
 author: David Driscoll
 targets:
   - claude
