@@ -9,7 +9,7 @@ tags:
 
 ## Prerequisites
 
-- .NET 8.0 or .NET 10.0 SDK
+- .NET 10 or .NET 11 SDK
 - A project that uses `Microsoft.Extensions.DependencyInjection`
 
 ## 1. Add the NuGet Package
@@ -50,7 +50,7 @@ The Roslyn incremental source generator runs automatically during the build. Aft
 ```
 obj/
   Debug/
-    net8.0/
+    net10.0/
       generated/
         Specular.Analyzers/
           Specular.Analyzers.SpecularProviderGenerator/

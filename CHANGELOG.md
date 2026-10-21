@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AOT-safe Roslyn incremental source generator that emits `ISpecularProvider` implementations.
 - Cross-assembly scan result caching via `SpecularProvider.ctpjson`.
 - Fluent selector API compatible with Scrutor conventions.
-- Support for .NET 8 and .NET 10.
+- Support for .NET 10 and .NET 11 (`netstandard2.0`, `net10.0`, `net11.0`).
 - `KeyedServiceRegistrationAttribute` (and its generic `<TService1..8>` variants) — the keyed-service
   counterpart to `ServiceRegistrationAttribute`, producing `ServiceDescriptor.Keyed*` registrations
   resolved via `GetRequiredKeyedService`. `AddSpecularServiceRegistrations` now discovers both
@@ -23,3 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ServiceRegistrationAttribute` (and its generic variants) now require an explicit `ServiceLifetime`
   argument; the previous no-lifetime constructors defaulting to `Singleton` have been removed.
+- **Breaking:** the `net8.0` build is gone. Projects still on .NET 8 fall back to the
+  `netstandard2.0` build; move to `net10.0` or later to get the AOT-annotated build.
+- The `net11.0` build is compiled with runtime async and references the 11.0 `Microsoft.Extensions.*` packages;
+  the `net10.0` build stays on 10.0.x.

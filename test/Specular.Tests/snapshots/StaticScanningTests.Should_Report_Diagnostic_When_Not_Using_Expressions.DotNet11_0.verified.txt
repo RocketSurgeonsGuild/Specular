@@ -1,0 +1,497 @@
+﻿{
+  FinalDiagnostics: [
+    {
+      Id: RSGD0001,
+      Title: Must be a expression,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Input0.cs: (16,12)-(22,9),
+      MessageFormat: Methods that will be analyzed statically must be an expression, blocks and variables are not allowed,
+      Message: Methods that will be analyzed statically must be an expression, blocks and variables are not allowed,
+      Category: Dependency Injection
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (229,116)-(229,117),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (229,119)-(229,128),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableArray<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (229,190)-(229,191),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (229,193)-(229,202),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableArray<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (233,121)-(233,125),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TKey' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (233,127)-(233,133),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TValue' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (233,135)-(233,144),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableDictionary<TKey, TValue>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (233,211)-(233,215),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TKey' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (233,217)-(233,223),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TValue' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (233,225)-(233,234),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableDictionary<TKey, TValue>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (240,118)-(240,119),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (240,121)-(240,130),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableHashSet<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (240,194)-(240,195),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (240,197)-(240,206),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableHashSet<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (244,115)-(244,116),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (244,118)-(244,127),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableList<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (244,188)-(244,189),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (244,191)-(244,200),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableList<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (250,127)-(250,131),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TKey' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (250,133)-(250,139),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TValue' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (250,141)-(250,150),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableSortedDictionary<TKey, TValue>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (250,223)-(250,227),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TKey' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (250,229)-(250,235),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'TValue' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (250,237)-(250,246),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableSortedDictionary<TKey, TValue>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (253,120)-(253,121),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (253,123)-(253,132),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableSortedSet<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0246,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (253,198)-(253,199),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0246),
+      MessageFormat: The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?),
+      Message: The type or namespace name 'T' could not be found (are you missing a using directive or an assembly reference?),
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    },
+    {
+      Id: CS0308,
+      Title: ,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularProvider.g.cs: (253,201)-(253,210),
+      HelpLink: https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS0308),
+      MessageFormat: The non-generic {1} '{0}' cannot be used with type arguments,
+      Message: The non-generic type 'ImmutableSortedSet<T>.Builder' cannot be used with type arguments,
+      Category: Compiler,
+      CustomTags: [
+        Compiler,
+        Telemetry,
+        NotConfigurable
+      ]
+    }
+  ],
+  GeneratorDiagnostics: {
+    Specular.Analyzers.SpecularProviderGenerator: [
+      {
+        Id: RSGD0001,
+        Title: Must be a expression,
+        Severity: Error,
+        WarningLevel: 0,
+        Location: Input0.cs: (16,12)-(22,9),
+        MessageFormat: Methods that will be analyzed statically must be an expression, blocks and variables are not allowed,
+        Message: Methods that will be analyzed statically must be an expression, blocks and variables are not allowed,
+        Category: Dependency Injection
+      }
+    ]
+  },
+  GlobalOptions: {
+    build_property.IntermediateOutputPath: obj/net9.0,
+    build_property.ProjectDir: {TempDirectory}/Guid_1/Guid_2,
+    build_property.SpecularEmitProvider: true
+  },
+  References: [
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    Microsoft.Extensions.DependencyInjection.Abstractions.dll,
+    mscorlib.dll,
+    netstandard.dll,
+    Specular.dll,
+    System.Collections.Immutable.dll,
+    System.ComponentModel.dll,
+    System.Core.dll,
+    System.dll,
+    System.Private.CoreLib.dll,
+    System.Private.CoreLib.dll,
+    System.Private.CoreLib.dll,
+    System.Runtime.dll
+  ]
+}
