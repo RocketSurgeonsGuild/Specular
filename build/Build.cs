@@ -1,3 +1,4 @@
+#!/usr/bin/env dotnet
 #:package Microsoft.VisualStudio.SolutionPersistence
 #:package Sourcy.Git
 #:package Sourcy.DotNet

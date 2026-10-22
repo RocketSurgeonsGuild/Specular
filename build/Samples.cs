@@ -22,6 +22,8 @@ using Rocket.Surgery.ModularPipelines.Extensions;
 using Rocket.Surgery.ModularPipelines.Extensions.Modules;
 using File = ModularPipelines.FileSystem.File;
 
+namespace Build;
+
 [DependsOn<BuildSolution>]
 // T008: shared AOT-publish helper. Each demonstration host publishes its scoped, in-csproj
 // zero-warning property set (D4-pinned: PublishAot + TrimmerSingleWarn=false + TreatWarningsAsErrors)
@@ -36,7 +38,7 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
     ];
     private readonly IReadOnlyCollection<string> frameworks = ["net10.0", "net11.0"];
     protected override ModuleConfiguration Configure() => ModuleConfiguration.Create().WithRetryCount(3).Build();
-    protected override async Task<ImmutableList<CommandResult>> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
+    protected override async Task<ImmutableList<CommandResult>?> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
     {
         var rid = RuntimeInformation.RuntimeIdentifier;
 

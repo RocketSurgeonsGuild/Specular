@@ -115,7 +115,7 @@ internal static class ScanReportBuilder
         return reportDelcaration;
     }
 
-    private static ExpressionSyntax CreateAssemblyReports(ImmutableArray<AssemblyReport> reports)
+    private static CollectionExpressionSyntax CreateAssemblyReports(ImmutableArray<AssemblyReport> reports)
     {
         return CollectionExpression(
             SeparatedList<CollectionElementSyntax>(
@@ -149,7 +149,7 @@ internal static class ScanReportBuilder
         );
     }
 
-    private static ExpressionSyntax CreateTypeReports(ImmutableArray<TypeReport> reports)
+    private static CollectionExpressionSyntax CreateTypeReports(ImmutableArray<TypeReport> reports)
     {
         return CollectionExpression(
             SeparatedList<CollectionElementSyntax>(
@@ -193,7 +193,7 @@ internal static class ScanReportBuilder
         );
     }
 
-    private static ExpressionSyntax CreateServiceDescriptorReports(ImmutableArray<ServiceDescriptorReport> reports)
+    private static CollectionExpressionSyntax CreateServiceDescriptorReports(ImmutableArray<ServiceDescriptorReport> reports)
     {
         return CollectionExpression(
             SeparatedList<CollectionElementSyntax>(

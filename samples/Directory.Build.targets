@@ -2,6 +2,15 @@
     <!-- Inherit repository-wide targets (JetBrains.Annotations.Sources, etc.). -->
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))" />
 
+    <PropertyGroup>
+        <!-- Samples are never packed; the Web SDKs still ask `dotnet pack Specular.slnx` to warn about them. -->
+        <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+    </PropertyGroup>
+    <!-- Set before the generator imports below, whose conditions are evaluated in order. -->
+    <PropertyGroup Condition="'$(SpecularSampleHost)' == 'true'">
+        <UsesSpecularGenerator>true</UsesSpecularGenerator>
+    </PropertyGroup>
+
     <!--
         Wire the Specular source generator for projects that actually CALL the provider
         (GetTypes / Scan). Opt in with <UsesSpecularGenerator>true</UsesSpecularGenerator>.
@@ -9,25 +18,29 @@
         Within this repo we consume Specular via ProjectReference, so the analyzer + the packed
         build props/targets (global `using Specular`, the SpecularProvider.ctpjson AdditionalFile, and
         the CompilerVisible properties) do NOT flow automatically the way they do from the NuGet
-        package. We reproduce that wiring here so hosts behave exactly like a real package consumer.
+        package. We import the package's own build files here so hosts behave exactly like a real package consumer.
     -->
-    <PropertyGroup Condition="'$(UsesSpecularGenerator)' == 'true'">
-        <ExcludeAssemblyFromCTP>netstandard;System;mscorlib;Microsoft</ExcludeAssemblyFromCTP>
-    </PropertyGroup>
     <ItemGroup Condition="'$(UsesSpecularGenerator)' == 'true'">
         <ProjectReference
             Include="$(MSBuildThisFileDirectory)../src/Specular.Analyzers/Specular.Analyzers.csproj"
             OutputItemType="Analyzer"
             ReferenceOutputAssembly="false"
         />
-        <CompilerVisibleProperty Include="IntermediateOutputPath" />
-        <CompilerVisibleProperty Include="ProjectDir" />
-        <CompilerVisibleProperty Include="ExcludeAssemblyFromCTP" />
-        <Using Include="Specular" Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'" />
-        <AdditionalFiles
-            Visible="false"
-            Include="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson"
-            Condition="Exists('$(IntermediateOutputPath)\gap\SpecularProvider.ctpjson')"
-        />
+    </ItemGroup>
+    <Import Project="$(MSBuildThisFileDirectory)../src/Specular/build/Specular.props" Condition="'$(UsesSpecularGenerator)' == 'true'" />
+    <Import Project="$(MSBuildThisFileDirectory)../src/Specular/build/Specular.targets" Condition="'$(UsesSpecularGenerator)' == 'true'" />
+
+    <!--
+        Demonstration hosts (<SpecularSampleHost>true</SpecularSampleHost>) all register the three sample libraries through the
+        shared hosts/Shared/SampleScan.cs, linked into each host so that host's own generator resolves its Scan calls.
+    -->
+    <ItemGroup Condition="'$(SpecularSampleHost)' == 'true'">
+        <Compile Include="$(MSBuildThisFileDirectory)hosts/Shared/SampleScan.cs" Link="Shared/SampleScan.cs" />
+        <!-- SampleScan's ServiceCollection; the Web SDKs import it already, the other hosts don't. -->
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <ProjectReference Include="$(MSBuildThisFileDirectory)../src/Specular/Specular.csproj" />
+        <ProjectReference Include="$(MSBuildThisFileDirectory)libraries/Specular.Samples.Catalog/Specular.Samples.Catalog.csproj" />
+        <ProjectReference Include="$(MSBuildThisFileDirectory)libraries/Specular.Samples.Notifications/Specular.Samples.Notifications.csproj" />
+        <ProjectReference Include="$(MSBuildThisFileDirectory)libraries/Specular.Samples.Diagnostics/Specular.Samples.Diagnostics.csproj" />
     </ItemGroup>
 </Project>

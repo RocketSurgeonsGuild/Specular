@@ -106,7 +106,7 @@ internal static class ReflectionCollection
         IAssemblySymbol targetAssembly
     )
     {
-        if (!items.Any()) return ImmutableList<ResolvedSourceLocation>.Empty;
+        if (items.Count == 0) return ImmutableList<ResolvedSourceLocation>.Empty;
 
         var results = new List<ResolvedSourceLocation>();
         foreach (var item in items)

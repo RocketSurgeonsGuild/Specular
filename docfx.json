@@ -9,7 +9,8 @@
         }
       ],
       "properties": {
-        "Configuration": "Release"
+        "Configuration": "Release",
+        "DocfxMetadata": "true"
       },
       "dest": "docs/.docfx-metadata/api",
       "namespaceLayout": "flattened",

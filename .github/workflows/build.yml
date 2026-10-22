@@ -60,13 +60,14 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: test data
-                  path: artifacts/tests/
+                  # The pipeline writes test results and coverage under artifacts/logs/ (Publish Results reads both artifacts).
+                  path: artifacts/logs/tests/
             - name: 🏺 Publish coverage data
               if: always()
               uses: actions/upload-artifact@v7
               with:
                   name: coverage
-                  path: artifacts/coverage/
+                  path: artifacts/logs/coverage/
             - name: 🏺 Publish NuGet Packages
               if: always()
               uses: actions/upload-artifact@v7
