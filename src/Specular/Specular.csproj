@@ -5,6 +5,7 @@
         <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">true</IsAotCompatible>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>
+        <RuntimeAsyncBrowserWasmAsset>true</RuntimeAsyncBrowserWasmAsset>
     </PropertyGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="Specular.Extensions.Tests" />
