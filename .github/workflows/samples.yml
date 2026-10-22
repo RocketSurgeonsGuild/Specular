@@ -1,0 +1,214 @@
+name: Samples
+
+# Builds and runs the demonstration hosts in samples/hosts on Linux, macOS and Windows, and checks that each one's Specular scan
+# registered exactly the expected services: every host prints a SPECULAR-SAMPLE line, which samples/smoke.mjs looks for.
+#
+# - hosts: Console and Web (Native AOT), Blazor WebAssembly and the Uno desktop and WebAssembly heads, run on every OS. The
+#   browser apps run in headless Chrome.
+# - workload heads: the MAUI and Uno mobile/Windows heads, which Specular.slnx leaves out. Each leg installs the workloads its
+#   runner can build and picks those heads through SpecularSampleTargetFrameworks (';' passed as %3B, since MSBuild splits -p:
+#   values on it). The Mac Catalyst head also runs. Android, iOS and Windows heads are build-only: running them needs an emulator,
+#   a simulator or the Windows App SDK runtime.
+#
+# .NET for iOS/Mac Catalyst pins an exact Xcode version per release. The net11.0 prerelease packs need Xcode 27.0, which only
+# GitHub's xcode-27 preview image has. The net10.0 packs ask for Xcode 26.0, but macos-26's Xcode 26.0.1 has no matching iOS
+# simulator runtime, so that leg keeps the image's default Xcode and turns the exact-version check off (ValidateXcodeVersion).
+#
+# Every build passes --disable-build-servers: MAUI and Uno each load their own SkiaSharp into MSBuild (Resizetizer), and a node
+# reused from an earlier build fails the next one's native library version check.
+
+on:
+    push:
+        branches:
+            - main
+            - next
+        tags:
+            - v*
+    pull_request:
+        branches:
+            - main
+            - next
+    merge_group:
+        branches:
+            - main
+            - next
+
+permissions:
+    contents: read
+
+concurrency:
+    group: samples-${{ github.event.pull_request.number || github.run_id }}
+    cancel-in-progress: true
+
+jobs:
+    hosts:
+        name: Hosts (${{ matrix.os }})
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest, macos-26, windows-latest]
+        defaults:
+            run:
+                shell: bash
+        steps:
+            - &longpaths
+              name: Enable long paths
+              if: runner.os == 'Windows'
+              run: git config --global core.longpaths true
+            - &checkout
+              name: Checkout
+              uses: actions/checkout@v7
+              with:
+                  fetch-depth: '0'
+            # .config/mise.toml uses {{env.HOME}}, which Windows runners don't set.
+            - &home
+              name: Set HOME
+              if: runner.os == 'Windows'
+              run: echo "HOME=$USERPROFILE" >> "$GITHUB_ENV"
+            - &mise
+              name: 🛠️ Setup mise
+              uses: jdx/mise-action@v5
+              with:
+                  install: true
+                  cache: true
+                  # Restore only: build.yml is the single cache writer.
+                  cache_save: false
+                  cache_key_prefix: mise-v2
+                  experimental: true
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+            # The dotnet mise installed (it exports DOTNET_ROOT), which global.json asks for: on Windows the runner's own SDKs come
+            # first on PATH, and `mise exec` would also run the repo's npm deps step, which fails on Windows.
+            - &dotnet
+              name: 🔎 Locate dotnet
+              run: |
+                  if [ -n "${DOTNET_ROOT:-}" ]; then
+                      echo "$DOTNET_ROOT" >> "$GITHUB_PATH"
+                      export PATH="$DOTNET_ROOT:$PATH"
+                  fi
+                  echo "EXE=$([ "$RUNNER_OS" = Windows ] && echo .exe)" >> "$GITHUB_ENV"
+                  command -v dotnet
+                  dotnet --version
+                  node --version
+            - name: 🌐 Setup Chrome
+              id: chrome
+              uses: browser-actions/setup-chrome@v2
+            # The .NET 11 SDK's wasm-tools only covers net11.0; the Uno WebAssembly head is net10.0.
+            - name: 📦 Install workloads
+              run: dotnet workload install wasm-tools-net10
+            - name: ⚙️ Console (Native AOT)
+              run: |
+                  for framework in net10.0 net11.0; do
+                      dotnet publish samples/hosts/Specular.Samples.Console -c Release -f "$framework" -o "artifacts/samples/console-$framework" --disable-build-servers
+                      node samples/smoke.mjs exe -- "artifacts/samples/console-$framework/Specular.Samples.Console$EXE"
+                  done
+            - name: ⚙️ Web (Native AOT)
+              if: success() || failure()
+              run: |
+                  for framework in net10.0 net11.0; do
+                      dotnet publish samples/hosts/Specular.Samples.Web -c Release -f "$framework" -o "artifacts/samples/web-$framework" --disable-build-servers
+                      node samples/smoke.mjs web --url http://127.0.0.1:5199/ -- "artifacts/samples/web-$framework/Specular.Samples.Web$EXE" --urls http://127.0.0.1:5199
+                  done
+            - name: ⚙️ Blazor WebAssembly
+              if: success() || failure()
+              run: |
+                  for framework in net10.0 net11.0; do
+                      dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers
+                      node samples/smoke.mjs browser "artifacts/samples/blazor-$framework/wwwroot"
+                  done
+              env:
+                  CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+            - name: ⚙️ Uno desktop
+              if: success() || failure()
+              run: |
+                  dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net10.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
+                  node samples/smoke.mjs exe -- "samples/hosts/Specular.Samples.Uno/bin/Release/net10.0-desktop/Specular.Samples.Uno$EXE"
+            - name: ⚙️ Uno WebAssembly
+              if: success() || failure()
+              run: |
+                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net10.0-browserwasm -p:SpecularSampleTargetFrameworks=net10.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
+                  node samples/smoke.mjs browser artifacts/samples/uno-browserwasm/wwwroot
+              env:
+                  CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+            - name: 🏺 Publish logs
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: samples-hosts-logs-${{ matrix.os }}
+                  path: artifacts/logs/
+                  if-no-files-found: ignore
+
+    workload-heads:
+        name: ${{ matrix.name }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - name: Linux (Android)
+                      os: ubuntu-latest
+                      workloads: maui-android
+                      maui: net10.0-android%3Bnet11.0-android
+                      uno: net10.0-android
+                    - name: macOS net10.0 (iOS, Mac Catalyst)
+                      os: macos-26
+                      properties: -p:ValidateXcodeVersion=false
+                      workloads: maui ios maccatalyst
+                      maui: net10.0-ios%3Bnet10.0-maccatalyst
+                      maccatalyst: net10.0-maccatalyst
+                      uno: net10.0-ios
+                    - name: macOS net11.0 (iOS, Mac Catalyst)
+                      os: xcode-27
+                      workloads: maui ios maccatalyst
+                      maui: net11.0-ios%3Bnet11.0-maccatalyst
+                      maccatalyst: net11.0-maccatalyst
+                      uno: ''
+                    - name: Windows
+                      os: windows-latest
+                      workloads: maui-windows
+                      maui: net10.0-windows10.0.19041.0%3Bnet11.0-windows10.0.19041.0
+                      uno: ''
+        defaults:
+            run:
+                shell: bash
+        steps:
+            - *longpaths
+            - *checkout
+            - *home
+            - *mise
+            - *dotnet
+            - name: 📦 Install workloads
+              run: |
+                  read -ra workloads <<< "$WORKLOADS"
+                  dotnet workload install "${workloads[@]}"
+              env:
+                  WORKLOADS: ${{ matrix.workloads }}
+            - name: ⚙️ Build Specular.Samples.Maui
+              run: |
+                  read -ra properties <<< "$PROPERTIES"
+                  dotnet build samples/hosts/Specular.Samples.Maui "-p:SpecularSampleTargetFrameworks=$HEADS" -bl:artifacts/logs/Specular.Samples.Maui.binlog --disable-build-servers "${properties[@]}"
+              env:
+                  HEADS: ${{ matrix.maui }}
+                  PROPERTIES: ${{ matrix.properties }}
+            - name: 🧪 Run Specular.Samples.Maui (Mac Catalyst)
+              if: matrix.maccatalyst != ''
+              run: |
+                  app=(samples/hosts/Specular.Samples.Maui/bin/Debug/"$FRAMEWORK"/*/Specular.Samples.Maui.app/Contents/MacOS/Specular.Samples.Maui)
+                  node samples/smoke.mjs exe -- "${app[0]}"
+              env:
+                  FRAMEWORK: ${{ matrix.maccatalyst }}
+            - name: ⚙️ Build Specular.Samples.Uno
+              if: (success() || failure()) && matrix.uno != ''
+              run: |
+                  read -ra properties <<< "$PROPERTIES"
+                  dotnet build samples/hosts/Specular.Samples.Uno "-p:SpecularSampleTargetFrameworks=$HEADS" -bl:artifacts/logs/Specular.Samples.Uno.binlog --disable-build-servers "${properties[@]}"
+              env:
+                  HEADS: ${{ matrix.uno }}
+                  PROPERTIES: ${{ matrix.properties }}
+            - name: 🏺 Publish logs
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: samples-workload-logs-${{ strategy.job-index }}
+                  path: artifacts/logs/
+                  if-no-files-found: ignore
