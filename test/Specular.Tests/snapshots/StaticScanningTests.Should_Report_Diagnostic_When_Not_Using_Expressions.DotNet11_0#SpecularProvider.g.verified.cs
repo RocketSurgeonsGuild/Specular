@@ -169,6 +169,15 @@ internal sealed class SpecularProvider : ISpecularProvider
                 services.Add(ServiceDescriptor.Transient<global::Specular.Diagnostics.TypeScanAssemblyReportEntry, global::Specular.Diagnostics.TypeScanAssemblyReportEntry>());
                 services.Add(ServiceDescriptor.Transient<global::Specular.Diagnostics.TypeScanReport, global::Specular.Diagnostics.TypeScanReport>());
                 services.Add(ServiceDescriptor.Transient<global::Specular.Diagnostics.TypeScanReportEntry, global::Specular.Diagnostics.TypeScanReportEntry>());
+                services.Add(ServiceDescriptor.Transient<global::Specular.KeyedServiceRegistrationAttribute, global::Specular.KeyedServiceRegistrationAttribute>());
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<>), typeof(global::Specular.KeyedServiceRegistrationAttribute<>)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<, >)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >)));
+                services.Add(ServiceDescriptor.Transient(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >), typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >)));
                 services.Add(ServiceDescriptor.Transient<global::Specular.RegistrationLifetimeAttribute, global::Specular.RegistrationLifetimeAttribute>());
                 services.Add(ServiceDescriptor.Transient<global::Specular.ServiceRegistrationAttribute, global::Specular.ServiceRegistrationAttribute>());
                 services.Add(ServiceDescriptor.Transient(typeof(global::Specular.ServiceRegistrationAttribute<>), typeof(global::Specular.ServiceRegistrationAttribute<>)));
