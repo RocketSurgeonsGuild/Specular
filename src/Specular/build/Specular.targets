@@ -21,11 +21,17 @@
     <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
         <Using Include="Specular" />
     </ItemGroup>
-    <ItemGroup>
-        <AdditionalFiles
-            Visible="false"
-            Include="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson"
-            Condition="Exists('$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson')"
-        />
-    </ItemGroup>
+    <!--
+        The generator's cache, when a previous build left one. Added just before compiling rather than when the project is
+        evaluated: a Rebuild's Clean deletes the file after evaluation, and the compiler would be handed a missing file (CS2001).
+    -->
+    <Target Name="AddSpecularCache" BeforeTargets="CoreCompile">
+        <ItemGroup>
+            <AdditionalFiles
+                Visible="false"
+                Include="$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson"
+                Condition="Exists('$(IntermediateOutputPath)\ctp\SpecularProvider.ctpjson')"
+            />
+        </ItemGroup>
+    </Target>
 </Project>

@@ -13,9 +13,14 @@
         <PackageReference Include="Polyfill" PrivateAssets="all" />
        <PackageReference Include="System.Collections.Immutable" />
         <PackageReference Include="System.Text.Json" PrivateAssets="all" GeneratePathProperty="true" />
-      <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
-      <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
-      <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.6.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+      <!--
+          Built only so their outputs can be packed below. Private="false" keeps their content (each copies its System.Text.Json.dll
+          to its own output for packing) from flowing on to this project and every app that references the generator, where two
+          versions of it collided in Uno's WebAssembly assets.
+      -->
+      <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+      <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+      <ProjectReference Include="../Specular.Analyzers.supports/Specular.Analyzers.roslyn5.6.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
     </ItemGroup>
     <ItemGroup>
     <None Include="bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/roslyn5.9/cs" Visible="false" />
