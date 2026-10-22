@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <!--
+        A Blazor WebAssembly app. Needs no workload unless SpecularSamplesWasmAotEnabled turns on AOT (wasm-tools). On net11.0 it
+        references the libraries' browser-wasm builds (compiled without runtime async, see the root Directory.Build.targets).
+    -->
+    <PropertyGroup>
+        <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+        <!-- Shared sample scan + the three sample libraries, consumed like a packaged consumer (samples/Directory.Build.targets). -->
+        <SpecularSampleHost>true</SpecularSampleHost>
+        <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <RunAOTCompilation Condition="'$(SpecularSamplesWasmAotEnabled)' == 'true'">true</RunAOTCompilation>
+        <!-- Publish trims the app: surface each trim warning individually and fail on any (zero-warning policy, as the AOT hosts). -->
+        <TrimmerSingleWarn>false</TrimmerSingleWarn>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    </ItemGroup>
+</Project>

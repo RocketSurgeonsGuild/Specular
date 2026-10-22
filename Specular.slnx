@@ -50,6 +50,7 @@
     <File Path="samples/Directory.Build.props" />
     <File Path="samples/Directory.Build.targets" />
     <File Path="samples/Directory.Build.workloads.props" />
+    <File Path="samples/smoke.mjs" />
   </Folder>
   <Folder Name="/samples/libraries/">
     <Project Path="samples/libraries/Specular.Samples.Catalog/Specular.Samples.Catalog.csproj" />
@@ -58,7 +59,16 @@
   </Folder>
   <Folder Name="/samples/fixtures/" />
   <Folder Name="/samples/hosts/">
+    <File Path="samples/hosts/Shared/SampleScan.cs" />
+    <Project Path="samples/hosts/Specular.Samples.BlazorWasm/Specular.Samples.BlazorWasm.csproj" />
     <Project Path="samples/hosts/Specular.Samples.Console/Specular.Samples.Console.csproj" />
+    <!-- Need workloads: built and run by .github/workflows/samples.yml, not by the solution build. -->
+    <Project Path="samples/hosts/Specular.Samples.Maui/Specular.Samples.Maui.csproj">
+      <Build Project="false" />
+    </Project>
+    <Project Path="samples/hosts/Specular.Samples.Uno/Specular.Samples.Uno.csproj">
+      <Build Project="false" />
+    </Project>
     <Project Path="samples/hosts/Specular.Samples.Web/Specular.Samples.Web.csproj" />
   </Folder>
   <Folder Name="/src/Specular.Analyzers.supports/">

@@ -1,0 +1,45 @@
+<Project Sdk="Uno.Sdk/6.7.30">
+    <!--
+        An Uno Platform app (Skia renderer) on the net10.0 heads; the stable Uno.Sdk has no net11.0 heads yet. Only the desktop
+        head needs no workload (WebAssembly needs wasm-tools-net10, the mobile heads theirs), so Specular.slnx doesn't build this
+        project: the Samples workflow builds it per OS. There's no WinAppSDK (net10.0-windows) head: the desktop head is Uno's
+        Windows app (Win32 + Skia).
+    -->
+    <PropertyGroup>
+        <TargetFrameworks>net10.0-desktop</TargetFrameworks>
+        <!-- Lets a build (e.g. one CI leg) pick the heads it has workloads for. A list arrives escaped (';' as %3B) from the command line. -->
+        <TargetFrameworks Condition="'$(SpecularSampleTargetFrameworks)' != ''">$([MSBuild]::Unescape('$(SpecularSampleTargetFrameworks)'))</TargetFrameworks>
+
+        <OutputType>Exe</OutputType>
+        <UnoSingleProject>true</UnoSingleProject>
+        <!-- Not Specular.Samples.Uno: inside that namespace `Uno.` would resolve to it instead of the Uno Platform namespaces. -->
+        <RootNamespace>Specular.Samples.UnoPlatform</RootNamespace>
+        <ApplicationTitle>Specular Uno Sample</ApplicationTitle>
+        <ApplicationId>com.rocketsurgeonsguild.specular.samples.uno</ApplicationId>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationPublisher>Rocket Surgeons Guild</ApplicationPublisher>
+        <Description>Specular on Uno Platform.</Description>
+        <UnoFeatures>SkiaRenderer</UnoFeatures>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+
+        <!-- Shared sample scan + the three sample libraries, consumed like a packaged consumer (samples/Directory.Build.targets). -->
+        <SpecularSampleHost>true</SpecularSampleHost>
+        <!-- NETSDK1201: RID without self-contained (Uno's heads); PRI257: default language not in resources. -->
+        <NoWarn>$(NoWarn);NETSDK1201;PRI257</NoWarn>
+        <!--
+            The repo's Rocket.Surgery.MSBuild.SourceLink turns these on; with the Skia renderer, Uno swaps in its own runtime
+            assemblies and their .pdb/.xml, so the package copies would land in the output twice (NETSDK1152, and a duplicate key in
+            the WebAssembly boot manifest).
+        -->
+        <CopyDebugSymbolFilesFromPackages>false</CopyDebugSymbolFilesFromPackages>
+        <CopyDocumentationFilesFromPackages>false</CopyDocumentationFilesFromPackages>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <!-- Patched versions of what Uno.Sdk's implicit packages bring in transitively (see Directory.Packages.props). -->
+        <PackageReference Include="System.Security.Cryptography.Pkcs" />
+        <PackageReference Include="System.Security.Cryptography.Xml" />
+    </ItemGroup>
+</Project>

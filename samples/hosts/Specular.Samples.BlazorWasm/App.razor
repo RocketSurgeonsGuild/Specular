@@ -1,0 +1,13 @@
+@using Specular.Samples
+@inject SampleScanResult Result
+
+<h1>Specular on Blazor WebAssembly</h1>
+
+<p id="specular-result" data-result="@(Result.IsMatch ? "match" : "mismatch")">@Result.Summary</p>
+
+<ul>
+    @foreach (var service in Result.Discovered)
+    {
+        <li>@service</li>
+    }
+</ul>
