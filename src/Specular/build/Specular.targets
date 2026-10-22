@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-      <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(OutputType)' != 'Library' or '$(OutputType)' != 'library')">true</_SpecularApplicationDetected>
+      <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(OutputType)' != 'Library' and '$(OutputType)' != 'library')">true</_SpecularApplicationDetected>
       <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == '' and ('$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true')">true</_SpecularApplicationDetected>
       <_SpecularApplicationDetected Condition="'$(_SpecularApplicationDetected)' == ''">false</_SpecularApplicationDetected>
     </PropertyGroup>
