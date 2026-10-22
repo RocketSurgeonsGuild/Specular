@@ -30,7 +30,7 @@ return new Type[] { typeof(MyService), typeof(OtherService), typeof(ThirdService
 
 ## Supported Target Frameworks
 
-Specular targets `net8.0` and `net10.0` — both of which support Native AOT publishing.
+Specular targets `net10.0` and `net11.0` — both of which support Native AOT publishing. The `net11.0` build is compiled with runtime async.
 
 ## Publishing Command
 

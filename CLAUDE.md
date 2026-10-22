@@ -41,7 +41,7 @@ output, and every new feature MUST be compatible with .NET's Native AOT compilat
   `EnforceExtendedAnalyzerRules`. No runtime-only packages may be referenced from it.
 - Cross-assembly scan results MUST be serialized to `SpecularProvider.ctpjson` via the
   source-generated `JsonSourceGenerationContext`; no runtime JSON serializer is permitted.
-- AOT compatibility MUST be verified in CI against each supported target (`net8.0`, `net10.0`).
+- AOT compatibility MUST be verified in CI against each supported target (`net10.0`, `net11.0`).
 - Any deviation from AOT safety requires explicit justification in a plan's Complexity Tracking
   section and approval before implementation.
 
@@ -106,11 +106,12 @@ Documentation is not an afterthought. New features are not considered complete u
 
 ### Roslyn Compatibility Matrix
 
-The generator MUST compile and emit correct output on Roslyn 4.8, 4.14, and 5.0. The
-`src/Specular.Analyzers.supports/` variant projects enforce this at build time.
+The generator MUST compile and emit correct output on Roslyn 5.0, 5.3, 5.6, and 5.9. The
+`src/Specular.Analyzers.supports/` variant projects (5.0, 5.3, 5.6) enforce this at build time;
+the main `Specular.Analyzers` build covers 5.9.
 
-- No Roslyn 5.x-only APIs may be used in `Specular.Analyzers` without a fallback or conditional
-  compilation guard tested in the 4.8 and 4.14 variant projects.
+- No Roslyn APIs newer than 5.0 may be used in `Specular.Analyzers` without a fallback or conditional
+  compilation guard tested in the 5.0, 5.3, and 5.6 variant projects.
 - `Polyfill` is the approved mechanism for accessing newer BCL APIs in netstandard2.0 code.
 
 ### Central Package Management
@@ -139,7 +140,7 @@ Two build orchestrators coexist — do not conflate them:
 2. **Implementation passes all existing + new snapshot tests** (`dotnet test`).
 3. **Public API tracking file updated** if any public surface changed.
 4. **Docs updated** (XML comments + VitePress pages where applicable).
-5. **AOT compatibility verified** (build succeeds on `net8.0` and `net10.0` targets).
+5. **AOT compatibility verified** (build succeeds on `net10.0` and `net11.0` targets).
 6. **Formatting passes** (`prettier --write .` + `dotnet format`).
 7. **NuGet audit passes** (no moderate-or-higher advisories introduced).
 
@@ -232,7 +233,7 @@ output, and every new feature MUST be compatible with .NET's Native AOT compilat
   `EnforceExtendedAnalyzerRules`. No runtime-only packages may be referenced from it.
 - Cross-assembly scan results MUST be serialized to `SpecularProvider.ctpjson` via the
   source-generated `JsonSourceGenerationContext`; no runtime JSON serializer is permitted.
-- AOT compatibility MUST be verified in CI against each supported target (`net8.0`, `net10.0`).
+- AOT compatibility MUST be verified in CI against each supported target (`net10.0`, `net11.0`).
 - Any deviation from AOT safety requires explicit justification in a plan's Complexity Tracking
   section and approval before implementation.
 
@@ -297,11 +298,12 @@ Documentation is not an afterthought. New features are not considered complete u
 
 ### Roslyn Compatibility Matrix
 
-The generator MUST compile and emit correct output on Roslyn 4.8, 4.14, and 5.0. The
-`src/Specular.Analyzers.supports/` variant projects enforce this at build time.
+The generator MUST compile and emit correct output on Roslyn 5.0, 5.3, 5.6, and 5.9. The
+`src/Specular.Analyzers.supports/` variant projects (5.0, 5.3, 5.6) enforce this at build time;
+the main `Specular.Analyzers` build covers 5.9.
 
-- No Roslyn 5.x-only APIs may be used in `Specular.Analyzers` without a fallback or conditional
-  compilation guard tested in the 4.8 and 4.14 variant projects.
+- No Roslyn APIs newer than 5.0 may be used in `Specular.Analyzers` without a fallback or conditional
+  compilation guard tested in the 5.0, 5.3, and 5.6 variant projects.
 - `Polyfill` is the approved mechanism for accessing newer BCL APIs in netstandard2.0 code.
 
 ### Central Package Management
@@ -330,7 +332,7 @@ Two build orchestrators coexist — do not conflate them:
 2. **Implementation passes all existing + new snapshot tests** (`dotnet test`).
 3. **Public API tracking file updated** if any public surface changed.
 4. **Docs updated** (XML comments + VitePress pages where applicable).
-5. **AOT compatibility verified** (build succeeds on `net8.0` and `net10.0` targets).
+5. **AOT compatibility verified** (build succeeds on `net10.0` and `net11.0` targets).
 6. **Formatting passes** (`prettier --write .` + `dotnet format`).
 7. **NuGet audit passes** (no moderate-or-higher advisories introduced).
 

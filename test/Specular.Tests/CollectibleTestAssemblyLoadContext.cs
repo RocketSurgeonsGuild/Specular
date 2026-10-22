@@ -3,14 +3,9 @@ using System.Runtime.Loader;
 
 namespace Specular.Tests;
 
-internal class CollectibleTestAssemblyLoadContext : AssemblyLoadContext, IDisposable
+internal class CollectibleTestAssemblyLoadContext() : AssemblyLoadContext(isCollectible: true), IDisposable
 {
     protected override Assembly? Load(AssemblyName assemblyName) => null;
 
-    public void Dispose()
-    {
-#if NETCOREAPP3_1
-            Unload();
-#endif
-    }
+    public void Dispose() => Unload();
 }

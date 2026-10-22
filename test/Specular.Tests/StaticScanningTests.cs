@@ -2019,8 +2019,9 @@ public static class Program {
                           .Build()
                           .GenerateAsync(cancellationToken);
 
+        // FromAssemblies() also picks up Specular's own Polyfill types, which differ per target framework.
         await Verify(result)
-            ;
+           .UniqueForTargetFrameworkAndVersion();
     }
 
     [Test]
