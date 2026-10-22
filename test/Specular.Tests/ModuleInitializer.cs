@@ -26,7 +26,6 @@ internal static partial class ModuleInitializer
 
         VerifierSettings.AssignTargetAssembly(typeof(ModuleInitializer).Assembly);
         ScrubSolutionAndProjectDirectories();
-        VerifyDiffPlex.Initialize();
 
         VerifierSettings.ScrubInlineGuids();
         VerifierSettings.ScrubMember<ResolvedSourceLocation>(z => z.CacheVersion);

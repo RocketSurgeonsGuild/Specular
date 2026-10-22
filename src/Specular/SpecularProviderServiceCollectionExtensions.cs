@@ -8,7 +8,8 @@ namespace Specular;
 public static class SpecularProviderServiceCollectionExtensions
 {
     /// <summary>
-    ///     Adds all the services with the <see cref="ServiceRegistrationAttribute" /> to the service collection
+    ///     Adds all the services with the <see cref="ServiceRegistrationAttribute" /> or
+    ///     <see cref="KeyedServiceRegistrationAttribute" /> to the service collection
     /// </summary>
     /// <param name="services"></param>
     /// <param name="provider"></param>
@@ -31,7 +32,16 @@ public static class SpecularProviderServiceCollectionExtensions
                              typeof(ServiceRegistrationAttribute<,,,,>),
                              typeof(ServiceRegistrationAttribute<,,,,,>),
                              typeof(ServiceRegistrationAttribute<,,,,,,>),
-                             typeof(ServiceRegistrationAttribute<,,,,,,,>)
+                             typeof(ServiceRegistrationAttribute<,,,,,,,>),
+                             typeof(KeyedServiceRegistrationAttribute),
+                             typeof(KeyedServiceRegistrationAttribute<>),
+                             typeof(KeyedServiceRegistrationAttribute<,>),
+                             typeof(KeyedServiceRegistrationAttribute<,,>),
+                             typeof(KeyedServiceRegistrationAttribute<,,,>),
+                             typeof(KeyedServiceRegistrationAttribute<,,,,>),
+                             typeof(KeyedServiceRegistrationAttribute<,,,,,>),
+                             typeof(KeyedServiceRegistrationAttribute<,,,,,,>),
+                             typeof(KeyedServiceRegistrationAttribute<,,,,,,,>)
                          )
                  )
                  .AsSelf()

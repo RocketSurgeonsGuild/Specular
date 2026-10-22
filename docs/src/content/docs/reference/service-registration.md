@@ -14,18 +14,12 @@ description: Mark classes for automatic DI registration using compile-time scann
 public class ServiceRegistrationAttribute : Attribute
 ```
 
-Applied to a class, it instructs the generator to register the class in the DI container. When applied without arguments, the type is registered as itself (`AsSelf`) with `ServiceLifetime.Singleton`.
+Applied to a class, it instructs the generator to register the class in the DI container. The lifetime is always required; if no explicit service types are given, the type is registered against every interface it implements (plus itself).
 
 **Constructors:**
 
 ```csharp
-// Register as self, Singleton (default)
-ServiceRegistrationAttribute()
-
-// Register against explicit service types, Singleton
-ServiceRegistrationAttribute(params Type[] serviceTypes)
-
-// Register against explicit service types with a specified lifetime
+// Register against explicit service types with a required lifetime
 ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceTypes)
 ```
 
@@ -33,47 +27,36 @@ ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceType
 
 | Property       | Type                   | Description                                                          |
 | -------------- | ---------------------- | -------------------------------------------------------------------- |
-| `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register as self. |
-| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Defaults to `Singleton`.                            |
+| `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register against all implemented interfaces (plus self). |
+| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                   |
 
 `AllowMultiple = true` means a single class can carry multiple `[ServiceRegistration]` attributes to be registered against different service types or with different lifetimes simultaneously.
 
 ## Generic overloads
 
-The generic variants provide a concise way to specify one to four explicit service types without passing `typeof(...)` arguments.
+The generic variants provide a concise way to specify one to eight explicit service types without passing `typeof(...)` arguments.
 
 ### `ServiceRegistrationAttribute<TService>`
-
-```csharp
-[ServiceRegistration<IMyService>]
-public class MyService : IMyService { }
-```
-
-Registers `MyService` as `IMyService`. Accepts an optional `ServiceLifetime` constructor argument (defaults to `Singleton`).
-
-### `ServiceRegistrationAttribute<TService1, TService2>`
-
-```csharp
-[ServiceRegistration<IMyService, IAlternate>]
-public class MyService : IMyService, IAlternate { }
-```
-
-Registers against two service types.
-
-### `ServiceRegistrationAttribute<TService1, TService2, TService3>`
-
-Registers against three service types.
-
-### `ServiceRegistrationAttribute<TService1, TService2, TService3, TService4>`
-
-Registers against four service types.
-
-All generic variants accept an optional `ServiceLifetime` constructor argument:
 
 ```csharp
 [ServiceRegistration<IMyService>(ServiceLifetime.Scoped)]
 public class MyService : IMyService { }
 ```
+
+Registers `MyService` as `IMyService` with the given lifetime.
+
+### `ServiceRegistrationAttribute<TService1, TService2>`
+
+```csharp
+[ServiceRegistration<IMyService, IAlternate>(ServiceLifetime.Scoped)]
+public class MyService : IMyService, IAlternate { }
+```
+
+Registers against two service types.
+
+### `ServiceRegistrationAttribute<TService1, TService2, TService3>` through `<..., TService8>`
+
+Registers against up to eight explicit service types. Every generic variant requires a `ServiceLifetime` constructor argument — there is no default.
 
 ## `[RegistrationLifetime]`
 
@@ -118,12 +101,12 @@ services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
 public class MyService : IMyService { }
 
 // Class carrying a separate lifetime override via [RegistrationLifetime]
-[ServiceRegistration]
+[ServiceRegistration(ServiceLifetime.Singleton)]
 [RegistrationLifetime(ServiceLifetime.Scoped)]
 public class AnotherService : IAnotherService { }
 
 // Multiple registrations on one class
-[ServiceRegistration<IMyService>]
+[ServiceRegistration<IMyService>(ServiceLifetime.Singleton)]
 [ServiceRegistration<IAlternate>(ServiceLifetime.Transient)]
 public class DualService : IMyService, IAlternate { }
 ```
@@ -137,10 +120,11 @@ builder.Services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
 
 - Registration is a **compile-time** operation. The generator discovers `[ServiceRegistration]`-decorated types during the build, not at application startup.
 - Abstract classes and static classes are implicitly excluded — `AddClasses()` skips them by default.
-- If `ServiceTypes` is empty (i.e. the attribute is applied with no type arguments), the class is registered as its own concrete type (`AsSelf`).
+- If `ServiceTypes` is empty (i.e. the attribute is applied with no explicit type arguments), the class is registered against itself and every interface it implements.
 
 ## See also
 
 - [ISpecularProvider](./ispecular-provider) — the provider that backs `AddSpecularServiceRegistrations`
+- [KeyedServiceRegistrationAttribute](./keyed-service-registration) — the keyed-service counterpart to this attribute
 - [Type Filters](./type-filters) — the fluent alternative to attribute-based registration
 - [ExcludeFromSpecularAttribute](./exclude-from-specular) — opt an assembly out of all scanning

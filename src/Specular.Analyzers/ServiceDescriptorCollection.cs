@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -194,6 +195,7 @@ internal static class ServiceDescriptorCollection
         var asSpecificTypes = serviceTypes.ServiceTypeDescriptors.OfType<CompiledServiceTypeDescriptor>().Select(z => z.Type).Where(z => z is { }).ToArray();
         var registrationLifetimeAttribute = compilation.GetTypeByMetadataName("Specular.RegistrationLifetimeAttribute")!;
         var serviceRegistrationAttribute = compilation.GetTypeByMetadataName("Specular.ServiceRegistrationAttribute")!;
+        var keyedServiceRegistrationBaseAttribute = compilation.GetTypeByMetadataName("Specular.KeyedServiceRegistrationBaseAttribute")!;
 
         var services = new List<InvocationExpressionSyntax>();
         var reportEntries = ImmutableList.CreateBuilder<ServiceDescriptorScanReportEntryData>();
@@ -321,6 +323,110 @@ internal static class ServiceDescriptorCollection
                 }
 
                 _ = emittedTypes.Add(serviceType);
+            }
+
+            var keyedServiceRegistrationAttributes =
+                type
+                   .GetAttributes()
+                   .Where(
+                        attribute => attribute.AttributeClass is { }
+                         && SymbolEqualityComparer.Default.Equals(attribute.AttributeClass.BaseType, keyedServiceRegistrationBaseAttribute))
+                   .ToArray();
+
+            if (keyedServiceRegistrationAttributes.Length > 0)
+            {
+                var keyedRegistrations = keyedServiceRegistrationAttributes
+                                         .SelectMany(
+                                              attributeData =>
+                                              {
+                                                  var keyExpression = GetKeyExpression(attributeData.ConstructorArguments[0]);
+                                                  var keyText = keyExpression.NormalizeWhitespace().ToFullString();
+                                                  var attributeLifetime = attributeData.ConstructorArguments is [_, { Kind: TypedConstantKind.Enum } lifetimeArgument, ..]
+                                                      ? GetLifetimeValue(lifetimeArgument)
+                                                      : null;
+
+                                                  var serviceTypesForAttribute = ( attributeData switch
+                                                  {
+                                                      { ConstructorArguments: [_, _, { Kind: TypedConstantKind.Array, Values: { Length: > 0 } values }] } =>
+                                                          values
+                                                             .Where(z => z is { Kind: TypedConstantKind.Type, Value: INamedTypeSymbol })
+                                                             .Select(z => z.Value)
+                                                             .OfType<INamedTypeSymbol>(),
+                                                      { AttributeClass.TypeArguments: { Length: > 0 } typeArgs } => typeArgs.OfType<INamedTypeSymbol>(),
+                                                      _ => type.AllInterfaces.OfType<INamedTypeSymbol>(),
+                                                  } )
+                                                     .Prepend(type);
+
+                                                  return serviceTypesForAttribute.Select(serviceType => (KeyExpression: keyExpression, KeyText: keyText, AttributeLifetime: attributeLifetime, Type: serviceType));
+                                              },
+                                              (data, serviceType) =>
+                                              {
+                                                  var serviceAttribute = serviceType.Type
+                                                                        .GetAttributes()
+                                                                        .FirstOrDefault(
+                                                                             z => z.AttributeClass is { }
+                                                                              && SymbolEqualityComparer.Default.Equals(
+                                                                                     z.AttributeClass,
+                                                                                     registrationLifetimeAttribute
+                                                                                 )
+                                                                         );
+                                                  return (serviceType.KeyExpression,
+                                                           serviceType.KeyText,
+                                                           Lifetime: GetLifetimeValue(serviceAttribute) ?? serviceType.AttributeLifetime ?? GetLifetimeValue(discoveredLifetime) ?? "Singleton",
+                                                           serviceType.Type);
+                                              }
+                                          )
+                                         .GroupBy(z => (Helpers.GetFullMetadataName(z.Type), z.KeyText))
+                                         .ToArray();
+
+                var keyedAbort = false;
+                foreach (var registration in keyedRegistrations)
+                {
+                    if (registration.Count() <= 1) continue;
+
+                    foreach (var item in registration)
+                    {
+                        if (!item.Type.DeclaringSyntaxReferences.Any()) continue;
+
+                        _ = diagnostics.Add(Diagnostic.Create(Diagnostics.DuplicateServiceDescriptorAttribute, item.Type.Locations.FirstOrDefault()));
+                        keyedAbort = true;
+                    }
+                }
+
+                if (keyedAbort) return new(Block(), []);
+
+                foreach (var registration in keyedRegistrations.Select(z => z.First()))
+                {
+                    var statement = !SymbolEqualityComparer.Default.Equals(registration.Type, type)
+                        ? StatementGeneration.GenerateServiceFactory(
+                            compilation,
+                            registration.Type,
+                            type,
+                            registration.Lifetime,
+                            registration.KeyExpression
+                        )
+                        : StatementGeneration.GenerateServiceType(
+                            compilation,
+                            registration.Type,
+                            type,
+                            registration.Lifetime,
+                            registration.KeyExpression
+                        );
+                    if (statement is null)
+                    {
+                        _ = diagnostics.Add(Diagnostic.Create(Diagnostics.PrivateTypeUnreachableUnderAot, type.Locations.FirstOrDefault(), Helpers.GetGenericDisplayName(type), type.ContainingAssembly.MetadataName));
+                    }
+                    else
+                    {
+                        services.Add(statement);
+                        reportEntries.Add(new(registration.Lifetime, Helpers.GetGenericDisplayName(registration.Type), Helpers.GetGenericDisplayName(type)));
+                    }
+
+                    // Keyed registrations live in their own key-scoped slot, but the type itself has still been
+                    // accounted for: suppress the scan-level AsSelf/AsImplementedInterfaces/etc. defaults for it,
+                    // the same way an explicit (non-keyed) ServiceRegistrationAttribute would.
+                    _ = emittedTypes.Add(registration.Type);
+                }
             }
 
             if (asSelf && !emittedTypes.Contains(type))
@@ -504,19 +610,16 @@ internal static class ServiceDescriptorCollection
 
     private sealed record ServiceDescriptorGeneration(BlockSyntax Block, ImmutableList<ServiceDescriptorScanReportEntryData> ReportEntries);
 
-    private static string? GetLifetimeValue(AttributeData? attribute)
+    private static string? GetLifetimeValue(AttributeData? attribute) =>
+        attribute is { ConstructorArguments: [{ } first, ..] } ? GetLifetimeValue(first) : null;
+
+    private static string? GetLifetimeValue(TypedConstant constant)
     {
-        if (attribute is not
+        if (constant is not
             {
-                ConstructorArguments:
-                [
-                {
-                    Kind: TypedConstantKind.Enum,
-                    Type: { } discoveredType,
-                    Value: int discoveredValue,
-                },
-                    ..,
-                ],
+                Kind: TypedConstantKind.Enum,
+                Type: { } discoveredType,
+                Value: int discoveredValue,
             })
         {
             return null;
@@ -527,6 +630,69 @@ internal static class ServiceDescriptorCollection
                    .OfType<IFieldSymbol>()
                    .First(z => z.ConstantValue is int i && i == discoveredValue);
         return value.Name;
+    }
+
+    private static ExpressionSyntax GetKeyExpression(TypedConstant constant) =>
+        constant.IsNull
+            ? LiteralExpression(SyntaxKind.NullLiteralExpression)
+            : constant.Kind switch
+            {
+                TypedConstantKind.Enum => GetEnumKeyExpression(constant),
+                TypedConstantKind.Type => TypeOfExpression(ParseTypeName(Helpers.GetTypeOfName((ISymbol)constant.Value!))),
+                TypedConstantKind.Primitive => GetPrimitiveKeyExpression(constant),
+                TypedConstantKind.Array or TypedConstantKind.Error or _ => LiteralExpression(SyntaxKind.NullLiteralExpression),
+            };
+
+    private static ExpressionSyntax GetEnumKeyExpression(TypedConstant constant)
+    {
+        var enumType = (INamedTypeSymbol)constant.Type!;
+        var member = enumType
+                    .GetMembers()
+                    .OfType<IFieldSymbol>()
+                    .FirstOrDefault(z => z.HasConstantValue && Equals(z.ConstantValue, constant.Value));
+
+        return member is null
+            ? CastExpression(ParseTypeName(Helpers.GetTypeOfName(enumType)), LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(Convert.ToInt64(constant.Value, CultureInfo.InvariantCulture))))
+            : MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                ParseTypeName(Helpers.GetTypeOfName(enumType)),
+                IdentifierName(member.Name)
+            );
+    }
+
+    [SuppressMessage("Style", "IDE0072:Add missing cases", Justification = "SpecialType has dozens of members; only the ones attribute arguments can carry are meaningful here, the rest fall through to the default.")]
+    private static ExpressionSyntax GetPrimitiveKeyExpression(TypedConstant constant)
+    {
+        var value = constant.Value!;
+        return constant.Type?.SpecialType switch
+        {
+            SpecialType.System_String => LiteralExpression(SyntaxKind.StringLiteralExpression, Literal((string)value)),
+            SpecialType.System_Boolean => LiteralExpression((bool)value ? SyntaxKind.TrueLiteralExpression : SyntaxKind.FalseLiteralExpression),
+            SpecialType.System_Char => LiteralExpression(SyntaxKind.CharacterLiteralExpression, Literal((char)value)),
+            SpecialType.System_Int32 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((int)value)),
+            SpecialType.System_Int64 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((long)value)),
+            SpecialType.System_UInt32 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((uint)value)),
+            SpecialType.System_UInt64 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((ulong)value)),
+            SpecialType.System_Double => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((double)value)),
+            SpecialType.System_Single => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((float)value)),
+            SpecialType.System_Byte => CastExpression(
+                PredefinedType(Token(SyntaxKind.ByteKeyword)),
+                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((byte)value))
+            ),
+            SpecialType.System_SByte => CastExpression(
+                PredefinedType(Token(SyntaxKind.SByteKeyword)),
+                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((sbyte)value))
+            ),
+            SpecialType.System_Int16 => CastExpression(
+                PredefinedType(Token(SyntaxKind.ShortKeyword)),
+                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((short)value))
+            ),
+            SpecialType.System_UInt16 => CastExpression(
+                PredefinedType(Token(SyntaxKind.UShortKeyword)),
+                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((ushort)value))
+            ),
+            _ => LiteralExpression(SyntaxKind.NullLiteralExpression),
+        };
     }
 
     private static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetMethod(SyntaxNode node) =>

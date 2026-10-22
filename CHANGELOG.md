@@ -14,3 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cross-assembly scan result caching via `SpecularProvider.ctpjson`.
 - Fluent selector API compatible with Scrutor conventions.
 - Support for .NET 8 and .NET 10.
+- `KeyedServiceRegistrationAttribute` (and its generic `<TService1..8>` variants) — the keyed-service
+  counterpart to `ServiceRegistrationAttribute`, producing `ServiceDescriptor.Keyed*` registrations
+  resolved via `GetRequiredKeyedService`. `AddSpecularServiceRegistrations` now discovers both
+  attribute families in a single scan.
+
+### Changed
+
+- `ServiceRegistrationAttribute` (and its generic variants) now require an explicit `ServiceLifetime`
+  argument; the previous no-lifetime constructors defaulting to `Singleton` have been removed.

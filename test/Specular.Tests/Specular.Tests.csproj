@@ -14,7 +14,6 @@
         <PackageReference Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" />
         <PackageReference Include="Microsoft.Extensions.Configuration" />
         <PackageReference Include="Microsoft.Reactive.Testing" />
-        <PackageReference Include="Verify.DiffPlex" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="snapshots\**" />

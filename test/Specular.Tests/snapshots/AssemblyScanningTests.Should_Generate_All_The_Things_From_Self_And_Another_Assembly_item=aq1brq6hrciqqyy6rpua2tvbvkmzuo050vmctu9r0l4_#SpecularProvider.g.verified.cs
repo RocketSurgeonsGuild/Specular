@@ -51,14 +51,16 @@ internal sealed class SpecularProvider : ISpecularProvider
                 }
 
                 break;
-            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: +yQvLCJ7iCTxzCHEjoW5fA==
-            case 19:
+            // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: QGmxhNh0sTcsPjKev+mVvQ==
+            case 20:
                 services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Int32>>(a => (global::TestAssembly.IGenericService<global::System.Int32>)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => (global::TestAssembly.IOther)a.GetRequiredService(TestAssembly.GetType("TestAssembly.GenericService")!)));
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
                 services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+                services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.KeyedService, global::TestAssembly.KeyedService>("test-key"));
+                services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.IKeyedService>("test-key", (a, _) => a.GetRequiredKeyedService<global::TestAssembly.KeyedService>("test-key")));
                 services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.RequestHandler")!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
                 services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.RequestHandler")!)));
                 break;

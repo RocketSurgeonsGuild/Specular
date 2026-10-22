@@ -19,10 +19,10 @@
           Assembly: {
             Location: {
               Kind: ServiceDescriptor,
-              LineNumber: 19,
-              ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+              LineNumber: 20,
+              ExpressionHash: QGmxhNh0sTcsPjKev+mVvQ==,
               SourceAssemblyName: Specular,
-              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
+              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
               FileName: SpecularProviderServiceCollectionExtensions.cs
             },
             Assembly: {
@@ -58,6 +58,60 @@
               WithAttributeFilters: null,
               WithAttributeStringFilters: null,
               WithAnyAttributeFilters: [
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute,
+                  UnboundGenericType: false
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`1,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`2,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`3,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`4,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`5,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`6,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`7,
+                  UnboundGenericType: true
+                },
+                {
+                  Include: true,
+                  Assembly: Specular,
+                  Attribute: Specular.KeyedServiceRegistrationAttribute`8,
+                  UnboundGenericType: true
+                },
                 {
                   Include: true,
                   Assembly: Specular,
@@ -139,43 +193,15 @@
     build_property.SpecularEmitProvider: true
   },
   PartialsCached: {
-    peXK2Y3VY6IoyST1zQ9Yjw==: {
-      ResolvedSources: {
-        TestAssembly: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 16,
-            ExpressionHash: PCRHvamF6J3xug7jJLIREw==,
-            SourceAssemblyName: TestProject,
-            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().InfoOf(TypeInfoFilter.Sealed).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
-            FileName: Input0.cs
-          },
-          Expression:
-{
-    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-},
-          PrivateAssemblies: [
-            TestAssembly
-          ],
-          CacheVersion: {Scrubbed},
-          DiscoveredTypes: [
-            {
-              Type: global::Microsoft.CodeAnalysis.EmbeddedAttribute
-            }
-          ],
-          ScannedAssemblyName: TestAssembly
-        }
-      }
-    },
-    VQFGmSzNczaH6cENLibAiA==: {
+    MMNcCWWfhJvVVl35NFMXOw==: {
       ResolvedSources: {
         TestAssembly: {
           Location: {
             Kind: ServiceDescriptor,
-            LineNumber: 19,
-            ExpressionHash: +yQvLCJ7iCTxzCHEjoW5fA==,
+            LineNumber: 20,
+            ExpressionHash: QGmxhNh0sTcsPjKev+mVvQ==,
             SourceAssemblyName: Specular,
-            SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
+            SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
             FileName: SpecularProviderServiceCollectionExtensions.cs
           },
           Expression:
@@ -186,6 +212,8 @@
     services.Add(ServiceDescriptor.Singleton<global::TestAssembly.GenericServiceB, global::TestAssembly.GenericServiceB>());
     services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IGenericService<global::System.Decimal>>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
     services.Add(ServiceDescriptor.Singleton<global::TestAssembly.IOther>(a => a.GetRequiredService<global::TestAssembly.GenericServiceB>()));
+    services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.KeyedService, global::TestAssembly.KeyedService>("test-key"));
+    services.Add(ServiceDescriptor.KeyedSingleton<global::TestAssembly.IKeyedService>("test-key", (a, _) => a.GetRequiredKeyedService<global::TestAssembly.KeyedService>("test-key")));
     services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.RequestHandler")!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
     services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.RequestHandler")!)));
 },
@@ -226,6 +254,16 @@
             },
             {
               Lifetime: Singleton,
+              ServiceType: global::TestAssembly.KeyedService,
+              ImplementationType: global::TestAssembly.KeyedService
+            },
+            {
+              Lifetime: Singleton,
+              ServiceType: global::TestAssembly.IKeyedService,
+              ImplementationType: global::TestAssembly.KeyedService
+            },
+            {
+              Lifetime: Singleton,
               ServiceType: global::TestAssembly.RequestHandler,
               ImplementationType: global::TestAssembly.RequestHandler
             },
@@ -233,6 +271,34 @@
               Lifetime: Singleton,
               ServiceType: global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>,
               ImplementationType: global::TestAssembly.RequestHandler
+            }
+          ],
+          ScannedAssemblyName: TestAssembly
+        }
+      }
+    },
+    peXK2Y3VY6IoyST1zQ9Yjw==: {
+      ResolvedSources: {
+        TestAssembly: {
+          Location: {
+            Kind: Reflection,
+            LineNumber: 16,
+            ExpressionHash: PCRHvamF6J3xug7jJLIREw==,
+            SourceAssemblyName: TestProject,
+            SourceExpression: z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().InfoOf(TypeInfoFilter.Sealed).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
+            FileName: Input0.cs
+          },
+          Expression:
+{
+    items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+},
+          PrivateAssemblies: [
+            TestAssembly
+          ],
+          CacheVersion: {Scrubbed},
+          DiscoveredTypes: [
+            {
+              Type: global::Microsoft.CodeAnalysis.EmbeddedAttribute
             }
           ],
           ScannedAssemblyName: TestAssembly
