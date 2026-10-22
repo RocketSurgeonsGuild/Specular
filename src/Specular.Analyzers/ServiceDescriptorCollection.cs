@@ -24,6 +24,7 @@ internal static class ServiceDescriptorCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ResolvedSourceLocation? ResolveSource(
         AssemblyProviderConfiguration configuration,
         Compilation compilation,
@@ -89,7 +90,7 @@ internal static class ServiceDescriptorCollection
         IAssemblySymbol targetAssembly
     )
     {
-        if (!items.Any()) return ImmutableList<ResolvedSourceLocation>.Empty;
+        if (items.Count == 0) return ImmutableList<ResolvedSourceLocation>.Empty;
 
         var results = new List<ResolvedSourceLocation>();
         foreach (var item in items)
@@ -565,7 +566,7 @@ internal static class ServiceDescriptorCollection
                 _ = emittedTypes.Add(asType);
             }
 
-            if (emittedTypes.Count == 0 && ( lifetimeRegistrations.Any() || discoveredLifetime is { } ) && !asMatchingInterface)
+            if (emittedTypes.Count == 0 && ( lifetimeRegistrations.Length > 0 || discoveredLifetime is { } ) && !asMatchingInterface)
             {
                 foreach (var @interface in type.AllInterfaces.OrderBy(Helpers.GetFullMetadataName))
                 {

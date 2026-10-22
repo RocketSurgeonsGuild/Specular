@@ -7,7 +7,6 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))" />
     <!-- These builds compile Specular.Analyzers' sources, so they track releases against its files. -->
     <ItemGroup>
-        <AdditionalFiles Remove="AnalyzerReleases.Shipped.md;AnalyzerReleases.Unshipped.md" />
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)../Specular.Analyzers/AnalyzerReleases.Shipped.md;$(MSBuildThisFileDirectory)../Specular.Analyzers/AnalyzerReleases.Unshipped.md" />
     </ItemGroup>
 </Project>

@@ -10,7 +10,9 @@
     <ItemGroup>
         <InternalsVisibleTo Include="Specular.Extensions.Tests" />
         <PackageReference Include="Polyfill" PrivateAssets="all" />
+        <!-- docfx's Roslyn is older than the one the generator targets, so it can't load it (FailedToLoadAnalyzer); docs don't need it. -->
         <ProjectReference
+            Condition="'$(DocfxMetadata)' != 'true'"
             Include="..\Specular.Analyzers\Specular.Analyzers.csproj"
             IncludeAssets="analyzers"
             ExcludeAssets="compile;runtime;native"

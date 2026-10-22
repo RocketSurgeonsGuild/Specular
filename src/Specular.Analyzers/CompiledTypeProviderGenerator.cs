@@ -289,7 +289,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         return cacheDirectory;
     }
 #pragma warning restore RS1035
-    private class TypeInferenceRewriter : CSharpSyntaxRewriter
+    private sealed class TypeInferenceRewriter : CSharpSyntaxRewriter
     {
         private int indentLevel = 1;
 
