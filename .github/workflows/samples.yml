@@ -1,4 +1,4 @@
-name: Samples
+name: samples
 
 # Builds and runs the demonstration hosts in samples/hosts on Linux, macOS and Windows, and checks that each one's Specular scan
 # registered exactly the expected services: every host prints a SPECULAR-SAMPLE line, which samples/smoke.mjs looks for.
