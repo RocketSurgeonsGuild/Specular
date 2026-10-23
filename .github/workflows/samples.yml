@@ -44,6 +44,8 @@ jobs:
     hosts:
         name: Hosts (${{ matrix.os }})
         runs-on: ${{ matrix.os }}
+        # A healthy leg takes about 10 minutes; without a limit a hung sample holds the runner for GitHub's 6 hours.
+        timeout-minutes: 45
         strategy:
             fail-fast: false
             matrix:
@@ -141,6 +143,7 @@ jobs:
     workload-heads:
         name: ${{ matrix.name }}
         runs-on: ${{ matrix.os }}
+        timeout-minutes: 60
         strategy:
             fail-fast: false
             matrix:
@@ -193,7 +196,8 @@ jobs:
             - name: 🧪 Run Specular.Samples.Maui (Mac Catalyst)
               if: matrix.maccatalyst != ''
               run: |
-                  app=(samples/hosts/Specular.Samples.Maui/bin/Debug/"$FRAMEWORK"/*/Specular.Samples.Maui.app/Contents/MacOS/Specular.Samples.Maui)
+                  # The bundle is named after ApplicationTitle; the executable inside it after the assembly.
+                  app=(samples/hosts/Specular.Samples.Maui/bin/Debug/"$FRAMEWORK"/*/*.app/Contents/MacOS/Specular.Samples.Maui)
                   node samples/smoke.mjs exe -- "${app[0]}"
               env:
                   FRAMEWORK: ${{ matrix.maccatalyst }}
@@ -212,3 +216,19 @@ jobs:
                   name: samples-workload-logs-${{ strategy.job-index }}
                   path: artifacts/logs/
                   if-no-files-found: ignore
+
+    # The single check the main/next ruleset requires: the matrix jobs above report one check per leg, under names that change
+    # with the matrix.
+    samples:
+        name: samples
+        if: always()
+        needs: [hosts, workload-heads]
+        runs-on: ubuntu-latest
+        steps:
+            - name: ✅ All samples passed
+              run: |
+                  echo "hosts: $HOSTS, workload-heads: $HEADS"
+                  [ "$HOSTS" = success ] && [ "$HEADS" = success ]
+              env:
+                  HOSTS: ${{ needs.hosts.result }}
+                  HEADS: ${{ needs.workload-heads.result }}
