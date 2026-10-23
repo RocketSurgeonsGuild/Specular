@@ -159,13 +159,17 @@ function findChrome() {
     return chrome;
 }
 
-// A minimal Chrome DevTools Protocol client over the WebSocket Node ships with.
+// A minimal Chrome DevTools Protocol client over the WebSocket Node ships with. Every wait is bounded: a Chrome that stops
+// answering would otherwise hang the job until GitHub cancels it.
 async function connect(webSocketUrl) {
     const socket = new WebSocket(webSocketUrl);
-    await new Promise((resolveOpen, rejectOpen) => {
-        socket.addEventListener('open', resolveOpen, { once: true });
-        socket.addEventListener('error', () => rejectOpen(new Error(`can't connect to ${webSocketUrl}`)), { once: true });
-    });
+    await withTimeout(
+        new Promise((resolveOpen, rejectOpen) => {
+            socket.addEventListener('open', resolveOpen, { once: true });
+            socket.addEventListener('error', () => rejectOpen(new Error(`can't connect to ${webSocketUrl}`)), { once: true });
+        }),
+        `the DevTools connection to ${webSocketUrl}`,
+    );
     let nextId = 0;
     const pending = new Map();
     const listeners = [];
@@ -182,11 +186,14 @@ async function connect(webSocketUrl) {
     });
     return {
         send: (method, params = {}, sessionId = undefined) =>
-            new Promise((resolveCall, rejectCall) => {
-                const id = ++nextId;
-                pending.set(id, { resolve: resolveCall, reject: rejectCall });
-                socket.send(JSON.stringify({ id, method, params, sessionId }));
-            }),
+            withTimeout(
+                new Promise((resolveCall, rejectCall) => {
+                    const id = ++nextId;
+                    pending.set(id, { resolve: resolveCall, reject: rejectCall });
+                    socket.send(JSON.stringify({ id, method, params, sessionId }));
+                }),
+                `Chrome to answer ${method}`,
+            ),
         on: listener => listeners.push(listener),
         close: () => socket.close(),
     };
@@ -204,6 +211,15 @@ async function runBrowser(directory) {
         '--no-default-browser-check',
         '--remote-debugging-port=0',
         `--user-data-dir=${profile}`,
+        // A fresh profile asks the macOS keychain for its storage key, which can block the page on a runner.
+        '--use-mock-keychain',
+        '--password-store=basic',
+        // The Uno head renders with WebGL; without a GPU Chrome only offers software WebGL when asked.
+        '--enable-unsafe-swiftshader',
+        // Keep the page's timers and animation frames running even though nothing shows it.
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
         // Ubuntu runners restrict the unprivileged user namespaces Chrome's sandbox needs.
         ...(process.platform === 'linux' ? ['--no-sandbox'] : []),
         'about:blank',
@@ -213,10 +229,23 @@ async function runBrowser(directory) {
     let browser;
     try {
         const portFile = join(profile, 'DevToolsActivePort');
+        // Chrome writes the port and the browser endpoint's path; until both are there the file may be missing, half written or,
+        // on Windows, still locked (EBUSY).
+        const readPortFile = () => {
+            try {
+                const [port, path] = readFileSync(portFile, 'utf8').split(/\r?\n/);
+                return port && path ? [port, path] : undefined;
+            } catch {
+                return undefined;
+            }
+        };
         const [port, path] = await withTimeout(
             (async () => {
-                while (!existsSync(portFile) || readFileSync(portFile, 'utf8').split(/\r?\n/).length < 2) await delay(100);
-                return readFileSync(portFile, 'utf8').split(/\r?\n/);
+                for (;;) {
+                    const lines = readPortFile();
+                    if (lines) return lines;
+                    await delay(100);
+                }
             })(),
             'Chrome to start',
         );
@@ -246,13 +275,24 @@ async function runBrowser(directory) {
 
         const line = await withTimeout(lineLogged, `a ${PREFIX} line from ${url}`);
         if (!line.includes(MATCH)) throw new Error(line);
+    } catch (error) {
+        // Chrome's own logging is noise when the page works, and usually the reason when it doesn't.
+        console.log(`  [chrome] ${chrome.output().slice(-4_000).trimEnd().replaceAll('\n', '\n  [chrome] ')}`);
+        throw error;
     } finally {
-        await browser?.send('Browser.close').catch(() => {});
+        await Promise.race([browser?.send('Browser.close').catch(() => {}), delay(5_000)]);
         browser?.close();
         chrome.child.kill();
         await Promise.race([chrome.exited, delay(5_000)]);
+        if (chrome.child.exitCode === null && chrome.child.signalCode === null) chrome.child.kill('SIGKILL');
+        // Chrome's keep-alive connections would otherwise hold the server (and this process) open.
+        server.closeAllConnections();
         server.close();
-        rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+        try {
+            rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+        } catch {
+            // A Chrome process still holding the profile on Windows; the runner's temp directory is thrown away anyway.
+        }
     }
 }
 
@@ -277,3 +317,6 @@ try {
     console.error(`smoke: FAIL (${mode}): ${error instanceof Error ? error.message : error}`);
     process.exitCode = 1;
 }
+// A child the sample left behind (Chrome's helper processes, a server's workers) can keep the event loop alive and hang the job;
+// give output a moment to flush, then exit regardless.
+setTimeout(() => process.exit(), 5_000).unref();

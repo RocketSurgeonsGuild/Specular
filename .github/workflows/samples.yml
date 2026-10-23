@@ -11,8 +11,9 @@ name: samples
 #   a simulator or the Windows App SDK runtime.
 #
 # .NET for iOS/Mac Catalyst pins an exact Xcode version per release. The net11.0 prerelease packs need Xcode 27.0, which only
-# GitHub's xcode-27 preview image has. The net10.0 packs ask for Xcode 26.0, but macos-26's Xcode 26.0.1 has no matching iOS
-# simulator runtime, so that leg keeps the image's default Xcode and turns the exact-version check off (ValidateXcodeVersion).
+# GitHub's xcode-27 preview image has, and that image now defaults to Xcode 27.1. The net10.0 packs ask for Xcode 26.0, but
+# macos-26's Xcode 26.0.1 has no matching iOS simulator runtime. So both legs keep the image's default Xcode and turn the
+# exact-version check off (ValidateXcodeVersion).
 #
 # Every build passes --disable-build-servers: MAUI and Uno each load their own SkiaSharp into MSBuild (Resizetizer), and a node
 # reused from an earlier build fails the next one's native library version check.
@@ -44,6 +45,8 @@ jobs:
     hosts:
         name: Hosts (${{ matrix.os }})
         runs-on: ${{ matrix.os }}
+        # A healthy leg takes about 10 minutes; without a limit a hung sample holds the runner for GitHub's 6 hours.
+        timeout-minutes: 45
         strategy:
             fail-fast: false
             matrix:
@@ -90,8 +93,13 @@ jobs:
                   command -v dotnet
                   dotnet --version
                   node --version
+            # Linux only. On macOS the action unpacks Chrome for Testing's bundle into a directory not named *.app, so Chrome can't
+            # launch its renderer helpers (pages never answer the DevTools protocol); on Windows Chrome's sandbox can't read the
+            # tool cache's chrome.exe, so its network service crashes and pages never load. There smoke.mjs uses the image's own
+            # Google Chrome.
             - name: 🌐 Setup Chrome
               id: chrome
+              if: runner.os == 'Linux'
               uses: browser-actions/setup-chrome@v2
             # wasm-tools-net10 (the Uno WebAssembly head) comes from the .NET SDK's mise postinstall (.config/mise.toml).
             - name: 🔎 Check workloads
@@ -141,6 +149,7 @@ jobs:
     workload-heads:
         name: ${{ matrix.name }}
         runs-on: ${{ matrix.os }}
+        timeout-minutes: 60
         strategy:
             fail-fast: false
             matrix:
@@ -159,6 +168,7 @@ jobs:
                       uno: net10.0-ios
                     - name: macOS net11.0 (iOS, Mac Catalyst)
                       os: xcode-27
+                      properties: -p:ValidateXcodeVersion=false
                       workloads: maui ios maccatalyst
                       maui: net11.0-ios%3Bnet11.0-maccatalyst
                       maccatalyst: net11.0-maccatalyst
@@ -193,7 +203,8 @@ jobs:
             - name: 🧪 Run Specular.Samples.Maui (Mac Catalyst)
               if: matrix.maccatalyst != ''
               run: |
-                  app=(samples/hosts/Specular.Samples.Maui/bin/Debug/"$FRAMEWORK"/*/Specular.Samples.Maui.app/Contents/MacOS/Specular.Samples.Maui)
+                  # The bundle is named after ApplicationTitle; the executable inside it after the assembly.
+                  app=(samples/hosts/Specular.Samples.Maui/bin/Debug/"$FRAMEWORK"/*/*.app/Contents/MacOS/Specular.Samples.Maui)
                   node samples/smoke.mjs exe -- "${app[0]}"
               env:
                   FRAMEWORK: ${{ matrix.maccatalyst }}
@@ -212,3 +223,19 @@ jobs:
                   name: samples-workload-logs-${{ strategy.job-index }}
                   path: artifacts/logs/
                   if-no-files-found: ignore
+
+    # The single check the main/next ruleset requires: the matrix jobs above report one check per leg, under names that change
+    # with the matrix.
+    samples:
+        name: samples
+        if: always()
+        needs: [hosts, workload-heads]
+        runs-on: ubuntu-latest
+        steps:
+            - name: ✅ All samples passed
+              run: |
+                  echo "hosts: $HOSTS, workload-heads: $HEADS"
+                  [ "$HOSTS" = success ] && [ "$HEADS" = success ]
+              env:
+                  HOSTS: ${{ needs.hosts.result }}
+                  HEADS: ${{ needs.workload-heads.result }}
