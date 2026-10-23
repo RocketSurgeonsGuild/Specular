@@ -15,6 +15,10 @@ name: samples
 # macos-26's Xcode 26.0.1 has no matching iOS simulator runtime. So both legs keep the image's default Xcode and turn the
 # exact-version check off (ValidateXcodeVersion).
 #
+# The macOS legs (hosts on macos-26 and both macOS workload-heads legs) are turned off: they build and pass, but fail
+# intermittently on GitHub's macOS runners. To bring them back, uncomment them in the matrices below (actionlint.yaml still
+# knows the xcode-27 label).
+#
 # Every build passes --disable-build-servers: MAUI and Uno each load their own SkiaSharp into MSBuild (Resizetizer), and a node
 # reused from an earlier build fails the next one's native library version check.
 
@@ -50,7 +54,11 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-26, windows-latest]
+                os:
+                    - ubuntu-latest
+                    # Off: passes, but fails intermittently (see the note at the top).
+                    # - macos-26
+                    - windows-latest
         defaults:
             run:
                 shell: bash
@@ -156,27 +164,32 @@ jobs:
                 include:
                     - name: Linux (Android)
                       os: ubuntu-latest
+                      properties: ''
                       workloads: maui-android
                       maui: net10.0-android%3Bnet11.0-android
+                      maccatalyst: ''
                       uno: net10.0-android
-                    - name: macOS net10.0 (iOS, Mac Catalyst)
-                      os: macos-26
-                      properties: -p:ValidateXcodeVersion=false
-                      workloads: maui ios maccatalyst
-                      maui: net10.0-ios%3Bnet10.0-maccatalyst
-                      maccatalyst: net10.0-maccatalyst
-                      uno: net10.0-ios
-                    - name: macOS net11.0 (iOS, Mac Catalyst)
-                      os: xcode-27
-                      properties: -p:ValidateXcodeVersion=false
-                      workloads: maui ios maccatalyst
-                      maui: net11.0-ios%3Bnet11.0-maccatalyst
-                      maccatalyst: net11.0-maccatalyst
-                      uno: ''
+                    # Off: these pass, but fail intermittently (see the note at the top).
+                    # - name: macOS net10.0 (iOS, Mac Catalyst)
+                    #   os: macos-26
+                    #   properties: -p:ValidateXcodeVersion=false
+                    #   workloads: maui ios maccatalyst
+                    #   maui: net10.0-ios%3Bnet10.0-maccatalyst
+                    #   maccatalyst: net10.0-maccatalyst
+                    #   uno: net10.0-ios
+                    # - name: macOS net11.0 (iOS, Mac Catalyst)
+                    #   os: xcode-27
+                    #   properties: -p:ValidateXcodeVersion=false
+                    #   workloads: maui ios maccatalyst
+                    #   maui: net11.0-ios%3Bnet11.0-maccatalyst
+                    #   maccatalyst: net11.0-maccatalyst
+                    #   uno: ''
                     - name: Windows
                       os: windows-latest
+                      properties: ''
                       workloads: maui-windows
                       maui: net10.0-windows10.0.19041.0%3Bnet11.0-windows10.0.19041.0
+                      maccatalyst: ''
                       uno: ''
         defaults:
             run:
