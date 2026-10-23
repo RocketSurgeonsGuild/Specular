@@ -211,6 +211,15 @@ async function runBrowser(directory) {
         '--no-default-browser-check',
         '--remote-debugging-port=0',
         `--user-data-dir=${profile}`,
+        // A fresh profile asks the macOS keychain for its storage key, which can block the page on a runner.
+        '--use-mock-keychain',
+        '--password-store=basic',
+        // The Uno head renders with WebGL; without a GPU Chrome only offers software WebGL when asked.
+        '--enable-unsafe-swiftshader',
+        // Keep the page's timers and animation frames running even though nothing shows it.
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
         // Ubuntu runners restrict the unprivileged user namespaces Chrome's sandbox needs.
         ...(process.platform === 'linux' ? ['--no-sandbox'] : []),
         'about:blank',
