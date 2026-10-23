@@ -11,8 +11,9 @@ name: samples
 #   a simulator or the Windows App SDK runtime.
 #
 # .NET for iOS/Mac Catalyst pins an exact Xcode version per release. The net11.0 prerelease packs need Xcode 27.0, which only
-# GitHub's xcode-27 preview image has. The net10.0 packs ask for Xcode 26.0, but macos-26's Xcode 26.0.1 has no matching iOS
-# simulator runtime, so that leg keeps the image's default Xcode and turns the exact-version check off (ValidateXcodeVersion).
+# GitHub's xcode-27 preview image has, and that image now defaults to Xcode 27.1. The net10.0 packs ask for Xcode 26.0, but
+# macos-26's Xcode 26.0.1 has no matching iOS simulator runtime. So both legs keep the image's default Xcode and turn the
+# exact-version check off (ValidateXcodeVersion).
 #
 # Every build passes --disable-build-servers: MAUI and Uno each load their own SkiaSharp into MSBuild (Resizetizer), and a node
 # reused from an earlier build fails the next one's native library version check.
@@ -162,6 +163,7 @@ jobs:
                       uno: net10.0-ios
                     - name: macOS net11.0 (iOS, Mac Catalyst)
                       os: xcode-27
+                      properties: -p:ValidateXcodeVersion=false
                       workloads: maui ios maccatalyst
                       maui: net11.0-ios%3Bnet11.0-maccatalyst
                       maccatalyst: net11.0-maccatalyst
