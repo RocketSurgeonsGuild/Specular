@@ -275,6 +275,10 @@ async function runBrowser(directory) {
 
         const line = await withTimeout(lineLogged, `a ${PREFIX} line from ${url}`);
         if (!line.includes(MATCH)) throw new Error(line);
+    } catch (error) {
+        // Chrome's own logging is noise when the page works, and usually the reason when it doesn't.
+        console.log(`  [chrome] ${chrome.output().slice(-4_000).trimEnd().replaceAll('\n', '\n  [chrome] ')}`);
+        throw error;
     } finally {
         await Promise.race([browser?.send('Browser.close').catch(() => {}), delay(5_000)]);
         browser?.close();
