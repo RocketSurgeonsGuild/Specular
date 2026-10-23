@@ -93,11 +93,13 @@ jobs:
                   command -v dotnet
                   dotnet --version
                   node --version
-            # On macOS the action unpacks Chrome for Testing's bundle into a directory not named *.app, so Chrome can't launch its
-            # renderer helpers (pages never answer the DevTools protocol); smoke.mjs uses the image's own Google Chrome there.
+            # Linux only. On macOS the action unpacks Chrome for Testing's bundle into a directory not named *.app, so Chrome can't
+            # launch its renderer helpers (pages never answer the DevTools protocol); on Windows Chrome's sandbox can't read the
+            # tool cache's chrome.exe, so its network service crashes and pages never load. There smoke.mjs uses the image's own
+            # Google Chrome.
             - name: 🌐 Setup Chrome
               id: chrome
-              if: runner.os != 'macOS'
+              if: runner.os == 'Linux'
               uses: browser-actions/setup-chrome@v2
             # wasm-tools-net10 (the Uno WebAssembly head) comes from the .NET SDK's mise postinstall (.config/mise.toml).
             - name: 🔎 Check workloads
