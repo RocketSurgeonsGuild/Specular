@@ -22,7 +22,7 @@
     <GlobalPackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.171" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.1.12" />
+    <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.1.13" />
     <PackageVersion Include="Sourcy.DotNet" Version="1.1.1" />
     <PackageVersion Include="Sourcy.Git" Version="1.1.1" />
     <PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="1.0.52" />
