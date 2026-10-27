@@ -25,10 +25,10 @@ ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceType
 
 **Properties:**
 
-| Property       | Type                   | Description                                                          |
-| -------------- | ---------------------- | -------------------------------------------------------------------- |
+| Property       | Type                   | Description                                                                                                 |
+| -------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register against all implemented interfaces (plus self). |
-| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                   |
+| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                                                           |
 
 `AllowMultiple = true` means a single class can carry multiple `[ServiceRegistration]` attributes to be registered against different service types or with different lifetimes simultaneously.
 
