@@ -41,13 +41,45 @@ on:
 permissions:
     contents: read
 
+# A newer run for the same branch (or pull request head) cancels this one; tags and merge-queue refs are unique.
 concurrency:
-    group: samples-${{ github.event.pull_request.number || github.run_id }}
+    group: samples-${{ github.event_name }}-${{ github.head_ref || github.ref }}
     cancel-in-progress: true
 
 jobs:
+    # The samples only build from src/, samples/ and the root Directory.*.props/targets, plus the toolchain (.config/mise.toml,
+    # global.json, NuGet.config) and this workflow. Anything else skips the legs; tags always build them.
+    changes:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            pull-requests: read
+        outputs:
+            samples: ${{ startsWith(github.ref, 'refs/tags/') || steps.filter.outputs.samples == 'true' }}
+        steps:
+            - name: Checkout
+              if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+              uses: actions/checkout@v7
+            - name: 🔎 Detect sample changes
+              id: filter
+              if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+              uses: dorny/paths-filter@v4
+              with:
+                  filters: |
+                      samples:
+                          - 'src/**'
+                          - 'samples/**'
+                          - 'Directory.*.props'
+                          - 'Directory.*.targets'
+                          - '.config/mise.toml'
+                          - 'global.json'
+                          - 'NuGet.config'
+                          - '.github/workflows/samples.yml'
+
     hosts:
         name: Hosts (${{ matrix.os }})
+        needs: changes
+        if: needs.changes.outputs.samples == 'true'
         runs-on: ${{ matrix.os }}
         # A healthy leg takes about 10 minutes; without a limit a hung sample holds the runner for GitHub's 6 hours.
         timeout-minutes: 45
@@ -160,6 +192,8 @@ jobs:
 
     workload-heads:
         name: ${{ matrix.name }}
+        needs: changes
+        if: needs.changes.outputs.samples == 'true'
         runs-on: ${{ matrix.os }}
         timeout-minutes: 60
         strategy:
@@ -242,17 +276,23 @@ jobs:
                   if-no-files-found: ignore
 
     # The single check the main/next ruleset requires: the matrix jobs above report one check per leg, under names that change
-    # with the matrix.
+    # with the matrix. It also passes when nothing the samples build from changed (both legs skipped by `changes`).
     samples:
         name: samples
         if: always()
-        needs: [hosts, workload-heads]
+        needs: [changes, hosts, workload-heads]
         runs-on: ubuntu-latest
         steps:
             - name: ✅ All samples passed
               run: |
-                  echo "hosts: $HOSTS, workload-heads: $HEADS"
-                  [ "$HOSTS" = success ] && [ "$HEADS" = success ]
+                  echo "changes: $CHANGES (samples: $SAMPLES), hosts: $HOSTS, workload-heads: $HEADS"
+                  if [ "$CHANGES" = success ] && [ "$SAMPLES" != true ]; then
+                      [ "$HOSTS" = skipped ] && [ "$HEADS" = skipped ]
+                  else
+                      [ "$HOSTS" = success ] && [ "$HEADS" = success ]
+                  fi
               env:
+                  CHANGES: ${{ needs.changes.result }}
+                  SAMPLES: ${{ needs.changes.outputs.samples }}
                   HOSTS: ${{ needs.hosts.result }}
                   HEADS: ${{ needs.workload-heads.result }}
