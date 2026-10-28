@@ -1,0 +1,13 @@
+# Specular
+
+> Compile-time assembly/type-scanning for .NET. AOT-safe, zero runtime reflection.
+
+## Documentation Sets
+
+- [Abridged documentation](https://rocketsurgeonsguild.github.io/Specular/pr-preview/pr-342/llms-small.txt): a compact version of the documentation for Specular, with non-essential content removed
+- [Complete documentation](https://rocketsurgeonsguild.github.io/Specular/pr-preview/pr-342/llms-full.txt): the full documentation for Specular
+
+## Notes
+
+- The complete documentation includes all content from the official documentation
+- The content is automatically generated from the same source as the official documentation
