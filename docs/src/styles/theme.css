@@ -27,6 +27,7 @@
     --sl-color-black: #faf9fd;
 }
 /* Slightly rounder cards to match the mark */
-.sl-markdown-content .card, .sidebar-pane details {
+.sl-markdown-content .card,
+.sidebar-pane details {
     border-radius: 0.6rem;
 }
