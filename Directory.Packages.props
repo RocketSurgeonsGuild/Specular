@@ -22,7 +22,7 @@
     <GlobalPackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.171" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.1.12" />
+    <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.1.14" />
     <PackageVersion Include="Sourcy.DotNet" Version="1.1.1" />
     <PackageVersion Include="Sourcy.Git" Version="1.1.1" />
     <PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="1.0.52" />
@@ -31,8 +31,8 @@
     <PackageVersion Include="JetBrains.Annotations.Sources" Version="2026.2.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.9.0" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.CrashDump" Version="2.5.1" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.1" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.CrashDump" Version="2.5.2" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.2" />
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.14" />
     <PackageVersion Include="Polyfill" Version="11.4.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />
