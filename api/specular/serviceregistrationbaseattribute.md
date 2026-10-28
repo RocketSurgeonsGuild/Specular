@@ -2,7 +2,7 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.3.2-beta.3`
+- Version: `0.3.3-beta.1`
 - Namespace: `Specular`
 - Target framework: `net10.0`
 - Inherits: `Attribute`
