@@ -1,0 +1,1619 @@
+<SYSTEM>This is the full developer documentation for Specular</SYSTEM>
+
+# Specular
+
+> Compile-time assembly scanning for .NET. AOT-safe, zero runtime reflection.
+
+AOT & Trim Safe
+
+Generated code requires zero runtime reflection — fully compatible with .NET Native AOT and IL trimming.
+
+Build-Time Scanning
+
+A Roslyn incremental source generator resolves selector expressions at compile time and emits a strongly-typed `ISpecularProvider`.
+
+Drop-In for Scrutor
+
+Familiar fluent selector API — `FromAssemblyOf<T>()`, `AddClasses()`, `AsMatchingInterface()` — but evaluated at build time.
+
+# Architecture
+
+> How the Specular Roslyn source generator works internally and how the cross-assembly cache keeps incremental builds fast.
+
+The Architecture section explains how Specular works under the hood — how the Roslyn incremental source generator resolves your selector expressions at build time, and how the cross-assembly cache (`SpecularProvider.ctpjson`) lets downstream assemblies reuse scan results without re-resolving everything from scratch.
+
+## Internals Advanced
+
+[Section titled “Internals ”](#internals)
+
+These pages go beyond everyday usage and into the generator’s internals. You do not need to read them to use Specular, but they are useful if you want to understand its behavior, debug an unexpected scan result, or contribute to the project.
+
+* [How It Works](./how-it-works/) — the generator pipeline, from finding selector call sites to emitting the `ISpecularProvider` implementation.
+* [Cross-Assembly Caching](./cross-assembly-caching/) — what `SpecularProvider.ctpjson` stores, how it is produced, and how downstream assemblies consume it.
+
+# Cross-Assembly Caching
+
+> How Specular uses SpecularProvider.ctpjson and GeneratedHash to avoid redundant symbol resolution across project references.
+
+# Cross-Assembly Caching
+
+[Section titled “Cross-Assembly Caching”](#cross-assembly-caching)
+
+## The Problem
+
+[Section titled “The Problem”](#the-problem)
+
+In a multi-project solution, the same upstream library types may be referenced by many downstream assemblies. Without caching, every downstream assembly that calls `GetTypes` or `Scan` would force the generator to re-walk the same upstream `ITypeSymbol` graph independently during each project’s build. In large solutions this is redundant work that compounds with every additional consuming project.
+
+## The Solution: `SpecularProvider.ctpjson`
+
+[Section titled “The Solution: SpecularProvider.ctpjson”](#the-solution-specularproviderctpjson)
+
+The constant `Constants.SpecularProviderCacheFileName` (defined in `CompiledTypeProviderGenerator.cs`) equals `"SpecularProvider.ctpjson"`. After the generator resolves all scan results for an assembly, it serialises the full resolution into this JSON file and writes it to the project’s intermediate output path under an `obj/ctp/` subdirectory.
+
+The JSON is structured as `GeneratedAssemblyProviderData`, which holds:
+
+* **`AssemblyData`** — a dictionary keyed by assembly metadata name, mapping to `CompiledAssemblyProviderData`. Each entry carries the internal assembly/reflection/service-descriptor requests and a `CacheVersion` string used for invalidation.
+* **`EmptyAssemblies`** — the set of assemblies that contained no matching types (so downstream can short-circuit without re-visiting them).
+* **`Partials`** — per-selector-hash resolved source locations, keyed by the hash of the call-site source location.
+
+The serialisation uses `JsonSourceGenerationContext` (source-generated JSON) so the analyzer itself has no reflection dependency.
+
+## How the Cache Is Consumed
+
+[Section titled “How the Cache Is Consumed”](#how-the-cache-is-consumed)
+
+When a downstream assembly builds, MSBuild passes the upstream project’s `SpecularProvider.ctpjson` as an `AdditionalText` to the downstream generator run. The generator reads it early in the pipeline:
+
+```csharp
+var generatedJsonProvider = context.AdditionalTextsProvider
+    .Where(z => Path.GetFileName(z.Path)
+        .Equals(Constants.SpecularProviderCacheFileName, StringComparison.OrdinalIgnoreCase))
+    .Select((text, _) => JsonSerializer.Deserialize(
+        text.GetText(_)?.ToString(),
+        JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData))
+    .Collect()
+    .Select((z, _) => z.SingleOrDefault() ?? /* empty */);
+```
+
+Inside `AssemblyProviderConfiguration`, before visiting any upstream `ITypeSymbol`, the generator calls `GeneratedAssemblyProviderData.GetAssemblyData(assembly)`. If the cache entry exists **and** its `CacheVersion` matches the upstream assembly’s current version, the cached resolution is used directly — no symbol walking occurs for that assembly.
+
+## Cache Invalidation via `GeneratedHash`
+
+[Section titled “Cache Invalidation via GeneratedHash”](#cache-invalidation-via-generatedhash)
+
+Every assembly that has been processed by Specular carries an assembly-level attribute:
+
+```csharp
+[assembly: SpecularHashAttribute("abc123…")]
+```
+
+The constructor argument is the `GeneratedHash` — a hash of the generator’s output computed by `AssemblyProviderBuilder`. When Specular reads a cached entry from `ctpjson`, it compares the upstream assembly’s `GeneratedHash` (read from its `SpecularHashAttribute` via Roslyn’s `GetAttributes()`) against the `CacheVersion` stored in the JSON:
+
+```csharp
+public bool MatchesCachedVersion(this IAssemblySymbol assembly, string? cacheVersion) =>
+    assembly.GetCachedVersion() is not { Length: > 0 } version || version == cacheVersion;
+```
+
+`GetCachedVersion` first looks for the `SpecularHashAttribute` hash; if absent it falls back to `AssemblyInformationalVersionAttribute`. A mismatch means the upstream types changed after the cache was written — the downstream generator discards the cached entry and re-resolves from source.
+
+## Two-Project Example
+
+[Section titled “Two-Project Example”](#two-project-example)
+
+```mermaid
+sequenceDiagram
+    participant LibA
+    participant MSBuild
+    participant AppB
+
+
+    LibA->>MSBuild: Build LibA
+    MSBuild->>LibA: Run SpecularProviderGenerator
+    LibA-->>MSBuild: Emit SpecularProvider.g.cs<br/>[assembly: SpecularProvider(…, "abc123")]
+    LibA-->>MSBuild: Write obj/ctp/SpecularProvider.ctpjson
+
+
+    MSBuild->>AppB: Build AppB (passes LibA.ctpjson as AdditionalText)
+    AppB->>AppB: Read ctpjson, verify GeneratedHash == "abc123" ✓
+    AppB-->>MSBuild: Use cached resolution — skip symbol walk for LibA types
+    AppB-->>MSBuild: Emit SpecularProvider.g.cs for AppB
+
+
+    Note over LibA,AppB: LibA type changes
+
+
+    LibA->>MSBuild: Rebuild LibA
+    MSBuild->>LibA: Run SpecularProviderGenerator
+    LibA-->>MSBuild: Emit new hash "xyz789" in [assembly: SpecularProvider]
+    LibA-->>MSBuild: Overwrite SpecularProvider.ctpjson
+
+
+    MSBuild->>AppB: Rebuild AppB
+    AppB->>AppB: Read ctpjson, verify GeneratedHash — "abc123" ≠ "xyz789" ✗
+    AppB-->>MSBuild: Discard cache, re-resolve LibA symbols
+    AppB-->>MSBuild: Emit updated SpecularProvider.g.cs for AppB
+```
+
+## Failure Modes
+
+[Section titled “Failure Modes”](#failure-modes)
+
+| Situation                                                                             | Behaviour                                                                                                                                             |
+| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ctpjson` is missing or has fewer than 100 characters                                 | Generator treats it as an empty/invalid cache and falls back to full symbol resolution for all upstream assemblies                                    |
+| `GeneratedHash` in `ctpjson` does not match the upstream assembly’s current attribute | Cache entry is discarded; that assembly is re-resolved from source symbols                                                                            |
+| Multiple upstream assemblies each provide a `ctpjson`                                 | Only one `ctpjson` is expected per generator run (`Collect().Select(z => z.SingleOrDefault()…)`); MSBuild must be configured to pass the correct file |
+
+In all fallback cases the build produces correct output — the cache is purely an optimisation. A build warning may be emitted if the cache file is present but unreadable.
+
+# How It Works
+
+> A conceptual overview of the Roslyn source generator pipeline that powers Specular's compile-time assembly scanning.
+
+# How It Works
+
+[Section titled “How It Works”](#how-it-works)
+
+Specular replaces runtime reflection-based assembly scanning with a **Roslyn `IIncrementalGenerator`** that runs during your build. By the time your application starts, all type and assembly scan results are pre-computed and baked into generated C# — there is nothing to resolve at runtime.
+
+## Overview
+
+[Section titled “Overview”](#overview)
+
+When you write code like this:
+
+```csharp
+provider.GetTypes(s => s.FromAssemblyOf<MyService>().AddClasses().AsMatchingInterface())
+```
+
+Specular’s generator finds that call during compilation, evaluates the selector expression against the Roslyn symbol graph, and emits a concrete implementation that returns the pre-computed results directly. No reflection, no startup cost, and full AOT/trimming compatibility.
+
+## The Three Syntax Providers
+
+[Section titled “The Three Syntax Providers”](#the-three-syntax-providers)
+
+`SpecularProviderGenerator` (in `CompiledTypeProviderGenerator.cs`) registers three distinct syntax providers during `Initialize`, one for each method on `ISpecularProvider`:
+
+| Syntax Provider               | Handles                                |
+| ----------------------------- | -------------------------------------- |
+| `AssemblyCollection`          | `provider.GetAssemblies(…)` call sites |
+| `ReflectionCollection`        | `provider.GetTypes(…)` call sites      |
+| `ServiceDescriptorCollection` | `provider.Scan(…)` call sites          |
+
+Each provider scans the syntax tree for its corresponding method invocation, extracts the selector expression, and passes it downstream for resolution.
+
+## Call Site Detection
+
+[Section titled “Call Site Detection”](#call-site-detection)
+
+Each `ISpecularProvider` method carries hidden compiler-injected parameters:
+
+```csharp
+IEnumerable<Type> GetTypes(
+    Func<IReflectionTypeSelector, IEnumerable<Type>> selector,
+    [CallerLineNumber]   int lineNumber = 0,
+    [CallerFilePath]     string filePath = "",
+    [CallerArgumentExpression(nameof(selector))] string argumentExpression = ""
+);
+```
+
+The `[CallerArgumentExpression]` attribute causes the compiler to pass the **literal text of the selector lambda** as a string. The generator reads that text and hashes it with `GetArgumentExpressionHash`, which normalises whitespace before computing an MD5 hash. This hash is the stable key that links a specific call site to its generated output — change the lambda text and the hash changes, triggering re-generation.
+
+## Symbol Visitor Walk
+
+[Section titled “Symbol Visitor Walk”](#symbol-visitor-walk)
+
+For each call site, the generator resolves which types satisfy the selector by walking the Roslyn `ITypeSymbol` graph. The `AssemblyProviders/` directory contains the visitors and compiled filters that do this work:
+
+* **`TypeSymbolVisitor`** — walks the type hierarchy of an assembly, accumulating matching `INamedTypeSymbol` instances. It exposes `GetReferencedTypes` (walks all referenced assemblies) and `GetCompilationTypes` (walks the current compilation only).
+* **`CompiledTypeFilter` / `CompiledAssemblyFilter`** — evaluate individual filter predicates: namespace scoping, type kind (class, interface, enum…), attribute presence, assignability to a base type or interface, and name patterns.
+* **`FindTypeVisitor` / `FindTypeInAssembly`** — locate specific types needed for assignability checks across assembly boundaries.
+
+The net result is a precise, build-time enumeration of every type that would have been returned by the equivalent runtime reflection call.
+
+## Code Emission
+
+[Section titled “Code Emission”](#code-emission)
+
+After resolving all call sites, the generator builds a single `SpecularProvider.g.cs` file containing:
+
+1. A concrete class that implements `ISpecularProvider`, with each method returning a hard-coded collection for its call-site hash.
+2. An `[assembly: SpecularHashAttribute("…hash…")]` attribute that embeds a `GeneratedHash` for cross-assembly cache validation.
+
+The generated provider is exposed through the static `SpecularProvider.Instance` property — you call into it directly, with zero reflection scanning.
+
+## Incremental Rebuild
+
+[Section titled “Incremental Rebuild”](#incremental-rebuild)
+
+Because Specular uses Roslyn’s `IIncrementalGenerator` API, the pipeline is fully incremental. Call sites whose selector expression text has not changed produce no re-computation. Only modified selectors, or changes to the types a selector matches, cause re-emission. In large solutions this means the generator adds negligible time to incremental builds.
+
+## Pipeline Diagram
+
+[Section titled “Pipeline Diagram”](#pipeline-diagram)
+
+```mermaid
+flowchart TD
+    A[User calls provider.GetTypes&#40;selector&#41;] --> B[Roslyn IIncrementalGenerator]
+    B --> C{Three Syntax Providers}
+    C -->|GetAssemblies| D[AssemblyCollection]
+    C -->|GetTypes| E[ReflectionCollection]
+    C -->|Scan| F[ServiceDescriptorCollection]
+    D & E & F --> G[Hash selector expression at call site]
+    G --> H[Symbol visitor walks ITypeSymbol graph]
+    H --> I[Apply compiled filters]
+    I --> J[Emit SpecularProvider.g.cs]
+    J --> K[Zero reflection at runtime]
+```
+
+## Next Steps
+
+[Section titled “Next Steps”](#next-steps)
+
+To understand how scan results are shared across project references without redundant symbol resolution, see [Cross-Assembly Caching](./cross-assembly-caching.md).
+
+To list every discovered scanner expression, assembly, and type as compile-time metadata (plus a Mermaid diagram of the same data), see [Scan Report](./scan-report.md).
+
+# Scan Report
+
+> Access compile-time Specular scan results through the generated SpecularScanReport API.
+
+# Scan Report
+
+[Section titled “Scan Report”](#scan-report)
+
+Specular generates a public `SpecularScanReport` class alongside `SpecularProvider`. Its `GetScanResults()` method returns a `Specular.Diagnostics.ScanResults` value containing every assembly, type, and service-descriptor scan resolved during compilation.
+
+```csharp
+var results = SpecularScanReport.GetScanResults();
+```
+
+Each report includes the name of the assembly that defined the scan expression and its selector expression normalized to one line. The result collections are grouped by scan kind:
+
+* `AssemblyScanReports` lists the selected assemblies.
+* `TypeScanReports` groups selected types by every assembly that was scanned. An assembly remains in the report even when no types matched.
+* `ServiceDescriptorScanReports` groups emitted service descriptors by every assembly that was scanned. Each descriptor carries its effective `ServiceLifetime`, registered service type name, and implementation type name. Empty scan results are retained.
+
+The report is pure compile-time metadata: it does not perform reflection or add trim/AOT requirements. It is suitable for tooling such as an external Mermaid renderer.
+
+## Opting Out
+
+[Section titled “Opting Out”](#opting-out)
+
+Scan reports are generated by default. Disable them with:
+
+```xml
+<PropertyGroup>
+  <SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>
+</PropertyGroup>
+```
+
+# What is Specular?
+
+> Specular is a compile-time assembly scanning library for .NET that replaces runtime reflection with Roslyn source generation.
+
+# What is Specular?
+
+[Section titled “What is Specular?”](#what-is-specular)
+
+## The Problem: Runtime Reflection at Startup
+
+[Section titled “The Problem: Runtime Reflection at Startup”](#the-problem-runtime-reflection-at-startup)
+
+Libraries like [Scrutor](https://github.com/khellang/Scrutor) make it easy to wire up dependency injection by scanning assemblies at startup:
+
+```csharp
+services.Scan(scan => scan
+    .FromAssemblyOf<Program>()
+    .AddClasses()
+    .AsMatchingInterface());
+```
+
+This is convenient, but it comes with real costs:
+
+* **Startup latency** — every call to `Assembly.GetTypes()` allocates and reflects over metadata at runtime.
+* **AOT / IL trimming incompatibility** — the .NET Native AOT compiler and the IL trimmer cannot statically determine which types will be loaded via reflection, so they must either keep everything (bloating the binary) or trim too aggressively (causing runtime failures). `Assembly.GetTypes()` is flagged as trim-unsafe.
+* **No compile-time errors** — a misconfigured selector silently produces wrong registrations; you only find out at runtime.
+
+## The Solution: Compile-Time Scanning
+
+[Section titled “The Solution: Compile-Time Scanning”](#the-solution-compile-time-scanning)
+
+Specular moves the scan to **build time**. A [Roslyn incremental source generator](https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview) reads the same fluent selector expressions you already write, evaluates them against the compilation’s type graph, and emits a strongly-typed `ISpecularProvider` implementation whose methods return **pre-computed, hard-coded arrays** — no reflection required at runtime.
+
+```plaintext
+[Build time]
+selector expression  ──►  Roslyn generator  ──►  SpecularProvider.g.cs
+                                                   (pre-resolved type lists)
+
+
+[Runtime]
+ISpecularProvider.GetTypes(...)  ──►  returns the pre-built array  ──►  zero reflection
+```
+
+The generated file is checked into `obj/` and compiled into your assembly just like any other C# source file. The runtime cost of a scan drops to an array return.
+
+## Key Concepts
+
+[Section titled “Key Concepts”](#key-concepts)
+
+### `ISpecularProvider` — the generated entry point
+
+[Section titled “ISpecularProvider — the generated entry point”](#ispecularprovider--the-generated-entry-point)
+
+`ISpecularProvider` is the interface your code calls. It exposes three methods:
+
+| Method                     | What it returns                                            |
+| -------------------------- | ---------------------------------------------------------- |
+| `GetAssemblies(selector)`  | Assemblies matched by the selector                         |
+| `GetTypes(selector)`       | Types matched by the selector                              |
+| `Scan(services, selector)` | Registers matched types directly into `IServiceCollection` |
+
+The static property `SpecularProvider.Instance` exposes the generated provider for the entry assembly. See [Quickstart](./quickstart/) for usage.
+
+### Selector Expressions
+
+[Section titled “Selector Expressions”](#selector-expressions)
+
+Selectors are the fluent lambdas you pass to each method:
+
+```csharp
+provider.GetTypes(s =>
+    s.FromAssemblyOf<Program>()
+     .AddClasses()
+     .AsImplementedInterfaces())
+```
+
+The generator captures the **text** of the lambda via `[CallerArgumentExpression]` and hashes it to produce a stable key. Each unique selector expression at each call site generates a distinct result set. Changing the selector — even whitespace-significantly — causes the generator to re-evaluate and re-emit.
+
+### `SpecularProvider.ctpjson` — Cross-Assembly Cache
+
+[Section titled “SpecularProvider.ctpjson — Cross-Assembly Cache”](#specularproviderctpjson--cross-assembly-cache)
+
+When the generator processes an assembly it writes a cache file (`SpecularProvider.ctpjson`) alongside the output. Downstream assemblies that reference yours can consume this cache instead of re-resolving all types from scratch, keeping incremental builds fast.
+
+## Comparison to Scrutor
+
+[Section titled “Comparison to Scrutor”](#comparison-to-scrutor)
+
+Scrutor walks your assemblies at runtime using `Assembly.GetTypes()`, `Type.IsAssignableTo()`, and similar reflection APIs. This is flexible and works in all .NET environments, but it cannot be used with Native AOT and incurs startup cost proportional to the number of types in scope.
+
+Specular performs the same logical scan at **compile time** using Roslyn’s type symbol graph. The runtime implementation is a generated class that returns a pre-computed array — there is no reflection, no assembly enumeration, and no trim warnings. The trade-off is that Specular requires a build step and that selector changes require a recompile (which is already true for all source-generated code).
+
+## Next Steps
+
+[Section titled “Next Steps”](#next-steps)
+
+* [Installation](./installation/) — add Specular to your project in under 5 minutes
+
+## Contributing to the Docs
+
+[Section titled “Contributing to the Docs”](#contributing-to-the-docs)
+
+If you are editing documentation, install the VS Code recommended extensions for the best authoring experience:
+
+* **Astro** (`astro-build.astro-vscode`) — syntax highlighting and IntelliSense for `.astro` and `.mdx` files
+* **Starlight Links** (`hideoo.starlight-links`) — link autocomplete and validation for `docs/src/content/docs/` paths
+
+VS Code will prompt you to install these automatically when you open the `docs/` folder. Accept the prompt or install them via the Extensions panel.
+
+# AOT Publishing
+
+> Publish your Specular-powered app with .NET Native AOT — zero trim warnings.
+
+# AOT Publishing
+
+[Section titled “AOT Publishing”](#aot-publishing)
+
+## Why AOT Compatibility Matters
+
+[Section titled “Why AOT Compatibility Matters”](#why-aot-compatibility-matters)
+
+.NET Native AOT compiles your application to a standalone native binary at publish time. The IL trimmer removes all code that is not statically reachable from the entry point. Both transformations fail — or produce incorrect binaries — when application code calls trim-unsafe APIs.
+
+The most common source of trim warnings in DI-heavy applications is assembly scanning:
+
+```plaintext
+ILLink: Trim analysis warning IL2026: 'Assembly.GetTypes()' requires unreferenced code.
+```
+
+Standard runtime scanners (including Scrutor) call `Assembly.GetTypes()` at startup. The trimmer cannot know at publish time which types will be returned, so it cannot safely remove any of them — or it warns that it might.
+
+## How Specular Avoids This
+
+[Section titled “How Specular Avoids This”](#how-specular-avoids-this)
+
+Specular’s generator resolves every scan at **build time**, before the trimmer or AOT compiler ever runs. The generated `SpecularProvider.g.cs` contains only direct `typeof()` expressions and array literals:
+
+```csharp
+// Generated — no reflection APIs
+return new Type[] { typeof(MyService), typeof(OtherService), typeof(ThirdService) };
+```
+
+`typeof()` is a compile-time constant. The trimmer sees it as a static root, keeps the referenced types, and produces no warnings. There are no calls to `Assembly.GetTypes()`, `Type.GetMethod()`, `Activator.CreateInstance()`, or any other dynamically-dispatched reflection API in the Specular runtime path.
+
+## Supported Target Frameworks
+
+[Section titled “Supported Target Frameworks”](#supported-target-frameworks)
+
+Specular targets `net10.0` and `net11.0` — both of which support Native AOT publishing. The `net11.0` build is compiled with runtime async.
+
+## Publishing Command
+
+[Section titled “Publishing Command”](#publishing-command)
+
+```bash
+dotnet publish -r linux-x64 --self-contained -p:PublishAot=true
+```
+
+Replace `linux-x64` with your target runtime identifier (`win-x64`, `osx-arm64`, etc.).
+
+For a Release build:
+
+```bash
+dotnet publish -c Release -r linux-x64 --self-contained -p:PublishAot=true
+```
+
+## Verifying Zero Trim Warnings
+
+[Section titled “Verifying Zero Trim Warnings”](#verifying-zero-trim-warnings)
+
+After publishing, check the output for any trim warnings that mention Specular:
+
+```bash
+dotnet publish -r linux-x64 --self-contained -p:PublishAot=true 2>&1 | grep -i specular
+```
+
+A clean Specular integration produces no output from that command. If you see trim warnings, they originate from your own code or from other dependencies — not from Specular itself.
+
+You can also enable verbose trim analysis to get a full report:
+
+```xml
+<!-- in your .csproj -->
+<PropertyGroup>
+    <TrimmerRootDescriptor>TrimmerRoots.xml</TrimmerRootDescriptor>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+</PropertyGroup>
+```
+
+## Trim-Safe Patterns with Specular
+
+[Section titled “Trim-Safe Patterns with Specular”](#trim-safe-patterns-with-specular)
+
+### Use `[ServiceRegistration]` instead of convention-based scanning where possible
+
+[Section titled “Use \[ServiceRegistration\] instead of convention-based scanning where possible”](#use-serviceregistration-instead-of-convention-based-scanning-where-possible)
+
+`[ServiceRegistration]` attributes are read at **compile time** by the generator. The generated code contains explicit `typeof()` references — the trimmer keeps the marked types automatically.
+
+```csharp
+// Trim-safe: generator emits typeof(OrderService) directly
+[ServiceRegistration<IOrderService>(ServiceLifetime.Singleton)]
+public class OrderService : IOrderService { }
+```
+
+### Keep selectors stable across builds
+
+[Section titled “Keep selectors stable across builds”](#keep-selectors-stable-across-builds)
+
+Because selectors are hashed by their text, avoid dynamically constructing selector strings or conditionally branching on environment variables inside selectors. The generator evaluates selectors once at build time — the result is fixed until the next build.
+
+### Avoid `FromAssemblies()` in AOT scenarios
+
+[Section titled “Avoid FromAssemblies() in AOT scenarios”](#avoid-fromassemblies-in-aot-scenarios)
+
+`FromAssemblies()` includes all assemblies loaded at the time the generator runs. In an AOT binary, the set of assemblies is fixed at publish time, so this works correctly. However, it can slow incremental builds when the dependency graph is large. Prefer `FromAssemblyOf<T>()` for tighter scoping.
+
+## Next Steps
+
+[Section titled “Next Steps”](#next-steps)
+
+Explore the Reference section for the full selector API, lifetime configuration, and cross-assembly cache details.
+
+# Installation
+
+> Add Specular to your .NET project in under 5 minutes.
+
+# Installation
+
+[Section titled “Installation”](#installation)
+
+## Prerequisites
+
+[Section titled “Prerequisites”](#prerequisites)
+
+* .NET 10 or .NET 11 SDK
+* A project that uses `Microsoft.Extensions.DependencyInjection`
+
+## 1. Add the NuGet Package
+
+[Section titled “1. Add the NuGet Package”](#1-add-the-nuget-package)
+
+```bash
+dotnet add package Specular
+```
+
+Or add it manually to your `.csproj`:
+
+```xml
+<ItemGroup>
+    <PackageReference Include="Specular" />
+</ItemGroup>
+```
+
+> **Central Package Management:** If your solution uses `Directory.Packages.props`, add the version there and reference it without a version attribute in the project file:
+>
+> ```xml
+> <!-- Directory.Packages.props -->
+> <PackageVersion Include="Specular" Version="x.y.z" />
+> ```
+
+## 2. No Attribute to Apply
+
+[Section titled “2. No Attribute to Apply”](#2-no-attribute-to-apply)
+
+There is nothing to wire up by hand. When the generator runs it stamps your assembly with `[assembly: SpecularHashAttribute("<hash>")]` automatically (the hash drives cross-assembly cache invalidation) and emits the `SpecularProvider` class you scan through. You never write this attribute yourself.
+
+> **Libraries that are only scanned** — and never call `ISpecularProvider` themselves — can opt out of emitting their own provider by setting `<SpecularEmitProvider>false</SpecularEmitProvider>` in the project file. Application and entry projects emit a provider by default.
+
+## 3. Build the Project
+
+[Section titled “3. Build the Project”](#3-build-the-project)
+
+```bash
+dotnet build
+```
+
+The Roslyn incremental source generator runs automatically during the build. After a successful build, the generated provider appears under your project’s `obj/` folder:
+
+```plaintext
+obj/
+  Debug/
+    net10.0/
+      generated/
+        Specular.Analyzers/
+          Specular.Analyzers.SpecularProviderGenerator/
+            SpecularProvider.g.cs
+```
+
+You can inspect `SpecularProvider.g.cs` to see exactly what the generator produced — a concrete class implementing `ISpecularProvider` whose methods return pre-computed arrays of types.
+
+## 4. Verify the Setup
+
+[Section titled “4. Verify the Setup”](#4-verify-the-setup)
+
+Add a quick check to confirm the provider resolves:
+
+```csharp
+var provider = SpecularProvider.Instance;
+Console.WriteLine(provider.GetType().FullName); // should print "SpecularProvider"
+```
+
+## No Additional Configuration
+
+[Section titled “No Additional Configuration”](#no-additional-configuration)
+
+That’s it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knobs are `<SpecularEmitProvider>` (see step 2) for libraries that should not emit their own provider, and `<SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>` to opt out of the [scan report](../architecture/scan-report.md) (on by default). The `SpecularProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
+
+## Next Steps
+
+[Section titled “Next Steps”](#next-steps)
+
+* [Quickstart](../quickstart/) — write your first selector and register services
+
+# Quickstart
+
+> Write your first type selector and register services in under 5 minutes.
+
+# Quickstart
+
+[Section titled “Quickstart”](#quickstart)
+
+This page assumes you have already [installed Specular](../installation/).
+
+## 1. Obtain the Provider
+
+[Section titled “1. Obtain the Provider”](#1-obtain-the-provider)
+
+The generator emits an `SpecularProvider` class into your assembly and exposes it through the static `SpecularProvider.Instance` property:
+
+```csharp
+ISpecularProvider provider = SpecularProvider.Instance;
+```
+
+`SpecularProvider` is `internal`, so `Instance` is available throughout your project. You can hold it in a variable or field, or call it inline — `ISpecularProvider` is a plain interface you can also inject.
+
+## 2. Scan for Types
+
+[Section titled “2. Scan for Types”](#2-scan-for-types)
+
+Call `GetTypes()` with a fluent selector. The selector is a lambda whose text the generator captures at build time via `[CallerArgumentExpression]`:
+
+```csharp
+IEnumerable<Type> types = provider.GetTypes(s =>
+    s.FromAssemblyOf<Program>()
+     .AddClasses()
+     .AsImplementedInterfaces());
+```
+
+The full selector fluent API is covered in the Reference section. Common starting points:
+
+| Selector step                     | What it does                                       |
+| --------------------------------- | -------------------------------------------------- |
+| `FromAssemblyOf<T>()`             | Scope the scan to the assembly containing `T`      |
+| `FromAssemblies()`                | Include all loaded assemblies                      |
+| `FromAssemblyDependenciesOf<T>()` | Include assemblies referenced by `T`’s assembly    |
+| `AddClasses()`                    | Filter to concrete (non-abstract) classes          |
+| `GetTypes()`                      | Return all matched types without further filtering |
+
+## 3. Register with Dependency Injection
+
+[Section titled “3. Register with Dependency Injection”](#3-register-with-dependency-injection)
+
+### Option A — `Scan()` directly into `IServiceCollection`
+
+[Section titled “Option A — Scan() directly into IServiceCollection”](#option-a--scan-directly-into-iservicecollection)
+
+`ISpecularProvider.Scan()` combines the scan and registration in one call:
+
+Program.cs
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var provider = SpecularProvider.Instance;
+
+
+provider.Scan(builder.Services, s =>
+    s.FromAssemblyOf<Program>()
+     .AddClasses()
+     .AsImplementedInterfaces()
+     .WithSingletonLifetime());
+```
+
+### Option B — `AddSpecularServiceRegistrations()`
+
+[Section titled “Option B — AddSpecularServiceRegistrations()”](#option-b--addspecularserviceregistrations)
+
+`AddSpecularServiceRegistrations` is an `IServiceCollection` extension method that reads `[ServiceRegistration]` attributes applied directly to classes and registers them according to their declared lifetime:
+
+```csharp
+// On your service class:
+[ServiceRegistration<IMyService>(ServiceLifetime.Singleton)]
+public class MyService : IMyService { }
+
+
+// In Program.cs:
+builder.Services.AddSpecularServiceRegistrations(provider);
+```
+
+The signature is:
+
+```csharp
+public static IServiceCollection AddSpecularServiceRegistrations(
+    this IServiceCollection services,
+    ISpecularProvider provider);
+```
+
+## 4. What the Generated Code Looks Like
+
+[Section titled “4. What the Generated Code Looks Like”](#4-what-the-generated-code-looks-like)
+
+Conceptually, the generator emits something like this (simplified):
+
+```csharp
+// SpecularProvider.g.cs  — auto-generated, do not edit
+internal sealed class SpecularProvider : ISpecularProvider
+{
+    public IEnumerable<Type> GetTypes(
+        Func<IReflectionTypeSelector, IEnumerable<Type>> selector,
+        int lineNumber = 0,
+        string filePath = "",
+        string argumentExpression = "")
+    {
+        // Hash of "s => s.FromAssemblyOf<Program>().AddClasses().AsImplementedInterfaces()"
+        return argumentExpression switch
+        {
+            "abc123==" => new[] { typeof(MyService), typeof(OtherService) },
+            // ... other call sites
+            _ => Enumerable.Empty<Type>()
+        };
+    }
+    // ...
+}
+```
+
+There are no calls to `Assembly.GetTypes()`, no reflection, and no dictionary lookups over runtime metadata. Every result is a compile-time constant array.
+
+## 5. Verifying the Registration
+
+[Section titled “5. Verifying the Registration”](#5-verifying-the-registration)
+
+Add a quick sanity check after `Build()`:
+
+```csharp
+var app = builder.Build();
+var svc = app.Services.GetRequiredService<IMyService>(); // throws if not registered
+```
+
+## Next Steps
+
+[Section titled “Next Steps”](#next-steps)
+
+* [AOT Publishing](../aot-publishing/) — publish with Native AOT and zero trim warnings
+* Reference section — full selector API documentation
+
+# Sample Applications
+
+> Worked examples of Specular compile-time scanning — three reusable libraries and the hosts that consume them, with the exact selector expressions.
+
+# Sample Applications
+
+[Section titled “Sample Applications”](#sample-applications)
+
+The [`samples/`](https://github.com/RocketSurgeonsGuild/Specular/tree/main/samples) tree is a set of worked examples that exercise Specular end-to-end. Three reusable **libraries** declare services in different registration styles; **hosts** consume all three and assert — in process — that Specular discovered exactly the expected service set, then publish under a zero-warning Native AOT guardrail.
+
+You can read the selector expressions below to understand how scanning resolves **without running anything** — that is the whole point of a compile-time provider.
+
+## The three libraries
+
+[Section titled “The three libraries”](#the-three-libraries)
+
+Each library is a plain class library that references `Specular`. Collectively they cover interface-matching **and** attribute-based registration, three lifetimes, and one opt-out type.
+
+| Library                          | Style                               | Lifetime(s)          | Notable                               |
+| -------------------------------- | ----------------------------------- | -------------------- | ------------------------------------- |
+| `Specular.Samples.Catalog`       | interface-matching                  | Singleton            | `IXxxService` → `XxxService`          |
+| `Specular.Samples.Notifications` | attribute (`[ServiceRegistration]`) | Transient (`AsSelf`) | generic + non-generic attribute       |
+| `Specular.Samples.Diagnostics`   | interface-matching                  | Scoped               | one `[ExcludeFromSampleScan]` opt-out |
+
+## How a host scans them
+
+[Section titled “How a host scans them”](#how-a-host-scans-them)
+
+A host calls `provider.Scan(services, selector)` once per library. Each selector is **hashed at the call site** and resolved by the source generator at build time into concrete registrations — there is no runtime reflection.
+
+### 1. Interface-matching, Singleton (Catalog)
+
+[Section titled “1. Interface-matching, Singleton (Catalog)”](#1-interface-matching-singleton-catalog)
+
+```csharp
+provider.Scan(
+    services,
+    z => z.FromAssemblyOf<IProductService>()
+          .AddClasses(f => f.InExactNamespaceOf<IProductService>())
+          .AsMatchingInterface()
+          .WithSingletonLifetime()
+);
+```
+
+`AsMatchingInterface()` registers `ProductService` as `IProductService`, `CategoryService` as `ICategoryService`, and so on.
+
+### 2. Attribute-based, Transient as-self (Notifications)
+
+[Section titled “2. Attribute-based, Transient as-self (Notifications)”](#2-attribute-based-transient-as-self-notifications)
+
+```csharp
+provider.Scan(
+    services,
+    z => z.FromAssemblyOf<NotificationDispatcher>()
+          .AddClasses(f => f.WithAttribute<ServiceRegistrationAttribute>())
+          .AsSelf()
+          .WithTransientLifetime()
+);
+```
+
+Only types carrying `[ServiceRegistration]` are registered, each as its own concrete type.
+
+### 3. Interface-matching with an opt-out, Scoped (Diagnostics)
+
+[Section titled “3. Interface-matching with an opt-out, Scoped (Diagnostics)”](#3-interface-matching-with-an-opt-out-scoped-diagnostics)
+
+```csharp
+provider.Scan(
+    services,
+    z => z.FromAssemblyOf<IHealthCheck>()
+          .AddClasses(f => f.WithoutAttribute<ExcludeFromSampleScanAttribute>())
+          .AsMatchingInterface()
+          .WithScopedLifetime()
+);
+```
+
+`WithoutAttribute<ExcludeFromSampleScanAttribute>()` is why the opt-out type **never** appears in the discovered set — the host asserts its absence.
+
+## The hosts
+
+[Section titled “The hosts”](#the-hosts)
+
+Every host runs the same three `Scan` calls from [`samples/hosts/Shared/SampleScan.cs`](https://github.com/RocketSurgeonsGuild/Specular/tree/main/samples/hosts/Shared/SampleScan.cs), linked into each project so that each host’s own generator resolves them, and compares the result with a hard-coded **expected service set**. Each prints a `SPECULAR-SAMPLE: MATCH …` (or `MISMATCH …`) line.
+
+| Host                          | Kind                         | Heads                                               | Proves                                                                           |
+| ----------------------------- | ---------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `Specular.Samples.Console`    | console                      | net10.0, net11.0                                    | exits non-zero on mismatch; zero-warning Native AOT publish                      |
+| `Specular.Samples.Web`        | ASP.NET minimal API          | net10.0, net11.0                                    | fail-fast at startup on mismatch; `/services` lists discovery; Native AOT        |
+| `Specular.Samples.BlazorWasm` | Blazor WebAssembly           | net10.0, net11.0                                    | scanning in the browser, incl. the net11.0 browser-wasm (no runtime async) build |
+| `Specular.Samples.Uno`        | Uno Platform (Skia renderer) | net10.0 desktop, WebAssembly, Android, iOS          | scanning in an Uno app on every Uno head                                         |
+| `Specular.Samples.Maui`       | .NET MAUI                    | net10.0/net11.0 Android, iOS, Mac Catalyst, Windows | scanning in a MAUI app, including the per-RID mobile heads                       |
+
+The Uno and MAUI hosts need .NET workloads for most heads, so `Specular.slnx` doesn’t build them; pick heads with `SpecularSampleTargetFrameworks` (`;` escaped as `%3B` on the command line):
+
+```bash
+dotnet build samples/hosts/Specular.Samples.Maui -p:SpecularSampleTargetFrameworks=net10.0-android%3Bnet11.0-android
+```
+
+## How CI checks them
+
+[Section titled “How CI checks them”](#how-ci-checks-them)
+
+The **Samples** workflow (`.github/workflows/samples.yml`) runs on Linux, macOS and Windows. On each OS it builds the hosts, runs them, and checks for the `MATCH` line with [`samples/smoke.mjs`](https://github.com/RocketSurgeonsGuild/Specular/tree/main/samples/smoke.mjs):
+
+| Host               | Checked at runtime                                                                                                    | Build only            |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| Console, Web       | Native AOT binaries on every OS (Web: `GET /` must report the match)                                                  |                       |
+| Blazor WebAssembly | published app in headless Chrome on every OS (the browser console must log the match)                                 |                       |
+| Uno                | desktop head on every OS (`SPECULAR_SAMPLE_SMOKE=1` exits before a window opens); WebAssembly head in headless Chrome | Android, iOS          |
+| MAUI               | Mac Catalyst head (`SPECULAR_SAMPLE_SMOKE=1` exits before UIKit starts)                                               | Android, iOS, Windows |
+
+To run the same check locally:
+
+```bash
+node samples/smoke.mjs exe -- samples/hosts/Specular.Samples.Console/bin/Debug/net10.0/Specular.Samples.Console
+node samples/smoke.mjs browser samples/hosts/Specular.Samples.BlazorWasm/bin/Release/net10.0/publish/wwwroot
+```
+
+# Reference
+
+> API reference for Specular's public surface — the ISpecularProvider interface, opt-in/opt-out attributes, and the type filter selectors.
+
+# Reference
+
+[Section titled “Reference”](#reference)
+
+This section documents Specular’s **public API surface**: the interface your code calls, the attributes that control what gets scanned, and the fluent filters that shape selector expressions. Everything here is a stable contract — the runtime package (`Specular`) is intentionally tiny, and almost all of the work happens in the source generator.
+
+Note
+
+Specular’s public API surface is intentionally minimal — see each page below for the stable contracts.
+
+## Pages Stable
+
+[Section titled “Pages ”Stable](#pages)
+
+* [ISpecularProvider](./ispecular-provider/) — the generated entry point, accessed via the static `SpecularProvider.Instance` singleton. Exposes `GetAssemblies`, `GetTypes`, and `Scan`.
+* [ServiceRegistrationAttribute](./service-registration/) — declaratively mark a type for dependency-injection registration with a chosen lifetime.
+* [KeyedServiceRegistrationAttribute](./keyed-service-registration/) — the keyed-service counterpart to `ServiceRegistrationAttribute`.
+* [ExcludeFromSpecularAttribute](./exclude-from-specular/) — opt a type out of scanning so the generator skips it.
+* [Type Filters](./type-filters/) — the fluent selector methods (`AddClasses`, `AsImplementedInterfaces`, namespace and attribute filters, and more) used to build a scan.
+
+# ExcludeFromSpecularAttribute
+
+> Opt an assembly out of all Specular scan results at compile time.
+
+# ExcludeFromSpecularAttribute
+
+[Section titled “ExcludeFromSpecularAttribute”](#excludefromspecularattribute)
+
+```csharp
+[AttributeUsage(AttributeTargets.Assembly)]
+public class ExcludeFromSpecularAttribute : Attribute
+```
+
+`ExcludeFromSpecularAttribute` is an **assembly-level** attribute that tells the Specular generator to exclude the entire assembly from compiled type provider resolution. An excluded assembly will not contribute types to any `GetAssemblies`, `GetTypes`, or `Scan` call in other assemblies.
+
+> **Note:** The excluded assembly itself still has access to the compiled type provider — it can call `ISpecularProvider` methods normally. Only its own types are hidden from resolution in *other* assemblies that scan it.
+
+## Usage
+
+[Section titled “Usage”](#usage)
+
+Place the attribute in any file within the assembly you want to exclude, using the `[assembly:]` target:
+
+```csharp
+[assembly: ExcludeFromSpecular]
+```
+
+A common convention is to put assembly-level attributes in an `AssemblyInfo.cs` file or directly in the project’s top-level `Program.cs`.
+
+## When to use it
+
+[Section titled “When to use it”](#when-to-use-it)
+
+* **Test assemblies** — prevent test fixture types, fakes, and stubs from appearing in production DI scans when the test project is referenced.
+* **Internal implementation assemblies** — a helper assembly that should never be scanned by consuming projects.
+* **Third-party or generated assemblies** — assemblies you reference but do not control, where you want to prevent their types from appearing in a broad `FromAssemblies()` scan.
+
+## Compile-time exclusion
+
+[Section titled “Compile-time exclusion”](#compile-time-exclusion)
+
+This is a build-time decision. The Roslyn generator reads `[ExcludeFromSpecular]` from the assembly metadata during the build. The exclusion is baked into the generated provider — there is no runtime check and no performance cost.
+
+## Interaction with other attributes
+
+[Section titled “Interaction with other attributes”](#interaction-with-other-attributes)
+
+`[ExcludeFromSpecular]` applies at the assembly level and takes precedence over everything else. Types in the excluded assembly will not appear in scan results even if those types carry `[ServiceRegistration]` or are otherwise matched by a fluent selector.
+
+## See also
+
+[Section titled “See also”](#see-also)
+
+* [ISpecularProvider](./ispecular-provider) — the entry point for scanning operations
+* [Type Filters](./type-filters) — per-selector filtering, including `NotFromAssemblyOf<T>()`
+* [ServiceRegistrationAttribute](./service-registration) — attribute-driven type registration
+
+# ISpecularProvider
+
+> The generated provider interface — entry point for all compile-time scanning operations.
+
+# ISpecularProvider
+
+[Section titled “ISpecularProvider”](#ispecularprovider)
+
+`ISpecularProvider` is the primary entry point for all compile-time scanning operations in Specular. At build time, the Roslyn source generator emits a concrete `SpecularProvider` implementation of this interface into your assembly. You access it through the generated static `SpecularProvider.Instance` property — no manual instantiation, no reflection.
+
+## Accessing the Provider
+
+[Section titled “Accessing the Provider”](#accessing-the-provider)
+
+### `SpecularProvider.Instance`
+
+[Section titled “SpecularProvider.Instance”](#specularproviderinstance)
+
+```csharp
+public static ISpecularProvider Instance { get; }
+```
+
+The source generator emits a concrete `SpecularProvider` class into your assembly and exposes it through the static `Instance` property. This is the entry point for all scanning — access it directly, with no reflection or `Activator.CreateInstance` involved:
+
+```csharp
+ISpecularProvider provider = SpecularProvider.Instance;
+```
+
+`SpecularProvider` is `internal` to the assembly the generator runs in, so `Instance` is available anywhere in that same assembly. Hold the returned `ISpecularProvider` in a field or local, or call `GetAssemblies`, `GetTypes`, and `Scan` on it inline.
+
+### `GetArgumentExpressionHash(string)`
+
+[Section titled “GetArgumentExpressionHash(string)”](#getargumentexpressionhashstring)
+
+```csharp
+[EditorBrowsable(EditorBrowsableState.Never)]
+static string GetArgumentExpressionHash(string argumentExpression);
+```
+
+Converts a selector expression string into a stable, compact key. Whitespace (spaces, tabs, newlines) is stripped before hashing so that formatting changes do not invalidate the cache. The resulting hash is an MD5-based Base64 string.
+
+This method is marked `[EditorBrowsable(Never)]` — it is called by generated code, not by application code.
+
+**Why it matters:** The generator keys every generated scan result to the *text* of the selector lambda at its call site. When the lambda changes (e.g. you add `.AssignableTo<INewService>()`), the hash changes, and the generator produces new output. Call sites that share the same expression text share the same generated result.
+
+## Instance Methods
+
+[Section titled “Instance Methods”](#instance-methods)
+
+All three scanning methods share the same hidden caller-info parameters:
+
+| Parameter            | Attribute                    | Purpose                       |
+| -------------------- | ---------------------------- | ----------------------------- |
+| `lineNumber`         | `[CallerLineNumber]`         | Line number of the call site  |
+| `filePath`           | `[CallerFilePath]`           | File path of the call site    |
+| `argumentExpression` | `[CallerArgumentExpression]` | Text of the selector argument |
+
+The compiler fills these in automatically. **Do not pass them explicitly.** The generator uses all three together to locate the exact call site and associate it with the generated output.
+
+### `GetAssemblies`
+
+[Section titled “GetAssemblies”](#getassemblies)
+
+```csharp
+IEnumerable<Assembly> GetAssemblies(
+    Action<IReflectionAssemblySelector> action,
+    [CallerLineNumber] int lineNumber = 0,
+    [CallerFilePath] string filePath = "",
+    [CallerArgumentExpression(nameof(action))] string argumentExpression = ""
+);
+```
+
+Returns the set of `Assembly` objects that match the selector. The selector is expressed as an `Action<IReflectionAssemblySelector>`; the generator resolves the full list at build time. At runtime the generated implementation returns a pre-built collection — no reflection occurs.
+
+**Example:**
+
+```csharp
+IEnumerable<Assembly> assemblies = provider.GetAssemblies(
+    s => s.FromAssemblyOf<MyApp>()
+);
+```
+
+### `GetTypes`
+
+[Section titled “GetTypes”](#gettypes)
+
+```csharp
+IEnumerable<Type> GetTypes(
+    Func<IReflectionTypeSelector, IEnumerable<Type>> selector,
+    [CallerLineNumber] int lineNumber = 0,
+    [CallerFilePath] string filePath = "",
+    [CallerArgumentExpression(nameof(selector))] string argumentExpression = ""
+);
+```
+
+Returns the set of `Type` objects that match the selector. The selector is a `Func` that receives an `IReflectionTypeSelector` and returns a filtered `IEnumerable<Type>`. The generator evaluates the selector expression at build time.
+
+**Example:**
+
+```csharp
+IEnumerable<Type> types = provider.GetTypes(
+    s => s.FromAssemblyOf<MyApp>()
+          .GetTypes(f => f.AssignableTo<IMyService>())
+);
+```
+
+### `Scan`
+
+[Section titled “Scan”](#scan)
+
+```csharp
+IServiceCollection Scan(
+    IServiceCollection services,
+    Action<IServiceDescriptorAssemblySelector> selector,
+    [CallerLineNumber] int lineNumber = 0,
+    [CallerFilePath] string filePath = "",
+    [CallerArgumentExpression(nameof(selector))] string argumentExpression = ""
+);
+```
+
+Adds `ServiceDescriptor` entries to the supplied `IServiceCollection` based on the selector. Returns the same `IServiceCollection` so calls can be chained. The full list of registrations is resolved at build time; the generated implementation performs no reflection at runtime.
+
+**Example:**
+
+```csharp
+services = provider.Scan(
+    services,
+    s => s.FromAssemblyOf<MyApp>()
+          .AddClasses(c => c.AssignableTo<IMyService>())
+          .AsImplementedInterfaces()
+          .WithScopedLifetime()
+);
+```
+
+## Why the selector expression text matters
+
+[Section titled “Why the selector expression text matters”](#why-the-selector-expression-text-matters)
+
+Because the generator captures the *text* of each selector argument via `[CallerArgumentExpression]`, the text is the identity of a call site. Two calls with identical expression text (after whitespace normalisation) share a single generated code path. A call site whose selector text changes between builds produces new generated output on the next build. This is why you should avoid dynamic string construction or code-generated selectors — the generator cannot evaluate them.
+
+## See also
+
+[Section titled “See also”](#see-also)
+
+* [Type Filters](./type-filters) — the fluent API used inside selectors
+* [ServiceRegistrationAttribute](./service-registration) — attribute-driven registration alternative
+* [ExcludeFromSpecularAttribute](./exclude-from-specular) — opt an assembly out of scanning
+
+# KeyedServiceRegistrationAttribute
+
+> Mark classes for automatic keyed DI registration using compile-time scanning.
+
+# KeyedServiceRegistrationAttribute
+
+[Section titled “KeyedServiceRegistrationAttribute”](#keyedserviceregistrationattribute)
+
+`KeyedServiceRegistrationAttribute` is the keyed-service counterpart to [`ServiceRegistrationAttribute`](./service-registration) — it behaves the same way, except every registration it produces is a [keyed service](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-10.0#keyed-services) (`ServiceDescriptor.KeyedSingleton`, `KeyedScoped`, `KeyedTransient`) resolved with `IServiceProvider.GetKeyedService`/`GetRequiredKeyedService`. Like `ServiceRegistrationAttribute`, the Specular generator reads the attribute at build time; no runtime reflection occurs.
+
+## `[KeyedServiceRegistration]`
+
+[Section titled “\[KeyedServiceRegistration\]”](#keyedserviceregistration)
+
+```csharp
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public sealed class KeyedServiceRegistrationAttribute : KeyedServiceRegistrationBaseAttribute
+```
+
+Applied to a class, it instructs the generator to register the class under the given key. If no explicit service types are given, the type is registered — under that same key — against itself and every interface it implements.
+
+**Constructor:**
+
+```csharp
+KeyedServiceRegistrationAttribute(object? key, ServiceLifetime lifetime, params Type[] serviceTypes)
+```
+
+**Properties:**
+
+| Property       | Type                   | Description                                                                                                 |
+| -------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `Key`          | `object?`              | The service key. Must be a compile-time constant (string, number, bool, char, enum, `Type`, or `null`).     |
+| `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register against all implemented interfaces (plus self). |
+| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                                                           |
+
+`AllowMultiple = true` means a single class can carry multiple `[KeyedServiceRegistration]` attributes — for different keys, different service types, or different lifetimes.
+
+Two registrations are only considered duplicates (and raise a diagnostic) when both the **service type and the key** match. The same service type may be registered any number of times under distinct keys:
+
+```csharp
+[KeyedServiceRegistration("primary", ServiceLifetime.Singleton, typeof(ICache))]
+[KeyedServiceRegistration("fallback", ServiceLifetime.Singleton, typeof(ICache))]
+public class RedisCache : ICache { }
+```
+
+## Generic overloads
+
+[Section titled “Generic overloads”](#generic-overloads)
+
+The generic variants provide a concise way to specify one to eight explicit service types without passing `typeof(...)` arguments.
+
+### `KeyedServiceRegistrationAttribute<TService>`
+
+[Section titled “KeyedServiceRegistrationAttribute\<TService>”](#keyedserviceregistrationattributetservice)
+
+```csharp
+[KeyedServiceRegistration<IMyService>("my-key", ServiceLifetime.Scoped)]
+public class MyService : IMyService { }
+```
+
+Registers `MyService` as `IMyService` under `"my-key"`.
+
+### `KeyedServiceRegistrationAttribute<TService1, TService2>` through `<..., TService8>`
+
+[Section titled “KeyedServiceRegistrationAttribute\<TService1, TService2> through <..., TService8>”](#keyedserviceregistrationattributetservice1-tservice2-through--tservice8)
+
+Registers against up to eight explicit service types, all under the same key. Every generic variant requires both a `key` and a `ServiceLifetime` constructor argument — neither has a default.
+
+## Interaction with `[RegistrationLifetime]`
+
+[Section titled “Interaction with \[RegistrationLifetime\]”](#interaction-with-registrationlifetime)
+
+[`RegistrationLifetimeAttribute`](./service-registration#registrationlifetime) can still override the resolved lifetime for an individual service type, keyed or not. Priority order (highest first):
+
+1. `[RegistrationLifetime]` on the specific service type being registered.
+2. The lifetime declared on `[KeyedServiceRegistration]` itself.
+3. `[RegistrationLifetime]` on the decorated class.
+4. `ServiceLifetime.Singleton`.
+
+```csharp
+[RegistrationLifetime(ServiceLifetime.Scoped)]
+public interface IService { }
+
+
+// Registered as itself (Singleton, from the attribute) but as IService (Scoped, from the override)
+[KeyedServiceRegistration("service-key", ServiceLifetime.Singleton, typeof(IService))]
+public class Service : IService { }
+```
+
+## `AddSpecularServiceRegistrations`
+
+[Section titled “AddSpecularServiceRegistrations”](#addspecularserviceregistrations)
+
+`AddSpecularServiceRegistrations` (see [ServiceRegistrationAttribute](./service-registration#addspecularserviceregistrations)) scans for every `[ServiceRegistration]` **and** `[KeyedServiceRegistration]` variant in one pass — no separate call is needed for keyed types.
+
+```csharp
+builder.Services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
+```
+
+## Resolving keyed services
+
+[Section titled “Resolving keyed services”](#resolving-keyed-services)
+
+Registrations produced by `[KeyedServiceRegistration]` are resolved the normal keyed-DI way:
+
+```csharp
+public class Consumer([FromKeyedServices("primary")] ICache cache) { }
+
+
+// or
+var cache = serviceProvider.GetRequiredKeyedService<ICache>("primary");
+```
+
+## Notes
+
+[Section titled “Notes”](#notes)
+
+* Registration is a **compile-time** operation. The generator discovers `[KeyedServiceRegistration]`-decorated types during the build, not at application startup.
+* Abstract classes and static classes are implicitly excluded.
+* A keyed registration and a non-keyed `[ServiceRegistration]` for the same service type on the same class coexist without conflict — keyed and non-keyed services occupy independent slots in the container.
+
+## See also
+
+[Section titled “See also”](#see-also)
+
+* [ServiceRegistrationAttribute](./service-registration) — the non-keyed counterpart to this attribute
+* [ISpecularProvider](./ispecular-provider) — the provider that backs `AddSpecularServiceRegistrations`
+* [Type Filters](./type-filters) — the fluent alternative to attribute-based registration
+
+# ServiceRegistrationAttribute
+
+> Mark classes for automatic DI registration using compile-time scanning.
+
+# ServiceRegistrationAttribute
+
+[Section titled “ServiceRegistrationAttribute”](#serviceregistrationattribute)
+
+`ServiceRegistrationAttribute` is a declarative way to mark a class for DI registration without writing an explicit fluent selector. The Specular generator reads the attribute at build time and includes the type in the generated provider; no runtime reflection occurs.
+
+## `[ServiceRegistration]`
+
+[Section titled “\[ServiceRegistration\]”](#serviceregistration)
+
+```csharp
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ServiceRegistrationAttribute : Attribute
+```
+
+Applied to a class, it instructs the generator to register the class in the DI container. The lifetime is always required; if no explicit service types are given, the type is registered against every interface it implements (plus itself).
+
+**Constructors:**
+
+```csharp
+// Register against explicit service types with a required lifetime
+ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceTypes)
+```
+
+**Properties:**
+
+| Property       | Type                   | Description                                                                                                 |
+| -------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register against all implemented interfaces (plus self). |
+| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                                                           |
+
+`AllowMultiple = true` means a single class can carry multiple `[ServiceRegistration]` attributes to be registered against different service types or with different lifetimes simultaneously.
+
+## Generic overloads
+
+[Section titled “Generic overloads”](#generic-overloads)
+
+The generic variants provide a concise way to specify one to eight explicit service types without passing `typeof(...)` arguments.
+
+### `ServiceRegistrationAttribute<TService>`
+
+[Section titled “ServiceRegistrationAttribute\<TService>”](#serviceregistrationattributetservice)
+
+```csharp
+[ServiceRegistration<IMyService>(ServiceLifetime.Scoped)]
+public class MyService : IMyService { }
+```
+
+Registers `MyService` as `IMyService` with the given lifetime.
+
+### `ServiceRegistrationAttribute<TService1, TService2>`
+
+[Section titled “ServiceRegistrationAttribute\<TService1, TService2>”](#serviceregistrationattributetservice1-tservice2)
+
+```csharp
+[ServiceRegistration<IMyService, IAlternate>(ServiceLifetime.Scoped)]
+public class MyService : IMyService, IAlternate { }
+```
+
+Registers against two service types.
+
+### `ServiceRegistrationAttribute<TService1, TService2, TService3>` through `<..., TService8>`
+
+[Section titled “ServiceRegistrationAttribute\<TService1, TService2, TService3> through <..., TService8>”](#serviceregistrationattributetservice1-tservice2-tservice3-through--tservice8)
+
+Registers against up to eight explicit service types. Every generic variant requires a `ServiceLifetime` constructor argument — there is no default.
+
+## `[RegistrationLifetime]`
+
+[Section titled “\[RegistrationLifetime\]”](#registrationlifetime)
+
+```csharp
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+public class RegistrationLifetimeAttribute : Attribute
+```
+
+Overrides the DI lifetime for a type independently of `[ServiceRegistration]`. Useful when you want to set a single lifetime on a base class or interface and have it apply across all registrations of that type.
+
+```csharp
+public RegistrationLifetimeAttribute(ServiceLifetime lifetime)
+```
+
+| Property   | Type              | Description              |
+| ---------- | ----------------- | ------------------------ |
+| `Lifetime` | `ServiceLifetime` | The overriding lifetime. |
+
+## `AddSpecularServiceRegistrations`
+
+[Section titled “AddSpecularServiceRegistrations”](#addspecularserviceregistrations)
+
+```csharp
+public static IServiceCollection AddSpecularServiceRegistrations(
+    this IServiceCollection services,
+    ISpecularProvider provider
+)
+```
+
+Extension method on `IServiceCollection` that uses `provider.Scan()` to find all classes decorated with any `[ServiceRegistration]` variant and adds them to the container. The scan itself is resolved at build time; this call at startup simply replays the pre-built registrations.
+
+**Usage:**
+
+```csharp
+// In Program.cs / Startup.cs
+services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
+```
+
+## Combined example
+
+[Section titled “Combined example”](#combined-example)
+
+```csharp
+// Scoped service registered as IMyService — lifetime from [ServiceRegistration] itself
+[ServiceRegistration<IMyService>(ServiceLifetime.Scoped)]
+public class MyService : IMyService { }
+
+
+// Class carrying a separate lifetime override via [RegistrationLifetime]
+[ServiceRegistration(ServiceLifetime.Singleton)]
+[RegistrationLifetime(ServiceLifetime.Scoped)]
+public class AnotherService : IAnotherService { }
+
+
+// Multiple registrations on one class
+[ServiceRegistration<IMyService>(ServiceLifetime.Singleton)]
+[ServiceRegistration<IAlternate>(ServiceLifetime.Transient)]
+public class DualService : IMyService, IAlternate { }
+```
+
+```csharp
+// Wire up everything in one call
+builder.Services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
+```
+
+## Notes
+
+[Section titled “Notes”](#notes)
+
+* Registration is a **compile-time** operation. The generator discovers `[ServiceRegistration]`-decorated types during the build, not at application startup.
+* Abstract classes and static classes are implicitly excluded — `AddClasses()` skips them by default.
+* If `ServiceTypes` is empty (i.e. the attribute is applied with no explicit type arguments), the class is registered against itself and every interface it implements.
+
+## See also
+
+[Section titled “See also”](#see-also)
+
+* [ISpecularProvider](./ispecular-provider) — the provider that backs `AddSpecularServiceRegistrations`
+* [KeyedServiceRegistrationAttribute](./keyed-service-registration) — the keyed-service counterpart to this attribute
+* [Type Filters](./type-filters) — the fluent alternative to attribute-based registration
+* [ExcludeFromSpecularAttribute](./exclude-from-specular) — opt an assembly out of all scanning
+
+# Type Filters
+
+> The fluent selector API for filtering types by class, interface, namespace, attribute, and assignability.
+
+# Type Filters
+
+[Section titled “Type Filters”](#type-filters)
+
+Specular provides a fluent selector API for describing which assemblies and types the generator should include in a scan. There are two parallel selector hierarchies — one for reflection-based results (`GetAssemblies` / `GetTypes`) and one for DI registration (`Scan`). Both share the same `ITypeFilter` interface for per-type predicates.
+
+## Assembly Selectors
+
+[Section titled “Assembly Selectors”](#assembly-selectors)
+
+### `IReflectionAssemblySelector`
+
+[Section titled “IReflectionAssemblySelector”](#ireflectionassemblyselector)
+
+Used with `ISpecularProvider.GetAssemblies` and `ISpecularProvider.GetTypes`. Returns an `IReflectionTypeSelector` to continue the chain.
+
+| Method                             | Description                                                          |
+| ---------------------------------- | -------------------------------------------------------------------- |
+| `FromAssembly()`                   | Scans the calling assembly.                                          |
+| `FromAssemblies()`                 | Scans all metadata assemblies in the compilation.                    |
+| `FromAssemblyOf<T>()`              | Scans the assembly that contains `T`.                                |
+| `FromAssemblyOf(Type)`             | Non-generic overload of the above.                                   |
+| `FromAssemblyDependenciesOf<T>()`  | Scans assemblies that the assembly containing `T` depends on.        |
+| `FromAssemblyDependenciesOf(Type)` | Non-generic overload of the above.                                   |
+| `NotFromAssemblyOf<T>()`           | Excludes the assembly containing `T` from the scan.                  |
+| `NotFromAssemblyOf(Type)`          | Non-generic overload of the above.                                   |
+| `IncludeSystemAssemblies()`        | Also includes .NET framework / BCL assemblies (excluded by default). |
+
+### `IServiceDescriptorAssemblySelector`
+
+[Section titled “IServiceDescriptorAssemblySelector”](#iservicedescriptorassemblyselector)
+
+Used with `ISpecularProvider.Scan`. Has the same set of assembly-selection methods as `IReflectionAssemblySelector`, but each method returns an `IServiceDescriptorTypeSelector` to continue into the DI-specific chain.
+
+## Type Selectors
+
+[Section titled “Type Selectors”](#type-selectors)
+
+### `IReflectionTypeSelector`
+
+[Section titled “IReflectionTypeSelector”](#ireflectiontypeselector)
+
+Extends `IReflectionAssemblySelector`. Provides methods to retrieve `IEnumerable<Type>` directly.
+
+| Method                                           | Description                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------- |
+| `GetTypes()`                                     | Returns all types in the selected assemblies.                  |
+| `GetTypes(bool publicOnly)`                      | Limits results to public types when `true`.                    |
+| `GetTypes(Action<ITypeFilter>)`                  | Applies a filter predicate (public non-abstract classes only). |
+| `GetTypes(bool publicOnly, Action<ITypeFilter>)` | Combines public-only and filter predicate.                     |
+
+### `IServiceDescriptorTypeSelector`
+
+[Section titled “IServiceDescriptorTypeSelector”](#iservicedescriptortypeselector)
+
+Extends `IServiceDescriptorAssemblySelector`. Entry point for describing what to register in the DI container.
+
+| Method                                             | Description                                               |
+| -------------------------------------------------- | --------------------------------------------------------- |
+| `AddClasses()`                                     | Selects all public, non-abstract classes.                 |
+| `AddClasses(bool publicOnly)`                      | Controls whether non-public classes are included.         |
+| `AddClasses(Action<ITypeFilter>)`                  | Selects public, non-abstract classes matching the filter. |
+| `AddClasses(Action<ITypeFilter>, bool publicOnly)` | Filter plus public-only control.                          |
+
+Returns `IServiceTypeSelector` to continue the chain with a service-type strategy.
+
+## Service Type Strategies
+
+[Section titled “Service Type Strategies”](#service-type-strategies)
+
+### `IServiceTypeSelector`
+
+[Section titled “IServiceTypeSelector”](#iservicetypeselector)
+
+Specifies how each matched type is registered against service types.
+
+| Method                                         | Description                                                                                                               |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `AsSelf()`                                     | Registers each class as its own concrete type.                                                                            |
+| `As<T>()`                                      | Registers each class as `T`.                                                                                              |
+| `As(Type)`                                     | Non-generic overload of `As`.                                                                                             |
+| `AsImplementedInterfaces()`                    | Registers each class as every interface it implements.                                                                    |
+| `AsImplementedInterfaces(Action<ITypeFilter>)` | Same, filtered to specific interfaces.                                                                                    |
+| `AsSelfWithInterfaces()`                       | Registers as self **and** as every implemented interface; the interface registrations return the same singleton instance. |
+| `AsSelfWithInterfaces(Action<ITypeFilter>)`    | Same, filtered to specific interfaces.                                                                                    |
+| `AsMatchingInterface()`                        | Registers each class as the interface whose name matches `I{ClassName}`.                                                  |
+
+Returns `IServiceLifetimeSelector` to complete the chain.
+
+## Lifetime Selector
+
+[Section titled “Lifetime Selector”](#lifetime-selector)
+
+### `IServiceLifetimeSelector`
+
+[Section titled “IServiceLifetimeSelector”](#iservicelifetimeselector)
+
+Extends `IServiceTypeSelector`. Specifies the DI service lifetime.
+
+| Method                          | Description                                     |
+| ------------------------------- | ----------------------------------------------- |
+| `WithSingletonLifetime()`       | Registers with `ServiceLifetime.Singleton`.     |
+| `WithScopedLifetime()`          | Registers with `ServiceLifetime.Scoped`.        |
+| `WithTransientLifetime()`       | Registers with `ServiceLifetime.Transient`.     |
+| `WithLifetime(ServiceLifetime)` | Registers with an explicitly supplied lifetime. |
+
+## Per-Type Filter: `ITypeFilter`
+
+[Section titled “Per-Type Filter: ITypeFilter”](#per-type-filter-itypefilter)
+
+`ITypeFilter` is passed to the `Action<ITypeFilter>` callbacks in `AddClasses`, `GetTypes`, `AsImplementedInterfaces`, and similar methods. All methods return `ITypeFilter` for chaining.
+
+### Assignability
+
+[Section titled “Assignability”](#assignability)
+
+```csharp
+ITypeFilter AssignableTo<T>();
+ITypeFilter AssignableTo(Type type);
+ITypeFilter AssignableToAny(Type type, params Type[] types);
+ITypeFilter NotAssignableTo<T>();
+ITypeFilter NotAssignableTo(Type type);
+ITypeFilter NotAssignableToAny(Type type, params Type[] types);
+```
+
+Includes or excludes types based on whether they are assignable to `T` (i.e. implement an interface or inherit from a base class).
+
+### Name Matching
+
+[Section titled “Name Matching”](#name-matching)
+
+```csharp
+ITypeFilter EndsWith(string value, params string[] values);
+ITypeFilter NotEndsWith(string value, params string[] values);
+ITypeFilter StartsWith(string value, params string[] values);
+ITypeFilter NotStartsWith(string value, params string[] values);
+ITypeFilter Contains(string value, params string[] values);
+ITypeFilter NotContains(string value, params string[] values);
+```
+
+Filters types by the text of their simple name.
+
+### Namespace Scoping
+
+[Section titled “Namespace Scoping”](#namespace-scoping)
+
+```csharp
+ITypeFilter InNamespaceOf<T>();
+ITypeFilter InNamespaceOf(Type type, params Type[] types);
+ITypeFilter InNamespaces(string first, params string[] namespaces);
+ITypeFilter InExactNamespaceOf<T>();
+ITypeFilter InExactNamespaceOf(Type type, params Type[] types);
+ITypeFilter InExactNamespaces(string first, params string[] namespaces);
+ITypeFilter NotInNamespaceOf<T>();
+ITypeFilter NotInNamespaceOf(Type type, params Type[] types);
+ITypeFilter NotInNamespaces(string first, params string[] namespaces);
+```
+
+`InNamespaceOf<T>()` matches types in the same namespace **or any child namespace**. `InExactNamespaceOf<T>()` matches only the exact namespace.
+
+### Attribute Presence
+
+[Section titled “Attribute Presence”](#attribute-presence)
+
+```csharp
+ITypeFilter WithAttribute<T>() where T : Attribute;
+ITypeFilter WithAttribute(Type attributeType);
+ITypeFilter WithAttribute(string? attributeFullName);
+ITypeFilter WithAnyAttribute(Type attributeType, params Type[] attributeTypes);
+ITypeFilter WithAnyAttribute(string? attributeFullName, params string[] attributeFullNames);
+ITypeFilter WithoutAttribute<T>() where T : Attribute;
+ITypeFilter WithoutAttribute(Type attributeType);
+ITypeFilter WithoutAttribute(string? attributeFullName);
+```
+
+Filters types by the presence or absence of an attribute. The overload accepting a string takes the fully-qualified attribute type name.
+
+### Type Kind
+
+[Section titled “Type Kind”](#type-kind)
+
+```csharp
+ITypeFilter KindOf(TypeKindFilter typeKindFilter, params TypeKindFilter[] typeKindFilters);
+ITypeFilter NotKindOf(TypeKindFilter typeKindFilter, params TypeKindFilter[] typeKindFilters);
+```
+
+`TypeKindFilter` values: `Array`, `Class`, `Delegate`, `Enum`, `Interface`, `Struct`.
+
+### Type Info
+
+[Section titled “Type Info”](#type-info)
+
+```csharp
+ITypeFilter InfoOf(TypeInfoFilter typeInfoFilter, params TypeInfoFilter[] typeInfoFilters);
+ITypeFilter NotInfoOf(TypeInfoFilter typeInfoFilter, params TypeInfoFilter[] typeInfoFilters);
+```
+
+`TypeInfoFilter` values: `Unknown`, `Abstract`, `Visible`, `ValueType`, `Sealed`, `GenericType`, `Static`.
+
+## `[ExcludeFromSpecular]` interaction
+
+[Section titled “\[ExcludeFromSpecular\] interaction”](#excludefromspecular-interaction)
+
+Applying `[ExcludeFromSpecular]` to an assembly removes the entire assembly from Specular scan results regardless of any selector. See [ExcludeFromSpecularAttribute](./exclude-from-specular) for details.
+
+## Complete chained example
+
+[Section titled “Complete chained example”](#complete-chained-example)
+
+```csharp
+// Register all public, non-abstract classes in the MyApp assembly that
+// implement IMyService, as their implemented interfaces, with scoped lifetime.
+provider.Scan(
+    services,
+    s => s
+        .FromAssemblyOf<MyApp>()
+        .AddClasses(c => c.AssignableTo<IMyService>())
+        .AsImplementedInterfaces()
+        .WithScopedLifetime()
+);
+```
+
+```csharp
+// Retrieve all public types in the MyApp assembly that end with "Repository"
+// and are in the Data namespace.
+IEnumerable<Type> repos = provider.GetTypes(
+    s => s
+        .FromAssemblyOf<MyApp>()
+        .GetTypes(f => f
+            .EndsWith("Repository")
+            .InNamespaceOf<MyApp.Data.Placeholder>())
+);
+```
+
+## See also
+
+[Section titled “See also”](#see-also)
+
+* [ISpecularProvider](./ispecular-provider) — the entry point that accepts these selectors
+* [ServiceRegistrationAttribute](./service-registration) — attribute-driven alternative
