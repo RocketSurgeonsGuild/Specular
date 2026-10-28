@@ -22,11 +22,11 @@ KeyedServiceRegistrationAttribute(object? key, ServiceLifetime lifetime, params 
 
 **Properties:**
 
-| Property       | Type                   | Description                                                                                  |
-| -------------- | ---------------------- | ---------------------------------------------------------------------------------------------- |
-| `Key`          | `object?`              | The service key. Must be a compile-time constant (string, number, bool, char, enum, `Type`, or `null`). |
+| Property       | Type                   | Description                                                                                                 |
+| -------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `Key`          | `object?`              | The service key. Must be a compile-time constant (string, number, bool, char, enum, `Type`, or `null`).     |
 | `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register against all implemented interfaces (plus self). |
-| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                                             |
+| `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                                                           |
 
 `AllowMultiple = true` means a single class can carry multiple `[KeyedServiceRegistration]` attributes — for different keys, different service types, or different lifetimes.
 

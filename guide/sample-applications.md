@@ -15,8 +15,8 @@ anything** — that is the whole point of a compile-time provider.
 Each library is a plain class library that references `Specular`. Collectively they cover
 interface-matching **and** attribute-based registration, three lifetimes, and one opt-out type.
 
-| Library                        | Style                               | Lifetime(s)          | Notable                               |
-| ------------------------------ | ----------------------------------- | -------------------- | ------------------------------------- |
+| Library                          | Style                               | Lifetime(s)          | Notable                               |
+| -------------------------------- | ----------------------------------- | -------------------- | ------------------------------------- |
 | `Specular.Samples.Catalog`       | interface-matching                  | Singleton            | `IXxxService` → `XxxService`          |
 | `Specular.Samples.Notifications` | attribute (`[ServiceRegistration]`) | Transient (`AsSelf`) | generic + non-generic attribute       |
 | `Specular.Samples.Diagnostics`   | interface-matching                  | Scoped               | one `[ExcludeFromSampleScan]` opt-out |
@@ -78,13 +78,13 @@ Every host runs the same three `Scan` calls from
 linked into each project so that each host's own generator resolves them, and compares the result with a hard-coded
 **expected service set**. Each prints a `SPECULAR-SAMPLE: MATCH …` (or `MISMATCH …`) line.
 
-| Host                          | Kind                          | Heads                                                    | Proves                                                                       |
-| ----------------------------- | ----------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `Specular.Samples.Console`    | console                       | net10.0, net11.0                                         | exits non-zero on mismatch; zero-warning Native AOT publish                  |
-| `Specular.Samples.Web`        | ASP.NET minimal API           | net10.0, net11.0                                         | fail-fast at startup on mismatch; `/services` lists discovery; Native AOT    |
-| `Specular.Samples.BlazorWasm` | Blazor WebAssembly            | net10.0, net11.0                                         | scanning in the browser, incl. the net11.0 browser-wasm (no runtime async) build |
-| `Specular.Samples.Uno`        | Uno Platform (Skia renderer)  | net10.0 desktop, WebAssembly, Android, iOS               | scanning in an Uno app on every Uno head                                     |
-| `Specular.Samples.Maui`       | .NET MAUI                     | net10.0/net11.0 Android, iOS, Mac Catalyst, Windows      | scanning in a MAUI app, including the per-RID mobile heads                   |
+| Host                          | Kind                         | Heads                                               | Proves                                                                           |
+| ----------------------------- | ---------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `Specular.Samples.Console`    | console                      | net10.0, net11.0                                    | exits non-zero on mismatch; zero-warning Native AOT publish                      |
+| `Specular.Samples.Web`        | ASP.NET minimal API          | net10.0, net11.0                                    | fail-fast at startup on mismatch; `/services` lists discovery; Native AOT        |
+| `Specular.Samples.BlazorWasm` | Blazor WebAssembly           | net10.0, net11.0                                    | scanning in the browser, incl. the net11.0 browser-wasm (no runtime async) build |
+| `Specular.Samples.Uno`        | Uno Platform (Skia renderer) | net10.0 desktop, WebAssembly, Android, iOS          | scanning in an Uno app on every Uno head                                         |
+| `Specular.Samples.Maui`       | .NET MAUI                    | net10.0/net11.0 Android, iOS, Mac Catalyst, Windows | scanning in a MAUI app, including the per-RID mobile heads                       |
 
 The Uno and MAUI hosts need .NET workloads for most heads, so `Specular.slnx` doesn't build them; pick heads with
 `SpecularSampleTargetFrameworks` (`;` escaped as `%3B` on the command line):
@@ -98,12 +98,12 @@ dotnet build samples/hosts/Specular.Samples.Maui -p:SpecularSampleTargetFramewor
 The **Samples** workflow (`.github/workflows/samples.yml`) runs on Linux, macOS and Windows. On each OS it builds the hosts,
 runs them, and checks for the `MATCH` line with [`samples/smoke.mjs`](https://github.com/RocketSurgeonsGuild/Specular/tree/main/samples/smoke.mjs):
 
-| Host                | Checked at runtime                                                                      | Build only                                     |
-| ------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Console, Web        | Native AOT binaries on every OS (Web: `GET /` must report the match)                    |                                                |
-| Blazor WebAssembly  | published app in headless Chrome on every OS (the browser console must log the match)   |                                                |
-| Uno                 | desktop head on every OS (`SPECULAR_SAMPLE_SMOKE=1` exits before a window opens); WebAssembly head in headless Chrome | Android, iOS                                   |
-| MAUI                | Mac Catalyst head (`SPECULAR_SAMPLE_SMOKE=1` exits before UIKit starts)                  | Android, iOS, Windows                          |
+| Host               | Checked at runtime                                                                                                    | Build only            |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| Console, Web       | Native AOT binaries on every OS (Web: `GET /` must report the match)                                                  |                       |
+| Blazor WebAssembly | published app in headless Chrome on every OS (the browser console must log the match)                                 |                       |
+| Uno                | desktop head on every OS (`SPECULAR_SAMPLE_SMOKE=1` exits before a window opens); WebAssembly head in headless Chrome | Android, iOS          |
+| MAUI               | Mac Catalyst head (`SPECULAR_SAMPLE_SMOKE=1` exits before UIKit starts)                                               | Android, iOS, Windows |
 
 To run the same check locally:
 
