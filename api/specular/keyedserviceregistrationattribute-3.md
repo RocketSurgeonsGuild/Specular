@@ -2,7 +2,7 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.3.3-beta.5`
+- Version: `0.3.3-beta.6`
 - Namespace: `Specular`
 - Target framework: `net10.0`
 - Inherits: [KeyedServiceRegistrationBaseAttribute](/Specular/api/specular/keyedserviceregistrationbaseattribute.md)
