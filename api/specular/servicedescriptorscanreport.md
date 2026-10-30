@@ -2,7 +2,7 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.3.3-beta.7`
+- Version: `0.3.3-beta.8`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
 - Implements: `IEquatable<ServiceDescriptorScanReport>`
