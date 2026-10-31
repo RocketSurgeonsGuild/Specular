@@ -2,7 +2,7 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.1-beta.1`
+- Version: `0.4.1-beta.2`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
 
