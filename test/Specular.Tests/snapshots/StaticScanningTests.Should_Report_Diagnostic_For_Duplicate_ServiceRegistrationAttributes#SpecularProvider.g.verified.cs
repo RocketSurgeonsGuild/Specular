@@ -36,8 +36,6 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: {SolutionDirectory}src/Specular/SpecularProviderServiceCollectionExtensions.cs Expression: QGmxhNh0sTcsPjKev+mVvQ==
             case 20:
-                services.Add(ServiceDescriptor.Scoped<global::Service, global::Service>());
-                services.Add(ServiceDescriptor.Scoped<global::IService>(a => a.GetRequiredService<global::Service>()));
                 break;
         }
 

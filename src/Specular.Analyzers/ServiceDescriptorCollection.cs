@@ -196,6 +196,7 @@ internal static class ServiceDescriptorCollection
         var asSpecificTypes = serviceTypes.ServiceTypeDescriptors.OfType<CompiledServiceTypeDescriptor>().Select(z => z.Type).Where(z => z is { }).ToArray();
         var registrationLifetimeAttribute = compilation.GetTypeByMetadataName("Specular.RegistrationLifetimeAttribute")!;
         var serviceRegistrationAttribute = compilation.GetTypeByMetadataName("Specular.ServiceRegistrationAttribute")!;
+        var serviceRegistrationBaseAttribute = compilation.GetTypeByMetadataName("Specular.ServiceRegistrationBaseAttribute")!;
         var keyedServiceRegistrationBaseAttribute = compilation.GetTypeByMetadataName("Specular.KeyedServiceRegistrationBaseAttribute")!;
 
         var services = new List<InvocationExpressionSyntax>();
@@ -221,8 +222,10 @@ internal static class ServiceDescriptorCollection
                 type
                    .GetAttributes()
                    .Where(
-                        attribute => attribute.AttributeClass is { }
-                         && SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, serviceRegistrationAttribute))
+                        // The generic attributes are a distinct symbol per arity, so they are found through the shared base type, as the keyed ones are
+                        attribute => attribute.AttributeClass is { } attributeClass
+                         && ( SymbolEqualityComparer.Default.Equals(attributeClass, serviceRegistrationAttribute)
+                             || attributeClass.IsGenericType && SymbolEqualityComparer.Default.Equals(attributeClass.BaseType, serviceRegistrationBaseAttribute) ))
                    .ToArray();
 
             // attribute priority for discovered services
@@ -248,9 +251,9 @@ internal static class ServiceDescriptorCollection
 
             var lifetimeRegistrations = serviceRegistrationAttributes
                                        .SelectMany(
-                                            attributeData =>
+                                            (attributeData, index) =>
                                             {
-                                                return ( attributeData switch
+                                                var attributeServiceTypes = attributeData switch
                                                 {
                                                     { ConstructorArguments: [_, { Kind: TypedConstantKind.Array, Values: { Length: > 0 } values }] } =>
                                                         values
@@ -259,8 +262,10 @@ internal static class ServiceDescriptorCollection
                                                            .OfType<INamedTypeSymbol>(),
                                                     { AttributeClass.TypeArguments: { Length: > 0 } typeArgs } => typeArgs.OfType<INamedTypeSymbol>(),
                                                     _ => type.AllInterfaces.OfType<INamedTypeSymbol>(),
-                                                } )
-                                                   .Prepend(type);
+                                                };
+
+                                                // Prepending the type for every attribute would make a type with several attributes a duplicate of itself
+                                                return index == 0 ? attributeServiceTypes.Prepend(type) : attributeServiceTypes;
                                             },
                                             (data, serviceType) =>
                                             {
@@ -300,7 +305,8 @@ internal static class ServiceDescriptorCollection
             foreach ((var lifetime, var serviceType) in lifetimeRegistrations.Select(z => z.First()))
             {
                 if (emittedTypes.Contains(serviceType)) continue;
-                var statement = !SymbolEqualityComparer.Default.Equals(serviceType, type)
+                // GetRequiredService<Foo<>>() is not valid C#, so an open generic implementation is registered by type definition
+                var statement = !typeIsOpenGeneric && !SymbolEqualityComparer.Default.Equals(serviceType, type)
                     ? StatementGeneration.GenerateServiceFactory(
                         compilation,
                         serviceType,
