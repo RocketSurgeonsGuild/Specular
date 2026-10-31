@@ -30,7 +30,13 @@ ServiceRegistrationAttribute(ServiceLifetime lifetime, params Type[] serviceType
 | `ServiceTypes` | `ImmutableArray<Type>` | The service types to register against. Empty means register against all implemented interfaces (plus self). |
 | `Lifetime`     | `ServiceLifetime`      | The DI lifetime. Always required.                                                                           |
 
-`AllowMultiple = true` means a single class can carry multiple `[ServiceRegistration]` attributes to be registered against different service types or with different lifetimes simultaneously.
+`AllowMultiple = true` means a single class can carry multiple `[ServiceRegistration]` attributes to be registered against different service types or with different lifetimes simultaneously. The generic and non-generic forms can be mixed freely on the same class.
+
+When a class carries more than one attribute:
+
+- The class itself is registered once, using the lifetime of the first attribute (in declaration order).
+- Each service type is registered with the lifetime of the attribute that names it, and resolves to that single registration of the class.
+- A service type named by more than one attribute (whether generic or not) reports `RSGD0005` — a class cannot register the same service type twice.
 
 ## Generic overloads
 
@@ -121,6 +127,7 @@ builder.Services.AddSpecularServiceRegistrations(SpecularProvider.Instance);
 - Registration is a **compile-time** operation. The generator discovers `[ServiceRegistration]`-decorated types during the build, not at application startup.
 - Abstract classes and static classes are implicitly excluded — `AddClasses()` skips them by default.
 - If `ServiceTypes` is empty (i.e. the attribute is applied with no explicit type arguments), the class is registered against itself and every interface it implements.
+- Open generic classes are registered by their type definitions, so the non-generic form is the one to use for them: `[ServiceRegistration(ServiceLifetime.Scoped, typeof(IRepository<>))]` on `Repository<T>`. The generic attributes cannot name an open generic service type (attribute type arguments cannot use type parameters).
 
 ## See also
 
