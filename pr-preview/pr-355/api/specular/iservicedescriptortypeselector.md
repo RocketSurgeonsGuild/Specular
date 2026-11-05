@@ -2,7 +2,7 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/pr-preview/pr-355/api/specular.md)
-- Version: `0.4.1-pr.8`
+- Version: `0.4.1-pr.11`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
 - Implements: [IServiceDescriptorAssemblySelector](/Specular/pr-preview/pr-355/api/specular/iservicedescriptorassemblyselector.md)
