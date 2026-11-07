@@ -33,6 +33,13 @@ jobs:
               with:
                   clean: 'false'
                   fetch-depth: '0'
+            # A tag checks out as a detached HEAD, and GitVersion only names the branch when one's tip is that commit. Once
+            # main moves past the tagged commit (or the tag isn't on a branch tip) it falls back to "(no branch)" and
+            # versions the release as <next patch>--no-branch-.1. A local main at the tag makes it resolve to the tag.
+            - name: 🏷️ Put the tag on a branch for GitVersion
+              if: startsWith(github.ref, 'refs/tags/')
+              # Pinned to the tagged commit (GITHUB_SHA), never origin/main, which may be ahead of the tag.
+              run: git checkout -B main "$GITHUB_SHA"
             - name: 🛠️ Setup mise
               uses: jdx/mise-action@v5
               env:
@@ -55,8 +62,8 @@ jobs:
                   cache_save_post: true
                   experimental: true
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-            # Everything but dotnet, in parallel (mise's default jobs). Naming the tools keeps `mise install` from touching the
-            # dotnet installs again.
+            # Everything but dotnet, in parallel (mise's default jobs). Naming the tools keeps `mise install` from running
+            # dotnet's `when = "always"` postinstall (the workloads) a second time.
             - name: 🧰 Install tools
               run: mise ls --current --local --json | jq -r 'keys[] | select(. != "dotnet")' | xargs mise install
               env:
@@ -81,7 +88,7 @@ jobs:
               uses: actions/upload-artifact@v7
               with:
                   name: logs
-                  # Test results and coverage have their own artifacts below.
+                  # Test results and coverage have their own artifacts below; the HTML coverage report alone is over 1 GB.
                   path: |
                       artifacts/logs/
                       !artifacts/logs/tests/
