@@ -1,6 +1,7 @@
 <Project>
     <ItemGroup>
         <PackageReference Include="Polyfill" PrivateAssets="all" />
+        <PackageReference Include="Rocket.Surgery.AssemblyInfo" PrivateAssets="all" />
         <Compile Include="$(MSBuildThisFileDirectory)..\Specular.Analyzers\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\Specular.Analyzers\obj\**\*.cs" />
         <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>

@@ -12,6 +12,8 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" PrivateAssets="all" />
         <PackageReference Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" />
+        <!-- AssemblyInfo.Dependencies gives the generator's versions to the snapshot scrubbers without reflection. -->
+        <PackageReference Include="Rocket.Surgery.AssemblyInfo" PrivateAssets="all" />
         <PackageReference Include="Microsoft.Extensions.Configuration" />
         <PackageReference Include="Microsoft.Reactive.Testing" />
     </ItemGroup>
