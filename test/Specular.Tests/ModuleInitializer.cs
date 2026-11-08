@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using DiffEngine;
@@ -68,13 +67,16 @@ internal static partial class ModuleInitializer
         VerifierSettings.AddScrubber(
             (builder, counter) =>
             {
-                if (typeof(SpecularProviderGenerator).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>() is
-                    { Version: { Length: > 0 } version })
+                // The generator's versions, read from the typed dependency information rather than its assembly.
+                if (AssemblyInfo.Dependencies.Specular_Analyzers.Attributes.FileVersion is { Length: > 0 } version)
                 {
                     _ = builder.Replace(version, "version");
                 }
 
-                if (typeof(SpecularProviderGenerator).Assembly.GetCustomAttribute<AssemblyVersionAttribute>() is { Version: { Length: > 0 } version2 }) _ = builder.Replace(version2, "version");
+                if (AssemblyInfo.Dependencies.Specular_Analyzers.Attributes.Version is { Length: > 0 } version2)
+                {
+                    _ = builder.Replace(version2, "version");
+                }
 
                 // regex to replace the version number in this string Version=12.0.0.0,
                 var regex = MyRegex();
