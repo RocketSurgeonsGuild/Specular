@@ -2,7 +2,7 @@
 
 - Kind: `enum`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.1`
+- Version: `0.4.2-beta.2`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
 
