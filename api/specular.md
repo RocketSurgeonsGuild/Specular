@@ -1,7 +1,7 @@
 # Specular
 
 - Package: `Specular`
-- Version: `0.4.2-beta.6`
+- Version: `0.4.2-beta.7`
 - Target framework: `net10.0`
 - NuGet: [Specular](https://www.nuget.org/packages/Specular)
 
