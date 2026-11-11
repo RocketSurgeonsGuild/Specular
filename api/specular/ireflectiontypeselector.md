@@ -2,7 +2,7 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.10`
+- Version: `0.4.2-beta.11`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
 - Implements: [IReflectionAssemblySelector](/Specular/api/specular/ireflectionassemblyselector.md)
