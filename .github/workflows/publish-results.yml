@@ -1,9 +1,12 @@
 name: Publish Results
 
+# Publishes the unit tests (build.yml) and the sample checks (samples.yml) of a commit as one "Test Results" check. Each workflow
+# finishing triggers this one, but only the trigger for the run that finished last publishes, once both are done.
 on:
     workflow_run:
         workflows:
             - Build
+            - samples
         types:
             - completed
 
@@ -23,10 +26,53 @@ permissions:
     statuses: write
 
 jobs:
-    publish:
+    # The latest Build and samples runs of the triggering run's commit and event, and whether to publish now.
+    runs:
         runs-on: ubuntu-latest
+        timeout-minutes: 5
         if: >
             github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure'
+        outputs:
+            build: ${{ steps.runs.outputs.build }}
+            samples: ${{ steps.runs.outputs.samples }}
+            ready: ${{ steps.runs.outputs.ready }}
+        steps:
+            - name: 🔎 Find the commit's runs
+              id: runs
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+                  EVENT: ${{ github.event.workflow_run.event }}
+                  TRIGGER: ${{ github.event.workflow_run.id }}
+                  TRIGGER_NAME: ${{ github.event.workflow_run.name }}
+              run: |
+                  runs=$(gh run list --repo "$GITHUB_REPOSITORY" --commit "$HEAD_SHA" --event "$EVENT" --limit 100 \
+                      --json databaseId,workflowName,status,updatedAt \
+                      --jq '[group_by(.workflowName)[] | max_by(.databaseId) | select(.workflowName == "Build" or .workflowName == "samples")]')
+                  # A listing that lags behind would leave no run "last", and nothing would publish: count the trigger in.
+                  if ! jq -e --argjson id "$TRIGGER" 'any(.[]; .databaseId == $id)' <<< "$runs" > /dev/null; then
+                      echo "::warning::Run $TRIGGER isn't listed for $HEAD_SHA yet; counting it as the last to finish."
+                      runs=$(jq --argjson id "$TRIGGER" --arg name "$TRIGGER_NAME" \
+                          '[.[] | select(.workflowName != $name)] + [{databaseId: $id, workflowName: $name, status: "completed", updatedAt: "9999"}]' <<< "$runs")
+                  fi
+                  echo "$runs" | jq -r '.[] | "\(.workflowName): run \(.databaseId), \(.status), updated \(.updatedAt)"'
+                  echo "build=$(jq -r '.[] | select(.workflowName == "Build") | .databaseId' <<< "$runs")" >> "$GITHUB_OUTPUT"
+                  echo "samples=$(jq -r '.[] | select(.workflowName == "samples") | .databaseId' <<< "$runs")" >> "$GITHUB_OUTPUT"
+                  # The other run still going publishes when it finishes; when both are done, the one that finished last does.
+                  pending=$(jq '[.[] | select(.status != "completed")] | length' <<< "$runs")
+                  last=$(jq -r 'max_by(.updatedAt).databaseId' <<< "$runs")
+                  if [ "$pending" = 0 ] && [ "$last" = "$TRIGGER" ]; then
+                      echo "ready=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "Not publishing from run $TRIGGER: $pending run(s) still going, last finished: $last."
+                      echo "ready=false" >> "$GITHUB_OUTPUT"
+                  fi
+
+    publish:
+        needs: runs
+        if: needs.runs.outputs.ready == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
         steps:
             - name: 📥 Download event
               continue-on-error: true
@@ -34,15 +80,24 @@ jobs:
               with:
                   name: event
                   path: artifacts/
-                  run-id: ${{ github.event.workflow_run.id }}
+                  run-id: ${{ needs.runs.outputs.build }}
                   github-token: ${{ secrets.GITHUB_TOKEN }}
             - name: 📥 Download test data
               continue-on-error: true
               uses: actions/download-artifact@v8
               with:
                   name: test data
-                  path: artifacts/tests/
-                  run-id: ${{ github.event.workflow_run.id }}
+                  path: artifacts/tests/build/
+                  run-id: ${{ needs.runs.outputs.build }}
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: 📥 Download sample results
+              if: needs.runs.outputs.samples != ''
+              continue-on-error: true
+              uses: actions/download-artifact@v8
+              with:
+                  pattern: samples-test-results-*
+                  path: artifacts/tests/samples/
+                  run-id: ${{ needs.runs.outputs.samples }}
                   github-token: ${{ secrets.GITHUB_TOKEN }}
             - name: 📥 Download coverage data
               continue-on-error: true
@@ -50,7 +105,7 @@ jobs:
               with:
                   name: coverage
                   path: artifacts/coverage/
-                  run-id: ${{ github.event.workflow_run.id }}
+                  run-id: ${{ needs.runs.outputs.build }}
                   github-token: ${{ secrets.GITHUB_TOKEN }}
             - name: 🚀 Publish Test Results
               if: always()
@@ -59,10 +114,12 @@ jobs:
                   commit: ${{ github.event.workflow_run.head_sha }}
                   event_file: artifacts/event.json
                   event_name: ${{ github.event.workflow_run.event }}
-                  # One report per test module. Skip the combined report the .NET 11 SDK also writes under merged/, which
-                  # would count every test twice.
+                  # The unit tests' TRX, one per test module (skipping the combined report the .NET 11 SDK also writes under
+                  # merged/, which would count every test twice), and one JUnit file per sample check. Only *.xml from the
+                  # samples: the build's test data also holds cobertura XML.
                   files: |
-                      artifacts/tests/**/*.trx
+                      artifacts/tests/build/**/*.trx
+                      artifacts/tests/samples/**/*.xml
                       !artifacts/tests/**/merged/**
             - name: 🚀 Publish Coverage Comment
               if: always() && github.event.workflow_run.event == 'pull_request'
