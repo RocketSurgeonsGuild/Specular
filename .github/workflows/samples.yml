@@ -84,6 +84,10 @@ jobs:
         runs-on: ${{ matrix.os }}
         # A healthy leg takes under 10 minutes; without a limit a hung sample holds the runner for GitHub's 6 hours.
         timeout-minutes: 45
+        env:
+            # One Windows leg saves the mise cache, on main only: pull requests and the merge queue each have their own cache
+            # scope, so saving there would make one per ref. Every ref can restore main's.
+            SAVE_MISE_CACHE: ${{ github.ref == 'refs/heads/main' && matrix.os == 'windows-latest' && matrix.group == 'native-aot' }}
         strategy:
             fail-fast: false
             matrix:
@@ -129,11 +133,13 @@ jobs:
                   # (smoke.mjs). The other tools in .config/mise.toml are for the build and lint jobs.
                   install_args: dotnet node
                   cache: true
-                  # Restore only: build.yml is the single cache writer. The key and max age match build.yml's, so the Linux
-                  # legs restore the tools main's build saved (no Windows build saves one, so the Windows legs install them).
+                  # The key and max age match build.yml's, so the Linux legs restore the tools main's build saved. No build
+                  # runs on Windows, so one Windows hosts leg saves Windows' cache (SAVE_MISE_CACHE, set by the hosts job).
+                  # The workload-heads legs never set it: they install the MAUI workloads into the same dotnet, which would
+                  # bloat the cache.
                   cache_key: mise-{{platform}}-{{cache_period}}
                   cache_max_age_days: 7
-                  cache_save: false
+                  cache_save: ${{ env.SAVE_MISE_CACHE == 'true' }}
                   experimental: true
                   github_token: ${{ secrets.GITHUB_TOKEN }}
             # The dotnet mise installed (it exports DOTNET_ROOT), which global.json asks for: on Windows the runner's own SDKs come
