@@ -2,7 +2,7 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.20`
+- Version: `0.4.2-beta.21`
 - Namespace: `Specular`
 - Target framework: `net10.0`
 
