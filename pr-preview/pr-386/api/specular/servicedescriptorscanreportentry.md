@@ -2,7 +2,7 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/pr-preview/pr-386/api/specular.md)
-- Version: `0.4.2-pr.14`
+- Version: `0.4.2-pr.22`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
 - Implements: `IEquatable<ServiceDescriptorScanReportEntry>`

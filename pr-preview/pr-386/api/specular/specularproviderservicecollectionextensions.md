@@ -2,7 +2,7 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/pr-preview/pr-386/api/specular.md)
-- Version: `0.4.2-pr.14`
+- Version: `0.4.2-pr.22`
 - Namespace: `Specular`
 - Target framework: `net10.0`
 
