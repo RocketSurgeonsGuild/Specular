@@ -42,6 +42,10 @@ on:
 permissions:
     contents: read
 
+env:
+    # smoke.mjs writes each check's result here as JUnit XML; publish-results.yml publishes them with the unit tests.
+    SPECULAR_SAMPLE_RESULTS: artifacts/test-results
+
 # A newer run for the same branch (or pull request head) cancels this one; tags and merge-queue refs are unique.
 concurrency:
     group: samples-${{ github.event_name }}-${{ github.head_ref || github.ref }}
@@ -172,21 +176,21 @@ jobs:
               run: |
                   for framework in net10.0 net11.0; do
                       dotnet publish samples/hosts/Specular.Samples.Console -c Release -f "$framework" -o "artifacts/samples/console-$framework" --disable-build-servers
-                      node samples/smoke.mjs exe -- "artifacts/samples/console-$framework/Specular.Samples.Console$EXE"
+                      node samples/smoke.mjs exe --name "Console Native AOT ($framework)" -- "artifacts/samples/console-$framework/Specular.Samples.Console$EXE"
                   done
             - name: ⚙️ Web (Native AOT)
               if: matrix.group == 'native-aot' && (success() || failure())
               run: |
                   for framework in net10.0 net11.0; do
                       dotnet publish samples/hosts/Specular.Samples.Web -c Release -f "$framework" -o "artifacts/samples/web-$framework" --disable-build-servers
-                      node samples/smoke.mjs web --url http://127.0.0.1:5199/ -- "artifacts/samples/web-$framework/Specular.Samples.Web$EXE" --urls http://127.0.0.1:5199
+                      node samples/smoke.mjs web --name "Web Native AOT ($framework)" --url http://127.0.0.1:5199/ -- "artifacts/samples/web-$framework/Specular.Samples.Web$EXE" --urls http://127.0.0.1:5199
                   done
             - name: ⚙️ Blazor WebAssembly
               if: matrix.group == 'blazor-uno-desktop'
               run: |
                   for framework in net10.0 net11.0; do
                       dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers
-                      node samples/smoke.mjs browser "artifacts/samples/blazor-$framework/wwwroot"
+                      node samples/smoke.mjs browser --name "Blazor WebAssembly ($framework)" "artifacts/samples/blazor-$framework/wwwroot"
                   done
               env:
                   CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
@@ -194,12 +198,12 @@ jobs:
               if: matrix.group == 'blazor-uno-desktop' && (success() || failure())
               run: |
                   dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net10.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
-                  node samples/smoke.mjs exe -- "samples/hosts/Specular.Samples.Uno/bin/Release/net10.0-desktop/Specular.Samples.Uno$EXE"
+                  node samples/smoke.mjs exe --name "Uno desktop (net10.0)" -- "samples/hosts/Specular.Samples.Uno/bin/Release/net10.0-desktop/Specular.Samples.Uno$EXE"
             - name: ⚙️ Uno WebAssembly
               if: matrix.group == 'uno-webassembly'
               run: |
                   dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net10.0-browserwasm -p:SpecularSampleTargetFrameworks=net10.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
-                  node samples/smoke.mjs browser artifacts/samples/uno-browserwasm/wwwroot
+                  node samples/smoke.mjs browser --name "Uno WebAssembly (net10.0)" artifacts/samples/uno-browserwasm/wwwroot
               env:
                   CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
             - name: 🏺 Publish logs
@@ -208,6 +212,15 @@ jobs:
               with:
                   name: samples-hosts-logs-${{ matrix.os }}-${{ matrix.group }}
                   path: artifacts/logs/
+                  if-no-files-found: ignore
+            - &results
+              name: 🏺 Publish test results
+              if: always()
+              uses: actions/upload-artifact@v7
+              with:
+                  # publish-results.yml downloads every samples-test-results-* artifact of the run.
+                  name: samples-test-results-${{ github.job }}-${{ strategy.job-index }}
+                  path: ${{ env.SPECULAR_SAMPLE_RESULTS }}
                   if-no-files-found: ignore
 
     workload-heads:
@@ -276,7 +289,7 @@ jobs:
               run: |
                   # The bundle is named after ApplicationTitle; the executable inside it after the assembly.
                   app=(samples/hosts/Specular.Samples.Maui/bin/Debug/"$FRAMEWORK"/*/*.app/Contents/MacOS/Specular.Samples.Maui)
-                  node samples/smoke.mjs exe -- "${app[0]}"
+                  node samples/smoke.mjs exe --name "MAUI Mac Catalyst ($FRAMEWORK)" -- "${app[0]}"
               env:
                   FRAMEWORK: ${{ matrix.maccatalyst }}
             - name: ⚙️ Build Specular.Samples.Uno
@@ -294,6 +307,8 @@ jobs:
                   name: samples-workload-logs-${{ strategy.job-index }}
                   path: artifacts/logs/
                   if-no-files-found: ignore
+            # Only the Mac Catalyst head runs (and so reports a result); the other heads are build-only.
+            - *results
 
     # The single check the main/next ruleset requires: the matrix jobs above report one check per leg, under names that change
     # with the matrix. It also passes when nothing the samples build from changed (both legs skipped by `changes`).

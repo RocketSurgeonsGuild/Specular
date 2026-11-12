@@ -9,12 +9,15 @@
 //   node samples/smoke.mjs browser <directory>
 //       Serves <directory> (a published wwwroot), opens it in headless Chrome and passes when the page's console logs a MATCH
 //       line. Chrome comes from CHROME_PATH, or the usual install locations.
+//
+// --name <name> (before any --) names the check. With SPECULAR_SAMPLE_RESULTS set to a directory, each run also writes its
+// result there as a JUnit XML file, so CI can publish the sample checks next to the unit tests.
 
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
-import { extname, join, normalize, resolve, sep } from 'node:path';
+import { basename, extname, join, normalize, resolve, sep } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const PREFIX = 'SPECULAR-SAMPLE:';
@@ -296,9 +299,53 @@ async function runBrowser(directory) {
     }
 }
 
+// Takes --name <value> out of the arguments, looking only before the command's -- so a sample's own arguments are left alone.
+function takeName(args) {
+    const end = args.includes('--') ? args.indexOf('--') : args.length;
+    const index = args.slice(0, end).indexOf('--name');
+    if (index < 0) return [undefined, args];
+    if (index + 1 >= end) throw new Error('missing --name <value>');
+    return [args[index + 1], [...args.slice(0, index), ...args.slice(index + 2)]];
+}
+
+const xml = text =>
+    String(text)
+        // A sample's colour codes, then whatever else XML 1.0 can't hold at all.
+        .replace(/\u001b\[[0-9;?]*[A-Za-z]/g, '')
+        .replace(/[^\t\n\r\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/gu, '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
+
+// One JUnit file per check. The class name carries the OS, so the same check on Linux and Windows reports as two tests.
+function writeResult(name, seconds, error) {
+    const directory = process.env.SPECULAR_SAMPLE_RESULTS;
+    if (!directory) return;
+    const os = { linux: 'Linux', win32: 'Windows', darwin: 'macOS' }[process.platform] ?? process.platform;
+    const failure = error === undefined ? '' : `\n      <failure message="${xml(error)}">${xml(error)}</failure>\n    `;
+    const time = seconds.toFixed(3);
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(
+        join(directory, `${os}-${name.replace(/[^\w.-]+/g, '_')}.xml`),
+        `<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Samples (${xml(os)})" tests="1" failures="${error === undefined ? 0 : 1}" errors="0" skipped="0" time="${time}">
+    <testcase classname="Samples.${xml(os)}" name="${xml(name)}" time="${time}">${failure}</testcase>
+  </testsuite>
+</testsuites>
+`,
+    );
+}
+
 // Last, so the declarations above are initialized before anything runs.
-const [mode, ...rest] = process.argv.slice(2);
+const [mode, ...args] = process.argv.slice(2);
+const started = performance.now();
+let name = mode ?? 'smoke';
+let failure;
 try {
+    const [givenName, rest] = takeName(args);
+    name = givenName ?? `${mode} ${basename(mode === 'browser' ? (rest[0] ?? '') : (commandAfterSeparator(rest)[0] ?? ''))}`;
     switch (mode) {
         case 'exe':
             await runExe(commandAfterSeparator(rest));
@@ -314,8 +361,15 @@ try {
     }
     console.log(`smoke: PASS (${mode})`);
 } catch (error) {
-    console.error(`smoke: FAIL (${mode}): ${error instanceof Error ? error.message : error}`);
+    failure = error instanceof Error ? error.message : String(error);
+    console.error(`smoke: FAIL (${mode}): ${failure}`);
     process.exitCode = 1;
+}
+try {
+    writeResult(name, (performance.now() - started) / 1000, failure);
+} catch (error) {
+    // The check's own result (the exit code) is what fails the job; a report that can't be written shouldn't hide it.
+    console.error(`smoke: couldn't write the result file: ${error instanceof Error ? error.message : error}`);
 }
 // A child the sample left behind (Chrome's helper processes, a server's workers) can keep the event loop alive and hang the job;
 // give output a moment to flush, then exit regardless.
