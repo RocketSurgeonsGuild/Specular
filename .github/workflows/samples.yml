@@ -4,7 +4,8 @@ name: samples
 # registered exactly the expected services: every host prints a SPECULAR-SAMPLE line, which samples/smoke.mjs looks for.
 #
 # - hosts: Console and Web (Native AOT), Blazor WebAssembly and the Uno desktop and WebAssembly heads, run on every OS. The
-#   browser apps run in headless Chrome.
+#   browser apps run in headless Chrome. The hosts are split into three groups of about the same length, each its own leg, so
+#   they build side by side instead of one after another.
 # - workload heads: the MAUI and Uno mobile/Windows heads, which Specular.slnx leaves out. Each leg installs the workloads its
 #   runner can build and picks those heads through SpecularSampleTargetFrameworks (';' passed as %3B, since MSBuild splits -p:
 #   values on it). The Mac Catalyst head also runs. Android, iOS and Windows heads are build-only: running them needs an emulator,
@@ -77,12 +78,16 @@ jobs:
                           - '.github/workflows/samples.yml'
 
     hosts:
-        name: Hosts (${{ matrix.os }})
+        name: Hosts (${{ matrix.os }}, ${{ matrix.group }})
         needs: changes
         if: needs.changes.outputs.samples == 'true'
         runs-on: ${{ matrix.os }}
-        # A healthy leg takes about 10 minutes; without a limit a hung sample holds the runner for GitHub's 6 hours.
+        # A healthy leg takes under 10 minutes; without a limit a hung sample holds the runner for GitHub's 6 hours.
         timeout-minutes: 45
+        env:
+            # One Windows leg saves the mise cache, on main only: pull requests and the merge queue each have their own cache
+            # scope, so saving there would make one per ref. Every ref can restore main's.
+            SAVE_MISE_CACHE: ${{ github.ref == 'refs/heads/main' && matrix.os == 'windows-latest' && matrix.group == 'native-aot' }}
         strategy:
             fail-fast: false
             matrix:
@@ -91,6 +96,12 @@ jobs:
                     # Off: passes, but fails intermittently (see the note at the top).
                     # - macos-26
                     - windows-latest
+                # Balanced on the steps' measured times (Windows medians): Console + Web about 5 minutes, Blazor + Uno desktop
+                # about 5 minutes, Uno WebAssembly about 5.5 minutes. One leg with all five took about 20 minutes on Windows.
+                group:
+                    - native-aot
+                    - blazor-uno-desktop
+                    - uno-webassembly
         defaults:
             run:
                 shell: bash
@@ -118,10 +129,17 @@ jobs:
                   MISE_JOBS: '1'
               with:
                   install: true
+                  # Only what the samples use: dotnet (the SDK with its wasm-tools-net10 workload, and the runtime) and node
+                  # (smoke.mjs). The other tools in .config/mise.toml are for the build and lint jobs.
+                  install_args: dotnet node
                   cache: true
-                  # Restore only: build.yml is the single cache writer.
-                  cache_save: false
-                  cache_key_prefix: mise-v2
+                  # The key and max age match build.yml's, so the Linux legs restore the tools main's build saved. No build
+                  # runs on Windows, so one Windows hosts leg saves Windows' cache (SAVE_MISE_CACHE, set by the hosts job).
+                  # The workload-heads legs never set it: they install the MAUI workloads into the same dotnet, which would
+                  # bloat the cache.
+                  cache_key: mise-{{platform}}-{{cache_period}}
+                  cache_max_age_days: 7
+                  cache_save: ${{ env.SAVE_MISE_CACHE == 'true' }}
                   experimental: true
                   github_token: ${{ secrets.GITHUB_TOKEN }}
             # The dotnet mise installed (it exports DOTNET_ROOT), which global.json asks for: on Windows the runner's own SDKs come
@@ -143,26 +161,28 @@ jobs:
             # Google Chrome.
             - name: 🌐 Setup Chrome
               id: chrome
-              if: runner.os == 'Linux'
+              # Only the browser smoke tests (Blazor and Uno WebAssembly) start Chrome.
+              if: runner.os == 'Linux' && matrix.group != 'native-aot'
               uses: browser-actions/setup-chrome@v2
             # wasm-tools-net10 (the Uno WebAssembly head) comes from the .NET SDK's mise postinstall (.config/mise.toml).
             - name: 🔎 Check workloads
               run: dotnet workload list
             - name: ⚙️ Console (Native AOT)
+              if: matrix.group == 'native-aot'
               run: |
                   for framework in net10.0 net11.0; do
                       dotnet publish samples/hosts/Specular.Samples.Console -c Release -f "$framework" -o "artifacts/samples/console-$framework" --disable-build-servers
                       node samples/smoke.mjs exe -- "artifacts/samples/console-$framework/Specular.Samples.Console$EXE"
                   done
             - name: ⚙️ Web (Native AOT)
-              if: success() || failure()
+              if: matrix.group == 'native-aot' && (success() || failure())
               run: |
                   for framework in net10.0 net11.0; do
                       dotnet publish samples/hosts/Specular.Samples.Web -c Release -f "$framework" -o "artifacts/samples/web-$framework" --disable-build-servers
                       node samples/smoke.mjs web --url http://127.0.0.1:5199/ -- "artifacts/samples/web-$framework/Specular.Samples.Web$EXE" --urls http://127.0.0.1:5199
                   done
             - name: ⚙️ Blazor WebAssembly
-              if: success() || failure()
+              if: matrix.group == 'blazor-uno-desktop'
               run: |
                   for framework in net10.0 net11.0; do
                       dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers
@@ -171,12 +191,12 @@ jobs:
               env:
                   CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
             - name: ⚙️ Uno desktop
-              if: success() || failure()
+              if: matrix.group == 'blazor-uno-desktop' && (success() || failure())
               run: |
                   dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net10.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
                   node samples/smoke.mjs exe -- "samples/hosts/Specular.Samples.Uno/bin/Release/net10.0-desktop/Specular.Samples.Uno$EXE"
             - name: ⚙️ Uno WebAssembly
-              if: success() || failure()
+              if: matrix.group == 'uno-webassembly'
               run: |
                   dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net10.0-browserwasm -p:SpecularSampleTargetFrameworks=net10.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
                   node samples/smoke.mjs browser artifacts/samples/uno-browserwasm/wwwroot
@@ -186,7 +206,7 @@ jobs:
               if: always()
               uses: actions/upload-artifact@v7
               with:
-                  name: samples-hosts-logs-${{ matrix.os }}
+                  name: samples-hosts-logs-${{ matrix.os }}-${{ matrix.group }}
                   path: artifacts/logs/
                   if-no-files-found: ignore
 
