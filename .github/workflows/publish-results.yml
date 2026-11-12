@@ -59,7 +59,11 @@ jobs:
                   commit: ${{ github.event.workflow_run.head_sha }}
                   event_file: artifacts/event.json
                   event_name: ${{ github.event.workflow_run.event }}
-                  files: artifacts/tests/**/*.trx
+                  # One report per test module. Skip the combined report the .NET 11 SDK also writes under merged/, which
+                  # would count every test twice.
+                  files: |
+                      artifacts/tests/**/*.trx
+                      !artifacts/tests/**/merged/**
             - name: 🚀 Publish Coverage Comment
               if: always() && github.event.workflow_run.event == 'pull_request'
               continue-on-error: true
