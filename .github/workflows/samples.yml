@@ -88,6 +88,8 @@ jobs:
             # One Windows leg saves the mise cache, on main only: pull requests and the merge queue each have their own cache
             # scope, so saving there would make one per ref. Every ref can restore main's.
             SAVE_MISE_CACHE: ${{ github.ref == 'refs/heads/main' && matrix.os == 'windows-latest' && matrix.group == 'native-aot' }}
+            # Names the leg's NuGet cache (see the Restore the NuGet cache step).
+            NUGET_CACHE_LEG: ${{ matrix.group }}
         strategy:
             fail-fast: false
             matrix:
@@ -155,6 +157,19 @@ jobs:
                   command -v dotnet
                   dotnet --version
                   node --version
+            # Windows only: there the restores took 77-169 s a leg (package signature verification and slow file I/O), against
+            # 13-31 s on Linux, where a cache would save little and take room from the mise caches. One cache per leg, since the legs
+            # restore different heads. The key changes with the package versions, so a ref only saves one when its dependencies
+            # differ from main's (or main has none yet); otherwise it restores main's.
+            - &nuget
+              name: 📦 Restore the NuGet cache
+              if: runner.os == 'Windows'
+              uses: actions/cache@v6
+              with:
+                  path: ~/.nuget/packages
+                  key: nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj', 'global.json', 'NuGet.config') }}
+                  restore-keys: |
+                      nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-
             # Linux only. On macOS the action unpacks Chrome for Testing's bundle into a directory not named *.app, so Chrome can't
             # launch its renderer helpers (pages never answer the DevTools protocol); on Windows Chrome's sandbox can't read the
             # tool cache's chrome.exe, so its network service crashes and pages never load. There smoke.mjs uses the image's own
@@ -216,6 +231,9 @@ jobs:
         if: needs.changes.outputs.samples == 'true'
         runs-on: ${{ matrix.os }}
         timeout-minutes: 60
+        env:
+            # Names the leg's NuGet cache (see the Restore the NuGet cache step in the hosts job).
+            NUGET_CACHE_LEG: ${{ matrix.name }}
         strategy:
             fail-fast: false
             matrix:
@@ -258,6 +276,7 @@ jobs:
             - *home
             - *mise
             - *dotnet
+            - *nuget
             - name: 📦 Install workloads
               run: |
                   read -ra workloads <<< "$WORKLOADS"
