@@ -47,7 +47,7 @@
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="11.0.1" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.1" />
     <PackageVersion Include="TUnit" Version="1.84.0" />
-    <PackageVersion Include="Verify.TUnit" Version="33.3.4" />
+    <PackageVersion Include="Verify.TUnit" Version="33.4.0" />
   </ItemGroup>
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.15" />
