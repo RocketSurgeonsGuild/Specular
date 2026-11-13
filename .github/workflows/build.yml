@@ -46,6 +46,10 @@ jobs:
                   # One install at a time: mise downloads dotnet-install.sh to one shared path for every dotnet version, so the
                   # SDK and runtime installs overwrite it under each other ("failed to execute command") when they run in parallel.
                   MISE_JOBS: '1'
+                  # A new .NET SDK isn't in the cache main saved, so a PR that moves it downloads dotnet-install from dot.net on every leg,
+                  # which times out now and then on the runners: more and longer attempts than mise's 3 x 30s.
+                  MISE_HTTP_RETRIES: '6'
+                  MISE_HTTP_TIMEOUT: '90s'
               with:
                   install: true
                   # Only dotnet (the SDK and the runtime) here; the other tools install in parallel in the next step.
