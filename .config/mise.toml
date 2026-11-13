@@ -45,6 +45,10 @@ docs = { run = [
 [settings]
 experimental = true
 prereleases = true
+# dotnet-install comes from dot.net, which times out now and then on CI runners (most of all for a new SDK that isn't in
+# the tool cache yet): more and longer attempts than the default 3 x 30s.
+http_retries = 6
+http_timeout = "90s"
 
 [env]
 HK_MISE = 1
