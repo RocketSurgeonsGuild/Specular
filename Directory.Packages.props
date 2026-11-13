@@ -34,11 +34,12 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.9.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CrashDump" Version="2.5.3" />
     <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.3" />
-    <PackageVersion Include="System.Collections.Immutable" Version="11.0.0" />
+    <!-- The roslyn5.9 analyzer slice runs in the .NET 10.0.4xx SDK compiler (net10.0 runtime): keep these on 10.0.x. -->
+    <PackageVersion Include="System.Collections.Immutable" Version="10.0.15" />
     <PackageVersion Include="Polyfill" Version="11.4.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
-    <PackageVersion Include="System.Text.Json" Version="11.0.0" />
+    <PackageVersion Include="System.Text.Json" Version="10.0.15" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
@@ -57,7 +58,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.15" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.15" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.15" />
-    <PackageVersion Include="Microsoft.Maui.Controls" Version="11.0.10" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.130" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="11.0.0" />
