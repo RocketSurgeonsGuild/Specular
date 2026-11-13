@@ -38,4 +38,14 @@
             <AdditionalProperties>RuntimeIdentifier=browser-wasm</AdditionalProperties>
         </ProjectReference>
     </ItemDefinitionGroup>
+    <!--
+        The browser-wasm entry in RuntimeIdentifiers above makes those libraries look RID-specific, so an app's per-RID inner builds
+        (Android's android-arm64/android-x64, for one) would pass their RID down and need restore targets the library never has
+        (NETSDK1047). Any other RID builds them RID-agnostic.
+    -->
+    <ItemDefinitionGroup Condition="'$(RuntimeIdentifier)' != '' and '$(RuntimeIdentifier)' != 'browser-wasm' and $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
+        <ProjectReference>
+            <UndefineProperties>%(UndefineProperties);RuntimeIdentifier</UndefineProperties>
+        </ProjectReference>
+    </ItemDefinitionGroup>
 </Project>

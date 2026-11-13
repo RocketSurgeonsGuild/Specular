@@ -37,7 +37,22 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
         Sourcy.DotNet.Projects.Specular_Samples_Web
     ];
     private readonly IReadOnlyCollection<string> frameworks = ["net10.0", "net11.0"];
-    protected override ModuleConfiguration Configure() => ModuleConfiguration.Create().WithRetryCount(3).Build();
+    protected override ModuleConfiguration Configure() => ModuleConfiguration
+                                                         .Create()
+                                                         .WithRetryCount(3)
+                                                         // On CI, samples.yml publishes these same hosts for both frameworks
+                                                         // (Linux and Windows, under the same in-csproj zero-warning policy) and
+                                                         // also runs them. Publishing them here too only took CPU from the tests,
+                                                         // which run alongside this module on the build runner.
+                                                         .WithSkipWhen(() => SkipDecision.Of(
+                                                             IsOnCI(),
+                                                             "samples.yml publishes and runs the Native AOT hosts on CI"
+                                                         ))
+                                                         .Build();
+
+    private static bool IsOnCI() =>
+        Environment.GetEnvironmentVariable("CI") is not null ||
+        Environment.GetEnvironmentVariable("GITHUB_ACTIONS") is not null;
     protected override async Task<ImmutableList<CommandResult>?> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
     {
         var rid = RuntimeInformation.RuntimeIdentifier;

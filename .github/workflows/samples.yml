@@ -133,7 +133,7 @@ jobs:
                   MISE_JOBS: '1'
               with:
                   install: true
-                  # Only what the samples use: dotnet (the SDK with its wasm-tools-net10 workload, and the runtime) and node
+                  # Only what the samples use: dotnet (the SDK with its wasm-tools workload, and the runtime) and node
                   # (smoke.mjs). The other tools in .config/mise.toml are for the build and lint jobs.
                   install_args: dotnet node
                   cache: true
@@ -168,7 +168,7 @@ jobs:
               # Only the browser smoke tests (Blazor and Uno WebAssembly) start Chrome.
               if: runner.os == 'Linux' && matrix.group != 'native-aot'
               uses: browser-actions/setup-chrome@v2
-            # wasm-tools-net10 (the Uno WebAssembly head) comes from the .NET SDK's mise postinstall (.config/mise.toml).
+            # wasm-tools (the Uno WebAssembly head) comes from the .NET SDK's mise postinstall (.config/mise.toml).
             - name: 🔎 Check workloads
               run: dotnet workload list
             - name: ⚙️ Console (Native AOT)
@@ -197,13 +197,13 @@ jobs:
             - name: ⚙️ Uno desktop
               if: matrix.group == 'blazor-uno-desktop' && (success() || failure())
               run: |
-                  dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net10.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
-                  node samples/smoke.mjs exe --name "Uno desktop (net10.0)" -- "samples/hosts/Specular.Samples.Uno/bin/Release/net10.0-desktop/Specular.Samples.Uno$EXE"
+                  dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net11.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
+                  node samples/smoke.mjs exe --name "Uno desktop (net11.0)" -- "samples/hosts/Specular.Samples.Uno/bin/Release/net11.0-desktop/Specular.Samples.Uno$EXE"
             - name: ⚙️ Uno WebAssembly
               if: matrix.group == 'uno-webassembly'
               run: |
-                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net10.0-browserwasm -p:SpecularSampleTargetFrameworks=net10.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
-                  node samples/smoke.mjs browser --name "Uno WebAssembly (net10.0)" artifacts/samples/uno-browserwasm/wwwroot
+                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net11.0-browserwasm -p:SpecularSampleTargetFrameworks=net11.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
+                  node samples/smoke.mjs browser --name "Uno WebAssembly (net11.0)" artifacts/samples/uno-browserwasm/wwwroot
               env:
                   CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
             - name: 🏺 Publish logs
@@ -239,7 +239,7 @@ jobs:
                       workloads: maui-android
                       maui: net10.0-android%3Bnet11.0-android
                       maccatalyst: ''
-                      uno: net10.0-android
+                      uno: net11.0-android
                     # Off: these pass, but fail intermittently (see the note at the top).
                     # - name: macOS net10.0 (iOS, Mac Catalyst)
                     #   os: macos-26
@@ -247,14 +247,14 @@ jobs:
                     #   workloads: maui ios maccatalyst
                     #   maui: net10.0-ios%3Bnet10.0-maccatalyst
                     #   maccatalyst: net10.0-maccatalyst
-                    #   uno: net10.0-ios
+                    #   uno: ''
                     # - name: macOS net11.0 (iOS, Mac Catalyst)
                     #   os: xcode-27
                     #   properties: -p:ValidateXcodeVersion=false
                     #   workloads: maui ios maccatalyst
                     #   maui: net11.0-ios%3Bnet11.0-maccatalyst
                     #   maccatalyst: net11.0-maccatalyst
-                    #   uno: ''
+                    #   uno: net11.0-ios
                     - name: Windows
                       os: windows-latest
                       properties: ''

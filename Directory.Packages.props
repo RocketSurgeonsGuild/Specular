@@ -34,6 +34,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.9.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CrashDump" Version="2.5.3" />
     <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.3" />
+    <!-- The roslyn5.9 analyzer slice runs in the .NET 10.0.4xx SDK compiler (net10.0 runtime): keep these on 10.0.x. -->
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.15" />
     <PackageVersion Include="Polyfill" Version="11.4.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />
@@ -45,11 +46,8 @@
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.FakeItEasy" Version="11.0.1" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="11.0.1" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.1" />
-    <PackageVersion Include="TUnit" Version="1.83.0" />
+    <PackageVersion Include="TUnit" Version="1.84.0" />
     <PackageVersion Include="Verify.TUnit" Version="33.3.4" />
-    <!-- Uno.Sdk's implicit packages pull in 10.0.12 (GHSA-2fmv-rv2c-59x7, GHSA-846f-f764-76mx, GHSA-7hqp-7c5m-4vq6, GHSA-c399-9853-6jmj, GHSA-r955-8q5j-3h83). -->
-    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.15" />
-    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.15" />
   </ItemGroup>
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.15" />
