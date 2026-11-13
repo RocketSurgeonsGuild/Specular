@@ -17,5 +17,11 @@
         <!-- The namespace Specular.Analyzers generates AssemblyInfo in, for the shared sources (the default, the project name, isn't one). -->
         <AssemblyInfoNamespace>Specular.Analyzers</AssemblyInfoNamespace>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!--
+            These builds compile Specular.Analyzers' own sources against older Roslyn versions, and Specular.Analyzers runs the analyzers
+            over the same files. Running them here again cost about half of each compile (the three builds start together, first on the
+            build's critical path) and produced the same assembly: the output is byte-identical without them.
+        -->
+        <RunAnalyzers>false</RunAnalyzers>
     </PropertyGroup>
 </Project>
