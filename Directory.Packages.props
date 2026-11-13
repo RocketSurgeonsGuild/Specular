@@ -9,7 +9,7 @@
     <GlobalPackageReference Include="Rocket.Surgery.MSBuild.GitVersion" Version="1.3.0-beta.2" />
     <GlobalPackageReference Include="Rocket.Surgery.MSBuild.SourceLink" Version="1.3.0-beta.2" />
     <PackageVersion Include="Rocket.Surgery.AssemblyInfo" Version="2026.11.2" />
-    <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
+    <GlobalPackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.12.0" />
     <GlobalPackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="11.0.100" />
     <GlobalPackageReference Include="Microsoft.DotNet.ApiCompat.Task" Version="11.0.100" />
@@ -30,14 +30,14 @@
     <PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="1.0.52" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.9.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.12.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CrashDump" Version="2.5.3" />
     <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.3" />
     <!-- The roslyn5.9 analyzer slice runs in the .NET 10.0.4xx SDK compiler (net10.0 runtime): keep these on 10.0.x. -->
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.15" />
     <PackageVersion Include="Polyfill" Version="11.4.5" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.12.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="System.Text.Json" Version="10.0.15" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
