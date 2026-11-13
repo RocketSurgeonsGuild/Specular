@@ -1,4 +1,4 @@
-<Project Sdk="Uno.Sdk/7.0.5">
+<Project Sdk="Uno.Sdk/7.0.22">
     <!--
         An Uno Platform app (Skia renderer) on the net11.0 heads. Only the desktop head needs no workload (WebAssembly needs
         wasm-tools, the mobile heads theirs), so Specular.slnx doesn't build this project: the Samples workflow builds it per OS.
