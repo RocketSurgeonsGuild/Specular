@@ -1,8 +1,8 @@
 [tools]
 dotnet = [
-  # The Uno sample's WebAssembly head needs wasm-tools-net10 (the .NET 11 SDK's wasm-tools only covers net11.0). Runs when mise
-  # installs this SDK; on a machine that already has it: dotnet workload install wasm-tools-net10
-  { version = "11.0.100", postinstall = "dotnet workload install wasm-tools-net10" },
+  # The Uno sample's WebAssembly head (net11.0-browserwasm) needs wasm-tools. Runs when mise installs this SDK; on a machine
+  # that already has it: dotnet workload install wasm-tools
+  { version = "11.0.100", postinstall = "dotnet workload install wasm-tools" },
   { version = "10.0.15", runtime = "dotnet" },
 ]
 "github:microsoft/apm" = { version = "v0.35.1", bin = "apm" }
