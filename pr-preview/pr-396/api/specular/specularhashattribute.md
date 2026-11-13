@@ -2,7 +2,7 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/pr-preview/pr-396/api/specular.md)
-- Version: `0.4.2-pr.29`
+- Version: `0.4.2-pr.33`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
 - Inherits: `Attribute`

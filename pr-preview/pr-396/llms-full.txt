@@ -832,7 +832,7 @@ Every host runs the same three `Scan` calls from [`samples/hosts/Shared/SampleSc
 | `Specular.Samples.Console`    | console                      | net10.0, net11.0                                    | exits non-zero on mismatch; zero-warning Native AOT publish                      |
 | `Specular.Samples.Web`        | ASP.NET minimal API          | net10.0, net11.0                                    | fail-fast at startup on mismatch; `/services` lists discovery; Native AOT        |
 | `Specular.Samples.BlazorWasm` | Blazor WebAssembly           | net10.0, net11.0                                    | scanning in the browser, incl. the net11.0 browser-wasm (no runtime async) build |
-| `Specular.Samples.Uno`        | Uno Platform (Skia renderer) | net10.0 desktop, WebAssembly, Android, iOS          | scanning in an Uno app on every Uno head                                         |
+| `Specular.Samples.Uno`        | Uno Platform (Skia renderer) | net11.0 desktop, WebAssembly, Android, iOS          | scanning in an Uno app on every Uno head                                         |
 | `Specular.Samples.Maui`       | .NET MAUI                    | net10.0/net11.0 Android, iOS, Mac Catalyst, Windows | scanning in a MAUI app, including the per-RID mobile heads                       |
 
 The Uno and MAUI hosts need .NET workloads for most heads, so `Specular.slnx` doesn’t build them; pick heads with `SpecularSampleTargetFrameworks` (`;` escaped as `%3B` on the command line):
