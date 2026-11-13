@@ -1,8 +1,8 @@
 [tools]
 dotnet = [
-  # The Uno sample's WebAssembly head needs wasm-tools-net10 (the .NET 11 SDK's wasm-tools only covers net11.0). Runs when mise
-  # installs this SDK; on a machine that already has it: dotnet workload install wasm-tools-net10
-  { version = "11.0.100-rc.3.26522.148", postinstall = "dotnet workload install wasm-tools-net10" },
+  # The Uno sample's WebAssembly head (net11.0-browserwasm) needs wasm-tools. Runs when mise installs this SDK; on a machine
+  # that already has it: dotnet workload install wasm-tools
+  { version = "11.0.100", postinstall = "dotnet workload install wasm-tools" },
   { version = "10.0.15", runtime = "dotnet" },
 ]
 "github:microsoft/apm" = { version = "v0.35.1", bin = "apm" }
@@ -45,6 +45,10 @@ docs = { run = [
 [settings]
 experimental = true
 prereleases = true
+# dotnet-install comes from dot.net, which times out now and then on CI runners (most of all for a new SDK that isn't in
+# the tool cache yet): more and longer attempts than the default 3 x 30s.
+http_retries = 6
+http_timeout = "90s"
 
 [env]
 HK_MISE = 1

@@ -42,8 +42,14 @@
     },
     {
       "description": "net10.0 assets stay on the 10.0.x release train; the net11.0 group moves along 11.0.x",
-      "matchPackageNames": ["Microsoft.AspNetCore.*", "Microsoft.Extensions.*"],
+      "matchPackageNames": ["Microsoft.AspNetCore.*", "Microsoft.Extensions.*", "Microsoft.Maui.*"],
       "matchCurrentVersion": "/^10\\./",
+      "allowedVersions": "<11.0.0"
+    },
+    {
+      "description": "The analyzer's System.Text.Json and System.Collections.Immutable must load in the .NET 10.0.4xx SDK compiler (Roslyn 5.9 on the net10.0 runtime)",
+      "matchFileNames": ["Directory.Packages.props"],
+      "matchPackageNames": ["System.Text.Json", "System.Collections.Immutable"],
       "allowedVersions": "<11.0.0"
     },
     {
