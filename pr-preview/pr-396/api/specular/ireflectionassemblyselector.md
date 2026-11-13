@@ -2,7 +2,7 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/pr-preview/pr-396/api/specular.md)
-- Version: `0.4.2-pr.33`
+- Version: `0.4.2-pr.36`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
 
