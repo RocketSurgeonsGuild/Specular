@@ -159,15 +159,24 @@ jobs:
                   node --version
             # Windows only: there the restores took 77-169 s a leg (package signature verification and slow file I/O), against
             # 13-31 s on Linux, where a cache would save little and take room from the mise caches. One cache per leg, since the legs
-            # restore different heads. The key changes with the package versions, so a ref only saves one when its dependencies
-            # differ from main's (or main has none yet); otherwise it restores main's.
+            # restore different heads; the four come to about 5 GB.
+            #
+            # Only main saves them (the Save the NuGet cache step), once a week, like the mise cache: keyed on the package versions,
+            # every dependency bump had each pull request and merge-queue ref save its own 5 GB, which took the repository over
+            # GitHub's 10 GB cache limit and evicted main's caches, so main and every ref after it restored from nuget.org again.
+            # Every ref restores main's latest; packages added since it was saved come from nuget.org.
+            - &nuget-week
+              name: 📅 NuGet cache week
+              if: runner.os == 'Windows'
+              run: echo "NUGET_CACHE_WEEK=$(($(date +%s) / 604800))" >> "$GITHUB_ENV"
             - &nuget
               name: 📦 Restore the NuGet cache
+              id: nuget
               if: runner.os == 'Windows'
-              uses: actions/cache@v6
+              uses: actions/cache/restore@v6
               with:
                   path: ~/.nuget/packages
-                  key: nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj', 'global.json', 'NuGet.config') }}
+                  key: nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-${{ env.NUGET_CACHE_WEEK }}
                   restore-keys: |
                       nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-
             # Linux only. On macOS the action unpacks Chrome for Testing's bundle into a directory not named *.app, so Chrome can't
@@ -238,6 +247,15 @@ jobs:
                   name: samples-hosts-logs-${{ matrix.os }}-${{ matrix.group }}
                   path: artifacts/logs/
                   if-no-files-found: ignore
+            # After a passing build, so the cache holds every package the leg restored. Main only, and only when it didn't
+            # restore this week's cache already (see the Restore the NuGet cache step).
+            - &nuget-save
+              name: 📦 Save the NuGet cache
+              if: runner.os == 'Windows' && github.ref == 'refs/heads/main' && steps.nuget.outputs.cache-hit != 'true'
+              uses: actions/cache/save@v6
+              with:
+                  path: ~/.nuget/packages
+                  key: nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-${{ env.NUGET_CACHE_WEEK }}
 
     workload-heads:
         name: ${{ matrix.name }}
@@ -300,6 +318,7 @@ jobs:
             - *home
             - *mise
             - *dotnet
+            - *nuget-week
             - *nuget
             - name: 📦 Install workloads
               run: |
@@ -338,6 +357,7 @@ jobs:
                   name: samples-workload-logs-${{ strategy.job-index }}
                   path: artifacts/logs/
                   if-no-files-found: ignore
+            - *nuget-save
 
     # The single check the main/next ruleset requires: the matrix jobs above report one check per leg, under names that change
     # with the matrix. It also passes when nothing the samples build from changed (both legs skipped by `changes`).
