@@ -24,7 +24,7 @@ public class NativeAotTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
 
         var result = await Builder
                           .AddCompilationReferences(other)
@@ -60,7 +60,7 @@ public class NativeAotTests : GeneratorTest
                           .Build()
                           .GenerateAsync(cancellationToken);
 
-        result.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await result.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
         await Verify(result);
     }
 
@@ -82,7 +82,7 @@ public class NativeAotTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
 
         var result = await Builder
                           .AddCompilationReferences(other)
@@ -110,8 +110,8 @@ public class NativeAotTests : GeneratorTest
                           .Build()
                           .GenerateAsync(cancellationToken);
 
-        result.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
-        result.FinalDiagnostics.ShouldContain(d => d.Id == "RSGD0008" && d.Severity == DiagnosticSeverity.Info);
+        await result.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
+        await result.FinalDiagnostics.Should().Contain(d => d.Id == "RSGD0008" && d.Severity == DiagnosticSeverity.Info);
         await Verify(result);
     }
 }
