@@ -88,6 +88,8 @@ jobs:
             # One Windows leg saves the mise cache, on main only: pull requests and the merge queue each have their own cache
             # scope, so saving there would make one per ref. Every ref can restore main's.
             SAVE_MISE_CACHE: ${{ github.ref == 'refs/heads/main' && matrix.os == 'windows-latest' && matrix.group == 'native-aot' }}
+            # Names the leg's NuGet cache (see the Restore the NuGet cache step).
+            NUGET_CACHE_LEG: ${{ matrix.group }}
         strategy:
             fail-fast: false
             matrix:
@@ -155,6 +157,19 @@ jobs:
                   command -v dotnet
                   dotnet --version
                   node --version
+            # Windows only: there the restores took 77-169 s a leg (package signature verification and slow file I/O), against
+            # 13-31 s on Linux, where a cache would save little and take room from the mise caches. One cache per leg, since the legs
+            # restore different heads. The key changes with the package versions, so a ref only saves one when its dependencies
+            # differ from main's (or main has none yet); otherwise it restores main's.
+            - &nuget
+              name: 📦 Restore the NuGet cache
+              if: runner.os == 'Windows'
+              uses: actions/cache@v6
+              with:
+                  path: ~/.nuget/packages
+                  key: nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-${{ hashFiles('Directory.Packages.props', '**/*.csproj', 'global.json', 'NuGet.config') }}
+                  restore-keys: |
+                      nuget-${{ runner.os }}-${{ github.job }}-${{ env.NUGET_CACHE_LEG }}-
             # Linux only. On macOS the action unpacks Chrome for Testing's bundle into a directory not named *.app, so Chrome can't
             # launch its renderer helpers (pages never answer the DevTools protocol); on Windows Chrome's sandbox can't read the
             # tool cache's chrome.exe, so its network service crashes and pages never load. There smoke.mjs uses the image's own
@@ -183,9 +198,10 @@ jobs:
                   done
             - name: ⚙️ Blazor WebAssembly
               if: matrix.group == 'blazor-uno-desktop'
+              # CompressionEnabled=false: smoke.mjs serves the plain files, so the Brotli/gzip copies of every asset were never read.
               run: |
                   for framework in net10.0 net11.0; do
-                      dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers
+                      dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers -p:CompressionEnabled=false
                       node samples/smoke.mjs browser "artifacts/samples/blazor-$framework/wwwroot"
                   done
               env:
@@ -195,10 +211,23 @@ jobs:
               run: |
                   dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net11.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
                   node samples/smoke.mjs exe -- "samples/hosts/Specular.Samples.Uno/bin/Release/net11.0-desktop/Specular.Samples.Uno$EXE"
+            # The Uno WebAssembly head relinks the runtime with Emscripten (its Skia renderer has native code), and Uno points
+            # Emscripten's system library cache at obj/ (or %TEMP% on Windows), so every run rebuilt libc, libc++ and the rest: about a
+            # minute on Windows. WasmCachePath (read by Uno.Wasm.Bootstrap and the .NET WebAssembly SDK) keeps it in the home folder,
+            # cached here per OS and toolchain. On Windows it has to be on C:, the drive of Uno's emsdk junction.
+            - name: 📦 Restore the Emscripten cache
+              if: matrix.group == 'uno-webassembly'
+              uses: actions/cache@v6
+              with:
+                  path: ~/.emsdk-cache
+                  key: emsdk-cache-${{ runner.os }}-${{ hashFiles('global.json', '.config/mise.toml', 'samples/hosts/Specular.Samples.Uno/*.csproj') }}
             - name: ⚙️ Uno WebAssembly
               if: matrix.group == 'uno-webassembly'
+              # CompressionEnabled=false: smoke.mjs serves the plain files, so the Brotli/gzip copies of every asset (about a minute on
+              # Windows) were never read.
               run: |
-                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net11.0-browserwasm -p:SpecularSampleTargetFrameworks=net11.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
+                  if [ "$RUNNER_OS" = Windows ]; then cache="$USERPROFILE\.emsdk-cache"; else cache="$HOME/.emsdk-cache"; fi
+                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net11.0-browserwasm -p:SpecularSampleTargetFrameworks=net11.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers -p:CompressionEnabled=false "-p:WasmCachePath=$cache"
                   node samples/smoke.mjs browser artifacts/samples/uno-browserwasm/wwwroot
               env:
                   CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
@@ -216,6 +245,9 @@ jobs:
         if: needs.changes.outputs.samples == 'true'
         runs-on: ${{ matrix.os }}
         timeout-minutes: 60
+        env:
+            # Names the leg's NuGet cache (see the Restore the NuGet cache step in the hosts job).
+            NUGET_CACHE_LEG: ${{ matrix.name }}
         strategy:
             fail-fast: false
             matrix:
@@ -258,6 +290,7 @@ jobs:
             - *home
             - *mise
             - *dotnet
+            - *nuget
             - name: 📦 Install workloads
               run: |
                   read -ra workloads <<< "$WORKLOADS"
