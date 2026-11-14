@@ -2,7 +2,7 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/pr-preview/pr-417/api/specular.md)
-- Version: `0.4.2-pr.37`
+- Version: `0.4.2-pr.40`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
 - Implements: `IEquatable<TypeScanReportEntry>`
