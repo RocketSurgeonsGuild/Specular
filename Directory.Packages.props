@@ -26,7 +26,7 @@
   <ItemGroup>
     <!-- The build host (build/Build.cs). The library targets net11.0 only (ModularPipelines 4 ships net11.0 assets only), and its
          Dovetail joints and Specular scan results are generated into the host, so both have to be direct references there. -->
-    <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.2.1" />
+    <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.2.3" />
     <PackageVersion Include="Joinery.Dovetail.ModularPipelines" Version="0.5.3" />
     <PackageVersion Include="Specular" Version="0.4.1" />
     <PackageVersion Include="Sourcy.DotNet" Version="1.1.1" />
