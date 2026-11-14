@@ -3,19 +3,17 @@
 #:package Sourcy.Git
 #:package Sourcy.DotNet
 #:package Rocket.Surgery.ModularPipelines.Extensions
-#:package Rocket.Surgery.AssemblyInfo
+#:package Joinery.Dovetail.ModularPipelines
+#:package Specular
 #:include ./Samples.cs
-#:property ImportConventions=true
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 #:property ExperimentalFileBasedProgramEnableTransitiveDirectives=true
 
 using Build;
+using Joinery.Dovetail;
 using ModularPipelines;
-using ModularPipelines.Plugins;
-using Rocket.Surgery.ModularPipelines.Extensions;
-using Rocket.Surgery.ModularPipelines.Extensions.Modules;
 
-var pipelineBuilder = Pipeline.CreateBuilder(args);
-PluginRegistry.Register(new ConventionsPlugin(ConventionContextBuilder.Create(Imports.Instance)
-.AddIfMissing(nameof(AssemblyInfo.Project.BuildScriptsRoot), AssemblyInfo.Project.BuildScriptsRoot)));
-await pipelineBuilder.Build().RunAsync();
+// Dovetail reads build/appsettings.* (the folder of this file) and applies the library's joints: its modules and settings, found by
+// Specular when this host compiles, and the run history and module cache under .modularpipelines/.
+await using var pipeline = await Pipeline.CreateBuilder(args).ConfigureDovetail();
+await pipeline.RunAsync();

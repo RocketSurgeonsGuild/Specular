@@ -1,11 +1,4 @@
 
-#:package Microsoft.VisualStudio.SolutionPersistence
-#:package Sourcy.Git
-#:package Sourcy.DotNet
-#:package Rocket.Surgery.ModularPipelines.Extensions
-#:property ImportConventions=true
-#:property JsonSerializerIsReflectionEnabledByDefault=true
-
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
@@ -20,7 +13,6 @@ using ModularPipelines.Modules;
 using ModularPipelines.Options;
 using Rocket.Surgery.ModularPipelines.Extensions;
 using Rocket.Surgery.ModularPipelines.Extensions.Modules;
-using File = ModularPipelines.FileSystem.File;
 
 namespace Build;
 
@@ -37,23 +29,17 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
         Sourcy.DotNet.Projects.Specular_Samples_Web
     ];
     private readonly IReadOnlyCollection<string> frameworks = ["net10.0", "net11.0"];
-    protected override ModuleConfiguration Configure() => ModuleConfiguration
-                                                         .Create()
-                                                         .WithRetryCount(3)
-                                                         // On CI, samples.yml publishes these same hosts for both frameworks
-                                                         // (Linux and Windows, under the same in-csproj zero-warning policy) and
-                                                         // also runs them. Publishing them here too only took CPU from the tests,
-                                                         // which run alongside this module on the build runner.
-                                                         .WithSkipWhen(() => SkipDecision.Of(
-                                                             IsOnCI(),
-                                                             "samples.yml publishes and runs the Native AOT hosts on CI"
-                                                         ))
-                                                         .Build();
+    protected override void Configure(ModuleConfigurationBuilder module) => module
+        .WithRetry(3)
+        // On CI, samples.yml publishes these same hosts for both frameworks (Linux and Windows, under the same in-csproj zero-warning
+        // policy) and also runs them. Publishing them here too only took CPU from the tests, which run alongside this module on the
+        // build runner.
+        .WithSkipWhen(_ => SkipDecision.When(IsOnCI(), "samples.yml publishes and runs the Native AOT hosts on CI"));
 
     private static bool IsOnCI() =>
         Environment.GetEnvironmentVariable("CI") is not null ||
         Environment.GetEnvironmentVariable("GITHUB_ACTIONS") is not null;
-    protected override async Task<ImmutableList<CommandResult>?> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
+    protected override async Task<ImmutableList<CommandResult>> ExecuteAsync(IModuleContext context, CancellationToken cancellationToken)
     {
         var rid = RuntimeInformation.RuntimeIdentifier;
 
@@ -63,13 +49,13 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
         {
             results.AddRange(await Task.WhenAll(projects.Select(project =>
             {
-                var projectPath = new File(project.FullName);
+                var projectPath = new FilePath(project.FullName);
                 var hostname = $"{projectPath.NameWithoutExtension} ({framework})";
-                return context.SubModule(hostname, async () =>
+                return context.RunSubModuleAsync(hostname, async ct =>
                 {
                     context.Logger.LogInformation("AOT publish [{Host}] × {Rid} (zero-warning policy)", hostname, rid);
 
-                    var result = await context.DotNet().Publish(
+                    var result = await context.Tools.DotNet.PublishAsync(
                         new DotNetPublishOptions
                         {
                             ProjectSolution = projectPath,
@@ -78,11 +64,11 @@ public class AotPublishModule() : Module<ImmutableList<CommandResult>>
                             Runtime = rid,
                         },
                         new CommandExecutionOptions(),
-                        cancellationToken);
+                        ct);
 
                     context.Logger.LogInformation("AOT publish [{Host}] PASS — zero trim/AOT warnings.", hostname);
                     return result;
-                });
+                }, cancellationToken);
             })));
         }
         return results.ToImmutable();
