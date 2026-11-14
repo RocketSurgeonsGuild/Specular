@@ -183,9 +183,10 @@ jobs:
                   done
             - name: ⚙️ Blazor WebAssembly
               if: matrix.group == 'blazor-uno-desktop'
+              # CompressionEnabled=false: smoke.mjs serves the plain files, so the Brotli/gzip copies of every asset were never read.
               run: |
                   for framework in net10.0 net11.0; do
-                      dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers
+                      dotnet publish samples/hosts/Specular.Samples.BlazorWasm -c Release -f "$framework" -o "artifacts/samples/blazor-$framework" --disable-build-servers -p:CompressionEnabled=false
                       node samples/smoke.mjs browser "artifacts/samples/blazor-$framework/wwwroot"
                   done
               env:
@@ -195,10 +196,23 @@ jobs:
               run: |
                   dotnet build samples/hosts/Specular.Samples.Uno -c Release -f net11.0-desktop -bl:artifacts/logs/Specular.Samples.Uno.desktop.binlog --disable-build-servers
                   node samples/smoke.mjs exe -- "samples/hosts/Specular.Samples.Uno/bin/Release/net11.0-desktop/Specular.Samples.Uno$EXE"
+            # The Uno WebAssembly head relinks the runtime with Emscripten (its Skia renderer has native code), and Uno points
+            # Emscripten's system library cache at obj/ (or %TEMP% on Windows), so every run rebuilt libc, libc++ and the rest: about a
+            # minute on Windows. WasmCachePath (read by Uno.Wasm.Bootstrap and the .NET WebAssembly SDK) keeps it in the home folder,
+            # cached here per OS and toolchain. On Windows it has to be on C:, the drive of Uno's emsdk junction.
+            - name: 📦 Restore the Emscripten cache
+              if: matrix.group == 'uno-webassembly'
+              uses: actions/cache@v6
+              with:
+                  path: ~/.emsdk-cache
+                  key: emsdk-cache-${{ runner.os }}-${{ hashFiles('global.json', '.config/mise.toml', 'samples/hosts/Specular.Samples.Uno/*.csproj') }}
             - name: ⚙️ Uno WebAssembly
               if: matrix.group == 'uno-webassembly'
+              # CompressionEnabled=false: smoke.mjs serves the plain files, so the Brotli/gzip copies of every asset (about a minute on
+              # Windows) were never read.
               run: |
-                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net11.0-browserwasm -p:SpecularSampleTargetFrameworks=net11.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers
+                  if [ "$RUNNER_OS" = Windows ]; then cache="$USERPROFILE\.emsdk-cache"; else cache="$HOME/.emsdk-cache"; fi
+                  dotnet publish samples/hosts/Specular.Samples.Uno -c Release -f net11.0-browserwasm -p:SpecularSampleTargetFrameworks=net11.0-browserwasm -o artifacts/samples/uno-browserwasm -bl:artifacts/logs/Specular.Samples.Uno.browserwasm.binlog --disable-build-servers -p:CompressionEnabled=false "-p:WasmCachePath=$cache"
                   node samples/smoke.mjs browser artifacts/samples/uno-browserwasm/wwwroot
               env:
                   CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
