@@ -252,11 +252,21 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - name: Linux (Android)
+                    # The MAUI and Uno Android heads build on legs of their own: one after the other they took 337-436 s (MAUI's two
+                    # heads about 150-215 s, mostly D8 and Csc; Uno's 110-175 s), the second-longest samples leg. Uno's Skia head
+                    # needs only the android workload, not maui-android.
+                    - name: Linux (Android, MAUI)
                       os: ubuntu-latest
                       properties: ''
                       workloads: maui-android
                       maui: net10.0-android%3Bnet11.0-android
+                      maccatalyst: ''
+                      uno: ''
+                    - name: Linux (Android, Uno)
+                      os: ubuntu-latest
+                      properties: ''
+                      workloads: android
+                      maui: ''
                       maccatalyst: ''
                       uno: net11.0-android
                     # Off: these pass, but fail intermittently (see the note at the top).
@@ -298,6 +308,7 @@ jobs:
               env:
                   WORKLOADS: ${{ matrix.workloads }}
             - name: ⚙️ Build Specular.Samples.Maui
+              if: matrix.maui != ''
               run: |
                   read -ra properties <<< "$PROPERTIES"
                   dotnet build samples/hosts/Specular.Samples.Maui "-p:SpecularSampleTargetFrameworks=$HEADS" -bl:artifacts/logs/Specular.Samples.Maui.binlog --disable-build-servers "${properties[@]}"
