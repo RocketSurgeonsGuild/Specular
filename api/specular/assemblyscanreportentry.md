@@ -2,7 +2,7 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.31`
+- Version: `0.4.2-beta.32`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
 - Implements: `IEquatable<AssemblyScanReportEntry>`
