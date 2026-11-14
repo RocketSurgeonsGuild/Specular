@@ -25,8 +25,23 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    build:
+    # One leg per target framework of Specular.Tests, so each test run has the runner's CPUs to itself (side by side on one 4 vCPU
+    # runner they were CPU-bound). Both legs build the whole solution. The net11.0 leg is the main one: it collects coverage, builds
+    # the docs and makes the packages; the net10.0 leg only runs its tests.
+    build-framework:
+        name: build (${{ matrix.framework }})
         runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - framework: net11.0
+                      main: true
+                    - framework: net10.0
+                      main: false
+        env:
+            TestFrameworks__0: ${{ matrix.framework }}
+            Docs__Enabled: ${{ matrix.main }}
         steps:
             - name: Checkout
               uses: actions/checkout@v7
@@ -58,7 +73,7 @@ jobs:
                   cache: true
                   cache_key: mise-{{platform}}-{{cache_period}}
                   cache_max_age_days: 7
-                  cache_save: ${{ github.ref == 'refs/heads/main' }}
+                  cache_save: ${{ github.ref == 'refs/heads/main' && matrix.main }}
                   cache_save_post: true
                   experimental: true
                   github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -70,13 +85,14 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             # ModularPipelines' run history, module duration estimates and module cache (see build/appsettings.yaml). The scheduler
             # starts the longest chain first from the estimates. Every ref restores the newest copy main saved; only main saves one.
+            # Each leg runs different modules, so each keeps its own.
             - name: 📜 Restore pipeline history
               uses: actions/cache/restore@v6
               with:
                   path: .modularpipelines
-                  key: modularpipelines-${{ github.workflow }}-main-${{ github.run_id }}-${{ github.run_attempt }}
+                  key: modularpipelines-${{ github.workflow }}-${{ matrix.framework }}-main-${{ github.run_id }}-${{ github.run_attempt }}
                   restore-keys: |
-                      modularpipelines-${{ github.workflow }}-main-
+                      modularpipelines-${{ github.workflow }}-${{ matrix.framework }}-main-
             - name: ⚙️ Build
               id: build
               run: |
@@ -94,15 +110,15 @@ jobs:
               uses: actions/cache/save@v6
               with:
                   path: .modularpipelines
-                  key: modularpipelines-${{ github.workflow }}-main-${{ github.run_id }}-${{ github.run_attempt }}
+                  key: modularpipelines-${{ github.workflow }}-${{ matrix.framework }}-main-${{ github.run_id }}-${{ github.run_attempt }}
             - name: 🏺 Save GitHub event
-              if: always()
+              if: always() && matrix.main
               run: cp "$GITHUB_EVENT_PATH" artifacts/event.json || true
             - name: 🏺 Publish logs
               if: always()
               uses: actions/upload-artifact@v7
               with:
-                  name: logs
+                  name: ${{ matrix.main && 'logs' || format('logs ({0})', matrix.framework) }}
                   # Test results and coverage have their own artifacts below; the HTML coverage report alone is over 1 GB.
                   path: |
                       artifacts/logs/
@@ -112,28 +128,30 @@ jobs:
               if: always()
               uses: actions/upload-artifact@v7
               with:
-                  name: test data
+                  # Publish Results merges every "test data*" artifact.
+                  name: ${{ matrix.main && 'test data' || format('test data ({0})', matrix.framework) }}
                   # The pipeline writes test results and coverage under artifacts/logs/ (Publish Results reads both artifacts).
                   path: artifacts/logs/tests/
             - name: 🏺 Publish coverage data
-              if: always()
+              if: always() && matrix.main
               uses: actions/upload-artifact@v7
               with:
                   name: coverage
                   path: artifacts/logs/coverage/
             - name: 🏺 Publish NuGet Packages
-              if: always()
+              if: always() && matrix.main
               uses: actions/upload-artifact@v7
               with:
                   name: nuget
                   path: artifacts/nuget/
             - name: 🏺 Publish event
-              if: always()
+              if: always() && matrix.main
               uses: actions/upload-artifact@v7
               with:
                   name: event
                   path: artifacts/event.json
             - name: 🏺 Publish docs
+              if: matrix.main
               uses: actions/upload-artifact@v7
               with:
                   name: docs
@@ -142,8 +160,22 @@ jobs:
             # Before the post step saves the mise cache: drop tool versions nothing selects anymore, so it holds only the
             # current ones.
             - name: 🧹 Prune tools
-              if: always() && github.ref == 'refs/heads/main'
+              if: always() && github.ref == 'refs/heads/main' && matrix.main
               run: mise prune --tools
+
+    # The single check the main/next ruleset requires: the legs above report one check each, under names that change with the matrix.
+    build:
+        name: build
+        if: always()
+        needs: build-framework
+        runs-on: ubuntu-latest
+        steps:
+            - name: ✅ Every framework passed
+              run: |
+                  echo "build-framework: $LEGS"
+                  [ "$LEGS" = success ]
+              env:
+                  LEGS: ${{ needs.build-framework.result }}
 
     # Deploys the docs the build made to the gh-pages branch: main to the root, each release to v<version>/ (listed in
     # versions.json for the version switcher), and each pull request from this repository to pr-preview/pr-<n>/ (removed

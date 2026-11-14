@@ -40,7 +40,9 @@ jobs:
               continue-on-error: true
               uses: actions/download-artifact@v8
               with:
-                  name: test data
+                  # One artifact per build leg ("test data", "test data (net10.0)"); their TRX files sit in per-framework folders.
+                  pattern: test data*
+                  merge-multiple: true
                   path: artifacts/tests/
                   run-id: ${{ github.event.workflow_run.id }}
                   github-token: ${{ secrets.GITHUB_TOKEN }}
