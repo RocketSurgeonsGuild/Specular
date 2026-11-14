@@ -42,7 +42,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
         other.EnsureDiagnosticSeverity(DiagnosticSeverity.Error);
 
         var result = await Builder
@@ -74,7 +74,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
         other.EnsureDiagnosticSeverity(DiagnosticSeverity.Error);
 
         var result = await Builder
@@ -108,7 +108,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
         other.EnsureDiagnosticSeverity(DiagnosticSeverity.Error);
 
         var result = await Builder
@@ -162,7 +162,7 @@ public partial class AssemblyScanningTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
         other.EnsureDiagnosticSeverity(DiagnosticSeverity.Error);
 
         var result = await Builder

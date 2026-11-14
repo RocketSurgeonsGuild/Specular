@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
+using TUnit.Assertions.Enums;
 
 namespace Specular.Tests;
 
@@ -57,9 +58,9 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        Describe(services, "IFoo").ShouldBe(("Foo", ServiceLifetime.Singleton));
-        Describe(services, "IBar").ShouldBe(("Bar", ServiceLifetime.Scoped));
-        Describe(services, "IBaz").ShouldBe(("Baz", ServiceLifetime.Transient));
+        await Assert.That(Describe(services, "IFoo")).IsEqualTo(("Foo", ServiceLifetime.Singleton));
+        await Assert.That(Describe(services, "IBar")).IsEqualTo(("Bar", ServiceLifetime.Scoped));
+        await Assert.That(Describe(services, "IBaz")).IsEqualTo(("Baz", ServiceLifetime.Transient));
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -94,12 +95,12 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        Describe(services, "IA").ShouldBe(("TwoServices", ServiceLifetime.Transient));
-        Describe(services, "IB").ShouldBe(("TwoServices", ServiceLifetime.Transient));
-        Describe(services, "IC").ShouldBe(("ThreeServices", ServiceLifetime.Scoped));
-        Describe(services, "ID").ShouldBe(("ThreeServices", ServiceLifetime.Scoped));
-        Describe(services, "IE").ShouldBe(("ThreeServices", ServiceLifetime.Scoped));
-        services.Count(z => z.ServiceType.Name == "IUnlisted").ShouldBe(0);
+        await Assert.That(Describe(services, "IA")).IsEqualTo(("TwoServices", ServiceLifetime.Transient));
+        await Assert.That(Describe(services, "IB")).IsEqualTo(("TwoServices", ServiceLifetime.Transient));
+        await Assert.That(Describe(services, "IC")).IsEqualTo(("ThreeServices", ServiceLifetime.Scoped));
+        await Assert.That(Describe(services, "ID")).IsEqualTo(("ThreeServices", ServiceLifetime.Scoped));
+        await Assert.That(Describe(services, "IE")).IsEqualTo(("ThreeServices", ServiceLifetime.Scoped));
+        await Assert.That(services.Count(z => z.ServiceType.Name == "IUnlisted")).IsEqualTo(0);
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -134,8 +135,8 @@ public class GenericServiceRegistrationTests : GeneratorTest
             cancellationToken
         );
 
-        generic.ShouldNotBeEmpty();
-        generic.ShouldBe(nonGeneric);
+        await generic.Should().NotBeEmpty();
+        await Assert.That(generic).IsEquivalentTo(nonGeneric, CollectionOrdering.Matching);
     }
 
     [Test]
@@ -168,8 +169,8 @@ public class GenericServiceRegistrationTests : GeneratorTest
             cancellationToken
         );
 
-        generic.ShouldNotBeEmpty();
-        generic.ShouldBe(nonGeneric);
+        await generic.Should().NotBeEmpty();
+        await Assert.That(generic).IsEquivalentTo(nonGeneric, CollectionOrdering.Matching);
     }
 
     [Test]
@@ -195,7 +196,7 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        Describe(services, "IFoo").ShouldBe(("Foo", ServiceLifetime.Scoped));
+        await Assert.That(Describe(services, "IFoo")).IsEqualTo(("Foo", ServiceLifetime.Scoped));
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -248,9 +249,9 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        Describe(services, "IMyService").ShouldBe(("DualService", ServiceLifetime.Singleton));
-        Describe(services, "IAlternate").ShouldBe(("DualService", ServiceLifetime.Transient));
-        services.Count(z => z.ServiceType.Name == "DualService").ShouldBe(1);
+        await Assert.That(Describe(services, "IMyService")).IsEqualTo(("DualService", ServiceLifetime.Singleton));
+        await Assert.That(Describe(services, "IAlternate")).IsEqualTo(("DualService", ServiceLifetime.Transient));
+        await Assert.That(services.Count(z => z.ServiceType.Name == "DualService")).IsEqualTo(1);
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -281,10 +282,10 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        Describe(services, "IFoo").ShouldBe(("Service", ServiceLifetime.Singleton));
-        Describe(services, "IBar").ShouldBe(("Service", ServiceLifetime.Scoped));
-        Describe(services, "IBaz").ShouldBe(("Service", ServiceLifetime.Transient));
-        services.Count(z => z.ServiceType.Name == "Service").ShouldBe(1);
+        await Assert.That(Describe(services, "IFoo")).IsEqualTo(("Service", ServiceLifetime.Singleton));
+        await Assert.That(Describe(services, "IBar")).IsEqualTo(("Service", ServiceLifetime.Scoped));
+        await Assert.That(Describe(services, "IBaz")).IsEqualTo(("Service", ServiceLifetime.Transient));
+        await Assert.That(services.Count(z => z.ServiceType.Name == "Service")).IsEqualTo(1);
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -313,9 +314,9 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        Describe(services, "IFoo").ShouldBe(("Service", ServiceLifetime.Singleton));
-        Describe(services, "IBar").ShouldBe(("Service", ServiceLifetime.Transient));
-        services.Count(z => z.ServiceType.Name == "Service").ShouldBe(1);
+        await Assert.That(Describe(services, "IFoo")).IsEqualTo(("Service", ServiceLifetime.Singleton));
+        await Assert.That(Describe(services, "IBar")).IsEqualTo(("Service", ServiceLifetime.Transient));
+        await Assert.That(services.Count(z => z.ServiceType.Name == "Service")).IsEqualTo(1);
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -366,17 +367,14 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
         var services = LoadServices(result);
 
-        var descriptor = services.Where(z => z.ServiceType.Name == "IRepository`1").ShouldHaveSingleItem();
-        descriptor.Lifetime.ShouldBe(ServiceLifetime.Scoped);
-        descriptor.ImplementationType!.Name.ShouldBe("Repository`1");
+        var descriptor = services.Single(z => z.ServiceType.Name == "IRepository`1");
+        await Assert.That(descriptor.Lifetime).IsEqualTo(ServiceLifetime.Scoped);
+        await Assert.That(descriptor.ImplementationType!.Name).IsEqualTo("Repository`1");
 
         using var provider = services.BuildServiceProvider();
         using var scope = provider.CreateScope();
-        scope
-           .ServiceProvider.GetRequiredService(descriptor.ServiceType.MakeGenericType(typeof(string)))
-           .GetType()
-           .GetGenericTypeDefinition()
-           .Name.ShouldBe("Repository`1");
+        var resolvedType = scope.ServiceProvider.GetRequiredService(descriptor.ServiceType.MakeGenericType(typeof(string))).GetType();
+        await Assert.That(resolvedType.GetGenericTypeDefinition().Name).IsEqualTo("Repository`1");
 
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -412,7 +410,7 @@ public class GenericServiceRegistrationTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
 
         var result = await Builder
                           .AddCompilationReferences(other)
@@ -450,7 +448,7 @@ public class GenericServiceRegistrationTests : GeneratorTest
                          .Build()
                          .GenerateAsync(cancellationToken);
 
-        other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).ShouldBeEmpty();
+        await other.FinalDiagnostics.Where(x => x.Severity >= DiagnosticSeverity.Error).Should().BeEmpty();
 
         var result = await Builder
                           .AddCompilationReferences(other)
@@ -480,19 +478,17 @@ public class GenericServiceRegistrationTests : GeneratorTest
 
     private static IServiceCollection LoadServices(Assembly? assembly)
     {
-        assembly.ShouldNotBeNull();
-        var program = assembly.GetTypes().FirstOrDefault(z => z.IsClass && z.Name == "Program");
-        program.ShouldNotBeNull();
+        ArgumentNullException.ThrowIfNull(assembly);
+        var program = assembly.GetTypes().First(z => z.IsClass && z.Name == "Program");
 
-        var method = program.GetMethod("LoadServices", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-        method.ShouldNotBeNull();
+        var method = program.GetMethod("LoadServices", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public) ?? throw new InvalidOperationException("Program.LoadServices was not found");
 
         return (IServiceCollection)method.Invoke(null, [])!;
     }
 
     private static (string Implementation, ServiceLifetime Lifetime) Describe(IServiceCollection services, string serviceTypeName)
     {
-        var descriptor = services.Where(z => z.ServiceType.Name == serviceTypeName && !z.IsKeyedService).ShouldHaveSingleItem();
+        var descriptor = services.Single(z => z.ServiceType.Name == serviceTypeName && !z.IsKeyedService);
         // Non-self registrations are forwarding factories, so the implementation is read from the resolved instance.
         using var provider = services.BuildServiceProvider();
         using var scope = provider.CreateScope();

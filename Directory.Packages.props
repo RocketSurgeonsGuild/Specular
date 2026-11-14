@@ -19,7 +19,6 @@
     <GlobalPackageReference Include="Roslynator.CodeFixes" Version="5.0.1" />
     <GlobalPackageReference Include="Roslynator.Refactorings" Version="5.0.1" />
     <GlobalPackageReference Include="ZeroAlloc.Analyzers" Version="1.13.0" />
-    <GlobalPackageReference Include="FakeItEasy.Analyzer.CSharp" Version="6.1.1" />
     <GlobalPackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.172" />
     <GlobalPackageReference Include="JetBrains.Annotations.Sources" Version="2026.2.0" />
   </ItemGroup>
@@ -46,8 +45,7 @@
     <PackageVersion Include="System.Text.Json" Version="10.0.15" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
-    <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="Rocket.Surgery.Extensions.Testing.FakeItEasy" Version="11.0.1" />
+    <PackageVersion Include="TUnit.Assertions.Should" Version="1.84.0-beta" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="11.0.1" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.1" />
     <PackageVersion Include="TUnit" Version="1.84.0" />
