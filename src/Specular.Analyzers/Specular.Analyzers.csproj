@@ -11,6 +11,8 @@
         <GenerateAssemblyInfoManifest>false</GenerateAssemblyInfoManifest>
         <AssemblyInfoDependencies>false</AssemblyInfoDependencies>
         <_AnalyzersLocation>../Specular.Analyzers.supports/bin/</_AnalyzersLocation>
+        <PackageTags>$(PackageTags);roslyn;analyzers;incremental-generator</PackageTags>
+        <PackageDescription>Roslyn source generator for Specular that resolves GetAssemblies, GetTypes and Scan queries and the service registration attributes at build time, and writes the results into a SpecularProvider class.</PackageDescription>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />

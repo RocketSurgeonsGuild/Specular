@@ -1,28 +1,81 @@
 # Specular
 
-Specular is the next-generation library from Rocket Surgeons Guild, focused on modern .NET development. This repository contains only the Specular library and related documentation.
+Compile-time assembly and type scanning for .NET. Specular gives you a Scrutor-style fluent API for finding types and
+registering them with `Microsoft.Extensions.DependencyInjection`. A Roslyn source generator evaluates each query at
+build time and writes the results into your assembly. Nothing is scanned at runtime, so the same code works with Native
+AOT and trimming.
 
-I like reflection, I have a recurring joke with a good friend about `.Any()` and how we first met when we were working together. Anyway I reflection really but I hate how much time it takes! I know time is relative and reflection today is really fast.
+[![github-release-badge]][github-release]
+[![github-license-badge]][github-license]
+[![github-build-badge]][github-build]
+[![nuget-Specular-badge]][nuget-Specular]
 
-But wait, there's AOT, you can't rely on reflection in AOT, and heck you can't rely on reflection to have all the assemblies loaded it needs. Sometimes you have to kick it by inspecting the assemblies yourself.
+Documentation: <https://rocketsurgeonsguild.github.io/Specular/>
 
-But I also like tools like [Scrutor](https://www.nuget.org/packages/Scrutor) being able to scan assemblies and register services. Makes life so easy! What I wanted to do that but in an AOT friend way. So I created Specular, a library that allows you to scan assemblies and register services in a way that is AOT friendly.
+## Getting started
 
-Using the 🪄 MAGIC 🪄 of roslyn and Source Generators we get something that is really really close to magic.
+Add the package. It brings the source generator with it:
 
-## How
+```bash
+dotnet add package Specular
+```
+
+The generator emits an internal `SpecularProvider` class into your assembly. Pass its `Instance` to `Scan` to register
+services; the selector lambda is read at build time, so it can only use values the compiler knows, such as types and
+string literals:
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Specular;
+
+var services = new ServiceCollection();
+ISpecularProvider provider = SpecularProvider.Instance;
+
+provider.Scan(
+    services,
+    z => z.FromAssemblyOf<IProductService>()
+          .AddClasses(f => f.InExactNamespaceOf<IProductService>())
+          .AsMatchingInterface()
+          .WithSingletonLifetime()
+);
+```
+
+`GetTypes` returns the matching types without registering them:
+
+```csharp
+IEnumerable<Type> productServices = provider.GetTypes(
+    z => z.FromAssemblies().GetTypes(f => f.AssignableTo<IProductService>())
+);
+```
+
+Libraries that should be scanned by the application, without a provider of their own, set
+`<SpecularEmitProvider>false</SpecularEmitProvider>`. See the
+[installation guide](https://rocketsurgeonsguild.github.io/Specular/guide/installation/), the
+[quickstart](https://rocketsurgeonsguild.github.io/Specular/guide/quickstart/) and
+[AOT publishing](https://rocketsurgeonsguild.github.io/Specular/guide/aot-publishing/).
+
+## Packages
+
+| Package                                        | NuGet                                                         | What it does                                                                                          |
+| ---------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [Specular][nuget-Specular]                     | [![nuget-Specular-badge]][nuget-Specular]                     | `ISpecularProvider`, the selector and type filter interfaces, and the service registration attributes |
+| [Specular.Analyzers][nuget-Specular.Analyzers] | [![nuget-Specular.Analyzers-badge]][nuget-Specular.Analyzers] | The source generator that resolves each query and writes `SpecularProvider`                           |
+
+`Specular` brings in `Specular.Analyzers`, so you don't reference it yourself.
+
+## How it works
 
 This library works in two parts.
 
-### The .NET Library ( `Specular` )
+### The .NET library (`Specular`)
 
-The first part is the interfaces and attributes. `ISpecularProvider` grants you access the scanner. There are helper methods to get access to the scanner for a given assembly ( any thoughts on how to improve this experience are welcome?!? )
+The first part is the interfaces and attributes. `ISpecularProvider` grants you access to the scanner. There are helper methods to get access to the scanner for a given assembly ( any thoughts on how to improve this experience are welcome?!? )
 
 Each assembly that emits a provider exposes it as a compile-time singleton, `SpecularProvider.Instance`, so applications can grab the scanner for their own compilation directly without any runtime reflection. However your consumers should almost **ALWAYS** accept the `ISpecularProvider` interface as a dependency, and not rely on the static `SpecularProvider.Instance` singleton. This ensures that the correct scanner is used. THIS IS IMPORTANT but we will get to that in step 2.
 
 The `ISpecularProvider` interface has 3 methods for scanning.
 
-> It's important to note that these methods are never actually executed at runtime. There are limiitations about what you can and can't pass into these methods, because they are compile time only hints for the source generator. You will find you cannot for example pass in a variable, but you can use static values, values that the compiler knows at compile. (strings, open generics, etc.)
+> It's important to note that these methods are never actually executed at runtime. There are limitations about what you can and can't pass into these methods, because they are compile time only hints for the source generator. You will find you cannot for example pass in a variable, but you can use static values, values that the compiler knows at compile. (strings, open generics, etc.)
 
 #### Assemblies
 
@@ -55,7 +108,7 @@ You can scan for types!
 
 > Service descriptors below support the exact same filtering as the type filtering, so we'll skip that below.
 
-#### Service Descriptors
+#### Service descriptors
 
 For service descriptors they're a little different, but directly extend the type scanning.
 
@@ -75,11 +128,11 @@ After we scan the types, we get to choose how the service is supposed to behave 
 
 We also have baked in support for a few attributes
 
-`ExcludeFromSpecularAttribute`: Lets you exclude a given assembly from being annotated by the source generator. This is useful for assemblies that you don't want to scan, or that you don't want to be scanned by the source generator.
-`RegistrationLifetimeAttribute`: Specifies the lifetime of a service registration. If not set, will use `ServiceRegistrationAttribute`.
-`ServiceRegistrationAttribute`: Specifies the service registration for a given type. If lifetime is not set, will use the lifetime specified at compile time.
+- `ExcludeFromSpecularAttribute`: Lets you exclude a given assembly from being annotated by the source generator. This is useful for assemblies that you don't want to scan, or that you don't want to be scanned by the source generator.
+- `RegistrationLifetimeAttribute`: Specifies the lifetime of a service registration. If not set, will use `ServiceRegistrationAttribute`.
+- `ServiceRegistrationAttribute`: Specifies the service registration for a given type. If lifetime is not set, will use the lifetime specified at compile time.
 
-### The Source Generator ( `Specular.Analyzers` )
+### The source generator (`Specular.Analyzers`)
 
 Okay so the source generator is where the magic happens.
 
@@ -95,47 +148,21 @@ If there are corner cases that the compiler can handle then lets add them, I wan
 
 Okay the explaining part out of the way.
 
-#### The Metadata
+#### The metadata
 
 Every assembly that references the `Specular` library will have all of the scanned selectors serialized into a string, and stored as AssemblyMetadata attributes at compile time. In essence we're not scanning any assemblies, we're only telling the compiler "this is what I want you to scan for me from this point in the future.".
 
-When the compiler scans this assembly in the future, it will see the metadata and hydrate the queries. Each assembly brings it's own query data (if any) and the compiler will merge the results together later.
+When the compiler scans this assembly in the future, it will see the metadata and hydrate the queries. Each assembly brings its own query data (if any) and the compiler will merge the results together later.
 
-#### The Scanner
+#### The scanner
 
 The scanner uses the compiler API to scan all assemblies and types of the given compilation. It uses all the different pieces of metadata to build up a full list method calls that it needs to build out. Each assembly then gets an `ISpecularProvider` generated for it, and the method calls are generated to return the correct results, using generators (yield return) to return the results.
 
-> I skipped something in the explination of the types earlier. Every method on the `SpecularProvider` takes in it's arguments but it also uses `CallerLineNumber`, `CallerFilePath` and `CallerArgumentExpression`. It then uses these values in a huge switch statement to determine which list of items to return. If the queries are all on different lines 1 jump, at most you'll have 2 jumps (unless you make some silly single long code!)
+> I skipped something in the explanation of the types earlier. Every method on the `SpecularProvider` takes in its arguments but it also uses `CallerLineNumber`, `CallerFilePath` and `CallerArgumentExpression`. It then uses these values in a huge switch statement to determine which list of items to return. If the queries are all on different lines 1 jump, at most you'll have 2 jumps (unless you make some silly single long code!)
 
 The generated `ISpecularProvider` is exposed as a compile-time singleton (`SpecularProvider.Instance`) and is also described by an assembly attribute used for cross-assembly cache busting. Whether an assembly emits a provider at all is controlled by the `SpecularEmitProvider` MSBuild property (defaults to `true`); library assemblies that are only meant to be scanned can set it to `false` so the consuming application is the one that emits the provider. Inside the generated provider are the scanner results of all of the queries that were found across all assemblies in the compilation.
 
-# Status
-
-<!-- badges -->
-
-[![github-license-badge]][github-license]
-
-<!-- badges -->
-
-<!-- history badges -->
-
-| GitHub Actions            |
-| ------------------------- |
-| [![github-badge]][github] |
-
-<!-- history badges -->
-
-<!-- nuget packages -->
-
-| Package | NuGet                                         |
-| ------- | --------------------------------------------- |
-| Specular  | [![nuget-version-specular-badge]][nuget-specular] |
-
-<!-- nuget packages -->
-
-# Whats next?
-
-# Contributing
+## Contributing
 
 Run `mise install` before building: it installs the .NET SDK and the extra .NET 10 runtime that the net10.0 tests run on (`.config/mise.toml`). `global.json` pins the same SDK, so a `dotnet` outside mise fails fast unless that SDK is installed.
 
@@ -146,17 +173,15 @@ Run `mise install` before building: it installs the .NET SDK and the extra .NET 
 > cd ~/.local/share/mise/dotnet-root && cp -p dotnet dotnet.fresh && mv -f dotnet.fresh dotnet
 > ```
 
-<!-- generated references -->
+<!-- references -->
 
+[github-release]: https://github.com/RocketSurgeonsGuild/Specular/releases/latest
+[github-release-badge]: https://img.shields.io/github/release/RocketSurgeonsGuild/Specular.svg?logo=github&style=flat "Latest Release"
 [github-license]: https://github.com/RocketSurgeonsGuild/Specular/blob/main/LICENSE
-[github-license-badge]: https://img.shields.io/github/license/RocketSurgeonsGuild/Specular.svg?style=flat 'License'
-[github]: https://github.com/RocketSurgeonsGuild/Specular/actions?query=workflow%3Aci
-[github-badge]: https://img.shields.io/github/actions/workflow/status/RocketSurgeonsGuild/Specular/ci.yml?branch=main&label=github&logo=github&color=b845fc&logoColor=b845fc&style=flat 'GitHub Actions Status'
-[nuget-specular]: https://www.nuget.org/packages/Specular/
-[nuget-version-specular-badge]: https://img.shields.io/nuget/v/Specular.svg?color=004880&logo=nuget&style=flat-square 'NuGet Version'
-
-<!-- nuke-data
-github:
-  owner: RocketSurgeonsGuild
-  repository: Extensions
--->
+[github-license-badge]: https://img.shields.io/github/license/RocketSurgeonsGuild/Specular.svg?style=flat "License"
+[github-build]: https://github.com/RocketSurgeonsGuild/Specular/actions/workflows/build.yml
+[github-build-badge]: https://github.com/RocketSurgeonsGuild/Specular/actions/workflows/build.yml/badge.svg?branch=main "Build"
+[nuget-Specular]: https://www.nuget.org/packages/Specular/
+[nuget-Specular-badge]: https://img.shields.io/nuget/v/Specular.svg?logo=nuget&style=flat
+[nuget-Specular.Analyzers]: https://www.nuget.org/packages/Specular.Analyzers/
+[nuget-Specular.Analyzers-badge]: https://img.shields.io/nuget/v/Specular.Analyzers.svg?logo=nuget&style=flat

@@ -6,6 +6,8 @@
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>
         <RuntimeAsyncBrowserWasmAsset>true</RuntimeAsyncBrowserWasmAsset>
+        <PackageTags>$(PackageTags);dependency-injection;service-registration;microsoft-extensions;ioc;scrutor</PackageTags>
+        <PackageDescription>Compile-time assembly and type scanning with Scrutor-style service registration for Microsoft.Extensions.DependencyInjection. A source generator resolves ISpecularProvider queries at build time, so they work with Native AOT and trimming.</PackageDescription>
     </PropertyGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="Specular.Extensions.Tests" />
