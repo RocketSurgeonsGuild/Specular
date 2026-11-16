@@ -8,12 +8,8 @@
         <PackageIcon>images/packageicon.png</PackageIcon>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <!--
-            in package
-            Title
-            Description
-            Tags
-        -->
+        <!-- Tags every Specular package shares; each project appends its own with $(PackageTags);... -->
+        <PackageTags>specular;rocket-surgeons-guild;assembly-scanning;type-scanning;source-generator;aot;native-aot;trimming</PackageTags>
         <LangVersion>preview</LangVersion>
         <Features>strict</Features>
         <Nullable>enable</Nullable>
