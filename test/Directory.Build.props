@@ -1,9 +1,7 @@
 <Project>
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     <PropertyGroup>
-        <IsPackable>false</IsPackable>
-        <MergeCoverage>true</MergeCoverage>
-        <IncludeTestAssembly>true</IncludeTestAssembly>
+        <IsTestProject>true</IsTestProject>
         <!--
             The repo-wide LatestMajor would run the net10.0 tests on the newest installed runtime (11.0.x once it's GA), which
             changes the generated compilations' diagnostics (CS1701). Keep each target on its own major: mise installs the
