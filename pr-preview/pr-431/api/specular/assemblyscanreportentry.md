@@ -2,10 +2,10 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/pr-preview/pr-431/api/specular.md)
-- Version: `0.4.2-pr.55`
+- Version: `0.4.2-pr.57`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.216015f7483e4a22dec13765e68d4ac57c482acf/src/Specular/Diagnostics/ScanDiagnostics.cs)
 - Implements: `IEquatable<AssemblyScanReportEntry>`
 
 Identifies an assembly selected by an assembly scan expression.
