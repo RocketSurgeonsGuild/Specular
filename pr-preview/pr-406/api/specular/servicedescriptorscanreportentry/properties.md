@@ -14,6 +14,7 @@ Describes one service descriptor produced by a service descriptor scan.
 - Name: `ImplementationTypeName`
 - Modifiers: `get; init`
 - Returns: `string`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-406-merge.Sha.a5bb8c31ae5b3055ce3bbac8a150aa5acd0acd0a/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string ImplementationTypeName { get; init; }
@@ -26,6 +27,7 @@ public string ImplementationTypeName { get; init; }
 - Name: `ServiceLifetime`
 - Modifiers: `get; init`
 - Returns: `ServiceLifetime`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-406-merge.Sha.a5bb8c31ae5b3055ce3bbac8a150aa5acd0acd0a/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ServiceLifetime ServiceLifetime { get; init; }
@@ -38,6 +40,7 @@ public ServiceLifetime ServiceLifetime { get; init; }
 - Name: `ServiceTypeName`
 - Modifiers: `get; init`
 - Returns: `string`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-406-merge.Sha.a5bb8c31ae5b3055ce3bbac8a150aa5acd0acd0a/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string ServiceTypeName { get; init; }
