@@ -13,7 +13,7 @@ Identifies an assembly selected by an assembly scan expression.
 ## AssemblyScanReportEntry(string)
 
 - Name: `Constructor(string)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.e8ba1688856cc88c795c2a6c26416db05d34b225/src/Specular/Diagnostics/ScanDiagnostics.cs#L16)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs#L16)
 
 Identifies an assembly selected by an assembly scan expression.
 

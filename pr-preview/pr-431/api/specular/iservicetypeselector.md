@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/pr-preview/pr-431/api/specular.md)
-- Version: `0.4.2-pr.47`
+- Version: `0.4.2-pr.52`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.e8ba1688856cc88c795c2a6c26416db05d34b225/src/Specular/Abstractions/IServiceTypeSelector.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Abstractions/IServiceTypeSelector.cs)
 
 The Compiled Service Type Selector
 

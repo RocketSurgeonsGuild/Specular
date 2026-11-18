@@ -14,7 +14,7 @@ Contains the compile-time results for all Specular scans in an assembly.
 - Name: `AssemblyScanReports`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<AssemblyScanReport>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.e8ba1688856cc88c795c2a6c26416db05d34b225/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<AssemblyScanReport> AssemblyScanReports { get; init; }
@@ -27,7 +27,7 @@ public ImmutableList<AssemblyScanReport> AssemblyScanReports { get; init; }
 - Name: `ServiceDescriptorScanReports`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<ServiceDescriptorScanReport>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.e8ba1688856cc88c795c2a6c26416db05d34b225/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<ServiceDescriptorScanReport> ServiceDescriptorScanReports { get; init; }
@@ -40,7 +40,7 @@ public ImmutableList<ServiceDescriptorScanReport> ServiceDescriptorScanReports {
 - Name: `TypeScanReports`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<TypeScanReport>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.e8ba1688856cc88c795c2a6c26416db05d34b225/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<TypeScanReport> TypeScanReports { get; init; }
