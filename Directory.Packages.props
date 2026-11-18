@@ -6,8 +6,6 @@
   <ItemGroup>
     <PackageVersion Include="Rocket.Surgery.AssemblyInfo" Version="2026.11.2" />
     <GlobalPackageReference Include="Microsoft.DotNet.ApiCompat.Task" Version="11.0.100" />
-    <GlobalPackageReference Include="ZeroAlloc.Analyzers" Version="1.13.1" />
-    <GlobalPackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.172" />
   </ItemGroup>
   <ItemGroup>
     <!-- The build host (build/Build.cs). The library targets net11.0 only (ModularPipelines 4 ships net11.0 assets only), and its
