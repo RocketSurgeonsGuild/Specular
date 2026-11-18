@@ -1,7 +1,5 @@
 <Project>
     <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
-        <PackageReference Include="Microsoft.Testing.Extensions.CrashDump" />
-        <PackageReference Include="Microsoft.Testing.Extensions.HangDump" />
         <PackageReference Include="Bogus" />
         <PackageReference Include="TUnit.Assertions.Should" />
         <PackageReference Include="Rocket.Surgery.Extensions.Testing.TUnit" />
