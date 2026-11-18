@@ -68,12 +68,12 @@ internal static partial class ModuleInitializer
             (builder, counter) =>
             {
                 // The generator's versions, read from the typed dependency information rather than its assembly.
-                if (AssemblyInfo.Dependencies.Specular_Analyzers.Attributes.FileVersion is { Length: > 0 } version)
+                if (AssemblyInfo.Attributes.FileVersion is { Length: > 0 } version)
                 {
                     _ = builder.Replace(version, "version");
                 }
 
-                if (AssemblyInfo.Dependencies.Specular_Analyzers.Attributes.Version is { Length: > 0 } version2)
+                if (AssemblyInfo.Attributes.Version is { Length: > 0 } version2)
                 {
                     _ = builder.Replace(version2, "version");
                 }
