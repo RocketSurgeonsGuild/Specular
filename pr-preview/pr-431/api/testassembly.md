@@ -1,9 +1,9 @@
 # TestAssembly
 
 - Package: `TestAssembly`
-- Version: `0.4.2-pr.52`
+- Version: `0.4.2-pr.55`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/tree/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/test/TestAssembly)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/tree/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/test/TestAssembly)
 - NuGet: [TestAssembly](https://www.nuget.org/packages/TestAssembly)
 
 ## Namespaces

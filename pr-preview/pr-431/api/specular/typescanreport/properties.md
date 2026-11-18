@@ -14,7 +14,7 @@ Contains the result of a type scan expression.
 - Name: `Entries`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<TypeScanAssemblyReportEntry>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<TypeScanAssemblyReportEntry> Entries { get; init; }
@@ -27,7 +27,7 @@ public ImmutableList<TypeScanAssemblyReportEntry> Entries { get; init; }
 - Name: `SourceAssemblyName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string SourceAssemblyName { get; init; }
@@ -40,7 +40,7 @@ public string SourceAssemblyName { get; init; }
 - Name: `SourceExpression`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string SourceExpression { get; init; }

@@ -14,7 +14,7 @@ Contains the types selected from one assembly by a type scan expression.
 - Name: `AssemblyName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string AssemblyName { get; init; }
@@ -27,7 +27,7 @@ public string AssemblyName { get; init; }
 - Name: `Entries`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<TypeScanReportEntry>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.b666f55c1af32cb0724fd42ca43a1d17ac001353/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-431-merge.Sha.1fc516ea1b9500fed12a71dad9d2c95bf1783a47/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<TypeScanReportEntry> Entries { get; init; }
