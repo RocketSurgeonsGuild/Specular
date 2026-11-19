@@ -11,19 +11,19 @@
     <!-- The build host (build/Build.cs). The library targets net11.0 only (ModularPipelines 4 ships net11.0 assets only), and its
          Dovetail joints and Specular scan results are generated into the host, so both have to be direct references there. -->
     <PackageVersion Include="Rocket.Surgery.ModularPipelines.Extensions" Version="0.2.4" />
-    <PackageVersion Include="Joinery.Dovetail.ModularPipelines" Version="0.6.0" />
+    <PackageVersion Include="Joinery.Dovetail.ModularPipelines" Version="0.7.1" />
     <PackageVersion Include="Specular" Version="0.4.1" />
     <PackageVersion Include="Sourcy.DotNet" Version="1.1.1" />
     <PackageVersion Include="Sourcy.Git" Version="1.1.1" />
     <PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="1.0.52" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.9.0" />
-    <!-- The roslyn5.9 analyzer slice runs in the .NET 10.0.4xx SDK compiler (net10.0 runtime): keep these on 10.0.x. -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.12.0" />
+    <!-- The roslyn5.12 analyzer slice runs in the .NET 11.0.1xx SDK compiler (net11.0 runtime); these stay on 10.0.x, which the roslyn5.9 slice (the .NET 10.0.4xx SDK compiler, net10.0 runtime) pins as well. -->
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.15" />
     <PackageVersion Include="Polyfill" Version="11.4.5" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.12.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="System.Text.Json" Version="10.0.15" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
@@ -31,7 +31,7 @@
     <PackageVersion Include="TUnit.Assertions.Should" Version="1.84.0-beta" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="11.0.1" />
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.1" />
-    <PackageVersion Include="TUnit" Version="1.86.6" />
+    <PackageVersion Include="TUnit" Version="1.87.0" />
     <PackageVersion Include="Verify.TUnit" Version="33.6.0" />
   </ItemGroup>
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
