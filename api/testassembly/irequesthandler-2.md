@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [TestAssembly](/Specular/api/testassembly.md)
-- Version: `0.4.2-beta.57`
+- Version: `0.4.2-beta.60`
 - Namespace: `TestAssembly`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.2c58ca1550253a4dc8970fb498af2ac586027684/test/TestAssembly/IRequestHandler.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.3e2a3e2d3b047fb970d395d788aba027f8e95062/test/TestAssembly/IRequestHandler.cs)
 
 ## Definition
 

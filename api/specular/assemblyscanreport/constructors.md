@@ -13,7 +13,7 @@ Contains the result of an assembly scan expression.
 ## AssemblyScanReport(string, string, ImmutableList<AssemblyScanReportEntry>)
 
 - Name: `Constructor(string, string, ImmutableList<AssemblyScanReportEntry>)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.2c58ca1550253a4dc8970fb498af2ac586027684/src/Specular/Diagnostics/ScanDiagnostics.cs#L12)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.3e2a3e2d3b047fb970d395d788aba027f8e95062/src/Specular/Diagnostics/ScanDiagnostics.cs#L12)
 
 Contains the result of an assembly scan expression.
 
