@@ -2,10 +2,10 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.52`
+- Version: `0.4.2-beta.57`
 - Namespace: `Specular`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.8bcc62d19c09284f6923e54e588877e41baf4070/src/Specular/SpecularSupport.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.2c58ca1550253a4dc8970fb498af2ac586027684/src/Specular/SpecularSupport.cs)
 
 Support class for Specular, this is used to hash the argument expression for the caller.
 

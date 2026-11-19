@@ -2,10 +2,10 @@
 
 - Kind: `class`
 - Package: [TestAssembly](/Specular/api/testassembly.md)
-- Version: `0.4.2-beta.52`
+- Version: `0.4.2-beta.57`
 - Namespace: `TestAssembly`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.8bcc62d19c09284f6923e54e588877e41baf4070/test/TestAssembly/KeyedService.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.2c58ca1550253a4dc8970fb498af2ac586027684/test/TestAssembly/KeyedService.cs)
 - Implements: [IKeyedService](/Specular/api/testassembly/ikeyedservice.md)
 
 Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.
