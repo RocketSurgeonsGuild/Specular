@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.50`
+- Version: `0.4.2-beta.52`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.d4a702693c72a74c7d2f15946a641a7a58285f09/src/Specular/Abstractions/IReflectionAssemblySelector.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.8bcc62d19c09284f6923e54e588877e41baf4070/src/Specular/Abstractions/IReflectionAssemblySelector.cs)
 
 The compiled assembly selector
 

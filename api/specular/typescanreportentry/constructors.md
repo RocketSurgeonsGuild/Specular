@@ -13,7 +13,7 @@ Identifies a type selected by a type scan expression.
 ## TypeScanReportEntry(string)
 
 - Name: `Constructor(string)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.d4a702693c72a74c7d2f15946a641a7a58285f09/src/Specular/Diagnostics/ScanDiagnostics.cs#L28)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.8bcc62d19c09284f6923e54e588877e41baf4070/src/Specular/Diagnostics/ScanDiagnostics.cs#L28)
 
 Identifies a type selected by a type scan expression.
 

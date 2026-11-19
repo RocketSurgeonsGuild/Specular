@@ -13,7 +13,7 @@ Contains the result of a type scan expression.
 ## TypeScanReport(string, string, ImmutableList<TypeScanAssemblyReportEntry>)
 
 - Name: `Constructor(string, string, ImmutableList<TypeScanAssemblyReportEntry>)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.d4a702693c72a74c7d2f15946a641a7a58285f09/src/Specular/Diagnostics/ScanDiagnostics.cs#L20)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.8bcc62d19c09284f6923e54e588877e41baf4070/src/Specular/Diagnostics/ScanDiagnostics.cs#L20)
 
 Contains the result of a type scan expression.
 
