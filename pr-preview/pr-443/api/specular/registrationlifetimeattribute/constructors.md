@@ -13,7 +13,7 @@ Defines the lifetime that should be used service registrations created using the
 ## RegistrationLifetimeAttribute(ServiceLifetime)
 
 - Name: `Constructor(ServiceLifetime)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-443-merge.Sha.0ce6dafae22555d843d161383c929a8d23274722/src/Specular/RegistrationLifetimeAttribute.cs#L14-L20)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-443-merge.Sha.0033aac02b7565a1ecf99425ec7bdc404ad43560/src/Specular/RegistrationLifetimeAttribute.cs#L14-L20)
 
 Defines the lifetime that should be used service registrations created using the [ISpecularProvider](/Specular/pr-preview/pr-443/api/specular/ispecularprovider.md)
 
