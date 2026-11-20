@@ -13,7 +13,7 @@ Describes one service descriptor produced by a service descriptor scan.
 ## ServiceDescriptorScanReportEntry(ServiceLifetime, string, string)
 
 - Name: `Constructor(ServiceLifetime, string, string)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92ad0972fc551fb7fe4da29ef78029c66b11b489/src/Specular/Diagnostics/ScanDiagnostics.cs#L40)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/Diagnostics/ScanDiagnostics.cs#L40)
 
 Describes one service descriptor produced by a service descriptor scan.
 

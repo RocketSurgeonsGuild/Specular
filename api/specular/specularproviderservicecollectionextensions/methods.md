@@ -15,7 +15,7 @@ Extension methods for the service collection using the compiled type provider
 - Name: `AddSpecularServiceRegistrations(IServiceCollection, ISpecularProvider)`
 - Modifiers: `extension`
 - Returns: `IServiceCollection`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92ad0972fc551fb7fe4da29ef78029c66b11b489/src/Specular/SpecularProviderServiceCollectionExtensions.cs#L20-L49)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/SpecularProviderServiceCollectionExtensions.cs#L20-L49)
 
 Adds all the services with the [ServiceRegistrationAttribute](/Specular/api/specular/serviceregistrationattribute.md) or [KeyedServiceRegistrationAttribute](/Specular/api/specular/keyedserviceregistrationattribute.md) to the service collection
 

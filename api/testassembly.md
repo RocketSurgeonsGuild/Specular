@@ -1,9 +1,9 @@
 # TestAssembly
 
 - Package: `TestAssembly`
-- Version: `0.4.2-beta.64`
+- Version: `0.4.2-beta.65`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/tree/Branch.main.Sha.92ad0972fc551fb7fe4da29ef78029c66b11b489/test/TestAssembly)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/tree/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/test/TestAssembly)
 - NuGet: [TestAssembly](https://www.nuget.org/packages/TestAssembly)
 
 ## Namespaces
