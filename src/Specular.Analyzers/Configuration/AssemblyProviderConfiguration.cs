@@ -77,10 +77,12 @@ internal sealed partial class AssemblyProviderConfiguration
 
         var internalReflectionRequests = internalReflectionRequestsBuilder.ToImmutable();
         var internalServiceDescriptorRequests = internalServiceDescriptorRequestsBuilder.ToImmutable();
+        var allReflectionRequests = reflectionRequests.AddRange(internalReflectionRequests);
+        var allServiceDescriptorRequests = serviceDescriptorRequests.AddRange(internalServiceDescriptorRequests);
         var diagnostics = new HashSet<Diagnostic>();
         foreach (var assembly in assemblySymbols.Values.Except([compilation.Assembly]).OrderBy(z => z.MetadataName))
         {
-            foreach (var request in reflectionRequests.Concat(internalReflectionRequests))
+            foreach (var request in allReflectionRequests)
             {
                 var source = ReflectionCollection.ResolveSource(
                     this,
@@ -92,7 +94,7 @@ internal sealed partial class AssemblyProviderConfiguration
                 if (source is { }) reflectionSources.Add(source);
             }
 
-            foreach (var request in serviceDescriptorRequests.Concat(internalServiceDescriptorRequests))
+            foreach (var request in allServiceDescriptorRequests)
             {
                 var source = ServiceDescriptorCollection.ResolveSource(
                     this,
@@ -614,13 +616,13 @@ typeFilter
 typeFilter
               .TypeFilterDescriptors.OfType<TypeKindFilterDescriptor>()
               .Select(static z => new TypeKindFilterData(z.Include, z.TypeKinds.OrderBy(z => z).ToImmutableArray()))
-              .OrderBy(static z => string.Join(",", z.TypeKinds.OrderBy(static z => z)))
+              .OrderBy(static z => string.Join(",", z.TypeKinds.OrderBy(static z => z).Select(static z => z.ToString())))
               .ThenBy(static z => z.Include)
         .ToImmutableArray(),
 typeFilter
               .TypeFilterDescriptors.OfType<TypeInfoFilterDescriptor>()
               .Select(static z => new TypeInfoFilterData(z.Include, z.TypeInfos.OrderBy(z => z).ToImmutableArray()))
-              .OrderBy(static z => string.Join(",", z.TypeInfos.OrderBy(static z => z)))
+              .OrderBy(static z => string.Join(",", z.TypeInfos.OrderBy(static z => z).Select(static z => z.ToString())))
               .ThenBy(static z => z.Include)
         .ToImmutableArray(),
 typeFilter
@@ -747,7 +749,7 @@ typeFilter
                            }
                )
               .Where(z => z is { })
-              .OrderBy(z => string.Join(",", z.Types))
+              .OrderBy(z => string.Join(",", z.Types.Select(static t => t.ToString())))
               .ThenBy(z => z.Include)
               .ToImmutableArray()
     );

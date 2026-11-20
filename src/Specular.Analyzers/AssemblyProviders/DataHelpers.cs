@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
-using Specular.Analyzers.Descriptors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Specular.Analyzers.Descriptors;
 
 namespace Specular.Analyzers.AssemblyProviders;
 
@@ -147,7 +147,7 @@ internal static class DataHelpers
                     ..,
                 ],
             }) => nameofName,
-            _ => throw new MustBeAnExpressionException(expression.GetLocation(), string.Join(", ", expression.ToFullString())),
+            _ => throw new MustBeAnExpressionException(expression.GetLocation(), expression.ToFullString()),
         };
     }
 
@@ -459,7 +459,7 @@ internal static class DataHelpers
                     continue;
                 }
 
-                namespaces.Add(Enum.TryParse<TypeKind>(item, out var result) ? result : TypeKind.Unknown);
+                namespaces.Add(Enum.TryParse<TypeKind>(item, ignoreCase: false, out var result) ? result : TypeKind.Unknown);
             }
 
             return new(include, namespaces.ToImmutable());
@@ -482,7 +482,7 @@ internal static class DataHelpers
                     continue;
                 }
 
-                namespaces.Add(Enum.TryParse<TypeInfoFilter>(item, out var result) ? result : TypeInfoFilter.Unknown);
+                namespaces.Add(Enum.TryParse<TypeInfoFilter>(item, ignoreCase: false, out var result) ? result : TypeInfoFilter.Unknown);
             }
 
             return new(include, namespaces.ToImmutable());

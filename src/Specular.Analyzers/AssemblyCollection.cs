@@ -129,16 +129,23 @@ internal static class AssemblyCollection
             var pa = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
             try
             {
-                var filterAssemblies = assemblySymbols
-                                      .Values
-                                      .Where(z => item.AssemblyFilter.IsMatch(compilation, z))
-                                      .ToArray();
+                var filterAssemblies = new List<IAssemblySymbol>();
+                foreach (var assembly in assemblySymbols.Values)
+                {
+                    if (item.AssemblyFilter.IsMatch(compilation, assembly)) filterAssemblies.Add(assembly);
+                }
 
                 var (descriptors, reportEntries) = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa);
+                var privateAssemblyNames = ImmutableHashSet.CreateBuilder<string>();
+                foreach (var assembly in pa)
+                {
+                    privateAssemblyNames.Add(assembly.MetadataName);
+                }
+
                 results.Add(new(
                     item.Location,
                     descriptors.NormalizeWhitespace().ToFullString().Replace("\r", ""),
-                    pa.Select(z => z.MetadataName).ToImmutableHashSet(),
+                    privateAssemblyNames.ToImmutable(),
                     "",
                     [],
                     reportEntries,
