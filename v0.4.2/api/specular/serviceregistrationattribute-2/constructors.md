@@ -1,0 +1,36 @@
+# ServiceRegistrationAttribute<TService1, TService2> Constructors
+
+- Package: [Specular](/Specular/v0.4.2/api/specular.md)
+- Type: [ServiceRegistrationAttribute<TService1, TService2>](/Specular/v0.4.2/api/specular/serviceregistrationattribute-2.md)
+- Kind: `Constructors`
+- Members: `1`
+
+Attribute used to define the service registration of a given type
+
+<a id="constructor"></a>
+<a id="constructor-servicelifetime"></a>
+
+## ServiceRegistrationAttribute(ServiceLifetime)
+
+- Name: `Constructor(ServiceLifetime)`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/ServiceRegistrationAttribute.cs#L40)
+
+Attribute used to define the service registration of a given type
+
+```csharp
+public sealed class ServiceRegistrationAttribute<TService1, TService2>
+{
+    public ServiceRegistrationAttribute<TService1, ServiceRegistrationAttribute(ServiceLifetime lifetime)
+    {
+        // ...
+    }
+}
+```
+
+## Parameters
+
+- `lifetime` (`ServiceLifetime`)
+
+## Remarks
+
+Constructor to specify the lifetime

@@ -1,0 +1,37 @@
+# SpecularProviderServiceCollectionExtensions Methods
+
+- Package: [Specular](/Specular/v0.4.2/api/specular.md)
+- Type: [SpecularProviderServiceCollectionExtensions](/Specular/v0.4.2/api/specular/specularproviderservicecollectionextensions.md)
+- Kind: `Methods`
+- Members: `1`
+
+Extension methods for the service collection using the compiled type provider
+
+<a id="addspecularserviceregistrations"></a>
+<a id="addspecularserviceregistrations-iservicecollection-ispecularprovider"></a>
+
+## AddSpecularServiceRegistrations(IServiceCollection, ISpecularProvider)
+
+- Name: `AddSpecularServiceRegistrations(IServiceCollection, ISpecularProvider)`
+- Modifiers: `extension`
+- Returns: `IServiceCollection`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/SpecularProviderServiceCollectionExtensions.cs#L20-L49)
+
+Adds all the services with the [ServiceRegistrationAttribute](/Specular/v0.4.2/api/specular/serviceregistrationattribute.md) or [KeyedServiceRegistrationAttribute](/Specular/v0.4.2/api/specular/keyedserviceregistrationattribute.md) to the service collection
+
+```csharp
+public static class SpecularProviderServiceCollectionExtensions
+{
+    public static IServiceCollection AddSpecularServiceRegistrations(
+        this IServiceCollection services,
+        ISpecularProvider provider)
+    {
+        // ...
+    }
+}
+```
+
+## Parameters
+
+- `services` (`IServiceCollection`)
+- `provider` ([ISpecularProvider](/Specular/v0.4.2/api/specular/ispecularprovider.md))

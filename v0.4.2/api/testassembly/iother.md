@@ -1,0 +1,19 @@
+# IOther
+
+- Kind: `interface`
+- Package: [TestAssembly](/Specular/v0.4.2/api/testassembly.md)
+- Version: `0.4.2`
+- Namespace: `TestAssembly`
+- Target framework: `net10.0`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/test/TestAssembly/IOther.cs)
+
+## Definition
+
+```csharp
+namespace TestAssembly;
+
+public interface IOther
+{
+    // ...
+}
+```

@@ -1,0 +1,34 @@
+# ServiceDescriptorAssemblyScanReportEntry Properties
+
+- Package: [Specular](/Specular/v0.4.2/api/specular.md)
+- Type: [ServiceDescriptorAssemblyScanReportEntry](/Specular/v0.4.2/api/specular/servicedescriptorassemblyscanreportentry.md)
+- Kind: `Properties`
+- Members: `2`
+
+Contains the registrations produced from one scanned assembly.
+
+<a id="assemblyname"></a>
+
+## AssemblyName
+
+- Name: `AssemblyName`
+- Modifiers: `get; init`
+- Returns: `string`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/Diagnostics/ScanDiagnostics.cs)
+
+```csharp
+public string AssemblyName { get; init; }
+```
+
+<a id="entries"></a>
+
+## Entries
+
+- Name: `Entries`
+- Modifiers: `get; init`
+- Returns: `ImmutableList<ServiceDescriptorScanReportEntry>`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/Diagnostics/ScanDiagnostics.cs)
+
+```csharp
+public ImmutableList<ServiceDescriptorScanReportEntry> Entries { get; init; }
+```

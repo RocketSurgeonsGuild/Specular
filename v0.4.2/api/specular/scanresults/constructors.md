@@ -1,0 +1,37 @@
+# ScanResults Constructors
+
+- Package: [Specular](/Specular/v0.4.2/api/specular.md)
+- Type: [ScanResults](/Specular/v0.4.2/api/specular/scanresults.md)
+- Kind: `Constructors`
+- Members: `1`
+
+Contains the compile-time results for all Specular scans in an assembly.
+
+<a id="constructor"></a>
+<a id="constructor-immutablelist-assemblyscanreport-immutablelist-typescanreport-immutablelist-servicedescriptorscanreport"></a>
+
+## ScanResults(ImmutableList<AssemblyScanReport>, ImmutableList<TypeScanReport>, ImmutableList<ServiceDescriptorScanReport>)
+
+- Name: `Constructor(ImmutableList<AssemblyScanReport>, ImmutableList<TypeScanReport>, ImmutableList<ServiceDescriptorScanReport>)`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/Diagnostics/ScanDiagnostics.cs#L8)
+
+Contains the compile-time results for all Specular scans in an assembly.
+
+```csharp
+public record ScanResults
+{
+    public ScanResults(
+        ImmutableList<AssemblyScanReport> AssemblyScanReports,
+        ImmutableList<TypeScanReport> TypeScanReports,
+        ImmutableList<ServiceDescriptorScanReport> ServiceDescriptorScanReports)
+    {
+        // ...
+    }
+}
+```
+
+## Parameters
+
+- `AssemblyScanReports` (`ImmutableList<AssemblyScanReport>`)
+- `TypeScanReports` (`ImmutableList<TypeScanReport>`)
+- `ServiceDescriptorScanReports` (`ImmutableList<ServiceDescriptorScanReport>`)
