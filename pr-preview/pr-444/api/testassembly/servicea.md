@@ -1,0 +1,27 @@
+# ServiceA
+
+- Kind: `class`
+- Package: [TestAssembly](/Specular/pr-preview/pr-444/api/testassembly.md)
+- Version: `0.4.2-pr.62`
+- Namespace: `TestAssembly`
+- Target framework: `net10.0`
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-444-merge.Sha.91db23f0a6dd2aea896fb5788d96dd2d2a023c25/test/TestAssembly/Nested.cs)
+- Implements: [IService](/Specular/pr-preview/pr-444/api/testassembly/iservice.md)
+
+Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.
+
+## Definition
+
+```csharp
+namespace TestAssembly;
+
+public class ServiceA
+    : TestAssembly.IService
+{
+    // ...
+}
+```
+
+## Constructors
+
+- [ServiceA](/Specular/pr-preview/pr-444/api/testassembly/servicea/constructors.md#constructor)
