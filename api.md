@@ -4,5 +4,5 @@ Browse the C# API reference for every package this repository publishes.
 
 ## Packages
 
-- [Specular](/Specular/api/specular.md) -- v0.4.2-beta.60 - 44 types - 206 members - net10.0
-- [TestAssembly](/Specular/api/testassembly.md) -- v0.4.2-beta.60 - 15 types - 5 members - net10.0
+- [Specular](/Specular/api/specular.md) -- v0.4.2-beta.62 - 44 types - 206 members - net10.0
+- [TestAssembly](/Specular/api/testassembly.md) -- v0.4.2-beta.62 - 15 types - 5 members - net10.0

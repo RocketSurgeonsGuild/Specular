@@ -14,7 +14,7 @@ Attribute used to define the service registration of a given type
 - Name: `Lifetime`
 - Modifiers: `get`
 - Returns: `ServiceLifetime`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.3e2a3e2d3b047fb970d395d788aba027f8e95062/src/Specular/ServiceRegistrationAttribute.cs#L26)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.69eea945f0109ae65f9e3b8083ce5b388859c35a/src/Specular/ServiceRegistrationAttribute.cs#L26)
 
 The lifetime
 
@@ -29,7 +29,7 @@ public ServiceLifetime Lifetime { get; }
 - Name: `ServiceTypes`
 - Modifiers: `get`
 - Returns: `ImmutableArray<Type>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.3e2a3e2d3b047fb970d395d788aba027f8e95062/src/Specular/ServiceRegistrationAttribute.cs#L21)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.69eea945f0109ae65f9e3b8083ce5b388859c35a/src/Specular/ServiceRegistrationAttribute.cs#L21)
 
 The service type
 
