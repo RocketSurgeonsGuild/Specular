@@ -40,7 +40,7 @@ export const collections = {
                 base: "changelog",
                 owner: "RocketSurgeonsGuild",
                 repo: "Specular",
-                token: import.meta.env.GH_API_TOKEN,
+                token: import.meta.env.GH_API_TOKEN ?? process.env.GITHUB_TOKEN,
             },
         ]),
     }),
