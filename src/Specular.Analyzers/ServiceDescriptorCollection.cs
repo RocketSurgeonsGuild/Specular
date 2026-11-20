@@ -241,7 +241,10 @@ internal static class ServiceDescriptorCollection
             var lifetimeValue = serviceTypes.GetLifetime();
             foreach (var attribute in serviceRegistrationAttributes)
             {
-                if (attribute.ConstructorArguments.Length == 1) lifetimeValue = GetLifetimeValue(attribute) ?? lifetimeValue;
+                if (attribute.ConstructorArguments.Length == 1)
+                {
+                    lifetimeValue = GetLifetimeValue(attribute) ?? lifetimeValue;
+                }
             }
 
             lifetimeValue = GetLifetimeValue(discoveredLifetime) ?? lifetimeValue;
@@ -261,7 +264,10 @@ internal static class ServiceDescriptorCollection
                 var attributeServiceTypes = GetAttributeServiceTypes(attributeData, 1, type);
 
                 // Prepending the type for every attribute would make a type with several attributes a duplicate of itself
-                if (index == 0) attributedServiceTypes.Add((GetRegistrationLifetime(type, registrationLifetimeAttribute) ?? GetLifetimeValue(attributeData) ?? lifetimeValue, type));
+                if (index == 0)
+                {
+                    attributedServiceTypes.Add((GetRegistrationLifetime(type, registrationLifetimeAttribute) ?? GetLifetimeValue(attributeData) ?? lifetimeValue, type));
+                }
                 foreach (var serviceType in attributeServiceTypes)
                 {
                     attributedServiceTypes.Add((GetRegistrationLifetime(serviceType, registrationLifetimeAttribute) ?? GetLifetimeValue(attributeData) ?? lifetimeValue, serviceType));
@@ -274,7 +280,10 @@ internal static class ServiceDescriptorCollection
             var abort = false;
             foreach (var (_, items) in lifetimeRegistrations)
             {
-                if (items.Count <= 1) continue;
+                if (items.Count <= 1)
+                {
+                    continue;
+                }
 
                 foreach (var item in items)
                 {
@@ -592,14 +601,20 @@ internal static class ServiceDescriptorCollection
         {
             foreach (var value in values)
             {
-                if (value is { Kind: TypedConstantKind.Type, Value: INamedTypeSymbol serviceType }) serviceTypes.Add(serviceType);
+                if (value is { Kind: TypedConstantKind.Type, Value: INamedTypeSymbol serviceType })
+                {
+                    serviceTypes.Add(serviceType);
+                }
             }
         }
         else if (attributeData.AttributeClass is { TypeArguments: { Length: > 0 } typeArguments })
         {
             foreach (var typeArgument in typeArguments)
             {
-                if (typeArgument is INamedTypeSymbol serviceType) serviceTypes.Add(serviceType);
+                if (typeArgument is INamedTypeSymbol serviceType)
+                {
+                    serviceTypes.Add(serviceType);
+                }
             }
         }
         else

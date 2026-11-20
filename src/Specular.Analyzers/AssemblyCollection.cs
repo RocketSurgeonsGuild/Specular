@@ -132,7 +132,10 @@ internal static class AssemblyCollection
                 var filterAssemblies = new List<IAssemblySymbol>();
                 foreach (var assembly in assemblySymbols.Values)
                 {
-                    if (item.AssemblyFilter.IsMatch(compilation, assembly)) filterAssemblies.Add(assembly);
+                    if (item.AssemblyFilter.IsMatch(compilation, assembly))
+                    {
+                        filterAssemblies.Add(assembly);
+                    }
                 }
 
                 var (descriptors, reportEntries) = GenerateDescriptors(configuration, diagnostics, filterAssemblies, pa);
