@@ -361,7 +361,10 @@ internal static class ServiceDescriptorCollection
                 var keyedAbort = false;
                 foreach (var (_, items) in keyedRegistrations)
                 {
-                    if (items.Count <= 1) continue;
+                    if (items.Count <= 1)
+                    {
+                        continue;
+                    }
 
                     foreach (var item in items)
                     {
