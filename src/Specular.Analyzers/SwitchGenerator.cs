@@ -11,12 +11,12 @@ internal static class SwitchGenerator
     {
         var lineNumberIdentifier = IdentifierName("lineNumber");
         var switchStatement = SwitchStatement(lineNumberIdentifier);
-        foreach (var lineGrouping in items.GroupBy(x => x.Location.LineNumber))
+        foreach (var (lineNumber, lineItems) in Helpers.GroupInOrder(items, x => x.Location.LineNumber))
         {
             // disallow list?
-            var location = lineGrouping.First().Location;
+            var location = lineItems[0].Location;
             var lineSwitchSection = createNestedSwitchSections(
-                    lineGrouping.ToArray(),
+                    lineItems,
                     InvocationExpression(
                             MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ParseName("System.IO.Path"), IdentifierName("GetFileName"))
                         )
@@ -26,7 +26,7 @@ internal static class SwitchGenerator
                     value => LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value))
                 )
                .AddLabels(
-                    CaseSwitchLabel(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(lineGrouping.Key)))
+                    CaseSwitchLabel(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(lineNumber)))
                        .WithKeyword(
                             Token(
                                 TriviaList(Comment($"// FilePath: {location.FilePath.Replace("\\", "/")} Expression: {location.ExpressionHash}")),
@@ -46,9 +46,9 @@ internal static class SwitchGenerator
         IReadOnlyList<ResolvedSourceLocation> blocks,
         ExpressionSyntax identifier,
         Func<ResolvedSourceLocation, T> regroup,
-        Func<IGrouping<T, ResolvedSourceLocation>, SwitchSectionSyntax> next,
+        Func<IReadOnlyList<ResolvedSourceLocation>, SwitchSectionSyntax> next,
         Func<T, LiteralExpressionSyntax> literalFactory
-    )
+    ) where T : notnull
     {
         if (blocks is [var localBlock])
         {
@@ -58,12 +58,12 @@ internal static class SwitchGenerator
         }
 
         var section = SwitchStatement(identifier);
-        foreach (var item in blocks.GroupBy(regroup))
+        foreach (var (key, items) in Helpers.GroupInOrder(blocks, regroup))
         {
-            var location = item.First().Location;
-            var newSection = next(item)
+            var location = items[0].Location;
+            var newSection = next(items)
                .AddLabels(
-                    CaseSwitchLabel(literalFactory(item.Key))
+                    CaseSwitchLabel(literalFactory(key))
                        .WithKeyword(
                             Token(
                                 TriviaList(Comment($"// FilePath: {location.FilePath.Replace("\\", "/")} Expression: {location.ExpressionHash}")),
@@ -80,7 +80,7 @@ internal static class SwitchGenerator
         return SwitchSection().AddStatements(section, BreakStatement());
     }
 
-    private static SwitchSectionSyntax generateFilePathSwitchStatement(IGrouping<string, ResolvedSourceLocation> innerGroup) => createNestedSwitchSections(
+    private static SwitchSectionSyntax generateFilePathSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) => createNestedSwitchSections(
         innerGroup.GroupBy(z => z.Location.ExpressionHash).Select(z => z.First()).ToArray(),
         InvocationExpression(
                 MemberAccessExpression(
@@ -99,8 +99,8 @@ internal static class SwitchGenerator
             )
     );
 
-    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IGrouping<string, ResolvedSourceLocation> innerGroup) => SwitchSection()
-       .AddStatements(ParseStatements(innerGroup.FirstOrDefault()?.Expression ?? "").ToArray())
+    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) => SwitchSection()
+       .AddStatements(ParseStatements(innerGroup is [var first, ..] ? first.Expression : "").ToArray())
        .AddStatements(BreakStatement());
 
     private static IEnumerable<StatementSyntax> ParseStatements(string expression)

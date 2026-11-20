@@ -81,6 +81,68 @@ internal static class Helpers
         return matchingInterfaces.FirstOrDefault() ?? assignableToType;
     }
 
+    // Same groups, group order and element order as Enumerable.GroupBy, with each group materialized once so it can be indexed.
+    public static List<(TKey Key, List<TElement> Items)> GroupInOrder<TElement, TKey>(IEnumerable<TElement> source, Func<TElement, TKey> keySelector)
+        where TKey : notnull
+    {
+        var groups = new List<(TKey Key, List<TElement> Items)>();
+        var indexByKey = new Dictionary<TKey, int>();
+        foreach (var element in source)
+        {
+            var key = keySelector(element);
+            if (!indexByKey.TryGetValue(key, out var index))
+            {
+                index = groups.Count;
+                indexByKey.Add(key, index);
+                groups.Add((key, []));
+            }
+
+            groups[index].Items.Add(element);
+        }
+
+        return groups;
+    }
+
+    // Same order as OrderBy(GetFullMetadataName): constructed generics share a metadata name, so ties keep their source order.
+    public static List<T> OrderByFullMetadataName<T>(List<T> symbols)
+        where T : ISymbol
+    {
+        var keyed = new List<(string Key, int Index, T Symbol)>(symbols.Count);
+        foreach (var symbol in symbols)
+        {
+            keyed.Add((GetFullMetadataName(symbol), keyed.Count, symbol));
+        }
+
+        return sortByKey(keyed);
+    }
+
+    /// <inheritdoc cref="OrderByFullMetadataName{T}(List{T})" />
+    public static List<T> OrderByFullMetadataName<T>(ImmutableArray<T> symbols)
+        where T : ISymbol
+    {
+        var keyed = new List<(string Key, int Index, T Symbol)>(symbols.Length);
+        foreach (var symbol in symbols)
+        {
+            keyed.Add((GetFullMetadataName(symbol), keyed.Count, symbol));
+        }
+
+        return sortByKey(keyed);
+    }
+
+    private static List<T> sortByKey<T>(List<(string Key, int Index, T Symbol)> keyed)
+    {
+        keyed.Sort(
+            static (left, right) => Comparer<string>.Default.Compare(left.Key, right.Key) is var order and not 0 ? order : left.Index.CompareTo(right.Index)
+        );
+        var ordered = new List<T>(keyed.Count);
+        foreach (var item in keyed)
+        {
+            ordered.Add(item.Symbol);
+        }
+
+        return ordered;
+    }
+
     public static string GetFullMetadataName(ISymbol? symbol)
     {
         if (symbol is null || IsRootNamespace(symbol)) return "";
