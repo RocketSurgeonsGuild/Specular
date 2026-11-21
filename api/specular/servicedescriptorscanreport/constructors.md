@@ -13,7 +13,7 @@ Contains the registrations produced by a service descriptor scan expression.
 ## ServiceDescriptorScanReport(string, string, ImmutableList<ServiceDescriptorAssemblyScanReportEntry>)
 
 - Name: `Constructor(string, string, ImmutableList<ServiceDescriptorAssemblyScanReportEntry>)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.a96f6200b68eab2ddc508f55e3106003db424406/src/Specular/Diagnostics/ScanDiagnostics.cs#L32)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.b164b04e5bca8fcc8720179d844e43e9b939eae8/src/Specular/Diagnostics/ScanDiagnostics.cs#L32)
 
 Contains the registrations produced by a service descriptor scan expression.
 
