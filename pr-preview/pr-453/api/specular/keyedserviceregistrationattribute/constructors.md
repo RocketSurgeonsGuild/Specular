@@ -13,7 +13,7 @@ Attribute used to define the keyed service registration of a given type. Behaves
 ## KeyedServiceRegistrationAttribute(object?, ServiceLifetime, Type[])
 
 - Name: `Constructor(object?, ServiceLifetime, Type[])`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ec2b107b4451b5c3b0046cb0f543b4e7dc2c17a5/src/Specular/KeyedServiceRegistrationAttribute.cs#L51)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ca2de83094300ad9fca8d4b18dd49afd62fc3ac1/src/Specular/KeyedServiceRegistrationAttribute.cs#L51)
 
 Attribute used to define the keyed service registration of a given type. Behaves the same as [ServiceRegistrationAttribute](/Specular/pr-preview/pr-453/api/specular/serviceregistrationattribute.md) except the resulting registration is a [keyed service](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-10.0#keyed-services).
 

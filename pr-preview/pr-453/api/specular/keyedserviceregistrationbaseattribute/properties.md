@@ -14,7 +14,7 @@ Attribute used to define the keyed service registration of a given type. Behaves
 - Name: `Key`
 - Modifiers: `nullable` `get`
 - Returns: `object?`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ec2b107b4451b5c3b0046cb0f543b4e7dc2c17a5/src/Specular/KeyedServiceRegistrationAttribute.cs#L24)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ca2de83094300ad9fca8d4b18dd49afd62fc3ac1/src/Specular/KeyedServiceRegistrationAttribute.cs#L24)
 
 The key the service is registered against
 
@@ -29,7 +29,7 @@ public object? Key { get; }
 - Name: `Lifetime`
 - Modifiers: `get`
 - Returns: `ServiceLifetime`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ec2b107b4451b5c3b0046cb0f543b4e7dc2c17a5/src/Specular/KeyedServiceRegistrationAttribute.cs#L34)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ca2de83094300ad9fca8d4b18dd49afd62fc3ac1/src/Specular/KeyedServiceRegistrationAttribute.cs#L34)
 
 The lifetime
 
@@ -44,7 +44,7 @@ public ServiceLifetime Lifetime { get; }
 - Name: `ServiceTypes`
 - Modifiers: `get`
 - Returns: `ImmutableArray<Type>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ec2b107b4451b5c3b0046cb0f543b4e7dc2c17a5/src/Specular/KeyedServiceRegistrationAttribute.cs#L29)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ca2de83094300ad9fca8d4b18dd49afd62fc3ac1/src/Specular/KeyedServiceRegistrationAttribute.cs#L29)
 
 The service type
 
