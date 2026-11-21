@@ -56,6 +56,11 @@
       "matchCategories": ["js"],
       "automerge": true,
       "labels": [":truck: private-dependencies"]
+    },
+    {
+      "description": "Only the tests and samples use these: consumers of this repository's packages never get them",
+      "matchDepNames": ["Serilog.Sinks.Console", "Microsoft.Reactive.Testing", "Uno.Sdk", "Microsoft.Maui.*"],
+      "labels": [":truck: private-dependencies"]
     }
   ]
 }
