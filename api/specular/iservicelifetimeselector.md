@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.2-beta.65`
+- Version: `0.4.3-beta.1`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cfc4e1e69ff7a6dcb9388579cde1a5879d0e3e7e/src/Specular/Abstractions/IServiceLifetimeSelector.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.54f1524cb3efb28751ffc9cedb4492113f164068/src/Specular/Abstractions/IServiceLifetimeSelector.cs)
 - Implements: [IServiceTypeSelector](/Specular/api/specular/iservicetypeselector.md)
 
 The Compiled Lifetime Selector
