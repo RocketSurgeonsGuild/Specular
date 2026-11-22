@@ -13,7 +13,7 @@ Contains the compile-time results for all Specular scans in an assembly.
 ## ScanResults(ImmutableList<AssemblyScanReport>, ImmutableList<TypeScanReport>, ImmutableList<ServiceDescriptorScanReport>)
 
 - Name: `Constructor(ImmutableList<AssemblyScanReport>, ImmutableList<TypeScanReport>, ImmutableList<ServiceDescriptorScanReport>)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.5e27d29a09b793f24c487188e4997683d2dde42b/src/Specular/Diagnostics/ScanDiagnostics.cs#L8)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.71a81f46ec8e0f8bc11d811fc85b38e1320f9d2a/src/Specular/Diagnostics/ScanDiagnostics.cs#L8)
 
 Contains the compile-time results for all Specular scans in an assembly.
 
