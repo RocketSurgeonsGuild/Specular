@@ -22,7 +22,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Features" Version="5.12.0" />
     <!-- The roslyn5.12 analyzer slice runs in the .NET 11.0.1xx SDK compiler (net11.0 runtime); these stay on 10.0.x, which the roslyn5.9 slice (the .NET 10.0.4xx SDK compiler, net10.0 runtime) pins as well. -->
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.15" />
-    <PackageVersion Include="Polyfill" Version="11.4.5" />
+    <PackageVersion Include="Polyfill" Version="12.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.12.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="System.Text.Json" Version="10.0.15" />
