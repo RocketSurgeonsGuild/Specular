@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/pr-preview/pr-453/api/specular.md)
-- Version: `0.4.3-pr.8`
+- Version: `0.4.3-pr.10`
 - Namespace: `Specular`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.ca2de83094300ad9fca8d4b18dd49afd62fc3ac1/src/Specular/ISpecularProvider.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.507a376b7125f9abab9ee28903b20cf32ac8ece3/src/Specular/ISpecularProvider.cs)
 
 A provider that gets a list of assemblies for a given context
 
