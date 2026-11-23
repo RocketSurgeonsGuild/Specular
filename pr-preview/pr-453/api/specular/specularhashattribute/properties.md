@@ -14,7 +14,7 @@ Attribute used to define the compiled type provider for a given assembly
 - Name: `GeneratedHash`
 - Modifiers: `get`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.507a376b7125f9abab9ee28903b20cf32ac8ece3/src/Specular/Abstractions/SpecularHashAttribute.cs#L13)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.d8be17a976d338643ca4a412a4021f4f1c8ca80c/src/Specular/Abstractions/SpecularHashAttribute.cs#L13)
 
 The generated hash to be used for cache busting
 
