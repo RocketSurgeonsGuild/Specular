@@ -1,14 +1,24 @@
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace Specular.Scanning;
 
-public partial record ScanRequest
+#if SPECULAR_SCANNING_SOURCES
+internal
+#else
+public
+#endif
+partial record ScanRequest
 {
     // Bump when the canonical form below changes, so old cache entries can never alias new requests.
     private const string CacheKeyFormat = "specular-scan-request/1";
+
+    // Keyed by instance identity, so a `with` copy gets its own entry and record equality never sees the cached value (a field
+    // would take part in the synthesized Equals).
+    private static readonly ConditionalWeakTable<ScanRequest, string> CacheKeys = new();
 
     private static partial ScanRequest BuildCore(Compilation compilation, Action<IAssemblySymbolSelector> select)
     {
@@ -20,9 +30,11 @@ public partial record ScanRequest
         return selector.Complete();
     }
 
+    private partial string GetCacheKeyCore() => CacheKeys.GetValue(this, static request => request.ComputeCacheKey());
+
     // The key must survive process restarts, so it hashes a canonical text form rather than using GetHashCode (randomized per
     // process for strings). Strings are length-prefixed and arrays count-prefixed, so no two different requests share a form.
-    private partial string GetCacheKeyCore()
+    private string ComputeCacheKey()
     {
         var key = new CanonicalWriter();
         key.Text(CacheKeyFormat);

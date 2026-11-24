@@ -57,6 +57,29 @@ public class ScanRequestCacheKeyTests
     [Test]
     public async Task The_key_is_url_safe() => await Baseline.CacheKey.All(c => c is ( >= 'A' and <= 'Z' ) or ( >= 'a' and <= 'z' ) or ( >= '0' and <= '9' ) or '-' or '_').Should().BeTrue();
 
+    [Test]
+    public async Task The_key_is_computed_once_per_instance()
+    {
+        var request = Baseline with { };
+
+        await ReferenceEquals(request.CacheKey, request.CacheKey).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task A_with_copy_does_not_reuse_a_stale_key()
+    {
+        var request = Baseline with { };
+        _ = request.CacheKey;
+
+        var changed = request with { Kind = ScanKind.Assemblies };
+        var unchanged = request with { };
+
+        await changed.CacheKey.Should().NotBeEqualTo(request.CacheKey);
+        await unchanged.CacheKey.Should().BeEqualTo(request.CacheKey);
+        await unchanged.Should().BeEqualTo(request);
+        await unchanged.GetHashCode().Should().BeEqualTo(request.GetHashCode());
+    }
+
     public static IEnumerable<Func<KeyVariant>> Variants()
     {
         var types = Baseline.Types!;
