@@ -55,12 +55,41 @@ public class AssemblyFilterTests
     }
 
     [Test]
-    public async Task Every_specific_assembly_clause_must_hold_like_Specular()
+    public async Task Several_specific_assemblies_select_each_of_them()
     {
-        // Specular ANDs its assembly descriptors, so two FromAssemblyOf calls naming different assemblies select nothing.
+        // Positive selections are alternatives: FromAssemblyOf(A).FromAssemblyOf(B) means "from A or B".
         var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly", "Specular")));
 
-        await AssemblyNames(result).Should().BeEmpty();
+        await AssemblyNames(result).Should().BeEquivalentTo(["Specular", "TestAssembly"]);
+    }
+
+    [Test]
+    public async Task A_specific_assembly_and_dependencies_of_another_select_both()
+    {
+        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("Specular") with { DependenciesOf = Array("TestAssembly") }));
+
+        await AssemblyNames(result).Should().BeEquivalentTo(["Specular", "TestProject"]);
+    }
+
+    [Test]
+    public async Task All_assemblies_is_the_starting_point_a_specific_selection_narrows()
+    {
+        // FromAssemblies().FromAssemblyOf<T>() and FromAssemblies().DependenciesFromAssemblyOf<T>() narrow, as in Specular.
+        var compilation = ScanCompilation.Create();
+
+        var specific = Scanner.Scan(compilation, Assemblies(AllAssemblies with { Assemblies = Array("TestAssembly") }));
+        var dependencies = Scanner.Scan(compilation, Assemblies(AllAssemblies with { DependenciesOf = Array("TestAssembly") }));
+
+        await AssemblyNames(specific).Should().BeEquivalentTo(["TestAssembly"]);
+        await AssemblyNames(dependencies).Should().BeEquivalentTo(["TestProject"]);
+    }
+
+    [Test]
+    public async Task An_unknown_specific_assembly_does_not_hide_the_known_ones()
+    {
+        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("Missing", "TestAssembly")));
+
+        await AssemblyNames(result).Should().BeEquivalentTo(["TestAssembly"]);
     }
 
     [Test]

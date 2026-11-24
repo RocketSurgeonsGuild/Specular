@@ -3,8 +3,10 @@ using Microsoft.CodeAnalysis;
 namespace Specular.Scanning;
 
 /// <summary>
-///     <see cref="AssemblyFilterData" /> applied to assemblies, with Specular's semantics: core assemblies are skipped unless included,
-///     and every clause must hold, so a not-assembly removes an assembly whatever else selected it.
+///     <see cref="AssemblyFilterData" /> applied to assemblies. Core assemblies are skipped unless included, and a not-assembly removes an
+///     assembly whatever selected it. Specific assemblies and dependencies-of are alternatives to each other (from A or B, or from A or
+///     the assemblies that reference C). All-assemblies is the starting point those narrow, as in <c>FromAssemblies().DependenciesFromAssemblyOf&lt;T&gt;()</c>,
+///     so it selects everything only when there is no specific selection; with only exclusions, everything not excluded matches.
 /// </summary>
 internal sealed class AssemblyMatcher
 {
@@ -22,7 +24,8 @@ internal sealed class AssemblyMatcher
 
     private readonly AssemblyFilterData _filter;
     private readonly bool _matchesNothing;
-    private readonly List<IAssemblySymbol?> _dependenciesOf;
+    private readonly bool _hasSpecificSelection;
+    private readonly List<IAssemblySymbol> _dependenciesOf;
 
     public AssemblyMatcher(AssemblyFilterData filter, IReadOnlyDictionary<string, IAssemblySymbol> assemblies)
     {
@@ -33,11 +36,12 @@ internal sealed class AssemblyMatcher
          && filter.Assemblies.Count == 0
          && filter.NotAssemblies.Count == 0
          && filter.DependenciesOf.Count == 0;
+        _hasSpecificSelection = filter.Assemblies.Count > 0 || filter.DependenciesOf.Count > 0;
         _dependenciesOf = [];
         foreach (var name in filter.DependenciesOf)
         {
-            // An unknown name stays as a clause that nothing satisfies, rather than being dropped and widening the scan.
-            _dependenciesOf.Add(assemblies.TryGetValue(name, out var assembly) ? assembly : null);
+            // An unknown name selects nothing; it still counts as a specific selection, so it never widens the scan to everything.
+            if (assemblies.TryGetValue(name, out var assembly)) _dependenciesOf.Add(assembly);
         }
     }
 
@@ -57,32 +61,35 @@ internal sealed class AssemblyMatcher
         if (_matchesNothing) return false;
         if (!_filter.IncludeSystemAssemblies && IsCoreAssembly(assembly.Name)) return false;
 
-        foreach (var name in _filter.Assemblies)
-        {
-            if (!string.Equals(assembly.MetadataName, name, StringComparison.Ordinal)) return false;
-        }
-
         foreach (var name in _filter.NotAssemblies)
         {
             if (string.Equals(assembly.MetadataName, name, StringComparison.Ordinal)) return false;
         }
 
-        if (_dependenciesOf.Count == 0) return true;
+        // No specific selection: everything not excluded, whether from FromAssemblies() or from exclusions alone.
+        if (!_hasSpecificSelection) return true;
 
-        var referenced = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
+        foreach (var name in _filter.Assemblies)
+        {
+            if (string.Equals(assembly.MetadataName, name, StringComparison.Ordinal)) return true;
+        }
+
+        return _dependenciesOf.Count > 0 && ReferencesAnyDependency(assembly);
+    }
+
+    private bool ReferencesAnyDependency(IAssemblySymbol assembly)
+    {
         foreach (var module in assembly.Modules)
         {
             foreach (var referencedAssembly in module.ReferencedAssemblySymbols)
             {
-                referenced.Add(referencedAssembly);
+                foreach (var dependency in _dependenciesOf)
+                {
+                    if (SymbolEqualityComparer.Default.Equals(dependency, referencedAssembly)) return true;
+                }
             }
         }
 
-        foreach (var dependency in _dependenciesOf)
-        {
-            if (dependency is null || !referenced.Contains(dependency)) return false;
-        }
-
-        return true;
+        return false;
     }
 }
