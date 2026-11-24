@@ -3,6 +3,12 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <DefineConstants>$(DefineConstants);ROSLYN_CURRENT</DefineConstants>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!--
+            Specular.Scanning.Sources compiles these files inside other generators with their own C# version, so no preview features:
+            C# 14 is what Roslyn 5.0, the oldest supported compiler, ships. Set here too (not only in the .supports builds) so the
+            formatter and IDE don't offer preview-only rewrites.
+        -->
+        <LangVersion>14</LangVersion>
         <!-- NU5100: the roslyn/ variants are deliberately outside lib/; the pack helper bundles them, nothing references them. -->
         <NoWarn>$(NoWarn);MSB3277;NU5100</NoWarn>
         <!--

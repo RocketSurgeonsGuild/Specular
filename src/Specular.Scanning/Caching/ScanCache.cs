@@ -64,8 +64,8 @@ sealed class ScanCache : IAssemblyScanCache
     private readonly ScanCacheFileData _previous;
     private readonly ConcurrentDictionary<IAssemblySymbol, Guid?> _mvids = new(SymbolEqualityComparer.Default);
     private readonly object _gate = new();
-    private readonly Dictionary<string, Dictionary<string, CachedScanEntry>> _scans = [with(StringComparer.Ordinal)];
-    private readonly Dictionary<string, Dictionary<string, CachedStoreEntry>> _store = [with(StringComparer.Ordinal)];
+    private readonly Dictionary<string, Dictionary<string, CachedScanEntry>> _scans = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, Dictionary<string, CachedStoreEntry>> _store = new(StringComparer.Ordinal);
 
     /// <summary>Creates the cache from an already parsed file, so incremental pipelines can parse once per file change.</summary>
     internal ScanCache(string consumerId, Compilation compilation, ScanCacheFileData previous)
@@ -242,7 +242,7 @@ sealed class ScanCache : IAssemblyScanCache
     {
         if (!entries.TryGetValue(key, out var assemblies))
         {
-            assemblies = [with(StringComparer.Ordinal)];
+            assemblies = new(StringComparer.Ordinal);
             entries[key] = assemblies;
         }
 
