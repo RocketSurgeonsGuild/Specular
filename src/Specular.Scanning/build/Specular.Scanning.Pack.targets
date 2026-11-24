@@ -1,0 +1,350 @@
+<Project>
+    <!--
+        Specular.Scanning pack helper, for the project of a source generator built on Specular.Scanning.
+
+        Imported automatically through build/Specular.Scanning.targets (the Specular.Scanning package) or
+        build/Specular.Scanning.Sources.targets (the Specular.Scanning.Sources package). Reference either with PrivateAssets="all"; nothing
+        else is needed. When the project is packed, it adds to the generator's package:
+
+          1. (Specular.Scanning only) Specular.Scanning.dll beside the generator, in every analyzers/ folder the generator packs a .dll
+             into. analyzers/dotnet/roslynX.Y/cs gets the highest build of the library for Roslyn X.Y or older; a folder without a Roslyn
+             version (analyzers/dotnet/cs) gets the Roslyn 5.0 build, which loads in every supported compiler. Files the project already
+             packs into that folder are left alone. With the Sources package the library is compiled into the generator instead.
+          2. The scan cache wiring for the projects that use the generator: build/ and buildTransitive/ get Specular.Scanning.Cache.targets
+             and a <PackageId>.targets that imports it (NuGet imports only <PackageId>.props and .targets). When the project packs its
+             own <PackageId>.targets (into build/ or buildTransitive/), they get <PackageId>.props and Specular.Scanning.Cache.props (the
+             same file) instead; when it packs both, Specular.Scanning.Cache.targets/.props is put beside its files and warning SPECSCAN003
+             asks for this line in one of them (the import is guarded, so several generators in one project import the wiring once):
+               <Import Project="$(MSBuildThisFileDirectory)Specular.Scanning.Cache.targets" Condition="'$(_SpecularScanningCacheImported)' != 'true'" />
+
+        The analyzers/ folders are read from what the project packs (None/Content items with Pack="true" and a PackagePath, and
+        TfmSpecificPackageFile items), which covers the usual generator layouts. A project that packs no .dll under analyzers/ is not
+        treated as a generator: nothing is added (warning SPECSCAN002 when it sets IsRoslynComponent).
+
+        For a generator referenced through a ProjectReference (OutputItemType="Analyzer") instead of a package, the Specular.Scanning
+        package also returns its lib/ Specular.Scanning.dll from the generator's GetTargetPath, so the referencing project loads it beside
+        the generator (and a test project referencing the generator gets it copied to its output). The referencing project imports the
+        cache wiring itself: reference the Specular.Scanning package with PrivateAssets="all" and IncludeAssets="build", and set
+        SpecularScanningImportCacheTargets to true.
+
+        Properties (set them in the generator's project file):
+          SpecularScanningPack                  false adds nothing to the package. Default: true.
+          SpecularScanningBundleLibrary         false leaves Specular.Scanning.dll out of the analyzers/ folders (the generator then has to
+                                                ship it itself). Specular.Scanning package only. Default: true.
+          SpecularScanningPackCacheTargets      false leaves the scan cache wiring out of the package; projects using the generator then
+                                                rescan on every build unless they import Specular.Scanning.Cache.targets. Default: true.
+          SpecularScanningAnalyzerPackPaths     The package folders the generator is packed into, separated by ';' (for example
+                                                analyzers/dotnet/roslyn5.0/cs;analyzers/dotnet/roslyn5.9/cs). Replaces the folders read
+                                                from the pack items; set it when the generator is packed some other way. Default: empty.
+          SpecularScanningAddToTargetPath       false stops returning Specular.Scanning.dll from GetTargetPath. Specular.Scanning package
+                                                only. Default: true, false when SpecularScanningImportCacheTargets is true.
+          SpecularScanningImportCacheTargets    true imports Specular.Scanning.Cache.targets into this project: for a project that uses a
+                                                generator through a ProjectReference. Default: false.
+
+        Warnings:
+          SPECSCAN001  The Specular.Scanning package is referenced without PrivateAssets="all": the generator's package would depend on
+                       it, making the library a compile reference of every project that uses the generator.
+          SPECSCAN002  IsRoslynComponent is true but nothing is packed under analyzers/.
+          SPECSCAN003  The project packs both <PackageId>.targets and .props, and none of them imports Specular.Scanning.Cache.targets.
+          SPECSCAN004  An analyzers/ folder targets a Roslyn version older than any build of Specular.Scanning; nothing is added to it.
+    -->
+    <PropertyGroup>
+        <_SpecularScanningPackImported>true</_SpecularScanningPackImported>
+        <SpecularScanningPack Condition="'$(SpecularScanningPack)' == ''">true</SpecularScanningPack>
+        <SpecularScanningBundleLibrary Condition="'$(SpecularScanningBundleLibrary)' == ''">true</SpecularScanningBundleLibrary>
+        <SpecularScanningPackCacheTargets Condition="'$(SpecularScanningPackCacheTargets)' == ''">true</SpecularScanningPackCacheTargets>
+        <SpecularScanningImportCacheTargets Condition="'$(SpecularScanningImportCacheTargets)' == ''">false</SpecularScanningImportCacheTargets>
+        <SpecularScanningAddToTargetPath Condition="'$(SpecularScanningAddToTargetPath)' == '' and '$(SpecularScanningImportCacheTargets)' == 'true'">false</SpecularScanningAddToTargetPath>
+        <SpecularScanningAddToTargetPath Condition="'$(SpecularScanningAddToTargetPath)' == ''">true</SpecularScanningAddToTargetPath>
+        <_SpecularScanningBuildDirectory>$(MSBuildThisFileDirectory)</_SpecularScanningBuildDirectory>
+        <!-- Runs once every pack item is known (GenerateNuspecDependsOn lists them first) and before the package is written. -->
+        <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);_SpecularScanningAddPackageFiles</GenerateNuspecDependsOn>
+        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);_SpecularScanningAddToTargetPath</GetTargetPathDependsOn>
+    </PropertyGroup>
+
+    <Import
+        Project="$(MSBuildThisFileDirectory)Specular.Scanning.Cache.targets"
+        Condition="'$(SpecularScanningImportCacheTargets)' == 'true' and '$(_SpecularScanningCacheImported)' != 'true'"
+    />
+
+    <!-- A generator referenced through a ProjectReference: the referencing project loads the library beside it. -->
+    <Target
+        Name="_SpecularScanningAddToTargetPath"
+        Condition="'$(SpecularScanningAddToTargetPath)' == 'true' and '$(_SpecularScanningReferenceAssembly)' != '' and Exists('$(_SpecularScanningReferenceAssembly)')"
+    >
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="$(_SpecularScanningReferenceAssembly)" IncludeRuntimeDependency="false" />
+        </ItemGroup>
+    </Target>
+
+    <Target
+        Name="_SpecularScanningAddPackageFiles"
+        Condition="'$(SpecularScanningPack)' == 'true'"
+        DependsOnTargets="_SpecularScanningFindPackedFiles;_SpecularScanningCheckReference;_SpecularScanningPrepareRoslynBuilds;_SpecularScanningSelectRoslynBuild;_SpecularScanningBundleLibrary;_SpecularScanningPackCacheTargets"
+    />
+
+    <!--
+        Every file the package already holds (_PackageFiles: Pack="true" items and TfmSpecificPackageFile items), keyed by its
+        lower-case package path, and the analyzers/ folders holding a .dll.
+    -->
+    <Target Name="_SpecularScanningFindPackedFiles">
+        <ItemGroup>
+            <_SpecularScanningPackedFile Remove="@(_SpecularScanningPackedFile)" />
+            <!-- One item per PackagePath value (it may list several, separated by ';'). -->
+            <_SpecularScanningPackedFile
+                Include="%(_PackageFiles.PackagePath)"
+                Condition="'%(_PackageFiles.PackagePath)' != ''"
+                PackedName="%(_PackageFiles.Filename)%(_PackageFiles.Extension)"
+                SourcePath="%(_PackageFiles.FullPath)"
+            />
+            <_SpecularScanningPackedFile>
+                <Folder>$([System.String]::Copy('%(Identity)').Replace('\', '/').Trim('/'))</Folder>
+            </_SpecularScanningPackedFile>
+            <!-- A PackagePath may name the file itself rather than its folder. -->
+            <_SpecularScanningPackedFile
+                Condition="$([System.String]::Copy('/%(Folder)').ToLowerInvariant().EndsWith($([System.String]::Copy('/%(PackedName)').ToLowerInvariant())))"
+            >
+                <Folder>$([System.String]::Copy('/%(Folder)').Substring(0, $([MSBuild]::Subtract($([System.String]::Copy('/%(Folder)').Length), $([System.String]::Copy('/%(PackedName)').Length)))).Trim('/'))</Folder>
+            </_SpecularScanningPackedFile>
+            <_SpecularScanningPackedFile>
+                <Key>$([System.String]::Copy('%(Folder)/%(PackedName)').ToLowerInvariant())</Key>
+                <IsAnalyzerDll>false</IsAnalyzerDll>
+            </_SpecularScanningPackedFile>
+            <_SpecularScanningPackedFile Condition="$([System.String]::Copy('%(Key)').StartsWith('analyzers/')) and $([System.String]::Copy('%(Key)').EndsWith('.dll'))">
+                <IsAnalyzerDll>true</IsAnalyzerDll>
+            </_SpecularScanningPackedFile>
+
+            <_SpecularScanningAnalyzerFolderPath Remove="@(_SpecularScanningAnalyzerFolderPath)" />
+            <_SpecularScanningAnalyzerFolderPath
+                Include="@(_SpecularScanningPackedFile->WithMetadataValue('IsAnalyzerDll', 'true')->'%(Folder)')"
+                Condition="'$(SpecularScanningAnalyzerPackPaths)' == ''"
+            />
+            <!-- Unescaped, so a list passed on the command line (where ';' has to be written %3B) splits as well. -->
+            <_SpecularScanningAnalyzerFolderPath
+                Include="$([MSBuild]::Unescape($(SpecularScanningAnalyzerPackPaths)))"
+                Condition="'$(SpecularScanningAnalyzerPackPaths)' != ''"
+            />
+            <_SpecularScanningAnalyzerFolderPath>
+                <Folder>$([System.String]::Copy('%(Identity)').Replace('\', '/').Trim('/'))</Folder>
+            </_SpecularScanningAnalyzerFolderPath>
+
+            <_SpecularScanningAnalyzerFolder Remove="@(_SpecularScanningAnalyzerFolder)" />
+            <_SpecularScanningAnalyzerFolder Include="@(_SpecularScanningAnalyzerFolderPath->'%(Folder)'->Distinct())" />
+        </ItemGroup>
+        <Warning
+            Code="SPECSCAN002"
+            Condition="'@(_SpecularScanningAnalyzerFolder)' == '' and '$(IsRoslynComponent)' == 'true'"
+            Text="$(PackageId) packs no .dll under analyzers/, so Specular.Scanning has nothing to add to its package. Pack the generator into analyzers/dotnet/cs (or analyzers/dotnet/roslynX.Y/cs), or name the folders with SpecularScanningAnalyzerPackPaths."
+        />
+    </Target>
+
+    <Target Name="_SpecularScanningCheckReference" Condition="'@(_SpecularScanningAnalyzerFolder)' != ''">
+        <Warning
+            Code="SPECSCAN001"
+            Condition="'%(PackageReference.Identity)' == 'Specular.Scanning' and !$([System.String]::Copy('%(PackageReference.PrivateAssets)').ToLowerInvariant().Contains('all'))"
+            Text="Specular.Scanning is referenced without PrivateAssets=&quot;all&quot;, so the package of $(PackageId) depends on it, which makes Specular.Scanning a compile reference of every project that uses the generator. Add PrivateAssets=&quot;all&quot; to the PackageReference."
+        />
+    </Target>
+
+    <!--
+        The Roslyn version of each analyzers/ folder (5.0 when its path names none) and the builds of the library in the package
+        (roslyn/roslynX.Y/).
+    -->
+    <Target
+        Name="_SpecularScanningPrepareRoslynBuilds"
+        Condition="'@(_SpecularScanningAnalyzerFolder)' != '' and '$(SpecularScanningBundleLibrary)' == 'true' and '$(_SpecularScanningLibraryDirectory)' != ''"
+    >
+        <ItemGroup>
+            <_SpecularScanningAnalyzerFolder>
+                <RoslynVersion>5.0</RoslynVersion>
+            </_SpecularScanningAnalyzerFolder>
+            <_SpecularScanningAnalyzerFolder Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(Identity)', '(?i)(^|/)roslyn\d+\.\d+(/|$)'))">
+                <RoslynVersion>$([System.Text.RegularExpressions.Regex]::Replace('%(Identity)', '(?i)^(.*/)?roslyn(\d+\.\d+)(/.*)?$', '$2'))</RoslynVersion>
+            </_SpecularScanningAnalyzerFolder>
+
+            <_SpecularScanningLibraryBuild Remove="@(_SpecularScanningLibraryBuild)" />
+            <_SpecularScanningLibraryBuild Include="$(_SpecularScanningLibraryDirectory)roslyn*/Specular.Scanning.dll" />
+            <_SpecularScanningLibraryBuild>
+                <Version>$([System.Text.RegularExpressions.Regex]::Replace('%(Directory)', '(?i)^.*[\\/]roslyn(\d+\.\d+)[\\/]?$', '$1'))</Version>
+                <BuildDirectory>%(RootDir)%(Directory)</BuildDirectory>
+            </_SpecularScanningLibraryBuild>
+        </ItemGroup>
+    </Target>
+
+    <!--
+        Picks, for each folder, the newest library build that is not newer than the folder's Roslyn version. Item batching over the
+        builds pairs every folder with every build; the pairs for a build newer than the folder go, and so do the pairs another pair for
+        the same folder beats. (Not target batching: that hands each batch the items as they were when the target started.)
+    -->
+    <Target
+        Name="_SpecularScanningSelectRoslynBuild"
+        Condition="'@(_SpecularScanningAnalyzerFolder)' != '' and '@(_SpecularScanningLibraryBuild)' != '' and '$(SpecularScanningBundleLibrary)' == 'true'"
+    >
+        <ItemGroup>
+            <_SpecularScanningFolderBuild Remove="@(_SpecularScanningFolderBuild)" />
+            <_SpecularScanningFolderBuild
+                Include="@(_SpecularScanningAnalyzerFolder)"
+                BuildVersion="%(_SpecularScanningLibraryBuild.Version)"
+                BuildDirectory="%(_SpecularScanningLibraryBuild.BuildDirectory)"
+            />
+            <_SpecularScanningFolderBuild
+                Remove="@(_SpecularScanningFolderBuild)"
+                Condition="$([MSBuild]::VersionGreaterThan('%(BuildVersion)', '%(RoslynVersion)'))"
+            />
+            <_SpecularScanningFolderBuild>
+                <Key>%(Identity)|%(BuildVersion)</Key>
+            </_SpecularScanningFolderBuild>
+
+            <_SpecularScanningFolderBuildRival Remove="@(_SpecularScanningFolderBuildRival)" />
+            <_SpecularScanningFolderBuildRival Include="@(_SpecularScanningFolderBuild)" />
+            <_SpecularScanningBeatenFolderBuild Remove="@(_SpecularScanningBeatenFolderBuild)" />
+            <_SpecularScanningBeatenFolderBuild
+                Include="@(_SpecularScanningFolderBuild)"
+                RivalFolder="%(_SpecularScanningFolderBuildRival.Identity)"
+                RivalVersion="%(_SpecularScanningFolderBuildRival.BuildVersion)"
+            />
+            <_SpecularScanningBeatenFolderBuild
+                Remove="@(_SpecularScanningBeatenFolderBuild)"
+                Condition="'%(Identity)' != '%(RivalFolder)' or !$([MSBuild]::VersionGreaterThan('%(RivalVersion)', '%(BuildVersion)'))"
+            />
+            <_SpecularScanningFolderBuild Remove="@(_SpecularScanningBeatenFolderBuild)" MatchOnMetadata="Key" MatchOnMetadataOptions="CaseSensitive" />
+        </ItemGroup>
+    </Target>
+
+    <Target
+        Name="_SpecularScanningBundleLibrary"
+        Condition="'@(_SpecularScanningAnalyzerFolder)' != '' and '@(_SpecularScanningLibraryBuild)' != '' and '$(SpecularScanningBundleLibrary)' == 'true'"
+    >
+        <ItemGroup>
+            <_SpecularScanningFolderWithoutBuild Remove="@(_SpecularScanningFolderWithoutBuild)" />
+            <_SpecularScanningFolderWithoutBuild Include="@(_SpecularScanningAnalyzerFolder)" Exclude="@(_SpecularScanningFolderBuild)" />
+        </ItemGroup>
+        <Warning
+            Code="SPECSCAN004"
+            Condition="'@(_SpecularScanningFolderWithoutBuild)' != ''"
+            Text="$(PackageId) packs a generator into %(_SpecularScanningFolderWithoutBuild.Identity), for Roslyn %(_SpecularScanningFolderWithoutBuild.RoslynVersion), but Specular.Scanning needs Roslyn 5.0 or newer; nothing is added to that folder."
+        />
+        <ItemGroup>
+            <_SpecularScanningBundledFile Remove="@(_SpecularScanningBundledFile)" />
+            <!-- Every file of the selected build (so a dependency shipped beside it comes along), keyed by where it lands. -->
+            <_SpecularScanningBundledFile
+                Include="%(_SpecularScanningFolderBuild.BuildDirectory)*.dll"
+                PackageFolder="%(_SpecularScanningFolderBuild.Identity)"
+            />
+            <_SpecularScanningBundledFile>
+                <Key>$([System.String]::Copy('%(PackageFolder)/%(Filename)%(Extension)').ToLowerInvariant())</Key>
+            </_SpecularScanningBundledFile>
+            <!-- Whatever the project packs into the folder itself wins. -->
+            <_SpecularScanningBundledFile Remove="@(_SpecularScanningPackedFile)" MatchOnMetadata="Key" MatchOnMetadataOptions="CaseInsensitive" />
+            <_PackageFiles Include="@(_SpecularScanningBundledFile)" PackagePath="%(_SpecularScanningBundledFile.PackageFolder)/" BuildAction="None" />
+        </ItemGroup>
+    </Target>
+
+
+
+    <!--
+        The scan cache wiring, in build/ and buildTransitive/: an import file named <PackageId>.targets or, when the project packs a file
+        of that name itself, <PackageId>.props, beside a copy of Specular.Scanning.Cache.targets with the same extension (NuGet warns,
+        NU5129, about a folder holding a .targets or .props file but no <PackageId> file of that extension). Both are written under obj/.
+        NuGet picks each of <PackageId>.props and .targets from buildTransitive/ when the package has it there and from build/ otherwise,
+        so a name the project packs into either folder counts as taken in both: an import added to buildTransitive/ under the name of the
+        project's own build/ file would hide that file from the projects that reference the generator directly.
+    -->
+    <Target Name="_SpecularScanningPackCacheTargets" Condition="'@(_SpecularScanningAnalyzerFolder)' != '' and '$(SpecularScanningPackCacheTargets)' == 'true'">
+        <PropertyGroup>
+            <_SpecularScanningImportFileDirectory>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'specular-scanning'))</_SpecularScanningImportFileDirectory>
+            <_SpecularScanningTargetsName>$([System.String]::Copy('$(PackageId).targets').ToLowerInvariant())</_SpecularScanningTargetsName>
+            <_SpecularScanningPropsName>$([System.String]::Copy('$(PackageId).props').ToLowerInvariant())</_SpecularScanningPropsName>
+        </PropertyGroup>
+        <ItemGroup>
+            <_SpecularScanningOwnImportFile Remove="@(_SpecularScanningOwnImportFile)" />
+            <_SpecularScanningOwnImportFile
+                Include="@(_SpecularScanningPackedFile)"
+                Condition="'%(Key)' == 'build/$(_SpecularScanningTargetsName)' or '%(Key)' == 'buildtransitive/$(_SpecularScanningTargetsName)' or '%(Key)' == 'build/$(_SpecularScanningPropsName)' or '%(Key)' == 'buildtransitive/$(_SpecularScanningPropsName)'"
+            />
+        </ItemGroup>
+        <PropertyGroup>
+            <_SpecularScanningImportExtension />
+            <_SpecularScanningImportExtension
+                Condition="'@(_SpecularScanningOwnImportFile->WithMetadataValue('Key', 'build/$(_SpecularScanningTargetsName)'))' == '' and '@(_SpecularScanningOwnImportFile->WithMetadataValue('Key', 'buildtransitive/$(_SpecularScanningTargetsName)'))' == ''"
+            >targets</_SpecularScanningImportExtension>
+            <_SpecularScanningImportExtension
+                Condition="'$(_SpecularScanningImportExtension)' == '' and '@(_SpecularScanningOwnImportFile->WithMetadataValue('Key', 'build/$(_SpecularScanningPropsName)'))' == '' and '@(_SpecularScanningOwnImportFile->WithMetadataValue('Key', 'buildtransitive/$(_SpecularScanningPropsName)'))' == ''"
+            >props</_SpecularScanningImportExtension>
+        </PropertyGroup>
+
+        <!-- Our own import file and the cache targets beside it, when a name is free. -->
+        <ItemGroup Condition="'$(_SpecularScanningImportExtension)' != ''">
+            <_SpecularScanningImportFileLine Remove="@(_SpecularScanningImportFileLine)" />
+            <_SpecularScanningImportFileLine Include="&lt;Project&gt;" />
+            <_SpecularScanningImportFileLine Include="%20%20%20%20&lt;!-- Added by Specular.Scanning: keeps the generator's scan cache between builds. --&gt;" />
+            <_SpecularScanningImportFileLine
+                Include="%20%20%20%20&lt;Import Project=&quot;%24(MSBuildThisFileDirectory)Specular.Scanning.Cache.$(_SpecularScanningImportExtension)&quot; Condition=&quot;'%24(_SpecularScanningCacheImported)' != 'true'&quot; /&gt;"
+            />
+            <_SpecularScanningImportFileLine Include="&lt;/Project&gt;" />
+            <_SpecularScanningCacheFileFolder Remove="@(_SpecularScanningCacheFileFolder)" />
+            <_SpecularScanningCacheFileFolder Include="build;buildTransitive" CacheExtension="$(_SpecularScanningImportExtension)" />
+        </ItemGroup>
+        <MakeDir Directories="$(_SpecularScanningImportFileDirectory)" />
+        <WriteLinesToFile
+            Condition="'$(_SpecularScanningImportExtension)' != ''"
+            File="$(_SpecularScanningImportFileDirectory)$(PackageId).$(_SpecularScanningImportExtension)"
+            Lines="@(_SpecularScanningImportFileLine)"
+            Overwrite="true"
+            WriteOnlyWhenDifferent="true"
+        />
+        <ItemGroup Condition="'$(_SpecularScanningImportExtension)' != ''">
+            <_PackageFiles
+                Include="$(_SpecularScanningImportFileDirectory)$(PackageId).$(_SpecularScanningImportExtension)"
+                PackagePath="build/;buildTransitive/"
+                BuildAction="None"
+            />
+        </ItemGroup>
+
+        <!--
+            Both names taken: the project's own files have to import the cache targets. Each folder gets them beside each kind of
+            import file the project packs there; unless one of those files already imports them, warning SPECSCAN003 asks for the line.
+        -->
+        <ItemGroup Condition="'$(_SpecularScanningImportExtension)' == ''">
+            <_SpecularScanningCacheFileFolder Remove="@(_SpecularScanningCacheFileFolder)" />
+            <_SpecularScanningCacheFileFolder
+                Include="@(_SpecularScanningOwnImportFile->'%(Folder)')"
+                CacheExtension="$([System.IO.Path]::GetExtension('%(_SpecularScanningOwnImportFile.PackedName)').TrimStart('.'))"
+            />
+            <_SpecularScanningOwnImportFileLine Remove="@(_SpecularScanningOwnImportFileLine)" />
+        </ItemGroup>
+        <ReadLinesFromFile File="%(_SpecularScanningOwnImportFile.SourcePath)" Condition="'$(_SpecularScanningImportExtension)' == ''">
+            <Output TaskParameter="Lines" ItemName="_SpecularScanningOwnImportFileLine" />
+        </ReadLinesFromFile>
+        <PropertyGroup>
+            <_SpecularScanningOwnImportFileText>@(_SpecularScanningOwnImportFileLine)</_SpecularScanningOwnImportFileText>
+        </PropertyGroup>
+        <Warning
+            Code="SPECSCAN003"
+            Condition="'$(_SpecularScanningImportExtension)' == '' and !$(_SpecularScanningOwnImportFileText.Contains('Specular.Scanning.Cache.'))"
+            Text="$(PackageId) packs its own $(PackageId).targets and $(PackageId).props, so Specular.Scanning cannot add the scan cache wiring beside them. Add this line to $(PackageId).targets (or the same with .props in $(PackageId).props): &lt;Import Project=&quot;%24(MSBuildThisFileDirectory)Specular.Scanning.Cache.targets&quot; Condition=&quot;'%24(_SpecularScanningCacheImported)' != 'true'&quot; /&gt;"
+        />
+
+        <!-- The cache targets themselves, copied to the extension each folder needs; a copy the project packs itself wins. -->
+        <ItemGroup>
+            <_SpecularScanningCacheFileFolder>
+                <Key>$([System.String]::Copy('%(Identity)/Specular.Scanning.Cache.%(CacheExtension)').ToLowerInvariant())</Key>
+            </_SpecularScanningCacheFileFolder>
+            <_SpecularScanningCacheFileFolder Remove="@(_SpecularScanningPackedFile)" MatchOnMetadata="Key" MatchOnMetadataOptions="CaseInsensitive" />
+        </ItemGroup>
+        <Copy
+            SourceFiles="$(_SpecularScanningBuildDirectory)Specular.Scanning.Cache.targets"
+            DestinationFiles="$(_SpecularScanningImportFileDirectory)Specular.Scanning.Cache.%(_SpecularScanningCacheFileFolder.CacheExtension)"
+            Condition="'@(_SpecularScanningCacheFileFolder)' != ''"
+            SkipUnchangedFiles="true"
+        />
+        <ItemGroup>
+            <_PackageFiles
+                Include="$(_SpecularScanningImportFileDirectory)Specular.Scanning.Cache.%(_SpecularScanningCacheFileFolder.CacheExtension)"
+                Condition="'@(_SpecularScanningCacheFileFolder)' != ''"
+                PackagePath="%(_SpecularScanningCacheFileFolder.Identity)/"
+                BuildAction="None"
+            />
+        </ItemGroup>
+    </Target>
+</Project>

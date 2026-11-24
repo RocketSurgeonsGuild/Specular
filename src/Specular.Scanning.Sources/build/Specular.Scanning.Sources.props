@@ -3,4 +3,38 @@
     <PropertyGroup>
         <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES</DefineConstants>
     </PropertyGroup>
+
+    <!--
+        The sources need C# 14, but a netstandard2.0 project defaults to C# 7.3. Imported before the project file, this raises only that
+        default: a LangVersion the project sets itself still wins. One that is too old for the sources fails the build below with an
+        explanation, rather than with compiler errors inside the package's files; it is not raised behind the project's back, because
+        that would change the language its own code is compiled with.
+    -->
+    <PropertyGroup>
+        <LangVersion Condition="'$(LangVersion)' == ''">14</LangVersion>
+    </PropertyGroup>
+
+    <!--
+        Polyfill (a dependency of this package, so its source files compile into this project too) leaves its ArgumentException
+        back-ports (ArgumentNullException.ThrowIfNull and the like) out unless asked for, and the sources call them. Imported before the
+        project file, so a value the project sets itself still wins.
+    -->
+    <PropertyGroup>
+        <PolyArgumentExceptions Condition="'$(PolyArgumentExceptions)' == ''">true</PolyArgumentExceptions>
+    </PropertyGroup>
+
+    <Target Name="_SpecularScanningSourcesCheckLangVersion" BeforeTargets="CoreCompile">
+        <PropertyGroup>
+            <_SpecularScanningSourcesLangVersionTooOld>false</_SpecularScanningSourcesLangVersionTooOld>
+            <_SpecularScanningSourcesLangVersionTooOld Condition="$([System.String]::Copy('$(LangVersion)').ToUpperInvariant().StartsWith('ISO-'))">true</_SpecularScanningSourcesLangVersionTooOld>
+            <_SpecularScanningSourcesLangVersionTooOld
+                Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(LangVersion)', '^\d+(\.\d+)?$')) and $([MSBuild]::VersionLessThan('$(LangVersion)', '14.0'))"
+            >true</_SpecularScanningSourcesLangVersionTooOld>
+        </PropertyGroup>
+        <Error
+            Code="SPECSCAN005"
+            Condition="'$(_SpecularScanningSourcesLangVersionTooOld)' == 'true'"
+            Text="Specular.Scanning.Sources compiles C# 14 sources into this project, but its LangVersion is $(LangVersion). Set LangVersion to 14 or later (or latest), or remove it to let the package default it to 14."
+        />
+    </Target>
 </Project>

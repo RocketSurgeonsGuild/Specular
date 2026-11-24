@@ -1,0 +1,71 @@
+<Project>
+    <!--
+        Specular.Scanning scan cache: wiring for a project that uses a source generator built on Specular.Scanning.
+
+        Such generators keep their scan results in $(IntermediateOutputPath)ctp/<ConsumerId>.ctpjson and read them back on the next
+        build through AdditionalFiles. This file
+          - adds every existing ctp/*.ctpjson to AdditionalFiles just before CoreCompile (each generator picks out its own file by
+            name), each file once, even when Specular's AddSpecularCache target or another copy of this file adds it as well;
+          - deletes them on Clean;
+          - makes IntermediateOutputPath and ProjectDir visible to the generators, which write the cache there.
+
+        Generator packages made with the Specular.Scanning pack helper carry a copy of this file (as Specular.Scanning.Cache.props when
+        they import it from a .props) and import it from <PackageId>.targets (or .props), guarded by _SpecularScanningCacheImported, so a
+        project that references several of them imports it once. Importing it more than once anyway is harmless: every copy defines the
+        same targets, and nothing here depends on being imported before or after the project file.
+
+        Properties:
+          SpecularScanningCache    false stops adding the cache files to the compilation; the generators then rescan on every
+                                   build. Clean still deletes them. Default: true.
+    -->
+    <PropertyGroup>
+        <_SpecularScanningCacheImported>true</_SpecularScanningCacheImported>
+    </PropertyGroup>
+
+    <!--
+        Added just before the generated .editorconfig is written, when every other CompilerVisibleProperty is known: the SDK already
+        asks for ProjectDir and Specular for both, and a repeated one is written to the file twice.
+    -->
+    <Target Name="_SpecularScanningAddCompilerVisibleProperties" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+        <ItemGroup>
+            <CompilerVisibleProperty Include="IntermediateOutputPath;ProjectDir" Exclude="@(CompilerVisibleProperty)" />
+        </ItemGroup>
+    </Target>
+
+    <!--
+        The cache files, when a previous build left any. Found just before compiling rather than when the project is evaluated: a
+        Rebuild's Clean deletes them after evaluation, and the compiler would be handed missing files (CS2001).
+        Any existing AdditionalFiles entry for the same file (Specular's own target adds ctp/SpecularProvider.ctpjson) is replaced, so
+        each file reaches the compiler once.
+    -->
+    <Target Name="SpecularScanningAddCacheFiles" BeforeTargets="CoreCompile" Condition="'$(SpecularScanningCache)' != 'false'">
+        <ItemGroup>
+            <_SpecularScanningCacheFile Remove="@(_SpecularScanningCacheFile)" />
+            <_SpecularScanningCacheFile Include="$(IntermediateOutputPath)ctp/*.ctpjson" />
+            <AdditionalFiles Remove="@(_SpecularScanningCacheFile)" MatchOnMetadata="FullPath" MatchOnMetadataOptions="PathLike" />
+            <AdditionalFiles Include="@(_SpecularScanningCacheFile)" Visible="false" />
+        </ItemGroup>
+    </Target>
+
+    <!--
+        Specular's AddSpecularCache also runs before CoreCompile, in whichever order the packages were imported. When it runs after
+        the target above it adds ctp/SpecularProvider.ctpjson a second time; this drops that duplicate again.
+    -->
+    <Target
+        Name="_SpecularScanningDeduplicateAfterSpecular"
+        AfterTargets="AddSpecularCache"
+        Condition="'$(SpecularScanningCache)' != 'false' and '@(_SpecularScanningCacheFile)' != ''"
+    >
+        <ItemGroup>
+            <AdditionalFiles Remove="@(_SpecularScanningCacheFile)" MatchOnMetadata="FullPath" MatchOnMetadataOptions="PathLike" />
+            <AdditionalFiles Include="@(_SpecularScanningCacheFile)" Visible="false" />
+        </ItemGroup>
+    </Target>
+
+    <Target Name="SpecularScanningCleanCacheFiles" BeforeTargets="Clean">
+        <ItemGroup>
+            <_SpecularScanningCacheFileToDelete Include="$(IntermediateOutputPath)ctp/*.ctpjson" />
+        </ItemGroup>
+        <Delete Files="@(_SpecularScanningCacheFileToDelete)" />
+    </Target>
+</Project>

@@ -46,5 +46,10 @@
         <None Include="$(_ScanningSupportsLocation)roslyn5.6/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.6" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.3/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.3" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.0" Visible="false" />
+        <!--
+            NuGet imports build/Specular.Scanning.targets into the generator author's project: the pack helper that bundles the matching
+            roslyn/ build beside their generator and gives their package Specular.Scanning.Cache.targets for the projects using it.
+        -->
+        <None Include="build/*.targets" Pack="true" PackagePath="build/" />
     </ItemGroup>
 </Project>
