@@ -35,6 +35,8 @@
         <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
         <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.6.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
         <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.9.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <!-- Not packed: a compile check of the Specular.Scanning.Sources build. -->
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.sources.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
     </ItemGroup>
     <ItemGroup>
         <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />

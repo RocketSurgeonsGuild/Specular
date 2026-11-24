@@ -37,25 +37,13 @@ internal static class SelectorArguments
     public static TypeReference ToTypeReference(ITypeSymbol? type, string paramName)
     {
         var named = NamedType(type, paramName);
-        return new(named.ContainingAssembly?.MetadataName ?? "", GetFullMetadataName(named), IsUnboundGeneric(named));
+        return new(named.ContainingAssembly?.MetadataName ?? "", ScanSymbolNames.GetFullMetadataName(named), IsUnboundGeneric(named));
     }
 
     public static TypeReference ToTypeReference(string? metadataName, string paramName)
     {
         var name = NotNullOrEmpty(metadataName, paramName);
         return new("", name, HasGenericArity(name));
-    }
-
-    /// <summary>The name <c>Compilation.GetTypeByMetadataName</c> resolves: namespace, nested types joined with <c>+</c>, arity suffixes.</summary>
-    public static string GetFullMetadataName(INamedTypeSymbol type)
-    {
-        var name = type.MetadataName;
-        for (var containing = type.ContainingType; containing is { }; containing = containing.ContainingType)
-        {
-            name = containing.MetadataName + "+" + name;
-        }
-
-        return type.ContainingNamespace is { IsGlobalNamespace: false } ns ? ns.ToDisplayString() + "." + name : name;
     }
 
     public static ImmutableArray<T> Values<T>(T first, T[]? rest, string firstName, string restName)

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--
+        Never packed: compiles the library the way Specular.Scanning.Sources consumers do (types internal, oldest supported Roslyn and
+        C# 14), so a change that breaks source consumers fails this repository's build instead of theirs.
+    -->
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES</DefineConstants>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.0.0" PrivateAssets="all" />
+        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.21" />
+        <PackageReference Include="System.Text.Json" VersionOverride="9.0.21" PrivateAssets="all" />
+    </ItemGroup>
+</Project>

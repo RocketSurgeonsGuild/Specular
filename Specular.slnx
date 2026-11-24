@@ -86,6 +86,7 @@
     <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.3.csproj" />
     <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.6.csproj" />
     <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.9.csproj" />
+    <Project Path="src/Specular.Scanning.supports/Specular.Scanning.sources.csproj" />
   </Folder>
   <Folder Name="/test/">
     <File Path=".editorconfig" />
