@@ -1,0 +1,6 @@
+<Project>
+    <!-- Compiles the Specular.Scanning sources as internal types, so they never become part of the consuming generator's API. -->
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES</DefineConstants>
+    </PropertyGroup>
+</Project>

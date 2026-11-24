@@ -45,6 +45,8 @@
     <File Path="Directory.Build.targets" />
     <Project Path="src/Specular.Analyzers/Specular.Analyzers.csproj" />
     <Project Path="src/Specular/Specular.csproj" />
+    <Project Path="src/Specular.Scanning/Specular.Scanning.csproj" />
+    <Project Path="src/Specular.Scanning.Sources/Specular.Scanning.Sources.csproj" />
   </Folder>
   <Folder Name="/samples/">
     <File Path="samples/Directory.Build.props" />
@@ -78,10 +80,18 @@
     <Project Path="src/Specular.Analyzers.supports/Specular.Analyzers.roslyn5.6.csproj" />
     <Project Path="src/Specular.Analyzers.supports/Specular.Analyzers.roslyn5.9.csproj" />
   </Folder>
+  <Folder Name="/src/Specular.Scanning.supports/">
+    <File Path="src/Specular.Scanning.supports/.editorconfig" />
+    <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.0.csproj" />
+    <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.3.csproj" />
+    <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.6.csproj" />
+    <Project Path="src/Specular.Scanning.supports/Specular.Scanning.roslyn5.9.csproj" />
+  </Folder>
   <Folder Name="/test/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
+    <Project Path="test/Specular.Scanning.Tests/Specular.Scanning.Tests.csproj" />
     <Project Path="test/Specular.Tests/Specular.Tests.csproj" />
     <Project Path="test/TestAssembly/TestAssembly.csproj" />
   </Folder>

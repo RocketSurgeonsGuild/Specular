@@ -1,0 +1,21 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <PropertyGroup>
+        <_Scanning_Roslyn_Version_>$(MSBuildProjectName.Replace('Specular.Scanning.', ''))</_Scanning_Roslyn_Version_>
+        <DefineConstants>$(DefineConstants);$(_Scanning_Roslyn_Version_.Replace('.', '_').ToUpper())</DefineConstants>
+        <BaseOutputPath>bin/$(_Scanning_Roslyn_Version_)/</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj/$(_Scanning_Roslyn_Version_)/</BaseIntermediateOutputPath>
+        <NoWarn>NU5105;$(NoWarn)</NoWarn>
+        <AssemblyName>Specular.Scanning</AssemblyName>
+        <RootNamespace>Specular.Scanning</RootNamespace>
+        <IsPackable>false</IsPackable>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        <!-- The roslyn5.0 build is the lib/netstandard2.0 reference generator authors compile against, so it carries the docs. -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!-- Specular.Scanning runs the analyzers over these same files; repeating them per Roslyn variant only slows the build. -->
+        <RunAnalyzers>false</RunAnalyzers>
+    </PropertyGroup>
+</Project>

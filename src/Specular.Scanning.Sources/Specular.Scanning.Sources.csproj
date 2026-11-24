@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- A source-only package: the library's files compile into the consuming generator, so there is no assembly to ship. -->
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+        <PackageTags>$(PackageTags);roslyn;incremental-generator;source-generator-library;source-only</PackageTags>
+        <PackageDescription>Source-only build of Specular.Scanning: compiles the scanning library into your source generator as internal types, so no separate assembly is loaded beside it.</PackageDescription>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- Only for the repo-wide global usings (NotNullAttribute) on netstandard2.0; nothing is compiled here. -->
+        <PackageReference Include="Polyfill" PrivateAssets="all" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content
+            Include="../Specular.Scanning/**/*.cs"
+            Exclude="../Specular.Scanning/obj/**;../Specular.Scanning/bin/**"
+            Pack="true"
+            PackagePath="contentFiles/cs/any/Specular.Scanning/%(RecursiveDir)%(Filename)%(Extension)"
+            BuildAction="Compile"
+            PackageCopyToOutput="false"
+            Visible="false"
+        />
+        <None Include="build/Specular.Scanning.Sources.props" Pack="true" PackagePath="build/;buildTransitive/" />
+    </ItemGroup>
+</Project>

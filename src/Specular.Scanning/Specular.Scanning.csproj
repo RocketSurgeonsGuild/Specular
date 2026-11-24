@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <DefineConstants>$(DefineConstants);ROSLYN_CURRENT</DefineConstants>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!-- NU5100: the roslyn/ variants are deliberately outside lib/; the pack helper bundles them, nothing references them. -->
+        <NoWarn>$(NoWarn);MSB3277;NU5100</NoWarn>
+        <!--
+            Generator authors compile against lib/netstandard2.0, packed from the Roslyn 5.0 build so a generator on any supported
+            Roslyn can reference it. This build's own output (Roslyn 5.12) ships beside the older ones under roslyn/, where the pack
+            helper picks the variant to bundle into the consumer's analyzers folder. Nothing goes under analyzers/: the package
+            reference would otherwise load this library as an analyzer into the generator author's own project.
+        -->
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <_ScanningSupportsLocation>../Specular.Scanning.supports/bin/</_ScanningSupportsLocation>
+        <PackageTags>$(PackageTags);roslyn;incremental-generator;source-generator-library</PackageTags>
+        <PackageDescription>Compile-time assembly and type scanning for Roslyn source generators: a symbol-based mirror of Specular's selectors, with results cached across builds.</PackageDescription>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+        <PackageReference Include="Polyfill" PrivateAssets="all" />
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Text.Json" PrivateAssets="all" GeneratePathProperty="true" />
+        <!-- Built only so their outputs can be packed below; see Specular.Analyzers.csproj for why Private="false". -->
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.6.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.9.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.xml" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" Condition="Exists('$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.xml')" />
+        <None Include="bin/$(Configuration)/netstandard2.0/$(AssemblyName).dll" Pack="true" PackagePath="roslyn/roslyn5.12" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.9/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.9" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.6/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.6" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.3/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.3" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.0" Visible="false" />
+    </ItemGroup>
+</Project>
