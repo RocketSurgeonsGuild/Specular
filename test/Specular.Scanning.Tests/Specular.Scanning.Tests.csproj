@@ -13,4 +13,8 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" PrivateAssets="all" />
         <PackageReference Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" />
     </ItemGroup>
+    <ItemGroup>
+        <!-- InternalsVisibleTo exposes the library's Polyfill copy of NotNullAttribute, making the repo-wide alias ambiguous. -->
+        <Using Remove="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    </ItemGroup>
 </Project>
