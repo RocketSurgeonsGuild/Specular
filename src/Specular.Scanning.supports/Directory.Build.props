@@ -13,6 +13,12 @@
         <!-- The roslyn5.0 build is the lib/netstandard2.0 reference generator authors compile against, so it carries the docs. -->
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <!--
+            Specular.Scanning.Sources compiles these files inside other generators with their own C# version, so the library uses no
+            preview features: C# 14 is what Roslyn 5.0, the oldest supported compiler, ships. These builds compile the same files on
+            every Specular.Scanning build, so this is where it's enforced.
+        -->
+        <LangVersion>14</LangVersion>
         <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <!-- Specular.Scanning runs the analyzers over these same files; repeating them per Roslyn variant only slows the build. -->
