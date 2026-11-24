@@ -12,6 +12,8 @@
             reference would otherwise load this library as an analyzer into the generator author's own project.
         -->
         <IncludeBuildOutput>false</IncludeBuildOutput>
+        <!-- Hides Polyfill's internal types from the InternalsVisibleTo test project, which would otherwise see two copies of each. -->
+        <PolyUseEmbeddedAttribute>true</PolyUseEmbeddedAttribute>
         <_ScanningSupportsLocation>../Specular.Scanning.supports/bin/</_ScanningSupportsLocation>
         <PackageTags>$(PackageTags);roslyn;incremental-generator;source-generator-library</PackageTags>
         <PackageDescription>Compile-time assembly and type scanning for Roslyn source generators: a symbol-based mirror of Specular's selectors, with results cached across builds.</PackageDescription>
