@@ -1,0 +1,13 @@
+<Project>
+    <!--
+        Imported by NuGet into a project that references the Specular.Scanning package: the generator's own project. The pack helper in
+        Specular.Scanning.Pack.targets documents what it does and the properties that control it.
+    -->
+    <PropertyGroup>
+        <!-- The builds of the library per Roslyn version (roslyn/roslynX.Y/), which the pack helper bundles beside the generator. -->
+        <_SpecularScanningLibraryDirectory>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'roslyn'))</_SpecularScanningLibraryDirectory>
+        <!-- The build the generator compiles against (the Roslyn 5.0 one), returned from GetTargetPath for ProjectReference users. -->
+        <_SpecularScanningReferenceAssembly>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'lib', 'netstandard2.0', 'Specular.Scanning.dll'))</_SpecularScanningReferenceAssembly>
+    </PropertyGroup>
+    <Import Project="$(MSBuildThisFileDirectory)Specular.Scanning.Pack.targets" Condition="'$(_SpecularScanningPackImported)' != 'true'" />
+</Project>
