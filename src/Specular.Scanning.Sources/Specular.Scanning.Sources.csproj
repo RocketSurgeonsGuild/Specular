@@ -6,6 +6,8 @@
         <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <DevelopmentDependency>true</DevelopmentDependency>
+        <!-- No assembly, so no symbols: an empty .snupkg fails pack (NU5017). -->
+        <IncludeSymbols>false</IncludeSymbols>
         <NoWarn>$(NoWarn);NU5128</NoWarn>
         <PackageTags>$(PackageTags);roslyn;incremental-generator;source-generator-library;source-only</PackageTags>
         <PackageDescription>Source-only build of Specular.Scanning: compiles the scanning library into your source generator as internal types, so no separate assembly is loaded beside it.</PackageDescription>

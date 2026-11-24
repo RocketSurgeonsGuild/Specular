@@ -17,6 +17,9 @@
         <PackageDescription>Compile-time assembly and type scanning for Roslyn source generators: a symbol-based mirror of Specular's selectors, with results cached across builds.</PackageDescription>
     </PropertyGroup>
     <ItemGroup>
+        <InternalsVisibleTo Include="Specular.Scanning.Tests" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
         <PackageReference Include="Polyfill" PrivateAssets="all" />
         <PackageReference Include="System.Collections.Immutable" />
