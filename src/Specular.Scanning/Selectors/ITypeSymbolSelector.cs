@@ -1,3 +1,5 @@
+using System;
+
 namespace Specular.Scanning;
 
 /// <summary>Selects types from the chosen assemblies; the compile-time mirror of Specular's <c>IReflectionTypeSelector</c>.</summary>

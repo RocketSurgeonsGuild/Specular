@@ -42,10 +42,15 @@
         <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.xml" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" Condition="Exists('$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.xml')" />
         <None Include="bin/$(Configuration)/netstandard2.0/$(AssemblyName).dll" Pack="true" PackagePath="roslyn/roslyn5.12" Visible="false" />
+        <None Include="$(PkgSystem_Text_Json)/lib/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.12" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.9/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.9" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.9/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.9" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.6/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.6" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.6/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.6" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.3/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.3" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.3/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.3" Visible="false" />
         <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.0" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.0" Visible="false" />
         <!--
             NuGet imports build/Specular.Scanning.targets into the generator author's project: the pack helper that bundles the matching
             roslyn/ build beside their generator and gives their package Specular.Scanning.Cache.targets for the projects using it.
