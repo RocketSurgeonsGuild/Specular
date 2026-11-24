@@ -14,7 +14,7 @@ Contains the registrations produced from one scanned assembly.
 - Name: `AssemblyName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.71a81f46ec8e0f8bc11d811fc85b38e1320f9d2a/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.6aa7d2eefc38d14d48d055345ecb9a73938cd95f/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string AssemblyName { get; init; }
@@ -27,7 +27,7 @@ public string AssemblyName { get; init; }
 - Name: `Entries`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<ServiceDescriptorScanReportEntry>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.71a81f46ec8e0f8bc11d811fc85b38e1320f9d2a/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.6aa7d2eefc38d14d48d055345ecb9a73938cd95f/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<ServiceDescriptorScanReportEntry> Entries { get; init; }

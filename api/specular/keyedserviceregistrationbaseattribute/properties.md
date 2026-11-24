@@ -14,7 +14,7 @@ Attribute used to define the keyed service registration of a given type. Behaves
 - Name: `Key`
 - Modifiers: `nullable` `get`
 - Returns: `object?`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.71a81f46ec8e0f8bc11d811fc85b38e1320f9d2a/src/Specular/KeyedServiceRegistrationAttribute.cs#L24)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.6aa7d2eefc38d14d48d055345ecb9a73938cd95f/src/Specular/KeyedServiceRegistrationAttribute.cs#L24)
 
 The key the service is registered against
 
@@ -29,7 +29,7 @@ public object? Key { get; }
 - Name: `Lifetime`
 - Modifiers: `get`
 - Returns: `ServiceLifetime`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.71a81f46ec8e0f8bc11d811fc85b38e1320f9d2a/src/Specular/KeyedServiceRegistrationAttribute.cs#L34)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.6aa7d2eefc38d14d48d055345ecb9a73938cd95f/src/Specular/KeyedServiceRegistrationAttribute.cs#L34)
 
 The lifetime
 
@@ -44,7 +44,7 @@ public ServiceLifetime Lifetime { get; }
 - Name: `ServiceTypes`
 - Modifiers: `get`
 - Returns: `ImmutableArray<Type>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.71a81f46ec8e0f8bc11d811fc85b38e1320f9d2a/src/Specular/KeyedServiceRegistrationAttribute.cs#L29)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.6aa7d2eefc38d14d48d055345ecb9a73938cd95f/src/Specular/KeyedServiceRegistrationAttribute.cs#L29)
 
 The service type
 
