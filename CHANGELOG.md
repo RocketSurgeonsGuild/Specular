@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ScanCache` offers a typed per-assembly store on the same rules, reachable from the same pipeline step and
   cache file through `context.Scan(consumerId, requests, transform)`. Several requests can also be passed as a
   tuple of 2 to 8, giving a tuple of results in the same positions. A constructed generic such as
-  `IHandler<int>` matches only that closed type; a type a filter names that can't be resolved matches nothing
+  `IHandler<int>` matches only that closed type, array type arguments included (`IHandler<int[]>`); a type a filter names that can't be resolved matches nothing
   and is reported in `ScanResult.UnresolvedTypes`; `ScannedType.FullyQualifiedName` gives a `global::` name to
   emit without resolving symbols. Packing a generator that references the
   package bundles `Specular.Scanning.dll` beside it and adds the MSBuild wiring that feeds the cache back

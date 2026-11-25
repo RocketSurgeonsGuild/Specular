@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using TUnit.Assertions.Should.Extensions;
 using static Specular.Scanning.Tests.Selectors.SelectorCompilation;
@@ -77,13 +78,13 @@ public class ClosedGenericSelectorTests
 
     public static IEnumerable<Func<UnsupportedArgument>> UnsupportedArguments()
     {
-        yield return () => new("array", SelectorCompilation.Compilation.CreateArrayTypeSymbol(Int32));
         yield return () => new("pointer", SelectorCompilation.Compilation.CreatePointerTypeSymbol(Int32));
         yield return () => new("type parameter", Type("App.Handlers.Outer`1").TypeParameters[0]);
         yield return () => new("error type", SelectorCompilation.Compilation.CreateErrorTypeSymbol(null, "Missing", 0));
         yield return () => new("dynamic", SelectorCompilation.Compilation.DynamicType);
         yield return () => new("generic definition", Handler);
-        yield return () => new("closed generic of an array", Handler.Construct(SelectorCompilation.Compilation.CreateArrayTypeSymbol(Int32)));
+        yield return () => new("array of a type parameter", SelectorCompilation.Compilation.CreateArrayTypeSymbol(Type("App.Handlers.Outer`1").TypeParameters[0]));
+        yield return () => new("array of a pointer", SelectorCompilation.Compilation.CreateArrayTypeSymbol(SelectorCompilation.Compilation.CreatePointerTypeSymbol(Int32)));
     }
 
     [Test]
@@ -96,6 +97,65 @@ public class ClosedGenericSelectorTests
         await Act(() => Types(f => f.NotAssignableToAny(Handler, closed))).Should().Throw<ArgumentException>();
         await Act(() => Types(f => f.WithAttribute(Type("Library.Contracts.TagAttribute`1").Construct(argument.Type)))).Should().Throw<ArgumentException>();
     }
+
+    [Test]
+    public async Task An_array_type_argument_is_recorded_as_its_element_type_and_rank()
+    {
+        var reference = Recorded(Handler.Construct(ArrayOf(Int32)));
+
+        await reference.Should().BeEqualTo(Closed(Library("Library.Contracts.IHandler`1"), Special(SpecialType.System_Int32) with { ArrayRanks = Ranks(1) }));
+    }
+
+    [Test]
+    public async Task Jagged_and_multidimensional_arrays_record_every_rank_outermost_first()
+    {
+        // int[][,]: an array (rank 1) of int[,] (rank 2).
+        var reference = Recorded(Handler.Construct(ArrayOf(ArrayOf(Int32, 2), 1)));
+
+        await reference.TypeArguments[0].Should().BeEqualTo(Special(SpecialType.System_Int32) with { ArrayRanks = Ranks(1, 2) });
+    }
+
+    [Test]
+    public async Task An_array_of_a_closed_generic_keeps_the_elements_type_arguments()
+    {
+        var reference = Recorded(Handler.Construct(ArrayOf(Handler.Construct(Int32))));
+
+        await reference.TypeArguments[0]
+                       .Should()
+                       .BeEqualTo(Closed(Library("Library.Contracts.IHandler`1"), Special(SpecialType.System_Int32)) with { ArrayRanks = Ranks(1) });
+    }
+
+    [Test]
+    public async Task Array_shapes_are_different_requests()
+    {
+        string[] keys =
+        [
+            Build(s => s.FromAssemblies().GetTypes(f => f.AssignableTo(Handler.Construct(Int32)))).CacheKey,
+            Build(s => s.FromAssemblies().GetTypes(f => f.AssignableTo(Handler.Construct(ArrayOf(Int32))))).CacheKey,
+            Build(s => s.FromAssemblies().GetTypes(f => f.AssignableTo(Handler.Construct(ArrayOf(Int32, 2))))).CacheKey,
+            Build(s => s.FromAssemblies().GetTypes(f => f.AssignableTo(Handler.Construct(ArrayOf(ArrayOf(Int32)))))).CacheKey,
+        ];
+
+        await keys.Distinct().Count().Should().BeEqualTo(keys.Length);
+    }
+
+    [Test]
+    public async Task A_top_level_array_is_still_not_selectable() => await Act(() => Types(f => f.AssignableTo(ArrayOf(Int32)))).Should().Throw<ArgumentException>();
+
+    [Test]
+    public async Task ArrayRanks_default_to_empty_and_take_part_in_equality()
+    {
+        var element = new TypeReference("", "System.Int32", false);
+
+        await element.ArrayRanks.Count.Should().BeEqualTo(0);
+        await ( element with { ArrayRanks = Ranks(1) } ).Should().NotBeEqualTo(element);
+        await ( element with { ArrayRanks = Ranks(1) } ).Should().BeEqualTo(element with { ArrayRanks = Ranks(1) });
+        await ( element with { ArrayRanks = Ranks(1, 2) } ).Should().NotBeEqualTo(element with { ArrayRanks = Ranks(2, 1) });
+    }
+
+    private static IArrayTypeSymbol ArrayOf(ITypeSymbol element, int rank = 1) => SelectorCompilation.Compilation.CreateArrayTypeSymbol(element, rank);
+
+    private static EquatableArray<int> Ranks(params int[] ranks) => ranks.ToImmutableArray();
 
     [Test]
     public async Task TypeArguments_default_to_empty_and_take_part_in_equality()

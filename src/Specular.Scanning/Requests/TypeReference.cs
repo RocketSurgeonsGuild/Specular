@@ -38,4 +38,15 @@ sealed record TypeReference(string AssemblyName, string MetadataName, bool Unbou
     ///     </para>
     /// </remarks>
     public EquatableArray<TypeReference> TypeArguments { get; init; } = EquatableArray<TypeReference>.Empty;
+
+    /// <summary>
+    ///     When not empty, this reference names an array of the type it otherwise names, one rank per array level, outermost first:
+    ///     <c>int[]</c> is <c>System.Int32</c> with <c>[1]</c>, <c>int[,]</c> with <c>[2]</c>, and <c>int[][,]</c> (an array of
+    ///     <c>int[,]</c>) with <c>[1, 2]</c>.
+    /// </summary>
+    /// <remarks>
+    ///     Only a type argument can be an array (<c>IHandler&lt;int[]&gt;</c>): a filter's own target must be a named type, so a
+    ///     top-level reference with ranks is unresolved. Each rank must be between 1 and 32.
+    /// </remarks>
+    public EquatableArray<int> ArrayRanks { get; init; } = EquatableArray<int>.Empty;
 }

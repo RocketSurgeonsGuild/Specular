@@ -8,3 +8,6 @@ resharper_use_collection_expression_highlighting = none
 # These files also compile into Specular.Analyzers at LangVersion preview, so solution-wide `dotnet format` sees them there and
 # would rewrite comparer-taking initializers into C# 15 collection expression arguments; the library is held to C# 14.
 dotnet_diagnostic.IDE0028.severity = none
+# One public namespace for the whole library; the folders only organise the files.
+dotnet_style_namespace_match_folder = false
+dotnet_diagnostic.IDE0130.severity = none

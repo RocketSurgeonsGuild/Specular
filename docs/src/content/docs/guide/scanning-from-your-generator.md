@@ -254,8 +254,9 @@ The rules match Specular's own generator:
   to match every closed form, through the type itself, its base types or its interfaces. Pass a constructed type, such as
   `IHandler<int>` built with `handler.Construct(compilation.GetSpecialType(SpecialType.System_Int32))`, to match only that
   closed type; variance applies as in C#, so `IVariant<object>` matches a type implementing `IVariant<string>`. Type
-  arguments must themselves be named types (nested, constructed, tuples and `int?` are fine); arrays, pointers, type
-  parameters and `dynamic` as arguments throw `ArgumentException`. The string overloads can't express type arguments.
+  arguments must be named types (nested, constructed, tuples and `int?` are fine) or arrays of them, so `IHandler<int[]>` and
+  `IHandler<string[,]>` work too; pointers, type parameters and `dynamic` as arguments throw `ArgumentException`. The string
+  overloads can't express type arguments.
 - **`object` is never a match** for `AssignableTo`, as in Specular.
 - **Attributes** are read from the type itself, not inherited. `WithAttribute(symbol)` needs the exact attribute class.
   `WithAnyAttribute(symbol, …)` compares name and namespace, so a generic attribute definition matches every closed use of it.
@@ -268,7 +269,8 @@ The rules match Specular's own generator:
   type is never cached, so it recovers as soon as the type appears.
 - `WithAttribute(string)` and its relatives compare the full metadata name of each applied attribute's class, without looking
   the name up.
-- Only named types can be selected. Arrays, pointers, type parameters and error types throw `ArgumentException`.
+- Only named types can be selected as the type a filter names. Arrays, pointers, type parameters and error types throw
+  `ArgumentException` there; an array is fine as a type argument of a closed generic.
 
 ### How assembly selections combine
 

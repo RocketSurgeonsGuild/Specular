@@ -54,7 +54,9 @@ public class ScanRequestCacheKeyTests
         // A changed literal means every existing build cache entry is invalidated; only update it deliberately.
         // Format 2 (was "t_j8nVLNLqRihEKG-Zz8XeUola4xPPOnwH-uN9kAc9s" under format 1): type references now encode their type arguments
         // (closed generics), and entries cached when unresolved references dropped their clause must not be reused.
-        await Baseline.CacheKey.Should().BeEqualTo("fjWGd6RrfH7paR8Q8Y1sH630ZD48Ye8tUScNUpTlaXU");
+        // Format 3 (was "fjWGd6RrfH7paR8Q8Y1sH630ZD48Ye8tUScNUpTlaXU" under format 2): type references encode their array ranks, so a
+        // closed generic with an array argument can be named.
+        await Baseline.CacheKey.Should().BeEqualTo("LD-Y5dYhdBpOaChQVtT8vnMMvDBIAJ2kjW384r7jcQI");
 
     [Test]
     public async Task The_key_is_url_safe() => await Baseline.CacheKey.All(c => c is ( >= 'A' and <= 'Z' ) or ( >= 'a' and <= 'z' ) or ( >= '0' and <= '9' ) or '-' or '_').Should().BeTrue();

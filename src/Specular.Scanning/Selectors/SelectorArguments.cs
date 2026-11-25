@@ -123,19 +123,31 @@ internal static class SelectorArguments
 
     private static TypeReference ToTypeArgumentReference(INamedTypeSymbol selected, ITypeSymbol argument, string paramName)
     {
+        // An array argument is named by its element type plus its ranks, outermost first: int[][,] is int with [1, 2].
+        var ranks = ImmutableArray.CreateBuilder<int>();
+        var element = argument;
+        while (element is IArrayTypeSymbol array)
+        {
+            ranks.Add(array.Rank);
+            element = array.ElementType;
+        }
+
         // Only a named type can be found again by metadata name; a generic definition used as an argument fails one level down, on
         // its own type parameters.
-        if (argument is not INamedTypeSymbol { TypeKind: not TypeKind.Error, IsUnboundGenericType: false } named)
+        if (element is not INamedTypeSymbol { TypeKind: not TypeKind.Error, IsUnboundGenericType: false } named)
         {
             var definition = selected.OriginalDefinition;
             var anyClosedForm = definition.Arity > 0 ? definition.ConstructUnboundGenericType() : definition;
             throw new ArgumentException(
-                $"'{selected.ToDisplayString()}' has the type argument '{argument.ToDisplayString()}', which cannot be selected: type arguments must be named types (nested and closed generic types included), not arrays, pointers, type parameters, dynamic or error types. Pass the generic definition to match any {anyClosedForm.ToDisplayString()}.",
+                $"'{selected.ToDisplayString()}' has the type argument '{argument.ToDisplayString()}', which cannot be selected: type arguments must be named types (nested and closed generic types included) or arrays of them, not pointers, type parameters, dynamic or error types. Pass the generic definition to match any {anyClosedForm.ToDisplayString()}.",
                 paramName
             );
         }
 
-        var reference = new TypeReference(named.ContainingAssembly?.MetadataName ?? "", ScanSymbolNames.GetFullMetadataName(named), false);
+        var reference = new TypeReference(named.ContainingAssembly?.MetadataName ?? "", ScanSymbolNames.GetFullMetadataName(named), false)
+        {
+            ArrayRanks = ranks.ToImmutable(),
+        };
         return HasTypeArguments(named) ? reference with { TypeArguments = TypeArguments(selected, named, paramName) } : reference;
     }
 

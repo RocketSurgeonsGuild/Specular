@@ -21,7 +21,8 @@ internal sealed class TypeReferenceResolver(Compilation compilation, IReadOnlyDi
     /// </summary>
     public INamedTypeSymbol? Resolve(TypeReference reference)
     {
-        if (Find(reference) is not { } type) return null;
+        // A filter's own target is a named type; only a type argument may be an array.
+        if (reference.ArrayRanks.Count > 0 || Find(reference) is not { } type) return null;
 
         if (reference.TypeArguments.Count > 0)
         {
@@ -86,12 +87,30 @@ internal sealed class TypeReferenceResolver(Compilation compilation, IReadOnlyDi
 
     // An argument must be closed all the way down: a definition still has its own type parameters and an unbound form has none at
     // all, so constructing with either would not name a type any scanned type could be assignable to.
-    private INamedTypeSymbol? ResolveArgument(TypeReference reference)
+    private ITypeSymbol? ResolveArgument(TypeReference reference)
     {
-        return reference.UnboundGeneric || Resolve(reference) is not { } argument
+        var elementReference = reference.ArrayRanks.Count == 0 ? reference : reference with { ArrayRanks = EquatableArray<int>.Empty };
+        var element = elementReference.UnboundGeneric || Resolve(elementReference) is not { } named
             ? null
-            : reference.TypeArguments.Count == 0 && ContainingTypesAndSelf(argument).Exists(static level => level.Arity > 0) ? null : argument;
+            : elementReference.TypeArguments.Count == 0 && ContainingTypesAndSelf(named).Exists(static level => level.Arity > 0) ? null : named;
+        return element is null ? null : WrapInArrays(element, reference.ArrayRanks);
     }
+
+    // Ranks are listed outermost first, so the innermost array wraps the element first: [1, 2] over int builds int[,], then int[][,].
+    private ITypeSymbol? WrapInArrays(ITypeSymbol element, EquatableArray<int> ranks)
+    {
+        var type = element;
+        for (var i = ranks.Count - 1; i >= 0; i--)
+        {
+            if (ranks[i] is < 1 or > MaxArrayRank) return null;
+            type = compilation.CreateArrayTypeSymbol(type, ranks[i]);
+        }
+
+        return type;
+    }
+
+    // The CLR's limit on an array's rank.
+    private const int MaxArrayRank = 32;
 
     private static List<INamedTypeSymbol> ContainingTypesAndSelf(INamedTypeSymbol type)
     {

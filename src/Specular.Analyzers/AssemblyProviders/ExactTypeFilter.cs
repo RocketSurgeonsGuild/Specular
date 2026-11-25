@@ -13,9 +13,10 @@ internal enum ExactTypeFilterKind
 
 /// <summary>
 ///     A type or attribute clause matched against the exact symbols a selector in source named. Specular.Scanning names types by
-///     reference, which cannot express everything a symbol can (a type argument that is an array or a type parameter, a generic
-///     definition); Specular uses this filter for any clause whose types would not resolve back to the same symbols, so selectors keep
-///     matching what they always have.
+///     reference, which covers named types, closed generics and array type arguments but not everything a symbol can be: a type
+///     parameter or <c>dynamic</c> as a type argument, an error type, or a type a reference can't find again (an internal type in
+///     another assembly, a name defined in two). Specular uses this filter for any clause whose types would not resolve back to the
+///     same symbols, so those selectors keep matching what they always have.
 /// </summary>
 internal sealed class ExactTypeFilter(ExactTypeFilterKind kind, bool include, ImmutableArray<INamedTypeSymbol> types) : CustomTypeFilter
 {

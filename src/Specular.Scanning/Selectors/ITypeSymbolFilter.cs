@@ -29,11 +29,12 @@ interface ITypeSymbolFilter
 {
     /// <summary>
     ///     Assignable to <paramref name="type" />: a generic definition or unbound generic matches any closed form, a closed generic
-    ///     (<c>IHandler&lt;int&gt;</c>) only types assignable to that closed type (variance applies).
+    ///     (<c>IHandler&lt;int&gt;</c>, <c>IHandler&lt;int[]&gt;</c>) only types assignable to that closed type (variance applies).
     /// </summary>
     /// <exception cref="ArgumentException">
-    ///     <paramref name="type" /> is not a named type, or is a closed generic with a type argument that is not a named type (an array,
-    ///     pointer, type parameter, <c>dynamic</c> or error type); pass the generic definition to match any closed form instead.
+    ///     <paramref name="type" /> is not a named type, or is a closed generic with a type argument that is neither a named type nor an
+    ///     array of one (a pointer, type parameter, <c>dynamic</c> or error type); pass the generic definition to match any closed form
+    ///     instead.
     /// </exception>
     ITypeSymbolFilter AssignableTo(ITypeSymbol type);
 

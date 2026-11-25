@@ -226,8 +226,8 @@ internal sealed class TypeSelectionBuilder(ScanEnvironment environment)
     private static ImmutableArray<string> Sorted(ImmutableHashSet<string> values) => values.OrderBy(static z => z, StringComparer.Ordinal).ToImmutableArray();
 
     // A clause whose types all resolve back to the very same symbols is a plain Specular.Scanning clause; a closed generic such as
-    // IHandler<int> keeps its type arguments. Anything that does not round-trip (a type argument a reference cannot name, such as an
-    // array or a type parameter; a generic definition; a type the compilation cannot find by name; no types at all) is matched against
+    // IHandler<int> or IHandler<string[]> keeps its type arguments. Anything that does not round-trip (a type argument a reference
+    // cannot name, such as a type parameter or dynamic; a type the compilation cannot find by name; no types at all) is matched against
     // the symbols themselves, exactly as before.
     private void AddTypes(ExactTypeFilterKind kind, bool include, IEnumerable<INamedTypeSymbol> types)
     {
