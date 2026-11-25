@@ -8,8 +8,9 @@
     <ItemGroup>
         <ProjectReference Include="../Specular.Samples.HandlerRegistry.Handlers/Specular.Samples.HandlerRegistry.Handlers.csproj" />
         <!--
-            The generator, as an analyzer only. Its GetTargetPath also returns Specular.Scanning.dll (the pack helper imported by the
-            generator's project adds it), so the compiler loads the library next to the generator without this project naming it.
+            The generator, as an analyzer only. Its GetTargetPath also returns Specular.Scanning.dll and System.Text.Json.dll (the pack
+            helper imported by the generator's project adds them), so the compiler loads the library next to the generator without this
+            project naming it.
         -->
         <ProjectReference
             Include="../Specular.Samples.HandlerRegistry.Generator/Specular.Samples.HandlerRegistry.Generator.csproj"

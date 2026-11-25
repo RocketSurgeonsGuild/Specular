@@ -6,8 +6,11 @@
     <PropertyGroup>
         <!-- The builds of the library per Roslyn version (roslyn/roslynX.Y/), which the pack helper bundles beside the generator. -->
         <_SpecularScanningLibraryDirectory>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'roslyn'))</_SpecularScanningLibraryDirectory>
-        <!-- The build the generator compiles against (the Roslyn 5.0 one), returned from GetTargetPath for ProjectReference users. -->
-        <_SpecularScanningReferenceAssembly>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'lib', 'netstandard2.0', 'Specular.Scanning.dll'))</_SpecularScanningReferenceAssembly>
+        <!--
+            The build the generator compiles against (lib/netstandard2.0 is the Roslyn 5.0 build), returned from GetTargetPath for
+            ProjectReference users; its roslyn/ copy has the System.Text.Json.dll it was built against beside it.
+        -->
+        <SpecularScanningLibraryAssembly Condition="'$(SpecularScanningLibraryAssembly)' == ''">$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'roslyn', 'roslyn5.0', 'Specular.Scanning.dll'))</SpecularScanningLibraryAssembly>
     </PropertyGroup>
     <Import Project="$(MSBuildThisFileDirectory)Specular.Scanning.Pack.targets" Condition="'$(_SpecularScanningPackImported)' != 'true'" />
 </Project>

@@ -21,11 +21,17 @@
         TfmSpecificPackageFile items), which covers the usual generator layouts. A project that packs no .dll under analyzers/ is not
         treated as a generator: nothing is added (warning SPECSCAN002 when it sets IsRoslynComponent).
 
-        For a generator referenced through a ProjectReference (OutputItemType="Analyzer") instead of a package, the Specular.Scanning
-        package also returns its lib/ Specular.Scanning.dll from the generator's GetTargetPath, so the referencing project loads it beside
-        the generator (and a test project referencing the generator gets it copied to its output). The referencing project imports the
-        cache wiring itself: reference the Specular.Scanning package with PrivateAssets="all" and IncludeAssets="build", and set
-        SpecularScanningImportCacheTargets to true.
+        For a generator referenced through a ProjectReference (OutputItemType="Analyzer") instead of a package, the generator's
+        GetTargetPath also returns SpecularScanningLibraryAssembly and the System.Text.Json.dll beside it, so the referencing project
+        loads both beside the generator. With the Specular.Scanning package that is its Roslyn 5.0 build, the one lib/netstandard2.0
+        holds. A test project referencing the generator as an assembly gets the library as a reference and in its output, but not in its
+        .deps.json, and no System.Text.Json: to run the generator in-process on .NET it references Specular.Scanning itself. The
+        referencing project imports the cache wiring itself: reference the Specular.Scanning package with PrivateAssets="all" and
+        IncludeAssets="build", and set SpecularScanningImportCacheTargets to true.
+
+        A generator that gets Specular.Scanning through a ProjectReference to its project (not the package) imports this file itself
+        and sets SpecularScanningLibraryAssembly to a build of the library with System.Text.Json.dll beside it, such as the Roslyn 5.0
+        build in src/Specular.Scanning.supports/bin/roslyn5.0/<Configuration>/netstandard2.0/. Packing such a generator bundles nothing.
 
         Properties (set them in the generator's project file):
           SpecularScanningPack                  false adds nothing to the package. Default: true.
@@ -36,8 +42,12 @@
           SpecularScanningAnalyzerPackPaths     The package folders the generator is packed into, separated by ';' (for example
                                                 analyzers/dotnet/roslyn5.0/cs;analyzers/dotnet/roslyn5.9/cs). Replaces the folders read
                                                 from the pack items; set it when the generator is packed some other way. Default: empty.
-          SpecularScanningAddToTargetPath       false stops returning Specular.Scanning.dll from GetTargetPath. Specular.Scanning package
-                                                only. Default: true, false when SpecularScanningImportCacheTargets is true.
+          SpecularScanningAddToTargetPath       false stops returning Specular.Scanning.dll (and System.Text.Json.dll) from GetTargetPath.
+                                                Default: true, false when SpecularScanningImportCacheTargets is true.
+          SpecularScanningLibraryAssembly       The Specular.Scanning.dll that GetTargetPath returns; the System.Text.Json.dll in the same
+                                                folder, when there is one, is returned with it. Empty returns nothing. Default: the
+                                                Specular.Scanning package's roslyn/roslyn5.0/Specular.Scanning.dll (empty with
+                                                Specular.Scanning.Sources).
           SpecularScanningImportCacheTargets    true imports Specular.Scanning.Cache.targets into this project: for a project that uses a
                                                 generator through a ProjectReference. Default: false.
 
@@ -67,13 +77,23 @@
         Condition="'$(SpecularScanningImportCacheTargets)' == 'true' and '$(_SpecularScanningCacheImported)' != 'true'"
     />
 
-    <!-- A generator referenced through a ProjectReference: the referencing project loads the library beside it. -->
-    <Target
-        Name="_SpecularScanningAddToTargetPath"
-        Condition="'$(SpecularScanningAddToTargetPath)' == 'true' and '$(_SpecularScanningReferenceAssembly)' != '' and Exists('$(_SpecularScanningReferenceAssembly)')"
-    >
+    <!--
+        A generator referenced through a ProjectReference: the referencing project loads the library beside it, and the System.Text.Json
+        it was built against, which a compiler running on .NET Framework (Visual Studio, MSBuild.exe) does not provide. The library is
+        returned even before it exists, as the generator itself is, so a design-time build that runs before the first build still
+        hands it to the compiler. ResolveableAssembly="false" keeps System.Text.Json out of the references of a project that references
+        the generator as an assembly (a generator test project), where it would clash with the framework's or the project's own; it
+        still reaches the OutputItemType (Analyzer) items. IncludeRuntimeDependency="false" keeps the library out of such a project's
+        .deps.json: the SDK fails (GenerateDepsFile, duplicate key) on a second runtime item from one project. A test project that runs
+        the generator in-process on .NET therefore references Specular.Scanning itself.
+    -->
+    <Target Name="_SpecularScanningAddToTargetPath" Condition="'$(SpecularScanningAddToTargetPath)' == 'true' and '$(SpecularScanningLibraryAssembly)' != ''">
+        <PropertyGroup>
+            <_SpecularScanningLibraryJson>$([System.IO.Path]::Combine($([System.IO.Path]::GetDirectoryName('$(SpecularScanningLibraryAssembly)')), 'System.Text.Json.dll'))</_SpecularScanningLibraryJson>
+        </PropertyGroup>
         <ItemGroup>
-            <TargetPathWithTargetPlatformMoniker Include="$(_SpecularScanningReferenceAssembly)" IncludeRuntimeDependency="false" />
+            <TargetPathWithTargetPlatformMoniker Include="$(SpecularScanningLibraryAssembly)" IncludeRuntimeDependency="false" />
+            <TargetPathWithTargetPlatformMoniker Include="$(_SpecularScanningLibraryJson)" Condition="Exists('$(_SpecularScanningLibraryJson)')" ResolveableAssembly="false" />
         </ItemGroup>
     </Target>
 

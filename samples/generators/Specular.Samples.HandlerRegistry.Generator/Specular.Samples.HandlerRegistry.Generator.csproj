@@ -34,7 +34,7 @@
     <!--
         The package: PrivateAssets="all" keeps it out of this generator's own package dependencies (warning SPECSCAN001 otherwise). Its
         build/ targets do the rest: bundle the library into the package, and, for a project that uses this generator through a
-        ProjectReference, return the library from GetTargetPath so the compiler loads it beside the generator.
+        ProjectReference, return the library and its System.Text.Json from GetTargetPath so the compiler loads them beside the generator.
     -->
     <ItemGroup Condition="'$(SpecularScanningFromPackage)' == 'true'">
         <PackageReference Include="Specular.Scanning" PrivateAssets="all" />
@@ -42,14 +42,14 @@
 
     <!--
         In this repository the library is a project, and a ProjectReference brings none of the package's build/ files. Import the pack
-        helper the package would have imported and point it at the library build that this generator compiles against, so that projects
-        referencing the generator get Specular.Scanning.dll passed to the compiler as an analyzer next to it.
+        helper the package would have imported and name the library build to load beside the generator: the Roslyn 5.0 build, which the
+        package's lib/netstandard2.0 is, with the System.Text.Json.dll it was built against beside it.
     -->
     <ItemGroup Condition="'$(SpecularScanningFromPackage)' != 'true'">
         <ProjectReference Include="../../../src/Specular.Scanning/Specular.Scanning.csproj" PrivateAssets="all" />
     </ItemGroup>
     <PropertyGroup Condition="'$(SpecularScanningFromPackage)' != 'true'">
-        <_SpecularScanningReferenceAssembly>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '../../../src/Specular.Scanning/bin', '$(Configuration)', 'netstandard2.0', 'Specular.Scanning.dll'))</_SpecularScanningReferenceAssembly>
+        <SpecularScanningLibraryAssembly>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '../../../src/Specular.Scanning.supports/bin/roslyn5.0', '$(Configuration)', 'netstandard2.0', 'Specular.Scanning.dll'))</SpecularScanningLibraryAssembly>
     </PropertyGroup>
     <Import Project="../../../src/Specular.Scanning/build/Specular.Scanning.Pack.targets" Condition="'$(SpecularScanningFromPackage)' != 'true'" />
 </Project>
