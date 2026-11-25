@@ -13,7 +13,7 @@ Attribute used to define the keyed service registration of a given type
 ## KeyedServiceRegistrationAttribute(object?, ServiceLifetime)
 
 - Name: `Constructor(object?, ServiceLifetime)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.e349b4d07697a27d2f7d2f0edd92c5e34f9b8f68/src/Specular/KeyedServiceRegistrationAttribute.cs#L51)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.f398584acaebb436a7dc6af0a2c4966988fca3fe/src/Specular/KeyedServiceRegistrationAttribute.cs#L51)
 
 Attribute used to define the keyed service registration of a given type
 

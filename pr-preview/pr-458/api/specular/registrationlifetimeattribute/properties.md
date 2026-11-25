@@ -14,7 +14,7 @@ Defines the lifetime that should be used service registrations created using the
 - Name: `Lifetime`
 - Modifiers: `get`
 - Returns: `ServiceLifetime`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.e349b4d07697a27d2f7d2f0edd92c5e34f9b8f68/src/Specular/RegistrationLifetimeAttribute.cs#L20)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.f398584acaebb436a7dc6af0a2c4966988fca3fe/src/Specular/RegistrationLifetimeAttribute.cs#L20)
 
 The lifetime
 

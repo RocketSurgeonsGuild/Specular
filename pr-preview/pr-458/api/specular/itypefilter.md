@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/pr-preview/pr-458/api/specular.md)
-- Version: `0.4.3-pr.51`
+- Version: `0.4.3-pr.53`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.e349b4d07697a27d2f7d2f0edd92c5e34f9b8f68/src/Specular/Abstractions/ITypeFilter.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.f398584acaebb436a7dc6af0a2c4966988fca3fe/src/Specular/Abstractions/ITypeFilter.cs)
 
 The Compiled Implementation Type Filter
 
