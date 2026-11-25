@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--
+        A source generator built on Specular.Scanning, set up the way a third party would set up theirs. The only part specific to this
+        repository is the ProjectReference branch at the bottom; outside it, set SpecularScanningFromPackage (or just keep the
+        PackageReference).
+    -->
+    <PropertyGroup>
+        <!-- Compilers load analyzers built for netstandard2.0, on .NET and on .NET Framework (Visual Studio) alike. -->
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!-- netstandard2.0 would default to C# 7.3; the generator's own code may use any version, only the code it emits must not. -->
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <!-- A generator package ships no lib/ assembly: the generator goes under analyzers/ (below), so it is never a compile reference. -->
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <!-- NU5128: no lib/ folder, on purpose. -->
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+        <!--
+            analyzers/dotnet/cs carries no Roslyn version, so the pack helper bundles the Roslyn 5.0 build of Specular.Scanning beside the
+            generator (and System.Text.Json, which it needs on .NET Framework compilers), and adds the scan cache wiring to build/ and
+            buildTransitive/. Nothing else is needed for the package.
+        -->
+        <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <!-- This repository's global alias; netstandard2.0 has no public NotNullAttribute for it to name. -->
+        <Using Remove="System.Diagnostics.CodeAnalysis.NotNullAttribute" />
+    </ItemGroup>
+
+    <!--
+        The package: PrivateAssets="all" keeps it out of this generator's own package dependencies (warning SPECSCAN001 otherwise). Its
+        build/ targets do the rest: bundle the library into the package, and, for a project that uses this generator through a
+        ProjectReference, return the library from GetTargetPath so the compiler loads it beside the generator.
+    -->
+    <ItemGroup Condition="'$(SpecularScanningFromPackage)' == 'true'">
+        <PackageReference Include="Specular.Scanning" PrivateAssets="all" />
+    </ItemGroup>
+
+    <!--
+        In this repository the library is a project, and a ProjectReference brings none of the package's build/ files. Import the pack
+        helper the package would have imported and point it at the library build that this generator compiles against, so that projects
+        referencing the generator get Specular.Scanning.dll passed to the compiler as an analyzer next to it.
+    -->
+    <ItemGroup Condition="'$(SpecularScanningFromPackage)' != 'true'">
+        <ProjectReference Include="../../../src/Specular.Scanning/Specular.Scanning.csproj" PrivateAssets="all" />
+    </ItemGroup>
+    <PropertyGroup Condition="'$(SpecularScanningFromPackage)' != 'true'">
+        <_SpecularScanningReferenceAssembly>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '../../../src/Specular.Scanning/bin', '$(Configuration)', 'netstandard2.0', 'Specular.Scanning.dll'))</_SpecularScanningReferenceAssembly>
+    </PropertyGroup>
+    <Import Project="../../../src/Specular.Scanning/build/Specular.Scanning.Pack.targets" Condition="'$(SpecularScanningFromPackage)' != 'true'" />
+</Project>

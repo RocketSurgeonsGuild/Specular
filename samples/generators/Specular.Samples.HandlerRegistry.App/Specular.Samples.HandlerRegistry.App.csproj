@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+        <RootNamespace>Specular.Samples.HandlerRegistry</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Specular.Samples.HandlerRegistry.Handlers/Specular.Samples.HandlerRegistry.Handlers.csproj" />
+        <!--
+            The generator, as an analyzer only. Its GetTargetPath also returns Specular.Scanning.dll (the pack helper imported by the
+            generator's project adds it), so the compiler loads the library next to the generator without this project naming it.
+        -->
+        <ProjectReference
+            Include="../Specular.Samples.HandlerRegistry.Generator/Specular.Samples.HandlerRegistry.Generator.csproj"
+            OutputItemType="Analyzer"
+            ReferenceOutputAssembly="false"
+        />
+    </ItemGroup>
+
+    <!--
+        The scan cache wiring: hands obj/<tfm>/ctp/*.ctpjson back to the compiler on the next build and deletes it on Clean. A project
+        using the generator's package gets this from the package; through a ProjectReference it imports it itself. (Outside this
+        repository: reference the Specular.Scanning package with PrivateAssets="all" IncludeAssets="build" and set
+        SpecularScanningImportCacheTargets to true.)
+    -->
+    <Import Project="../../../src/Specular.Scanning/build/Specular.Scanning.Cache.targets" Condition="'$(_SpecularScanningCacheImported)' != 'true'" />
+</Project>
