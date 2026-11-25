@@ -1,0 +1,38 @@
+﻿{
+  Assemblies: [
+    {
+      Name: Microsoft.Extensions.DependencyInjection.Abstractions,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: Specular,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: TestAssembly,
+      HasInaccessibleMatches: true
+    },
+    {
+      Name: TestProject,
+      HasInaccessibleMatches: false
+    }
+  ],
+  Types: [
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.GenericService,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.GenericService
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested+GenericServiceA,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Nested.GenericServiceA
+    }
+  ]
+}

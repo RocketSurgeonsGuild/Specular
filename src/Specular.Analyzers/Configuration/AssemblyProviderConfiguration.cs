@@ -3,25 +3,25 @@ using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Descriptors;
+using Specular.Scanning;
 
 namespace Specular.Analyzers.Configuration;
 
-#pragma warning disable CS9113
 internal sealed partial class AssemblyProviderConfiguration
 (
     SourceProductionContext context,
-    Compilation compilation,
-    AnalyzerConfigOptionsProvider options,
-    GeneratedAssemblyProviderData generatedJson,
-    ResultingAssemblyProviderData resultingJson
+    ScanEnvironment environment,
+    bool isAot,
+    SpecularCache cache
 )
-#pragma warning restore CS9113
 {
-    public Compilation Compilation => compilation;
-    public bool IsAot { get; } = StatementGeneration.IsAotCompilation(options);
+    public Compilation Compilation { get; } = environment.Compilation;
+    public bool IsAot { get; } = isAot;
+
+    /// <summary>The build cache: scan results, the requests referenced assemblies carry, and what each call site generated.</summary>
+    public SpecularCache Cache => cache;
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; the unexpected exception is surfaced as a diagnostic.")]
     public (
         ImmutableList<AssemblyCollection.Item> InternalAssemblyRequests,
@@ -33,7 +33,8 @@ internal sealed partial class AssemblyProviderConfiguration
             ref ImmutableDictionary<string, IAssemblySymbol> assemblySymbols,
             ImmutableList<ReflectionCollection.Item> reflectionRequests,
             ImmutableList<ServiceDescriptorCollection.Item> serviceDescriptorRequests,
-            HashSet<Diagnostic> globalDiagnostics
+            HashSet<Diagnostic> globalDiagnostics,
+            CancellationToken cancellationToken
         )
     {
         var reflectionSources = ImmutableList.CreateBuilder<ResolvedSourceLocation>();
@@ -42,7 +43,7 @@ internal sealed partial class AssemblyProviderConfiguration
         var internalAssemblyRequestsBuilder = ImmutableList.CreateBuilder<AssemblyCollection.Item>();
         var internalReflectionRequestsBuilder = ImmutableList.CreateBuilder<ReflectionCollection.Item>();
         var internalServiceDescriptorRequestsBuilder = ImmutableList.CreateBuilder<ServiceDescriptorCollection.Item>();
-        foreach (var assembly in assemblySymbols.Values.Except([compilation.Assembly]).OrderBy(z => z.MetadataName))
+        foreach (var assembly in assemblySymbols.Values.Except([Compilation.Assembly]).OrderBy(z => z.MetadataName))
         {
             try
             {
@@ -80,16 +81,17 @@ internal sealed partial class AssemblyProviderConfiguration
         var allReflectionRequests = reflectionRequests.AddRange(internalReflectionRequests);
         var allServiceDescriptorRequests = serviceDescriptorRequests.AddRange(internalServiceDescriptorRequests);
         var diagnostics = new HashSet<Diagnostic>();
-        foreach (var assembly in assemblySymbols.Values.Except([compilation.Assembly]).OrderBy(z => z.MetadataName))
+        foreach (var assembly in assemblySymbols.Values.Except([Compilation.Assembly]).OrderBy(z => z.MetadataName))
         {
             foreach (var request in allReflectionRequests)
             {
                 var source = ReflectionCollection.ResolveSource(
                     this,
-                    compilation,
+                    Compilation,
                     diagnostics,
                     request,
-                    assembly
+                    assembly,
+                    cancellationToken
                 );
                 if (source is { }) reflectionSources.Add(source);
             }
@@ -98,10 +100,11 @@ internal sealed partial class AssemblyProviderConfiguration
             {
                 var source = ServiceDescriptorCollection.ResolveSource(
                     this,
-                    compilation,
+                    Compilation,
                     diagnostics,
                     request,
-                    assembly
+                    assembly,
+                    cancellationToken
                 );
                 if (source is { }) serviceDescriptorSources.Add(source);
             }
@@ -151,38 +154,14 @@ internal sealed partial class AssemblyProviderConfiguration
             yield return Helpers.AddAssemblyAttribute(ServiceDescriptorTypesKey, GetServiceDescriptorToString(context, request));
         }
     }
-    internal ResolvedSourceLocation? CacheSourceLocation(SourceLocation location, IAssemblySymbol assemblySymbol, Func<ResolvedSourceLocation?> factory)
-    {
-        if (generatedJson.GetSourceLocation(assemblySymbol, location, factory) is not { } savedLocation) return null;
-
-        resultingJson.AddSourceLocation(assemblySymbol, savedLocation);
-        return savedLocation;
-    }
-
     private static string CompressString(byte[] bytes) => Convert.ToBase64String(bytes);
 
     private static byte[] DecompressString(string base64String) => Convert.FromBase64String(base64String);
 
-    internal static INamedTypeSymbol? findType(
-        ImmutableDictionary<string, IAssemblySymbol> assemblySymbols,
-        Compilation compilation,
-        string assemblyName,
-        string typeName
-    ) =>
-        CompiledAssemblyFilter.coreAssemblies.Contains(assemblyName)
-            ? compilation.GetTypeByMetadataName(typeName)
-            : !assemblySymbols.TryGetValue(assemblyName, out var assembly)
-         || FindTypeVisitor.FindType(compilation, assembly, typeName) is not { } type
-                ? compilation.GetTypeByMetadataName(typeName)
-                : type;
+    private AssemblyCollection.Item GetAssembliesFromData(ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, GetAssemblyConfiguration config) =>
+        new(config.Assembly.Location, new(environment, AssemblySelection.Load(config.Assembly.Assembly, assemblySymbols), null));
 
-    private static AssemblyCollection.Item GetAssembliesFromData(ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, GetAssemblyConfiguration config)
-    {
-        var assemblyFilter = LoadAssemblyFilter(config.Assembly.Assembly, config.Assembly.Location, assemblySymbols);
-        return new(config.Assembly.Location, assemblyFilter);
-    }
-
-    private static AssemblyCollection.Item GetAssembliesFromString(ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, string value)
+    private AssemblyCollection.Item GetAssembliesFromString(ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, string value)
     {
         var result = DecompressString(value);
         // ReSharper disable once NullableWarningSuppressionIsUsed
@@ -198,11 +177,8 @@ internal sealed partial class AssemblyProviderConfiguration
         return CompressString(result);
     }
 
-    private static GetAssemblyConfiguration GetAssemblyCollectionData(AssemblyCollection.Item item)
-    {
-        var data = new GetAssemblyConfiguration(new(item.Location, LoadAssemblyFilterData(item.AssemblyFilter)));
-        return data;
-    }
+    private static GetAssemblyConfiguration GetAssemblyCollectionData(AssemblyCollection.Item item) =>
+        new(new(item.Location, item.Selection.Assemblies.Data));
 
     private void GetAssemblyExpressionData(
         IAssemblySymbol assembly,
@@ -213,23 +189,12 @@ internal sealed partial class AssemblyProviderConfiguration
         ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
     )
     {
-        if (generatedJson.DoesAssemblyContainExpressions(assembly))
+        if (cache.TryGetRequests(assembly, out var cachedData))
         {
-            resultingJson.NoExpressions(assembly);
-            assemblyItems = ImmutableList<AssemblyCollection.Item>.Empty;
-            reflection = ImmutableList<ReflectionCollection.Item>.Empty;
-            serviceDescriptor = ImmutableList<ServiceDescriptorCollection.Item>.Empty;
-            excludeFromResolution = false;
-            return;
-        }
-
-        if (generatedJson.GetAssemblyData(assembly) is { } generatedData)
-        {
-            resultingJson.AddExpressionData(assembly, generatedData);
-            assemblyItems = generatedData.InternalAssemblyRequests.Select(z => GetAssembliesFromData(assemblySymbols, z)).ToImmutableList();
-            reflection = generatedData.InternalReflectionRequests.Select(z => GetReflectionFromData(compilation, assemblySymbols, z)).ToImmutableList();
-            serviceDescriptor = generatedData.InternalServiceDescriptorRequests.Select(z => GetServiceDescriptorFromData(compilation, assemblySymbols, z)).ToImmutableList();
-            excludeFromResolution = generatedData.ExcludeFromResolution;
+            assemblyItems = cachedData.InternalAssemblyRequests.Select(z => GetAssembliesFromData(assemblySymbols, z)).ToImmutableList();
+            reflection = cachedData.InternalReflectionRequests.Select(z => GetReflectionFromData(assemblySymbols, z)).ToImmutableList();
+            serviceDescriptor = cachedData.InternalServiceDescriptorRequests.Select(z => GetServiceDescriptorFromData(assemblySymbols, z)).ToImmutableList();
+            excludeFromResolution = cachedData.ExcludeFromResolution;
             return;
         }
 
@@ -260,7 +225,7 @@ internal sealed partial class AssemblyProviderConfiguration
                     case { ConstructorArguments: [{ Value: ReflectionTypesKey }, { Value: string reflectionData }] }:
                         {
                             {
-                                var data = GetReflectionFromString(compilation, assemblySymbols, reflectionData);
+                                var data = GetReflectionFromString(assemblySymbols, reflectionData);
                                 reflectionBuilder.Add(data);
                             }
                             break;
@@ -269,7 +234,7 @@ internal sealed partial class AssemblyProviderConfiguration
                     case { ConstructorArguments: [{ Value: ServiceDescriptorTypesKey }, { Value: string serviceDescriptorData }] }:
                         {
                             {
-                                var data = GetServiceDescriptorFromString(compilation, assemblySymbols, serviceDescriptorData);
+                                var data = GetServiceDescriptorFromString(assemblySymbols, serviceDescriptorData);
                                 serviceDescriptorBuilder.Add(data);
                             }
                             break;
@@ -293,39 +258,28 @@ internal sealed partial class AssemblyProviderConfiguration
         reflection = reflectionBuilder.ToImmutable();
         serviceDescriptor = serviceDescriptorBuilder.ToImmutable();
 
-        var result = new CompiledAssemblyProviderData(
-            assemblyBuilder.Select(GetAssemblyCollectionData).ToImmutableList(),
-            reflectionBuilder.Select(GetReflectionCollectionData).ToImmutableList(),
-            serviceDescriptorBuilder.Select(z => GetServiceDescriptorCollectionData(context, z)).ToImmutableList(),
-            excludeFromResolution,
-            assembly.GetCachedVersion()
+        // Assemblies without requests are kept too, so the next build skips reading their attributes as well.
+        cache.SetRequests(
+            assembly,
+            new(
+                assemblyBuilder.Select(GetAssemblyCollectionData).ToImmutableList(),
+                reflectionBuilder.Select(GetReflectionCollectionData).ToImmutableList(),
+                serviceDescriptorBuilder.Select(z => GetServiceDescriptorCollectionData(context, z)).ToImmutableList(),
+                excludeFromResolution
+            )
         );
-
-        if (result.IsEmpty)
-            resultingJson.NoExpressions(assembly);
-        else
-            resultingJson.AddExpressionData(assembly, result);
     }
 
-    private static GetReflectionCollectionData GetReflectionCollectionData(ReflectionCollection.Item item)
-    {
-        var data = new GetReflectionCollectionData(
-            new(item.Location, LoadAssemblyFilterData(item.AssemblyFilter)),
-            new(LoadTypeFilterData(item.TypeFilter))
-        );
-        return data;
-    }
+    private static GetReflectionCollectionData GetReflectionCollectionData(ReflectionCollection.Item item) =>
+        new(new(item.Location, item.Selection.Assemblies.Data), new(item.Selection.Types!.Data));
 
-    private static ReflectionCollection.Item GetReflectionFromData(Compilation compilation, ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, GetReflectionCollectionData config)
-    {
-        var data = config.Assembly;
-        var assemblyFilter = LoadAssemblyFilter(data.Assembly, data.Location, assemblySymbols);
-        var typeFilter = LoadTypeFilter(compilation, config.Reflection.Type, data.Location, assemblySymbols);
-        return new(data.Location, assemblyFilter, typeFilter);
-    }
+    private ReflectionCollection.Item GetReflectionFromData(ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, GetReflectionCollectionData config) =>
+        new(config.Assembly.Location, LoadSelection(assemblySymbols, config.Assembly.Assembly, config.Reflection.Type));
 
-    private static ReflectionCollection.Item GetReflectionFromString(
-        Compilation compilation,
+    private ScanSelection LoadSelection(ImmutableDictionary<string, IAssemblySymbol> assemblySymbols, AssemblyFilterData assemblies, TypeFilterData types) =>
+        new(environment, AssemblySelection.Load(assemblies, assemblySymbols), TypeSelection.Load(Compilation, types, assemblySymbols));
+
+    private ReflectionCollection.Item GetReflectionFromString(
         ImmutableDictionary<string, IAssemblySymbol> assemblySymbols,
         string value
     )
@@ -334,7 +288,7 @@ internal sealed partial class AssemblyProviderConfiguration
         // ReSharper disable once NullableWarningSuppressionIsUsed
         var config = JsonSerializer.Deserialize(result, JsonSourceGenerationContext.Default.GetReflectionCollectionData)!;
         Debug.Assert(config.Type == nameof(JsonSourceGenerationContext.GetReflectionCollectionData));
-        return GetReflectionFromData(compilation, assemblySymbols, config);
+        return GetReflectionFromData(assemblySymbols, config);
     }
 
     private static string GetReflectionToString(ReflectionCollection.Item item)
@@ -347,31 +301,26 @@ internal sealed partial class AssemblyProviderConfiguration
     private static GetServiceDescriptorCollectionData GetServiceDescriptorCollectionData(SourceProductionContext context, ServiceDescriptorCollection.Item item)
     {
         var data = new GetServiceDescriptorCollectionData(
-            new(item.Location, LoadAssemblyFilterData(item.AssemblyFilter)),
-            new(LoadTypeFilterData(item.TypeFilter)),
+            new(item.Location, item.Selection.Assemblies.Data),
+            new(item.Selection.Types!.Data),
             new(LoadServiceDescriptorsData(context, item.ServicesTypeFilter), item.Lifetime)
         );
         return data;
     }
 
-    private static ServiceDescriptorCollection.Item GetServiceDescriptorFromData(
-        Compilation compilation,
+    private ServiceDescriptorCollection.Item GetServiceDescriptorFromData(
         ImmutableDictionary<string, IAssemblySymbol> assemblySymbols,
         GetServiceDescriptorCollectionData config
     )
     {
         var assemblyData = config.Assembly;
-        var reflectionData = config.Reflection;
         var serviceDescriptorData = config.ServiceDescriptor;
-        var assemblyFilter = LoadAssemblyFilter(assemblyData.Assembly, assemblyData.Location, assemblySymbols);
-        var typeFilter = LoadTypeFilter(compilation, reflectionData.Type, assemblyData.Location, assemblySymbols);
-        // next up is services, and lifetime.
-        var servicesFilter = LoadServiceDescriptorFilter(compilation, serviceDescriptorData.ServiceDescriptor, assemblyData.Location, assemblySymbols);
-        return new(assemblyData.Location, assemblyFilter, typeFilter, servicesFilter, serviceDescriptorData.Lifetime);
+        var selection = LoadSelection(assemblySymbols, assemblyData.Assembly, config.Reflection.Type);
+        var servicesFilter = LoadServiceDescriptorFilter(Compilation, serviceDescriptorData.ServiceDescriptor, assemblySymbols);
+        return new(assemblyData.Location, selection, servicesFilter, serviceDescriptorData.Lifetime);
     }
 
-    private static ServiceDescriptorCollection.Item GetServiceDescriptorFromString(
-        Compilation compilation,
+    private ServiceDescriptorCollection.Item GetServiceDescriptorFromString(
         ImmutableDictionary<string, IAssemblySymbol> assemblySymbols,
         string value
     )
@@ -380,7 +329,7 @@ internal sealed partial class AssemblyProviderConfiguration
         // ReSharper disable once NullableWarningSuppressionIsUsed
         var config = JsonSerializer.Deserialize(result, JsonSourceGenerationContext.Default.GetServiceDescriptorCollectionData)!;
         Debug.Assert(config.Type == nameof(JsonSourceGenerationContext.Default.GetServiceDescriptorCollectionData));
-        return GetServiceDescriptorFromData(compilation, assemblySymbols, config);
+        return GetServiceDescriptorFromData(assemblySymbols, config);
     }
 
     private static string GetServiceDescriptorToString(SourceProductionContext context, ServiceDescriptorCollection.Item item)
@@ -390,66 +339,23 @@ internal sealed partial class AssemblyProviderConfiguration
         return CompressString(result);
     }
 
-    private static CompiledAssemblyFilter LoadAssemblyFilter(
-        AssemblyFilterData data,
-        SourceLocation source,
-        ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
-    )
-    {
-        var descriptors = ImmutableList.CreateBuilder<IAssemblyDescriptor>();
-        if (data.AllAssembly) descriptors.Add(new AllAssemblyDescriptor());
-
-        if (data.IncludeSystem) descriptors.Add(new IncludeSystemAssembliesDescriptor());
-
-        foreach (var item in data.Assembly)
-        {
-            if (!assemblySymbols.TryGetValue(item, out var assembly)) continue;
-
-            descriptors.Add(new AssemblyDescriptor(assembly));
-        }
-
-        foreach (var item in data.NotAssembly)
-        {
-            if (!assemblySymbols.TryGetValue(item, out var assembly)) continue;
-
-            descriptors.Add(new NotAssemblyDescriptor(assembly));
-        }
-
-        foreach (var item in data.AssemblyDependencies)
-        {
-            if (!assemblySymbols.TryGetValue(item, out var assembly)) continue;
-
-            descriptors.Add(new AssemblyDependenciesDescriptor(assembly));
-        }
-
-        return new(descriptors.ToImmutable(), source);
-    }
-
-    private static AssemblyFilterData LoadAssemblyFilterData(CompiledAssemblyFilter filter) => new(
-        filter.AssemblyDescriptors.OfType<AllAssemblyDescriptor>().Any(),
-        filter.AssemblyDescriptors.OfType<IncludeSystemAssembliesDescriptor>().Any(),
-    filter.AssemblyDescriptors.OfType<AssemblyDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z).ToImmutableArray(),
-        filter.AssemblyDescriptors.OfType<NotAssemblyDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z).ToImmutableArray(),
-        filter.AssemblyDescriptors.OfType<AssemblyDependenciesDescriptor>().Select(z => z.Assembly.MetadataName).OrderBy(z => z).ToImmutableArray()
-    );
-
     private static CompiledServiceTypeDescriptors LoadServiceDescriptorFilter(
         Compilation compilation,
         ServiceDescriptorFilterData data,
-        SourceLocation source,
         ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
     )
     {
+        var resolver = new TypeReferenceResolver(compilation, assemblySymbols);
         var descriptors = ImmutableArray.CreateBuilder<IServiceTypeDescriptor>();
         foreach (var item in data.ServiceTypeDescriptors)
         {
             IServiceTypeDescriptor serviceTypeDescriptor = item switch
             {
-                { Identifier: 'c', TypeData: { } typeData } when findType(assemblySymbols, compilation, typeData.Assembly, typeData.Type) is { } type =>
+                { Identifier: 'c', TypeData: { } typeData } when resolver.Resolve(TypeSelection.ToTypeReference(typeData.Assembly, typeData.Type, false)) is { } type =>
                     new CompiledServiceTypeDescriptor(type),
                 { Identifier: 'c', TypeData: { } typeData } => new UnknownCompiledServiceTypeDescriptor(typeData),
                 { Identifier: 'i', TypeFilter: { } typeFilter } =>
-                    new ImplementedInterfacesServiceTypeDescriptor(LoadTypeFilter(compilation, typeFilter, source, assemblySymbols)),
+                    new ImplementedInterfacesServiceTypeDescriptor(TypeSelection.Load(compilation, typeFilter, assemblySymbols)),
                 { Identifier: 'i' } => new ImplementedInterfacesServiceTypeDescriptor(null),
                 { Identifier: 'm' } => new MatchingInterfaceServiceTypeDescriptor(),
                 { Identifier: 's' } => new SelfServiceTypeDescriptor(),
@@ -486,7 +392,7 @@ internal sealed partial class AssemblyProviderConfiguration
                                                       {
                                                           ImplementedInterfacesServiceTypeDescriptor i => new(
                                                               'i',
-                                                              TypeFilter: i is { InterfaceFilter: { } filter } ? LoadTypeFilterData(filter) : null
+                                                              TypeFilter: i is { InterfaceFilter: { } filter } ? filter.Data : null
                                                           ),
                                                           MatchingInterfaceServiceTypeDescriptor => new('m'),
                                                           SelfServiceTypeDescriptor => new('s'),
@@ -500,259 +406,6 @@ internal sealed partial class AssemblyProviderConfiguration
                                  );
         return new(serviceDescriptors.ToImmutableArray(), serviceTypeDescriptors.Lifetime);
     }
-
-    private static CompiledTypeFilter LoadTypeFilter(
-        Compilation compilation,
-        TypeFilterData data,
-        SourceLocation source,
-        ImmutableDictionary<string, IAssemblySymbol> assemblySymbols
-    )
-    {
-        var descriptors = ImmutableList.CreateBuilder<ITypeFilterDescriptor>();
-        foreach (var item in data.NamespaceFilters)
-        {
-            descriptors.Add(new NamespaceFilterDescriptor(item.Filter, item.Namespaces.ToImmutableHashSet()));
-        }
-
-        foreach (var item in data.NameFilters)
-        {
-            descriptors.Add(new NameFilterDescriptor(item.Include, item.Filter, item.Names.ToImmutableHashSet()));
-        }
-
-        foreach (var item in data.TypeKindFilters)
-        {
-            descriptors.Add(new TypeKindFilterDescriptor(item.Include, item.TypeKinds.ToImmutableHashSet()));
-        }
-
-        foreach (var item in data.TypeInfoFilters)
-        {
-            descriptors.Add(new TypeInfoFilterDescriptor(item.Include, item.TypeInfos.ToImmutableHashSet()));
-        }
-
-        foreach (var item in data.WithAttributeFilters)
-        {
-            if (findType(assemblySymbols, compilation, item.Assembly, item.Attribute) is not { } type) continue;
-
-            if (item.UnboundGenericType) type = type.ConstructUnboundGenericType();
-
-            descriptors.Add(item.Include ? new WithAttributeFilterDescriptor(type) : new WithoutAttributeFilterDescriptor(type));
-        }
-
-        foreach (var item in data.WithAttributeStringFilters)
-        {
-            descriptors.Add(
-                item.Include
-                    ? new WithAttributeStringFilterDescriptor(item.Attribute)
-                    : new WithoutAttributeStringFilterDescriptor(item.Attribute)
-            );
-        }
-
-        var withAnyAttributeFilter = new List<INamedTypeSymbol>();
-        foreach (var item in data.WithAnyAttributeFilters)
-        {
-            if (findType(assemblySymbols, compilation, item.Assembly, item.Attribute) is not { } type) continue;
-
-            if (item.UnboundGenericType) type = type.ConstructUnboundGenericType();
-
-            withAnyAttributeFilter.Add(type);
-        }
-
-        if (withAnyAttributeFilter.Count != 0) descriptors.Add(new WithAnyAttributeFilterDescriptor(withAnyAttributeFilter.ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default)));
-
-        var withAnyAttributeStringFilter = new List<string>();
-        foreach (var item in data.WithAnyAttributeStringFilters)
-        {
-            withAnyAttributeStringFilter.Add(item.Attribute);
-        }
-
-        if (withAnyAttributeStringFilter.Count != 0) descriptors.Add(new WithAnyAttributeStringFilterDescriptor(withAnyAttributeStringFilter.ToImmutableHashSet()));
-
-        foreach (var item in data.AssignableToTypeFilters)
-        {
-            if (findType(assemblySymbols, compilation, item.Assembly, item.Type) is not { } type) continue;
-
-            if (item.UnboundGenericType) type = type.ConstructUnboundGenericType();
-
-            descriptors.Add(item.Include ? new AssignableToTypeFilterDescriptor(type) : new NotAssignableToTypeFilterDescriptor(type));
-        }
-
-        foreach (var item in data.AssignableToAnyTypeFilters)
-        {
-            var filters = ImmutableHashSet.CreateBuilder<INamedTypeSymbol>(SymbolEqualityComparer.Default);
-            foreach (var typeData in item.Types)
-            {
-                if (findType(assemblySymbols, compilation, typeData.Assembly, typeData.Type) is not { } type) continue;
-
-                if (typeData.UnboundGenericType) type = type.ConstructUnboundGenericType();
-
-                _ = filters.Add(type);
-            }
-
-            descriptors.Add(
-                item.Include
-                    ? new AssignableToAnyTypeFilterDescriptor(filters.ToImmutable())
-                    : new NotAssignableToAnyTypeFilterDescriptor(filters.ToImmutable())
-            );
-        }
-
-        return new(data.Filter, descriptors.ToImmutable(), source);
-    }
-
-    private static TypeFilterData LoadTypeFilterData(CompiledTypeFilter typeFilter) => new(
-        typeFilter.ClassFilter,
-        typeFilter
-           .TypeFilterDescriptors
-           .OfType<NamespaceFilterDescriptor>()
-           .Select(static z => new NamespaceFilterData(z.Filter, z.Namespaces.OrderBy(z => z).ToImmutableArray()))
-           .OrderBy(static z => string.Join(",", z.Namespaces.OrderBy(static z => z)))
-           .ThenBy(static z => z.Filter)
-           .Select(static z => z with { Namespaces = z.Namespaces.OrderBy(z => z).ToImmutableArray() }).ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors.OfType<NameFilterDescriptor>()
-              .Select(static z => new NameFilterData(z.Include, z.Filter, z.Names.OrderBy(z => z).ToImmutableArray()))
-              .OrderBy(static z => string.Join(",", z.Names.OrderBy(static z => z)))
-              .ThenBy(static z => z.Filter)
-        .ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors.OfType<TypeKindFilterDescriptor>()
-              .Select(static z => new TypeKindFilterData(z.Include, z.TypeKinds.OrderBy(z => z).ToImmutableArray()))
-              .OrderBy(static z => string.Join(",", z.TypeKinds.OrderBy(static z => z).Select(static z => z.ToString())))
-              .ThenBy(static z => z.Include)
-        .ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors.OfType<TypeInfoFilterDescriptor>()
-              .Select(static z => new TypeInfoFilterData(z.Include, z.TypeInfos.OrderBy(z => z).ToImmutableArray()))
-              .OrderBy(static z => string.Join(",", z.TypeInfos.OrderBy(static z => z).Select(static z => z.ToString())))
-              .ThenBy(static z => z.Include)
-        .ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors
-              .Select(f => f switch
-                           {
-                               WithAttributeFilterDescriptor descriptor => new(
-                                   true,
-                                   descriptor.Attribute.ContainingAssembly.MetadataName,
-                                   Helpers.GetFullMetadataName(descriptor.Attribute),
-                                   descriptor.Attribute.IsUnboundGenericType
-                               ),
-                               WithoutAttributeFilterDescriptor descriptor => new WithAttributeData(
-                                   false,
-                                   descriptor.Attribute.ContainingAssembly.MetadataName,
-                                   Helpers.GetFullMetadataName(descriptor.Attribute),
-                                   descriptor.Attribute.IsUnboundGenericType
-                               ),
-                               _ => null!,
-                           }
-               )
-              .Where(z => z is { })
-              .OrderBy(z => z.Assembly)
-              .ThenBy(z => z.Attribute)
-              .ThenBy(z => z.Include)
-        .ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors
-              .Select(f => f switch
-                           {
-                               WithAttributeStringFilterDescriptor descriptor => new(true, descriptor.AttributeClassName),
-                               WithoutAttributeStringFilterDescriptor descriptor => new WithAttributeStringData(false, descriptor.AttributeClassName),
-                               _ => null!,
-                           }
-               )
-              .Where(z => z is { })
-              .OrderBy(z => z.Attribute)
-              .ThenBy(z => z.Include)
-        .ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors
-              .SelectMany(f => f switch
-                               {
-                                   WithAnyAttributeFilterDescriptor descriptor =>
-                                       descriptor.Attributes
-                                                 .Select(attribute => new WithAttributeData(
-                                                             true,
-                                                             attribute.ContainingAssembly.MetadataName,
-                                                             Helpers.GetFullMetadataName(attribute),
-                                                             attribute.IsUnboundGenericType
-                                                         )
-                                                  ),
-                                   _ => ImmutableArray<WithAttributeData>.Empty,
-                               }
-               )
-              .Where(z => z is { })
-              .OrderBy(z => z.Assembly)
-              .ThenBy(z => z.Attribute)
-              .ThenBy(z => z.Include)
-              .ToImmutableArray()
-        ,
-typeFilter
-              .TypeFilterDescriptors
-              .SelectMany(f =>
-                              f switch
-                              {
-                                  WithAnyAttributeStringFilterDescriptor descriptor => descriptor.AttributeClassNames.Select(z => new WithAttributeStringData(true, z)
-                                  ),
-                                  _ => ImmutableArray<WithAttributeStringData>.Empty,
-                              }
-               )
-              .Where(z => z is { })
-              .OrderBy(z => z.Attribute)
-              .ThenBy(z => z.Include)
-              .ToImmutableArray(),
-typeFilter
-              .TypeFilterDescriptors
-              .Select(f => f switch
-                           {
-                               AssignableToTypeFilterDescriptor descriptor => new(
-                                   true,
-                                   descriptor.Type.ContainingAssembly.MetadataName,
-                                   Helpers.GetFullMetadataName(descriptor.Type),
-                                   descriptor.Type.IsUnboundGenericType
-                               ),
-                               NotAssignableToTypeFilterDescriptor descriptor => new AssignableToTypeData(
-                                   false,
-                                   descriptor.Type.ContainingAssembly.MetadataName,
-                                   Helpers.GetFullMetadataName(descriptor.Type),
-                                   descriptor.Type.IsUnboundGenericType
-                               ),
-                               _ => null!,
-                           }
-               )
-              .Where(z => z is { })
-              .OrderBy(z => z.Assembly)
-              .ThenBy(z => z.Type)
-              .ThenBy(z => z.Include)
-        .ToImmutableArray(),
-        typeFilter
-              .TypeFilterDescriptors
-              .Select(f => f switch
-                           {
-                               AssignableToAnyTypeFilterDescriptor descriptor => new(
-                                   true,
-                                   descriptor
-                                         .Types.Select(z => new AnyTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z), z.IsUnboundGenericType)
-                                          )
-                                         .OrderBy(z => z.Assembly)
-                                         .ThenBy(z => z.Type)
-                                         .ToImmutableArray()
-                               ),
-                               NotAssignableToAnyTypeFilterDescriptor descriptor => new AssignableToAnyTypeData(
-                                   false,
-                                   descriptor
-                                         .Types
-                                         .Select(z => new AnyTypeData(z.ContainingAssembly.MetadataName, Helpers.GetFullMetadataName(z), z.IsUnboundGenericType))
-                                         .OrderBy(z => z.Assembly)
-                                         .ThenBy(z => z.Type)
-                                         .ToImmutableArray()
-
-                               ),
-                               _ => null!,
-                           }
-               )
-              .Where(z => z is { })
-              .OrderBy(z => string.Join(",", z.Types.Select(static t => t.ToString())))
-              .ThenBy(z => z.Include)
-              .ToImmutableArray()
-    );
 
     private const string AssembliesKey = "AssemblyProvider.GetAssemblies";
     private const string ReflectionTypesKey = "AssemblyProvider.ReflectionTypes";

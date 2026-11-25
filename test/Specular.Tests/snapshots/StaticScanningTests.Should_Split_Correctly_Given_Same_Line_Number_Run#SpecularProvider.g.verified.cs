@@ -22,14 +22,12 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
-        return items;
+        return [];
     }
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection ISpecularProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)
@@ -38,7 +36,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input1.cs Expression: 5eMbUdKffIDeG8HjnS42og==
             case 12:
-                switch (System.IO.Path.GetFileName(filePath))
+                switch (global::System.IO.Path.GetFileName(filePath))
                 {
                     // FilePath: Input1.cs Expression: 5eMbUdKffIDeG8HjnS42og==
                     case "Input1.cs":

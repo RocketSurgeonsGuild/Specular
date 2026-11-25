@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using Specular.Analyzers.Descriptors;
+using Specular.Scanning;
 
 namespace Specular.Analyzers.Configuration;
 
-public record TypeInfoFilterData
+internal sealed record TypeInfoFilterData
 (
     [property: JsonPropertyName("f")]
     bool Include,

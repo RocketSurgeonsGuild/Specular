@@ -3,7 +3,9 @@
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
-        <DefineConstants>$(DefineConstants);ROSLYN_CURRENT</DefineConstants>
+        <!-- The Specular.Scanning sources compile in as internal types, so Specular never loads a Specular.Scanning.dll that could
+             collide with another generator's copy. -->
+        <DefineConstants>$(DefineConstants);ROSLYN_CURRENT;SPECULAR_SCANNING_SOURCES</DefineConstants>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <NoWarn>$(NoWarn);MSB3277</NoWarn>
         <!-- The generator stamps [GeneratedCode] from its AssemblyInfo constants. Nothing of it ships, so no manifest is written, and the
@@ -14,6 +16,9 @@
         <PackageTags>$(PackageTags);roslyn;analyzers;incremental-generator</PackageTags>
         <PackageDescription>Roslyn source generator for Specular that resolves GetAssemblies, GetTypes and Scan queries and the service registration attributes at build time, and writes the results into a SpecularProvider class.</PackageDescription>
     </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="../Specular.Scanning/**/*.cs" Exclude="../Specular.Scanning/obj/**;../Specular.Scanning/bin/**" LinkBase="Scanning" />
+    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
         <PackageReference Include="Polyfill" PrivateAssets="all" />

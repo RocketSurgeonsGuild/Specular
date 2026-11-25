@@ -35,7 +35,7 @@ Or add it manually to your `.csproj`:
 
 ## 2. No Attribute to Apply
 
-There is nothing to wire up by hand. When the generator runs it stamps your assembly with `[assembly: SpecularHashAttribute("<hash>")]` automatically (the hash drives cross-assembly cache invalidation) and emits the `SpecularProvider` class you scan through. You never write this attribute yourself.
+There is nothing to wire up by hand. When the generator runs it stamps your assembly with `[assembly: SpecularHashAttribute("<hash>")]` automatically (a hash of the generated provider) and emits the `SpecularProvider` class you scan through. You never write this attribute yourself.
 
 > **Libraries that are only scanned** — and never call `ISpecularProvider` themselves — can opt out of emitting their own provider by setting `<SpecularEmitProvider>false</SpecularEmitProvider>` in the project file. Application and entry projects emit a provider by default.
 
@@ -70,7 +70,7 @@ Console.WriteLine(provider.GetType().FullName); // should print "SpecularProvide
 
 ## No Additional Configuration
 
-That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knobs are `<SpecularEmitProvider>` (see step 2) for libraries that should not emit their own provider, and `<SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>` to opt out of the [scan report](../architecture/scan-report.md) (on by default). The `SpecularProvider.ctpjson` cross-assembly cache file is written to `obj/` alongside the generated source and is picked up automatically by downstream assemblies.
+That's it. The generator runs automatically on every build. There are no config files and no additional packages to reference. The only optional MSBuild knobs are `<SpecularEmitProvider>` (see step 2) for libraries that should not emit their own provider, and `<SpecularGenerateDiagnostics>false</SpecularGenerateDiagnostics>` to opt out of the [scan report](../architecture/scan-report.md) (on by default). The `SpecularProvider.ctpjson` cache file is written to `obj/ctp/` and fed back to the next build of the same project automatically, so referenced assemblies that haven't changed aren't scanned again (see [Cross-Assembly Caching](../architecture/cross-assembly-caching.md)).
 
 ## Next Steps
 

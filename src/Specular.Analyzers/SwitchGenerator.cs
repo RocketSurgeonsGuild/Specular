@@ -18,7 +18,7 @@ internal static class SwitchGenerator
             var lineSwitchSection = createNestedSwitchSections(
                     lineItems,
                     InvocationExpression(
-                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ParseName("System.IO.Path"), IdentifierName("GetFileName"))
+                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ParseName("global::System.IO.Path"), IdentifierName("GetFileName"))
                         )
                        .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("filePath"))))),
                     x => x.Location.FileName,
@@ -52,13 +52,19 @@ internal static class SwitchGenerator
     {
         if (blocks is [var localBlock])
         {
-            return SwitchSection()
-                  .AddStatements(ParseStatements(localBlock.Expression).ToArray())
-                  .AddStatements(BreakStatement());
+            return SectionOf(ParseStatements(localBlock.Expression));
+        }
+
+        // Several call sites that all share this key (the same file name on a line, as a project's call site and the identical one a
+        // referenced project carries) leave nothing for this switch to tell apart, so the next level is emitted directly.
+        var groups = Helpers.GroupInOrder(blocks, regroup);
+        if (groups is [var (_, onlyGroup)])
+        {
+            return next(onlyGroup);
         }
 
         var section = SwitchStatement(identifier);
-        foreach (var (key, items) in Helpers.GroupInOrder(blocks, regroup))
+        foreach (var (key, items) in groups)
         {
             var location = items[0].Location;
             var newSection = next(items)
@@ -99,11 +105,18 @@ internal static class SwitchGenerator
             )
     );
 
-    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) => SwitchSection()
-       .AddStatements(ParseStatements(innerGroup is [var first, ..] ? first.Expression : "").ToArray())
-       .AddStatements(BreakStatement());
+    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) =>
+        SectionOf(ParseStatements(innerGroup is [var first, ..] ? first.Expression : ""));
 
-    private static IEnumerable<StatementSyntax> ParseStatements(string expression)
+    // A section that already returns (GetTypes and GetAssemblies) would make a trailing break unreachable code (CS0162) in the
+    // consumer's build.
+    private static SwitchSectionSyntax SectionOf(IEnumerable<StatementSyntax> statements)
+    {
+        var section = SwitchSection().AddStatements(statements.ToArray());
+        return section.Statements.LastOrDefault() is ReturnStatementSyntax or ThrowStatementSyntax ? section : section.AddStatements(BreakStatement());
+    }
+
+    internal static IEnumerable<StatementSyntax> ParseStatements(string expression)
     {
         var tree = ParseSyntaxTree(expression, new CSharpParseOptions(kind: SourceCodeKind.Script));
         return tree

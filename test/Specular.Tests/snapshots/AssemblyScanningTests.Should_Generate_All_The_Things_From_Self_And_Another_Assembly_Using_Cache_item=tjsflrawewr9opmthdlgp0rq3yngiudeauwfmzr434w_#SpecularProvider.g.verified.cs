@@ -22,30 +22,80 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
+    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: 4VaAjHpBsAH5j0EYKpAqQw==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: 4VaAjHpBsAH5j0EYKpAqQw==
-                    case "Input0.cs":
-                        items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                        items.Add(typeof(global::Program));
-                        break;
-                }
-
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    typeof(global::Program),
+                    OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    OtherProject.GetType("Program")!,
+                    OtherProject.GetType("SpecularScanReport")!,
+                    Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute),
+                    typeof(global::Specular.Abstractions.SpecularHashAttribute),
+                    typeof(global::Specular.Abstractions.TypeInfoFilter),
+                    typeof(global::Specular.Abstractions.TypeKindFilter),
+                    typeof(global::Specular.Diagnostics.AssemblyScanReport),
+                    typeof(global::Specular.Diagnostics.AssemblyScanReportEntry),
+                    typeof(global::Specular.Diagnostics.ScanResults),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry),
+                    typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry),
+                    typeof(global::Specular.Diagnostics.TypeScanReport),
+                    typeof(global::Specular.Diagnostics.TypeScanReportEntry),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<>),
+                    typeof(global::Specular.KeyedServiceRegistrationBaseAttribute),
+                    typeof(global::Specular.RegistrationLifetimeAttribute),
+                    typeof(global::Specular.ServiceRegistrationAttribute),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<>),
+                    typeof(global::Specular.ServiceRegistrationBaseAttribute),
+                    typeof(global::Specular.SpecularProviderServiceCollectionExtensions),
+                    typeof(global::Specular.SpecularSupport),
+                    Specular.GetType("SpecularScanReport")!,
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
@@ -71,7 +121,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly")]
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "FxResources.System.Collections.Immutable.SR", "System.Collections.Immutable"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _OtherProject;
     private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));

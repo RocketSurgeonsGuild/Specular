@@ -3,6 +3,7 @@
         <PackageReference Include="Polyfill" PrivateAssets="all" />
         <PackageReference Include="Rocket.Surgery.AssemblyInfo" PrivateAssets="all" />
         <Compile Include="$(MSBuildThisFileDirectory)..\Specular.Analyzers\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\Specular.Analyzers\obj\**\*.cs" />
+        <Compile Include="$(MSBuildThisFileDirectory)..\Specular.Scanning\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\Specular.Scanning\obj\**\*.cs;$(MSBuildThisFileDirectory)..\Specular.Scanning\bin\**\*.cs" />
         <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))" />

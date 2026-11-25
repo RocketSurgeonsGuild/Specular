@@ -22,32 +22,25 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: wKWjmvTVoUad3a7CtkcMoA==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: wKWjmvTVoUad3a7CtkcMoA==
-                    case "Input0.cs":
-                        items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                        items.Add(typeof(global::TestAssembly.GenericServiceB));
-                        items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                        break;
-                }
-
-                break;
+                return
+                [
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
-using Specular.Analyzers.Descriptors;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
@@ -48,17 +47,23 @@ internal static class ReflectionCollection
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
         Item item,
-        IAssemblySymbol targetAssembly
+        IAssemblySymbol targetAssembly,
+        CancellationToken cancellationToken
     )
     {
         try
         {
             return SymbolEqualityComparer.Default.Equals(targetAssembly, compilation.Assembly)
                 ? resolvedSourceLocation()
-                : configuration.CacheSourceLocation(
+                : configuration.Cache.GetOrAddSource(
                     item.Location,
+                    item.Selection.Request,
                     targetAssembly,
-                    resolvedSourceLocation
+                    () =>
+                    {
+                        var reported = diagnostics.Count;
+                        return (resolvedSourceLocation(), diagnostics.Count == reported);
+                    }
                 );
         }
         catch (Exception e)
@@ -79,17 +84,14 @@ internal static class ReflectionCollection
         ResolvedSourceLocation? resolvedSourceLocation()
         {
             var pa = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
-            var reducedTypes = new TypeSymbolVisitor(compilation, item.AssemblyFilter, item.TypeFilter)
-                              .GetReferencedTypes(targetAssembly)
-                              .GetTypes();
-            if (reducedTypes.Count == 0) return null;
+            var reducedTypes = item.Selection.GetTypes(targetAssembly, configuration.Cache.Scans, cancellationToken);
+            if (reducedTypes.Length == 0) return null;
 
             var (localBlock, results) = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa);
             return new(
                 item.Location,
                 localBlock.NormalizeWhitespace().ToFullString().Replace("\r", ""),
                 pa.Select(z => z.MetadataName).ToImmutableHashSet(),
-                targetAssembly.GetCachedVersion(),
                 results,
                 [],
                 [],
@@ -103,7 +105,8 @@ internal static class ReflectionCollection
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
         IReadOnlyList<Item> items,
-        IAssemblySymbol targetAssembly
+        IAssemblySymbol targetAssembly,
+        CancellationToken cancellationToken
     )
     {
         if (items.Count == 0) return ImmutableList<ResolvedSourceLocation>.Empty;
@@ -111,7 +114,7 @@ internal static class ReflectionCollection
         var results = new List<ResolvedSourceLocation>();
         foreach (var item in items)
         {
-            if (ResolveSource(configuration, compilation, diagnostics, item, targetAssembly) is not { } location) continue;
+            if (ResolveSource(configuration, compilation, diagnostics, item, targetAssembly, cancellationToken) is not { } location) continue;
 
             results.Add(location);
         }
@@ -119,16 +122,17 @@ internal static class ReflectionCollection
         return results.ToImmutableList();
     }
 
-    public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter, CompiledTypeFilter TypeFilter);
+    public sealed record Item(SourceLocation Location, ScanSelection Selection);
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     internal static ImmutableList<Item> GetReflectionItems(
-        Compilation compilation,
+        ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
         IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
         CancellationToken cancellationToken
     )
     {
+        var compilation = environment.Compilation;
         var items = ImmutableList.CreateBuilder<Item>();
         foreach (var tuple in results)
         {
@@ -139,28 +143,24 @@ internal static class ReflectionCollection
                 var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
-                var assemblies = new List<IAssemblyDescriptor>();
-                var typeFilters = new List<ITypeFilterDescriptor>();
-                var classFilter = ClassFilter.All;
+                var assemblies = new AssemblySelectionBuilder();
+                var typeFilters = new TypeSelectionBuilder(environment);
                 var lifetime = 2;
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
                     semanticModel,
                     selector,
+                    environment,
                     assemblies,
                     typeFilters,
                     [],
                     ref lifetime,
-                    ref classFilter,
                     cancellationToken
                 );
 
                 var source = Helpers.CreateSourceLocation(SourceLocationKind.Reflection, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
-                var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList(), source);
-                var typeFilter = new CompiledTypeFilter(classFilter, typeFilters.ToImmutableList(), source);
-
-                var i = new Item(source, assemblyFilter, typeFilter);
+                var i = new Item(source, new(environment, assemblies.Build(), typeFilters.Build()));
                 items.Add(i);
             }
             catch (MustBeAnExpressionException e)

@@ -1,0 +1,7 @@
+﻿{
+  Kind: Assemblies,
+  Assemblies: {
+    AllAssemblies: true,
+    IncludeSystemAssemblies: false
+  }
+}

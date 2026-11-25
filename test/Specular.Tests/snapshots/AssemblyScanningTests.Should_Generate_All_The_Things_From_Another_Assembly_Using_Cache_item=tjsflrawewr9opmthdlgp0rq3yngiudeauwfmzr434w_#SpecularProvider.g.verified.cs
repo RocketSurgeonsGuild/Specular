@@ -21,79 +21,79 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: 4VaAjHpBsAH5j0EYKpAqQw==
             case 16:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(OtherProject.GetType("Program")!);
-                items.Add(OtherProject.GetType("SpecularScanReport")!);
-                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
-                items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
-                items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
-                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
-                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
-                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
-                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationBaseAttribute));
-                items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.ServiceRegistrationBaseAttribute));
-                items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-                items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(Specular.GetType("SpecularScanReport")!);
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    OtherProject.GetType("Program")!,
+                    OtherProject.GetType("SpecularScanReport")!,
+                    Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute),
+                    typeof(global::Specular.Abstractions.SpecularHashAttribute),
+                    typeof(global::Specular.Abstractions.TypeInfoFilter),
+                    typeof(global::Specular.Abstractions.TypeKindFilter),
+                    typeof(global::Specular.Diagnostics.AssemblyScanReport),
+                    typeof(global::Specular.Diagnostics.AssemblyScanReportEntry),
+                    typeof(global::Specular.Diagnostics.ScanResults),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry),
+                    typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry),
+                    typeof(global::Specular.Diagnostics.TypeScanReport),
+                    typeof(global::Specular.Diagnostics.TypeScanReportEntry),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<>),
+                    typeof(global::Specular.KeyedServiceRegistrationBaseAttribute),
+                    typeof(global::Specular.RegistrationLifetimeAttribute),
+                    typeof(global::Specular.ServiceRegistrationAttribute),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<>),
+                    typeof(global::Specular.ServiceRegistrationBaseAttribute),
+                    typeof(global::Specular.SpecularProviderServiceCollectionExtensions),
+                    typeof(global::Specular.SpecularSupport),
+                    Specular.GetType("SpecularScanReport")!,
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

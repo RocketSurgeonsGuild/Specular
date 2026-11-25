@@ -1,0 +1,27 @@
+﻿{
+  Assemblies: [
+    {
+      Name: Microsoft.Extensions.DependencyInjection.Abstractions,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: Specular,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: TestAssembly,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: TestProject,
+      HasInaccessibleMatches: false
+    }
+  ],
+  UnresolvedTypes: [
+    {
+      AssemblyName: ,
+      MetadataName: Missing.IService,
+      UnboundGeneric: false
+    }
+  ]
+}

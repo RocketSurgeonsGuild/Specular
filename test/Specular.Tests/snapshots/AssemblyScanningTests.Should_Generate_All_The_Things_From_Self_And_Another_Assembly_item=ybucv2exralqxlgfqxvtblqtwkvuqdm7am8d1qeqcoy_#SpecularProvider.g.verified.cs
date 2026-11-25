@@ -22,37 +22,30 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: l4cim5mnIPk4MmmE29qzUw==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: l4cim5mnIPk4MmmE29qzUw==
-                    case "Input0.cs":
-                        items.Add(typeof(global::TestAssembly.IGenericService<>));
-                        items.Add(typeof(global::TestAssembly.IKeyedService));
-                        items.Add(typeof(global::TestAssembly.IOther));
-                        items.Add(typeof(global::TestAssembly.IRequest<>));
-                        items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                        items.Add(typeof(global::TestAssembly.IService));
-                        items.Add(typeof(global::TestAssembly.IServiceB));
-                        items.Add(typeof(global::TestAssembly.IValidator));
-                        items.Add(typeof(global::TestAssembly.IValidator<>));
-                        break;
-                }
-
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>)
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

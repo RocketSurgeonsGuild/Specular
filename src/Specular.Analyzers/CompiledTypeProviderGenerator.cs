@@ -1,19 +1,14 @@
 using System.Collections.Immutable;
 using System.Text;
-using System.Text.Json;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
-
-public static class Constants
-{
-    public const string SpecularProviderCacheFileName = "SpecularProvider.ctpjson";
-}
 
 /// <summary>
 ///     Source generate used for scanning assemblies for registrations
@@ -34,45 +29,31 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                                 .Combine(reflectionSyntaxProvider)
                                 .Combine(serviceDescriptorSyntaxProvider)
                                 .Select((z, _) => (assemblies: z.Left.Left, reflection: z.Left.Right, serviceDescriptors: z.Right));
-        var generatedJsonProvider = context
-                                   .AdditionalTextsProvider.Where(z => Path.GetFileName(z.Path).Equals(Constants.SpecularProviderCacheFileName, StringComparison.OrdinalIgnoreCase))
-                                   .Select((text, _) =>
-                                           {
-                                               var source = text.GetText(_)?.ToString();
-                                               return source is not { Length: > 100 }
-                                                   ? new(
-                                                       ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
-                                                       ImmutableHashSet<string>.Empty,
-                                                       ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
-                                                   )
-                                                   : JsonSerializer.Deserialize(
-                                                       source,
-                                                       JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData
-                                                   );
-                                           }
-                                    )
-                                   .Collect()
-                                   .Select((z, _) => z.SingleOrDefault()
-                                            ?? new(
-                                                   ImmutableDictionary<string, CompiledAssemblyProviderData>.Empty,
-                                                   ImmutableHashSet<string>.Empty,
-                                                   ImmutableDictionary<string, GeneratedLocationAssemblyResolvedSourceCollection>.Empty
-                                               )
-                                    );
+        // The build cache from the previous build (obj/ctp/SpecularProvider.ctpjson), parsed only when its text changes.
+        var cacheFileProvider = context
+                               .AdditionalTextsProvider.Where(SpecularCache.IsCacheFile)
+                               .Select((text, cancellationToken) => text.GetText(cancellationToken)?.ToString())
+                               .Collect()
+                               .Select((texts, _) => texts.FirstOrDefault())
+                               .Select((text, _) => SpecularCache.Parse(text));
 
+        // Specular calls Specular.Scanning directly from this one implementation output rather than through context.Scan: its requests
+        // come from syntax across call sites and from referenced assemblies' [AssemblyMetadata], both only known with the compilation in
+        // hand; what it generates needs the matched symbols, not just their names; and its own cache entries (the requests above and
+        // each call site's result) must go into the same file as the scan results, which only one ScanCache per run can write.
         context.RegisterImplementationSourceOutput(
             context
                .CompilationProvider
                .Combine(context.AnalyzerConfigOptionsProvider)
                .Combine(collectionProvider)
-               .Combine(generatedJsonProvider)
+               .Combine(cacheFileProvider)
                .Select((tuple, _) => (
                            compilation: tuple.Left.Left.Left,
                            options: tuple.Left.Left.Right,
                            tuple.Left.Right.assemblies,
                            tuple.Left.Right.reflection,
                            tuple.Left.Right.serviceDescriptors,
-                           additionalFiles: tuple.Right
+                           cacheFile: tuple.Right
                        )
                 ),
             static (context, request) =>
@@ -89,15 +70,19 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                 var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
                 var diagnostics = new HashSet<Diagnostic>();
 
-                var assemblyRequests = AssemblyCollection.GetAssemblyItems(request.compilation, diagnostics, request.assemblies, context.CancellationToken);
+                var environment = new ScanEnvironment(request.compilation);
+                var isAot = StatementGeneration.IsAotCompilation(request.options);
+                var cache = new SpecularCache(request.compilation, request.cacheFile, isAot);
+
+                var assemblyRequests = AssemblyCollection.GetAssemblyItems(environment, diagnostics, request.assemblies, context.CancellationToken);
                 var reflectionRequests = ReflectionCollection.GetReflectionItems(
-                    request.compilation,
+                    environment,
                     diagnostics,
                     request.reflection,
                     context.CancellationToken
                 );
                 var serviceDescriptorRequests = ServiceDescriptorCollection.GetServiceDescriptorItems(
-                    request.compilation,
+                    environment,
                     diagnostics,
                     request.serviceDescriptors,
                     context.CancellationToken
@@ -122,15 +107,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                                      .GroupBy(z => z.MetadataName, z => z, (s, symbols) => (Key: s, Symbol: symbols.First()))
                                      .ToImmutableDictionary(z => z.Key, z => z.Symbol);
 
-                var resultingData = new ResultingAssemblyProviderData();
-
-                var config = new AssemblyProviderConfiguration(
-                    context,
-                    request.compilation,
-                    request.options,
-                    request.additionalFiles,
-                    resultingData
-                );
+                var config = new AssemblyProviderConfiguration(context, environment, isAot, cache);
 
                 (
                     var internalAssemblyRequests,
@@ -142,7 +119,8 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                     ref assemblySymbols,
                     reflectionRequests,
                     serviceDescriptorRequests,
-                    diagnostics
+                    diagnostics,
+                    context.CancellationToken
                 );
 
                 assemblyRequests = assemblyRequests.AddRange(internalAssemblyRequests);
@@ -161,14 +139,16 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                     request.compilation,
                     diagnostics,
                     reflectionRequests,
-                    request.compilation.Assembly
+                    request.compilation.Assembly,
+                    context.CancellationToken
                 );
                 var serviceDescriptorSources = ServiceDescriptorCollection.ResolveSources(
                     config,
                     request.compilation,
                     diagnostics,
                     serviceDescriptorRequests,
-                    request.compilation.Assembly
+                    request.compilation.Assembly,
+                    context.CancellationToken
                 );
 
                 reflectionSources = reflectionSources.AddRange(internalReflectionSources);
@@ -241,30 +221,11 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                 }
 
                 context.AddSource(
-                    Path.ChangeExtension(Constants.SpecularProviderCacheFileName, ".g.cs"),
-                    cu.NormalizeWhitespace().SyntaxTree.GetRoot().GetText(Encoding.UTF8)
+                    "SpecularProvider.g.cs",
+                    new CollectionReturnLayout().Visit(cu.NormalizeWhitespace()).GetText(Encoding.UTF8)
                 );
 
-                if (GetCacheDirectory(request.options) is not { } cacheDirectory) return;
-
-#pragma warning disable RS1035
-
-                var fileInfo = new FileInfo(Path.Combine(cacheDirectory, Constants.SpecularProviderCacheFileName));
-                var writer = fileInfo.Open(fileInfo.Exists ? FileMode.Truncate : FileMode.CreateNew);
-                try
-                {
-                    using var streamWriter = new StreamWriter(writer);
-                    var generatedData = resultingData.ToGeneratedAssemblyProviderData();
-                    streamWriter.Write(JsonSerializer.Serialize(generatedData, JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData));
-                    streamWriter.Flush();
-                    streamWriter.Close();
-                }
-                finally
-                {
-                    writer.Dispose();
-                }
-
-#pragma warning restore RS1035
+                cache.Save(request.options.GlobalOptions);
 
                 return;
 
@@ -273,22 +234,6 @@ public class SpecularProviderGenerator : IIncrementalGenerator
             }
         );
     }
-#pragma warning disable RS1035
-    private static string? GetCacheDirectory(AnalyzerConfigOptionsProvider options)
-    {
-        var directory = options.GlobalOptions.TryGetValue("build_property.IntermediateOutputPath", out var intermediateOutputPath)
-            ? intermediateOutputPath
-            : null;
-        if (directory is null) return null;
-
-        if (!Path.IsPathRooted(directory) && options.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDirectory)) directory = Path.Combine(projectDirectory, directory);
-
-        var cacheDirectory = Path.Combine(directory, "ctp");
-        if (!Directory.Exists(cacheDirectory)) _ = Directory.CreateDirectory(cacheDirectory);
-
-        return cacheDirectory;
-    }
-#pragma warning restore RS1035
     private sealed class TypeInferenceRewriter : CSharpSyntaxRewriter
     {
         private int indentLevel = 1;

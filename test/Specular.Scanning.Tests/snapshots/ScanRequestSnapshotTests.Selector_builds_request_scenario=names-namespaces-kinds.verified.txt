@@ -1,0 +1,53 @@
+﻿{
+  Kind: Types,
+  Assemblies: {
+    AllAssemblies: false,
+    IncludeSystemAssemblies: false,
+    Assemblies: [
+      App
+    ]
+  },
+  Types: {
+    PublicOnly: false,
+    Namespaces: [
+      {
+        Filter: In,
+        Namespaces: [
+          App.Handlers
+        ]
+      },
+      {
+        Filter: NotIn,
+        Namespaces: [
+          App.Handlers.Deep
+        ]
+      }
+    ],
+    Names: [
+      {
+        Include: true,
+        Filter: EndsWith,
+        Names: [
+          Handler
+        ]
+      }
+    ],
+    TypeKinds: [
+      {
+        Include: true,
+        TypeKinds: [
+          Class
+        ]
+      }
+    ],
+    TypeInfos: [
+      {
+        Include: false,
+        TypeInfos: [
+          Abstract,
+          Static
+        ]
+      }
+    ]
+  }
+}

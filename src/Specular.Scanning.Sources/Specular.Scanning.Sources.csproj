@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- A source-only package: the library's files compile into the consuming generator, so there is no assembly to ship. -->
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <!-- No assembly, so no symbols: an empty .snupkg fails pack (NU5017). -->
+        <IncludeSymbols>false</IncludeSymbols>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+        <PackageTags>$(PackageTags);roslyn;incremental-generator;source-generator-library;source-only</PackageTags>
+        <PackageDescription>Source-only build of Specular.Scanning: compiles the scanning library into your source generator as internal types, so no separate assembly is loaded beside it.</PackageDescription>
+    </PropertyGroup>
+    <ItemGroup>
+        <!--
+            The sources use Polyfill's back-ports (ArgumentNullException.ThrowIfNull, MaybeNullWhen, ...) on netstandard2.0, so the
+            package depends on it: Polyfill is itself source-only (contentFiles), and a package dependency without PrivateAssets flows
+            those files into the generator that references this package, beside the library's own. Here it only serves the repo-wide
+            global usings; nothing of this project is compiled into a package.
+        -->
+        <PackageReference Include="Polyfill" PrivateAssets="none" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content
+            Include="../Specular.Scanning/**/*.cs"
+            Exclude="../Specular.Scanning/obj/**;../Specular.Scanning/bin/**"
+            Pack="true"
+            PackagePath="contentFiles/cs/any/Specular.Scanning/%(RecursiveDir)%(Filename)%(Extension)"
+            BuildAction="Compile"
+            PackageCopyToOutput="false"
+            Visible="false"
+        />
+        <None Include="build/Specular.Scanning.Sources.props" Pack="true" PackagePath="build/;buildTransitive/" />
+        <!-- The pack helper, shared with the Specular.Scanning package: gives the generator's package the scan cache wiring. -->
+        <None Include="build/Specular.Scanning.Sources.targets" Pack="true" PackagePath="build/" />
+        <None
+            Include="../Specular.Scanning/build/Specular.Scanning.Pack.targets;../Specular.Scanning/build/Specular.Scanning.Cache.targets"
+            Pack="true"
+            PackagePath="build/"
+            Visible="false"
+        />
+    </ItemGroup>
+</Project>

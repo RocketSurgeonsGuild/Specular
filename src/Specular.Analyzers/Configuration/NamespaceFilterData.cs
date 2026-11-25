@@ -1,10 +1,10 @@
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using Specular.Analyzers.Descriptors;
+using Specular.Scanning;
 
 namespace Specular.Analyzers.Configuration;
 
-public record NamespaceFilterData
+internal sealed record NamespaceFilterData
 (
     [property: JsonPropertyName("f")]
     NamespaceFilter Filter,

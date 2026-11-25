@@ -1,0 +1,8 @@
+<Project>
+    <!--
+        Imported by NuGet into a project that references the Specular.Scanning.Sources package: the generator's own project. The library
+        is compiled into the generator, so the pack helper only adds the scan cache wiring to the generator's package; see
+        Specular.Scanning.Pack.targets for what it does and the properties that control it.
+    -->
+    <Import Project="$(MSBuildThisFileDirectory)Specular.Scanning.Pack.targets" Condition="'$(_SpecularScanningPackImported)' != 'true'" />
+</Project>

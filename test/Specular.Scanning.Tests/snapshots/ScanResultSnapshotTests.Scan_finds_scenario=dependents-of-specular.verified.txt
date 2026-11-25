@@ -1,0 +1,12 @@
+﻿{
+  Assemblies: [
+    {
+      Name: TestAssembly,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: TestProject,
+      HasInaccessibleMatches: false
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+﻿{
+  Kind: Types,
+  Assemblies: {
+    AllAssemblies: true,
+    IncludeSystemAssemblies: false
+  },
+  Types: {
+    PublicOnly: false,
+    AssignableTo: [
+      {
+        Include: true,
+        Types: [
+          {
+            AssemblyName: Library,
+            MetadataName: Library.Contracts.IHandler`1,
+            UnboundGeneric: false,
+            TypeArguments: [
+              {
+                AssemblyName: System.Private.CoreLib,
+                MetadataName: System.Int32,
+                UnboundGeneric: false
+              }
+            ]
+          },
+          {
+            AssemblyName: Library,
+            MetadataName: Library.Contracts.IHandler`1,
+            UnboundGeneric: false,
+            TypeArguments: [
+              {
+                AssemblyName: System.Private.CoreLib,
+                MetadataName: System.Int32,
+                UnboundGeneric: false,
+                ArrayRanks: [
+                  1
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        Include: false,
+        Types: [
+          {
+            AssemblyName: Library,
+            MetadataName: Library.Contracts.IHandler`1,
+            UnboundGeneric: true
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -21,33 +21,33 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: cHMQikM7PE1XjxkGcj0esw==
             case 16:
-                items.Add(mscorlib);
-                items.Add(netstandard);
-                items.Add(OtherProject);
-                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                items.Add(System);
-                items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(SystemCore);
-                items.Add(SystemPrivateCoreLib);
-                items.Add(SystemRuntime);
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    mscorlib,
+                    netstandard,
+                    OtherProject,
+                    typeof(global::Specular.ISpecularProvider).Assembly,
+                    System,
+                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
+                    typeof(global::System.IServiceProvider).Assembly,
+                    SystemCore,
+                    SystemPrivateCoreLib,
+                    SystemRuntime,
+                    typeof(global::TestAssembly.IService).Assembly,
+                    TestProject
+                ];
         }
 
-        return items;
+        return [];
     }
 
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

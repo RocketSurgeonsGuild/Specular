@@ -23,12 +23,13 @@ internal static class AssemblyCollection
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     public static ImmutableList<Item> GetAssemblyItems(
-        Compilation compilation,
+        ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
         IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
         CancellationToken cancellationToken
     )
     {
+        var compilation = environment.Compilation;
         var items = ImmutableList.CreateBuilder<Item>();
         foreach (var tuple in results)
         {
@@ -42,25 +43,24 @@ internal static class AssemblyCollection
                 // syntactically-similar call would produce an empty (match-everything) filter.
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
-                var assemblies = new List<IAssemblyDescriptor>();
-                var typeFilters = new List<ITypeFilterDescriptor>();
+                var assemblies = new AssemblySelectionBuilder();
+                var typeFilters = new TypeSelectionBuilder(environment);
                 var serviceDescriptors = new List<IServiceTypeDescriptor>();
                 var lifetime = 2;
-                var classFilter = ClassFilter.All;
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
                     semanticModel,
                     selector,
+                    environment,
                     assemblies,
                     typeFilters,
                     serviceDescriptors,
                     ref lifetime,
-                    ref classFilter,
                     cancellationToken
                 );
 
-                var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList());
+                var assemblyFilter = new ScanSelection(environment, assemblies.Build(), null);
 
                 var source = Helpers.CreateSourceLocation(SourceLocationKind.Assembly, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
                 // disallow list?
@@ -132,7 +132,7 @@ internal static class AssemblyCollection
                 var filterAssemblies = new List<IAssemblySymbol>();
                 foreach (var assembly in assemblySymbols.Values)
                 {
-                    if (item.AssemblyFilter.IsMatch(compilation, assembly))
+                    if (item.Selection.IsMatch(assembly))
                     {
                         filterAssemblies.Add(assembly);
                     }
@@ -149,7 +149,6 @@ internal static class AssemblyCollection
                     item.Location,
                     descriptors.NormalizeWhitespace().ToFullString().Replace("\r", ""),
                     privateAssemblyNames.ToImmutable(),
-                    "",
                     [],
                     reportEntries,
                     [],
@@ -175,7 +174,7 @@ internal static class AssemblyCollection
         //        .WithBody(Block(SwitchGenerator.GenerateSwitchStatement(results)));
     }
 
-    public sealed record Item(SourceLocation Location, CompiledAssemblyFilter AssemblyFilter);
+    public sealed record Item(SourceLocation Location, ScanSelection Selection);
 
     private sealed record AssemblyScanGeneration(BlockSyntax Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
     private static AssemblyScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)

@@ -71,436 +71,488 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: 8IGLe4J/MYHkM0PrcVVuwg==
             case 16:
-                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly);
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    typeof(global::Specular.ISpecularProvider).Assembly,
+                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
+                    typeof(global::System.IServiceProvider).Assembly,
+                    typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly,
+                    typeof(global::TestAssembly.IService).Assembly,
+                    TestProject
+                ];
             // FilePath: Input0.cs Expression: cHMQikM7PE1XjxkGcj0esw==
             case 17:
-                items.Add(mscorlib);
-                items.Add(netstandard);
-                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                items.Add(System);
-                items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(SystemCore);
-                items.Add(SystemPrivateCoreLib);
-                items.Add(SystemRuntime);
-                items.Add(typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly);
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    mscorlib,
+                    netstandard,
+                    typeof(global::Specular.ISpecularProvider).Assembly,
+                    System,
+                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
+                    typeof(global::System.IServiceProvider).Assembly,
+                    SystemCore,
+                    SystemPrivateCoreLib,
+                    SystemRuntime,
+                    typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly,
+                    typeof(global::TestAssembly.IService).Assembly,
+                    TestProject
+                ];
             // FilePath: Input0.cs Expression: Z9rFHKTvVtL4pjKVS65ieA==
             case 18:
-                items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly);
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
+                    typeof(global::System.IServiceProvider).Assembly,
+                    typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly,
+                    typeof(global::TestAssembly.IService).Assembly,
+                    TestProject
+                ];
             // FilePath: Input0.cs Expression: EroujZtERsWBDGh52iQ5LQ==
             case 19:
-                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
-                items.Add(typeof(global::System.IServiceProvider).Assembly);
-                items.Add(typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly);
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    typeof(global::Specular.ISpecularProvider).Assembly,
+                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
+                    typeof(global::System.IServiceProvider).Assembly,
+                    typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly,
+                    TestProject
+                ];
             // FilePath: Input0.cs Expression: /wvNd0rNqfzrIH57jso7mA==
             case 20:
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    TestProject
+                ];
             // FilePath: Input0.cs Expression: ApaVlALM8kzVxm/WHvukVQ==
             case 21:
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IService).Assembly,
+                    TestProject
+                ];
             // FilePath: Input0.cs Expression: y1nZVGCnh7EvCDUbXmZVJg==
             case 22:
-                items.Add(TestProject);
-                break;
+                return
+                [
+                    TestProject
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: 4VaAjHpBsAH5j0EYKpAqQw==
             case 43:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(typeof(global::Program));
-                items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute));
-                items.Add(typeof(global::Specular.Abstractions.SpecularHashAttribute));
-                items.Add(typeof(global::Specular.Abstractions.TypeInfoFilter));
-                items.Add(typeof(global::Specular.Abstractions.TypeKindFilter));
-                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReport));
-                items.Add(typeof(global::Specular.Diagnostics.AssemblyScanReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.ScanResults));
-                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport));
-                items.Add(typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry));
-                items.Add(typeof(global::Specular.Diagnostics.TypeScanReport));
-                items.Add(typeof(global::Specular.Diagnostics.TypeScanReportEntry));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<, >));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.KeyedServiceRegistrationBaseAttribute));
-                items.Add(typeof(global::Specular.RegistrationLifetimeAttribute));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<,, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<, >));
-                items.Add(typeof(global::Specular.ServiceRegistrationAttribute<>));
-                items.Add(typeof(global::Specular.ServiceRegistrationBaseAttribute));
-                items.Add(typeof(global::Specular.SpecularProviderServiceCollectionExtensions));
-                items.Add(typeof(global::Specular.SpecularSupport));
-                items.Add(Specular.GetType("SpecularScanReport")!);
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    typeof(global::Program),
+                    Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    typeof(global::Specular.Abstractions.ExcludeFromSpecularAttribute),
+                    typeof(global::Specular.Abstractions.SpecularHashAttribute),
+                    typeof(global::Specular.Abstractions.TypeInfoFilter),
+                    typeof(global::Specular.Abstractions.TypeKindFilter),
+                    typeof(global::Specular.Diagnostics.AssemblyScanReport),
+                    typeof(global::Specular.Diagnostics.AssemblyScanReportEntry),
+                    typeof(global::Specular.Diagnostics.ScanResults),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorScanReport),
+                    typeof(global::Specular.Diagnostics.ServiceDescriptorScanReportEntry),
+                    typeof(global::Specular.Diagnostics.TypeScanAssemblyReportEntry),
+                    typeof(global::Specular.Diagnostics.TypeScanReport),
+                    typeof(global::Specular.Diagnostics.TypeScanReportEntry),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<,, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<, >),
+                    typeof(global::Specular.KeyedServiceRegistrationAttribute<>),
+                    typeof(global::Specular.KeyedServiceRegistrationBaseAttribute),
+                    typeof(global::Specular.RegistrationLifetimeAttribute),
+                    typeof(global::Specular.ServiceRegistrationAttribute),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<,, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<, >),
+                    typeof(global::Specular.ServiceRegistrationAttribute<>),
+                    typeof(global::Specular.ServiceRegistrationBaseAttribute),
+                    typeof(global::Specular.SpecularProviderServiceCollectionExtensions),
+                    typeof(global::Specular.SpecularSupport),
+                    Specular.GetType("SpecularScanReport")!,
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
             case 83:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!
+                ];
             // FilePath: Input0.cs Expression: fsFGHt8fY/Soe/yfBavpPA==
             case 103:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(typeof(global::Program));
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    typeof(global::Program),
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: /W5+1QbQLNSoqBDFr/pvdA==
             case 123:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: 5gXgnlFcQRYQSxrJGJuZeA==
             case 133:
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: s3+YB+Nc72MZzZXRrB9ZBQ==
             case 148:
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: yj9cWza0VGt3OBTGaxhaYg==
             case 159:
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: qOfjb0SDPwHcKNlpG9ytrQ==
             case 170:
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: LS+xdTOmvs+8M+1OjvEf0g==
             case 199:
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: dODyg69BE0Nso/u2dEJZBw==
             case 210:
-                items.Add(typeof(global::Program));
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::Program),
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    TestAssembly.GetType("TestAssembly.Nested+Validator")!,
+                    TestAssembly.GetType("TestAssembly.Request")!,
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!,
+                    TestAssembly.GetType("TestAssembly.Response")!,
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
             // FilePath: Input0.cs Expression: 2MpNjixlIXLOLz3efZPnFg==
             case 181:
-                items.Add(typeof(global::Specular.SpecularSupport));
-                break;
+                return
+                [
+                    typeof(global::Specular.SpecularSupport)
+                ];
             // FilePath: Input0.cs Expression: EDKAc3dy9Cl22PwVmcqWKw==
             case 190:
-                items.Add(typeof(global::Specular.SpecularSupport));
-                break;
+                return
+                [
+                    typeof(global::Specular.SpecularSupport)
+                ];
             // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
             case 93:
-                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                items.Add(SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!);
-                items.Add(typeof(global::TestAssembly.Nested));
-                break;
+                return
+                [
+                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
+                    SystemRuntimeSerializationFormatters.GetType("FxResources.System.Runtime.Serialization.Formatters.SR")!,
+                    typeof(global::TestAssembly.Nested)
+                ];
             // FilePath: Input0.cs Expression: cizxMQ3lnxFjX801wlpqbw==
             case 23:
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>)
+                ];
             // FilePath: Input0.cs Expression: l4cim5mnIPk4MmmE29qzUw==
             case 33:
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>)
+                ];
             // FilePath: Input0.cs Expression: 9IUdfQbcsMAYS17mByAMdQ==
             case 53:
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>)
+                ];
             // FilePath: Input0.cs Expression: 8EyoKKcMOOrD7HWlzslgwg==
             case 63:
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(typeof(global::TestAssembly.Service));
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    typeof(global::TestAssembly.Service)
+                ];
             // FilePath: Input0.cs Expression: /Q4AySzV41Tdwlkpfg/GKA==
             case 113:
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IValidator<>)
+                ];
             // FilePath: Input0.cs Expression: wKWjmvTVoUad3a7CtkcMoA==
             case 144:
-                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                break;
+                return
+                [
+                    TestAssembly.GetType("TestAssembly.GenericService")!,
+                    typeof(global::TestAssembly.GenericServiceB),
+                    TestAssembly.GetType("TestAssembly.RequestHandler")!
+                ];
             // FilePath: Input0.cs Expression: btOVlu+Naw13LAV9tKR6WA==
             case 251:
-                items.Add(typeof(global::TestAssembly.GenericServiceB));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.KeyedService));
-                items.Add(typeof(global::TestAssembly.Nested));
-                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(typeof(global::TestAssembly.Service));
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.GenericServiceB),
+                    typeof(global::TestAssembly.IGenericService<>),
+                    typeof(global::TestAssembly.IKeyedService),
+                    typeof(global::TestAssembly.IOther),
+                    typeof(global::TestAssembly.IRequest<>),
+                    typeof(global::TestAssembly.IRequestHandler<, >),
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.IServiceB),
+                    typeof(global::TestAssembly.IValidator),
+                    typeof(global::TestAssembly.IValidator<>),
+                    typeof(global::TestAssembly.KeyedService),
+                    typeof(global::TestAssembly.Nested),
+                    typeof(global::TestAssembly.Nested.GenericServiceA),
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    typeof(global::TestAssembly.Service)
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

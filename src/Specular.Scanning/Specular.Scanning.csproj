@@ -1,0 +1,97 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <DefineConstants>$(DefineConstants);ROSLYN_CURRENT</DefineConstants>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!--
+            Specular.Scanning.Sources compiles these files inside other generators with their own C# version, so no preview features:
+            C# 14 is what Roslyn 5.0, the oldest supported compiler, ships. Set here too (not only in the .supports builds) so the
+            formatter and IDE don't offer preview-only rewrites.
+        -->
+        <LangVersion>14</LangVersion>
+        <!-- NU5100: the roslyn/ variants are deliberately outside lib/; the pack helper bundles them, nothing references them. -->
+        <NoWarn>$(NoWarn);MSB3277;NU5100</NoWarn>
+        <!--
+            Generator authors compile against lib/netstandard2.0, packed from the Roslyn 5.0 build so a generator on any supported
+            Roslyn can reference it. This build's own output (Roslyn 5.12) ships beside the older ones under roslyn/, where the pack
+            helper picks the variant to bundle into the consumer's analyzers folder. Nothing goes under analyzers/: the package
+            reference would otherwise load this library as an analyzer into the generator author's own project.
+        -->
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <_ScanningSupportsLocation>../Specular.Scanning.supports/bin/</_ScanningSupportsLocation>
+        <PackageTags>$(PackageTags);roslyn;incremental-generator;source-generator-library</PackageTags>
+        <PackageDescription>Compile-time assembly and type scanning for Roslyn source generators: a symbol-based mirror of Specular's selectors, with results cached across builds.</PackageDescription>
+    </PropertyGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Specular.Scanning.Tests" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+        <PackageReference Include="Polyfill" PrivateAssets="all" />
+        <PackageReference Include="System.Collections.Immutable" />
+        <PackageReference Include="System.Text.Json" PrivateAssets="all" GeneratePathProperty="true" />
+        <!-- Built only so their outputs can be packed below; see Specular.Analyzers.csproj for why Private="false". -->
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.0.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.3.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.6.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.roslyn5.9.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+        <!-- Not packed: a compile check of the Specular.Scanning.Sources build. -->
+        <ProjectReference Include="../Specular.Scanning.supports/Specular.Scanning.sources.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" Private="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+        <!-- Not conditioned on the file existing: evaluation runs before the roslyn5.0 build, so a clean pack would leave the docs out. -->
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.xml" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
+        <None Include="bin/$(Configuration)/netstandard2.0/$(AssemblyName).dll" Pack="true" PackagePath="roslyn/roslyn5.12" Visible="false" />
+        <None Include="$(PkgSystem_Text_Json)/lib/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.12" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.9/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.9" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.9/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.9" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.6/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.6" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.6/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.6" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.3/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.3" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.3/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.3" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll" Pack="true" PackagePath="roslyn/roslyn5.0" Visible="false" />
+        <None Include="$(_ScanningSupportsLocation)roslyn5.0/$(Configuration)/netstandard2.0/System.Text.Json.dll" Pack="true" PackagePath="roslyn/roslyn5.0" Visible="false" />
+        <!--
+            NuGet imports build/Specular.Scanning.targets into the generator author's project: the pack helper that bundles the matching
+            roslyn/ build beside their generator and gives their package Specular.Scanning.Cache.targets for the projects using it.
+        -->
+        <None Include="build/*.targets" Pack="true" PackagePath="build/" />
+    </ItemGroup>
+
+    <!--
+        The package's dependencies are those of the build packed as lib/netstandard2.0, the Roslyn 5.0 one (System.Collections.Immutable
+        and System.Text.Json 9.0.21), not this build's (10.0.x, which Microsoft.CodeAnalysis 5.12 needs). Generator authors compile
+        against that build, so the dependencies give them a System.Text.Json at least as new as the one it references (no MSB3277 with
+        the typed ScanCache store), and no newer than the one bundled beside the Roslyn 5.0 build: a generator compiled against a newer
+        System.Text.Json or System.Collections.Immutable than the compiler or its bundle provides fails to load on .NET Framework
+        compilers. NuGet reads the dependencies from the restore output of the project being packed (project.assets.json in
+        RestoreOutputPath), so pack reads the roslyn5.0 project's; restoring this project restores that one too.
+    -->
+    <Target Name="_ScanningPackLibraryDependencies" AfterTargets="_GetAbsoluteOutputPathsForPack">
+        <PropertyGroup>
+            <RestoreOutputAbsolutePath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../Specular.Scanning.supports/obj/roslyn5.0'))</RestoreOutputAbsolutePath>
+        </PropertyGroup>
+        <Error
+            Condition="!Exists('$(RestoreOutputAbsolutePath)project.assets.json')"
+            Text="$(RestoreOutputAbsolutePath)project.assets.json is missing: restore Specular.Scanning before packing it, so the package declares the dependencies of its lib/netstandard2.0 build."
+        />
+    </Target>
+    <!--
+        RestoreOutputAbsolutePath is NuGet's internal property. If NuGet stops reading it, pack silently falls back to this project's
+        own dependencies, which have no System.Text.Json (it's PrivateAssets="all" here), so its absence in the nuspec shows the
+        redirect above stopped working.
+    -->
+    <Target Name="_ScanningVerifyPackedDependencies" AfterTargets="GenerateNuspec">
+        <XmlPeek
+            XmlInputPath="$(MSBuildProjectDirectory)/$(NuspecOutputPath)$(PackageId).$(PackageVersion).nuspec"
+            Query="//*[local-name()='dependency' and @id='System.Text.Json']/@version"
+        >
+            <Output TaskParameter="Result" PropertyName="_ScanningPackedJsonVersion" />
+        </XmlPeek>
+        <Error
+            Condition="'$(_ScanningPackedJsonVersion)' == ''"
+            Text="The Specular.Scanning package declares no System.Text.Json dependency: the redirect in _ScanningPackLibraryDependencies no longer takes effect, so the package would carry this project's dependencies instead of its lib/netstandard2.0 build's."
+        />
+    </Target>
+</Project>

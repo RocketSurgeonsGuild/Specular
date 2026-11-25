@@ -1,0 +1,10 @@
+﻿{
+  Kind: Assemblies,
+  Assemblies: {
+    AllAssemblies: true,
+    IncludeSystemAssemblies: true,
+    NotAssemblies: [
+      Library
+    ]
+  }
+}

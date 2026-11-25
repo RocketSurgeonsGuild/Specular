@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using DiffEngine;
 using EmptyFiles;
@@ -6,8 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Rocket.Surgery.Extensions.Testing.SourceGenerators;
 using Specular.Analyzers;
-using Specular.Analyzers.Configuration;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Specular.Tests;
 
@@ -16,7 +15,7 @@ internal static partial class ModuleInitializer
     [ModuleInitializer]
     public static void Init()
     {
-        FileExtensions.AddTextExtension(Path.GetExtension(Constants.SpecularProviderCacheFileName));
+        FileExtensions.AddTextExtension(Path.GetExtension(VerifyExtensions.CacheFileName));
         TempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         VerifierSettings.ScrubReplace(TempDirectory, "{TempDirectory}");
         VerifierSettings.ScrubReplace(TempDirectory.Replace("\\", "/"), "{TempDirectory}");
@@ -27,9 +26,7 @@ internal static partial class ModuleInitializer
         ScrubSolutionAndProjectDirectories();
 
         VerifierSettings.ScrubInlineGuids();
-        VerifierSettings.ScrubMember<ResolvedSourceLocation>(z => z.CacheVersion);
         VerifierSettings.IgnoreMember<SourceLocation>(z => z.FilePath);
-        VerifierSettings.ScrubMember<CompiledAssemblyProviderData>(z => z.CacheVersion);
 
         VerifierSettings.AddExtraSettings(settings => settings.Converters.Add(new ServiceDescriptorConverter()));
 
@@ -63,7 +60,6 @@ internal static partial class ModuleInitializer
                 ? s[..( s.IndexOf('"') + 1 )] + "{SpecularProvider}" + s[s.LastIndexOf('"')..]
                 : s
         );
-        VerifierSettings.IgnoreMember<GeneratedLocationAssemblyResolvedSourceCollection>(z => z.SourceLocation);
         VerifierSettings.AddScrubber(
             (builder, counter) =>
             {
@@ -217,17 +213,6 @@ internal static partial class ModuleInitializer
             targets.AddRange(item.Value.SyntaxTrees.Select(Selector));
         }
 
-        var generatedCache = Directory
-                            .EnumerateFiles(result.TempDirectory, Constants.SpecularProviderCacheFileName, SearchOption.AllDirectories)
-                            .Select(
-                                 z => JsonSerializer.Deserialize(
-                                     new FileInfo(z).OpenRead(),
-                                     JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData
-                                 )!
-                             )
-                            .SingleOrDefault()
-         ?? new([], [], []);
-
         var generatorDiagnostics = target
                                   .Results
                                   .ToDictionary(
@@ -237,12 +222,7 @@ internal static partial class ModuleInitializer
                                        )
                                    );
 
-        var partialsCached = generatedCache
-                            .Partials
-                            .OrderBy(z => z.Key)
-                            .ToDictionary();
-
-        var data = new Dictionary<string, object>
+        var data = new Dictionary<string, object?>
         {
             ["GlobalOptions"] = target.GlobalOptions,
             ["FileOptions"] = target.FileOptions,
@@ -256,15 +236,99 @@ internal static partial class ModuleInitializer
 
             ["FinalDiagnostics"] = target.FinalDiagnostics.OrderDiagnosticResults(DiagnosticSeverity.Error),
             ["GeneratorDiagnostics"] = generatorDiagnostics,
-            ["EmptyAssemblies"] = generatedCache.EmptyAssemblies.Order().ToArray(),
-            ["PartialsCached"] = partialsCached,
-            ["GeneratedCache"] = generatedCache
-                                .AssemblyData
-                                .OrderBy(z => z.Key)
-                                .ToDictionary(),
+            ["Cache"] = ReadCacheFile(result.TempDirectory),
         };
 
         return new(data, targets);
+    }
+
+    // The cache file, by Specular's own reading of it: the scan results per referenced assembly, the requests each referenced assembly
+    // carries, and what each call site generated per referenced assembly. Keys that hash requests or locations are left out (they hash
+    // absolute paths and assembly versions); entries are sorted by what they describe instead.
+    private static object? ReadCacheFile(string tempDirectory)
+    {
+        var file = Directory.EnumerateFiles(tempDirectory, VerifyExtensions.CacheFileName, SearchOption.AllDirectories).SingleOrDefault();
+        if (file is null) return null;
+
+        using var document = JsonDocument.Parse(File.ReadAllText(file));
+        var root = document.RootElement;
+
+        var scans = new List<(string Assembly, string[] Types)>();
+        if (root.TryGetProperty("scans", out var scansElement))
+        {
+            foreach (var request in scansElement.EnumerateObject())
+            {
+                foreach (var assembly in request.Value.EnumerateObject())
+                {
+                    var types = new List<string>();
+                    if (assembly.Value.TryGetProperty("types", out var typesElement))
+                    {
+                        foreach (var type in typesElement.EnumerateArray())
+                        {
+                            types.Add(type.GetProperty("name").GetString() ?? "");
+                        }
+                    }
+
+                    scans.Add((assembly.Name, types.ToArray()));
+                }
+            }
+        }
+
+        var requests = new SortedDictionary<string, object?>(StringComparer.Ordinal);
+        var sources = new List<(string Assembly, string Location, object? Source)>();
+        if (root.TryGetProperty("store", out var storeElement))
+        {
+            foreach (var key in storeElement.EnumerateObject())
+            {
+                foreach (var assembly in key.Value.EnumerateObject())
+                {
+                    var data = assembly.Value.TryGetProperty("data", out var dataElement) ? ToObject(dataElement) : null;
+                    if (key.Name == "requests")
+                    {
+                        requests[assembly.Name] = data;
+                    }
+                    else
+                    {
+                        var location = dataElement.TryGetProperty("Location", out var locationElement) ? locationElement.GetRawText() : "";
+                        sources.Add((assembly.Name, location, data));
+                    }
+                }
+            }
+        }
+
+        return new Dictionary<string, object?>
+        {
+            ["Scans"] = scans
+                       .OrderBy(z => z.Assembly, StringComparer.Ordinal)
+                       .ThenBy(z => string.Join(",", z.Types), StringComparer.Ordinal)
+                       .Select(z => new { z.Assembly, z.Types })
+                       .ToArray(),
+            ["Requests"] = requests,
+            ["Sources"] = sources
+                         .OrderBy(z => z.Assembly, StringComparer.Ordinal)
+                         .ThenBy(z => z.Location, StringComparer.Ordinal)
+                         .Select(z => new { z.Assembly, z.Source })
+                         .ToArray(),
+        };
+
+        static object? ToObject(JsonElement element) => element.ValueKind switch
+        {
+            JsonValueKind.Object => element
+                                   .EnumerateObject()
+                                   // A source location's absolute file path ("f"); its file name is part of the generated code already.
+                                   .Where(z => z.Name != "f" || !element.TryGetProperty("e", out _))
+                                   .ToDictionary(z => z.Name, z => z.Name == "PrivateAssemblies" ? ToSortedArray(z.Value) : ToObject(z.Value)),
+            JsonValueKind.Array => element.EnumerateArray().Select(ToObject).ToArray(),
+            JsonValueKind.String => element.GetString(),
+            JsonValueKind.Number => element.GetRawText(),
+            JsonValueKind.True => true,
+            JsonValueKind.False => false,
+            JsonValueKind.Null or JsonValueKind.Undefined => null,
+            _ => null,
+        };
+
+        // A set, written in hash order.
+        static object ToSortedArray(JsonElement element) => element.EnumerateArray().Select(z => z.GetString()).Order(StringComparer.Ordinal).ToArray();
     }
 
     [GeneratedRegex("Version=(.*?),", RegexOptions.Compiled)]

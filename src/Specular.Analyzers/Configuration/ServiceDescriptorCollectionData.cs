@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Specular.Analyzers.Configuration;
 
-public record ServiceDescriptorCollectionData
+internal sealed record ServiceDescriptorCollectionData
 (
     [property: JsonPropertyName("s")]
     ServiceDescriptorFilterData ServiceDescriptor,

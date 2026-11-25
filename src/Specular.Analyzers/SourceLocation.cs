@@ -35,7 +35,6 @@ public record ResolvedSourceLocation
     SourceLocation Location,
     string Expression,
     ImmutableHashSet<string> PrivateAssemblies,
-    string? CacheVersion,
     ImmutableList<TypeScanReportEntryData> DiscoveredTypes,
     ImmutableList<AssemblyScanReportEntryData> DiscoveredAssemblies,
     ImmutableList<ServiceDescriptorScanReportEntryData> DiscoveredServiceDescriptors,
