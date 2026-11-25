@@ -257,8 +257,21 @@ jobs:
               uses: NuGet/login@v1
               with:
                   user: ${{ secrets.NUGET_USER }}
-            # Each .snupkg beside its .nupkg is pushed with it.
-            - name: 🚀 Push to nuget.org
+            # Without --no-symbols, dotnet pushes each .snupkg right after its .nupkg and stops at the first error, so one rejected
+            # symbol package (nuget.org refuses one with no .pdb) left the packages after it in the glob unpublished.
+            - name: 🚀 Push packages to nuget.org
               env:
                   NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
-              run: dotnet nuget push 'nuget/*.nupkg' --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+              run: dotnet nuget push 'nuget/*.nupkg' --no-symbols --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            # Symbols are best effort: each package is already published, and one symbol package failing must not hide the others, so
+            # each is pushed on its own and a rejection is a warning, not a failed release.
+            - name: 🔣 Push symbols to nuget.org
+              env:
+                  NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+              run: |
+                  shopt -s nullglob
+                  for symbols in nuget/*.snupkg; do
+                      if ! dotnet nuget push "$symbols" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate; then
+                          echo "::warning title=Symbols not published::nuget.org rejected $(basename "$symbols"); its package is published without symbols."
+                      fi
+                  done

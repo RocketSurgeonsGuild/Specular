@@ -12,6 +12,11 @@
         <!-- NU5100: the roslyn/ variants are deliberately outside lib/; the pack helper bundles them, nothing references them. -->
         <NoWarn>$(NoWarn);MSB3277;NU5100</NoWarn>
         <!--
+            No symbol package: pack only collects PDBs from the project's own build output (IncludeBuildOutput), and the DLLs here come
+            from the Roslyn variant builds, so the .snupkg would be empty and nuget.org rejects an empty one.
+        -->
+        <IncludeSymbols>false</IncludeSymbols>
+        <!--
             Generator authors compile against lib/netstandard2.0, packed from the Roslyn 5.0 build so a generator on any supported
             Roslyn can reference it. This build's own output (Roslyn 5.12) ships beside the older ones under roslyn/, where the pack
             helper picks the variant to bundle into the consumer's analyzers folder. Nothing goes under analyzers/: the package
