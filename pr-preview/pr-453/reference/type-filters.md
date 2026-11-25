@@ -12,15 +12,29 @@ Used with `ISpecularProvider.GetAssemblies` and `ISpecularProvider.GetTypes`. Re
 
 | Method                             | Description                                                          |
 | ---------------------------------- | -------------------------------------------------------------------- |
-| `FromAssembly()`                   | Scans the calling assembly.                                          |
+| `EntryAssembly()`                  | Scans the calling assembly.                                          |
 | `FromAssemblies()`                 | Scans all metadata assemblies in the compilation.                    |
 | `FromAssemblyOf<T>()`              | Scans the assembly that contains `T`.                                |
 | `FromAssemblyOf(Type)`             | Non-generic overload of the above.                                   |
-| `FromAssemblyDependenciesOf<T>()`  | Scans assemblies that the assembly containing `T` depends on.        |
-| `FromAssemblyDependenciesOf(Type)` | Non-generic overload of the above.                                   |
+| `DependenciesFromAssemblyOf<T>()`  | Scans the assemblies that reference the assembly containing `T`.     |
+| `DependenciesFromAssemblyOf(Type)` | Non-generic overload of the above.                                   |
 | `NotFromAssemblyOf<T>()`           | Excludes the assembly containing `T` from the scan.                  |
 | `NotFromAssemblyOf(Type)`          | Non-generic overload of the above.                                   |
 | `IncludeSystemAssemblies()`        | Also includes .NET framework / BCL assemblies (excluded by default). |
+
+### Combining assembly selections
+
+Assembly selections can be chained. They combine like this:
+
+- Several specific selections (`EntryAssembly`, `FromAssemblyOf`, `DependenciesFromAssemblyOf`) are **alternatives**:
+  `FromAssemblyOf<A>().FromAssemblyOf<B>()` scans both assemblies, and `FromAssemblyOf<A>().DependenciesFromAssemblyOf<C>()`
+  scans `A`'s assembly plus every assembly that references `C`'s.
+- `FromAssemblies()` is the starting point those narrow. On its own it scans everything; with a specific selection it adds
+  nothing, so `FromAssemblies().DependenciesFromAssemblyOf<T>()` still means "the assemblies that reference `T`'s".
+- `NotFromAssemblyOf` always excludes, whatever else selected the assembly. On its own it scans everything except that
+  assembly.
+- The system assemblies (`mscorlib`, `netstandard`, `System`, `System.Core`, `System.Runtime`, `System.Private.CoreLib`) are
+  skipped unless you call `IncludeSystemAssemblies()`.
 
 ### `IServiceDescriptorAssemblySelector`
 

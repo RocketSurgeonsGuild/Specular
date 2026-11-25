@@ -31,7 +31,7 @@ The full selector fluent API is covered in the Reference section. Common startin
 | --------------------------------- | -------------------------------------------------- |
 | `FromAssemblyOf<T>()`             | Scope the scan to the assembly containing `T`      |
 | `FromAssemblies()`                | Include all loaded assemblies                      |
-| `FromAssemblyDependenciesOf<T>()` | Include assemblies referenced by `T`'s assembly    |
+| `DependenciesFromAssemblyOf<T>()` | Include assemblies that reference `T`'s assembly   |
 | `AddClasses()`                    | Filter to concrete (non-abstract) classes          |
 | `GetTypes()`                      | Return all matched types without further filtering |
 

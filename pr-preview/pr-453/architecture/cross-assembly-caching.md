@@ -2,93 +2,85 @@
 
 # Cross-Assembly Caching
 
-## The Problem
+## The problem
 
-In a multi-project solution, the same upstream library types may be referenced by many downstream assemblies. Without caching, every downstream assembly that calls `GetTypes` or `Scan` would force the generator to re-walk the same upstream `ITypeSymbol` graph independently during each project's build. In large solutions this is redundant work that compounds with every additional consuming project.
+A project's selectors usually reach into referenced assemblies: `FromAssemblies()`, `DependenciesFromAssemblyOf<T>()` and the
+like walk every type of every matching reference. Referenced assemblies rarely change between builds of the project that
+uses them, so walking them again on every build is wasted work, and in a large solution it is most of the generator's time.
 
-## The Solution: `SpecularProvider.ctpjson`
+## What Specular caches
 
-The constant `Constants.SpecularProviderCacheFileName` (defined in `CompiledTypeProviderGenerator.cs`) equals `"SpecularProvider.ctpjson"`. After the generator resolves all scan results for an assembly, it serialises the full resolution into this JSON file and writes it to the project's intermediate output path under an `obj/ctp/` subdirectory.
+Specular keeps one cache file per project, `obj/ctp/SpecularProvider.ctpjson`, and stores in it what it learned about each
+**referenced** assembly on the last build. The project's own types are never cached: they are what you are editing.
 
-The JSON is structured as `GeneratedAssemblyProviderData`, which holds:
+The file is written and read by the [`Specular.Scanning`](../../guide/scanning-from-your-generator/) library that Specular's
+generator is built on, under the consumer id `SpecularProvider`. It holds three kinds of entry, each stored per referenced
+assembly:
 
-- **`AssemblyData`** — a dictionary keyed by assembly metadata name, mapping to `CompiledAssemblyProviderData`. Each entry carries the internal assembly/reflection/service-descriptor requests and a `CacheVersion` string used for invalidation.
-- **`EmptyAssemblies`** — the set of assemblies that contained no matching types (so downstream can short-circuit without re-visiting them).
-- **`Partials`** — per-selector-hash resolved source locations, keyed by the hash of the call-site source location.
+| Entry           | What it holds                                                                                                                                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scan results    | For each selector's assembly and type filters, the types they matched in the assembly. Keyed by the request's [cache key](../scan-cache-file/#shape).                                                                                                                                                |
+| `requests`      | The selectors a referenced assembly carries for its consumers: Specular records each library's own `GetTypes` and `Scan` calls on the library as `[assembly: AssemblyMetadata]`, and re-runs them against the consuming project. Decoding those attributes is cached here, even when there are none. |
+| `sources/<key>` | The code a call site generated for the assembly. The key hashes the whole call-site location, the request it resolved to, and whether the build targets Native AOT, so two identical call sites in different projects never share an entry.                                                          |
 
-The serialisation uses `JsonSourceGenerationContext` (source-generated JSON) so the analyzer itself has no reflection dependency.
+Generated code that reported diagnostics is never cached, so diagnostics always come from a fresh run.
 
-## How the Cache Is Consumed
+The file's layout is described in [The scan cache file](../scan-cache-file/).
 
-When a downstream assembly builds, MSBuild passes the upstream project's `SpecularProvider.ctpjson` as an `AdditionalText` to the downstream generator run. The generator reads it early in the pipeline:
+## When an entry is used
 
-```csharp
-var generatedJsonProvider = context.AdditionalTextsProvider
-    .Where(z => Path.GetFileName(z.Path)
-        .Equals(Constants.SpecularProviderCacheFileName, StringComparison.OrdinalIgnoreCase))
-    .Select((text, _) => JsonSerializer.Deserialize(
-        text.GetText(_)?.ToString(),
-        JsonSourceGenerationContext.Default.GeneratedAssemblyProviderData))
-    .Collect()
-    .Select((z, _) => z.SingleOrDefault() ?? /* empty */);
-```
+Every entry is tied to the referenced assembly's **module version id (MVID)**, which the compiler changes whenever the
+assembly's contents change. An entry is used only while the MVID it was stored with matches the reference's current one:
 
-Inside `AssemblyProviderConfiguration`, before visiting any upstream `ITypeSymbol`, the generator calls `GeneratedAssemblyProviderData.GetAssemblyData(assembly)`. If the cache entry exists **and** its `CacheVersion` matches the upstream assembly's current version, the cached resolution is used directly — no symbol walking occurs for that assembly.
+- A referenced assembly that was rebuilt with any change gets a new MVID, so all of its entries miss and it is walked again.
+- A reference without a readable MVID is never cached. In the IDE, project references are live compilations rather than
+  built files, so they are always walked; while you type, results are reused in memory for as long as the reference is
+  unchanged instead.
+- A cache file written by an older version of the format is ignored and rebuilt.
+- Only entries used in a build are written back, so entries for removed references and selectors drop out.
 
-## Cache Invalidation via `GeneratedHash`
+The file is written only when its content changes, so an unchanged cache doesn't touch the project's up-to-date check.
 
-Every assembly that has been processed by Specular carries an assembly-level attribute:
+## How the file gets back to the compiler
 
-```csharp
-[assembly: SpecularHashAttribute("abc123…")]
-```
+`Specular.targets` imports `Specular.Scanning.Cache.targets`, which, just before `CoreCompile`, adds every existing
+`obj/ctp/*.ctpjson` to the compilation as an additional file, and deletes them on `Clean`. The generator finds its own file
+by name. Nothing needs configuring.
 
-The constructor argument is the `GeneratedHash` — a hash of the generator's output computed by `AssemblyProviderBuilder`. When Specular reads a cached entry from `ctpjson`, it compares the upstream assembly's `GeneratedHash` (read from its `SpecularHashAttribute` via Roslyn's `GetAttributes()`) against the `CacheVersion` stored in the JSON:
-
-```csharp
-public bool MatchesCachedVersion(this IAssemblySymbol assembly, string? cacheVersion) =>
-    assembly.GetCachedVersion() is not { Length: > 0 } version || version == cacheVersion;
-```
-
-`GetCachedVersion` first looks for the `SpecularHashAttribute` hash; if absent it falls back to `AssemblyInformationalVersionAttribute`. A mismatch means the upstream types changed after the cache was written — the downstream generator discards the cached entry and re-resolves from source.
-
-## Two-Project Example
+## Two-project example
 
 ```mermaid
 sequenceDiagram
-    participant LibA
-    participant MSBuild
-    participant AppB
+    participant Lib as Lib (referenced)
+    participant App as App build
+    participant Cache as App/obj/ctp/SpecularProvider.ctpjson
 
-    LibA->>MSBuild: Build LibA
-    MSBuild->>LibA: Run SpecularProviderGenerator
-    LibA-->>MSBuild: Emit SpecularProvider.g.cs<br/>[assembly: SpecularProvider(…, "abc123")]
-    LibA-->>MSBuild: Write obj/ctp/SpecularProvider.ctpjson
+    Note over App,Cache: First build
+    App->>Lib: Walk Lib's types for each selector
+    App->>Cache: Save scan results, requests and generated code, keyed by Lib's MVID
 
-    MSBuild->>AppB: Build AppB (passes LibA.ctpjson as AdditionalText)
-    AppB->>AppB: Read ctpjson, verify GeneratedHash == "abc123" ✓
-    AppB-->>MSBuild: Use cached resolution — skip symbol walk for LibA types
-    AppB-->>MSBuild: Emit SpecularProvider.g.cs for AppB
+    Note over App,Cache: App changes, Lib doesn't
+    Cache->>App: Fed back as an additional file
+    App->>App: Lib's MVID matches: reuse its entries, walk only App's own types
 
-    Note over LibA,AppB: LibA type changes
-
-    LibA->>MSBuild: Rebuild LibA
-    MSBuild->>LibA: Run SpecularProviderGenerator
-    LibA-->>MSBuild: Emit new hash "xyz789" in [assembly: SpecularProvider]
-    LibA-->>MSBuild: Overwrite SpecularProvider.ctpjson
-
-    MSBuild->>AppB: Rebuild AppB
-    AppB->>AppB: Read ctpjson, verify GeneratedHash — "abc123" ≠ "xyz789" ✗
-    AppB-->>MSBuild: Discard cache, re-resolve LibA symbols
-    AppB-->>MSBuild: Emit updated SpecularProvider.g.cs for AppB
+    Note over Lib: Lib changes and is rebuilt (new MVID)
+    Cache->>App: Fed back as an additional file
+    App->>App: MVID differs: entries miss, walk Lib again
+    App->>Cache: Save the new entries
 ```
 
-## Failure Modes
+## Failure modes
 
-| Situation                                                                             | Behaviour                                                                                                                                             |
-| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ctpjson` is missing or has fewer than 100 characters                                 | Generator treats it as an empty/invalid cache and falls back to full symbol resolution for all upstream assemblies                                    |
-| `GeneratedHash` in `ctpjson` does not match the upstream assembly's current attribute | Cache entry is discarded; that assembly is re-resolved from source symbols                                                                            |
-| Multiple upstream assemblies each provide a `ctpjson`                                 | Only one `ctpjson` is expected per generator run (`Collect().Select(z => z.SingleOrDefault()…)`); MSBuild must be configured to pass the correct file |
+| Situation                                                           | Behaviour                                                                     |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| The file is missing, empty, corrupt, or from another format version | Treated as empty: every referenced assembly is walked and the file rewritten. |
+| A referenced assembly changed since the entry was written           | Its entries miss and it is walked again.                                      |
+| The file can't be written (read-only `obj/`, IO error)              | Ignored; the build succeeds and the next build walks again.                   |
+| The build runs outside MSBuild (no `IntermediateOutputPath`)        | Nothing is written.                                                           |
 
-In all fallback cases the build produces correct output — the cache is purely an optimisation. A build warning may be emitted if the cache file is present but unreadable.
+In every case the build produces the same output as an uncached build: the cache only saves work.
+
+## `SpecularHashAttribute`
+
+Specular still stamps each assembly it generates for with `[assembly: SpecularHashAttribute("…")]`, a hash of the generated
+provider. It is no longer used to validate the cache, which relies on MVIDs.
