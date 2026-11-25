@@ -23,7 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a symbol-based mirror of Specular's runtime selectors, and run it with `context.Scan(consumerId, request)`
   in an incremental pipeline or `Scanner.Run` directly. Results for referenced assemblies are reused in
   memory and cached across builds in `obj/ctp/<ConsumerId>.ctpjson`, keyed by each assembly's MVID, and
-  `ScanCache` offers a typed per-assembly store on the same rules. Packing a generator that references the
+  `ScanCache` offers a typed per-assembly store on the same rules, reachable from the same pipeline step and
+  cache file through `context.Scan(consumerId, requests, transform)`. A constructed generic such as
+  `IHandler<int>` matches only that closed type; a type a filter names that can't be resolved matches nothing
+  and is reported in `ScanResult.UnresolvedTypes`; `ScannedType.FullyQualifiedName` gives a `global::` name to
+  emit without resolving symbols. Packing a generator that references the
   package bundles `Specular.Scanning.dll` beside it and adds the MSBuild wiring that feeds the cache back
   (`SPECSCAN001`–`SPECSCAN004` flag packaging mistakes). Needs Roslyn 5.0 or later.
 - `Specular.Scanning.Sources`: the same library as source, compiled into your generator as `internal`

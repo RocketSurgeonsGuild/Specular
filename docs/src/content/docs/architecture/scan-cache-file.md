@@ -37,14 +37,14 @@ The file is compact JSON, written on one line. Laid out:
 
 ```json
 {
-    "schema": 1,
+    "schema": 2,
     "scans": {
         "<request key>": {
             "MyLib": {
                 "mvid": "6f9619ff-8b86-d011-b42d-00c04fc964ff",
                 "types": [
-                    { "name": "MyLib.FirstPlugin", "kind": 2, "access": 6, "accessible": true },
-                    { "name": "MyLib.Outer+NestedPlugin", "kind": 2, "access": 4 }
+                    { "name": "MyLib.FirstPlugin", "fullyQualifiedName": "global::MyLib.FirstPlugin", "kind": 2, "access": 6, "accessible": true },
+                    { "name": "MyLib.Outer+NestedPlugin", "fullyQualifiedName": "global::MyLib.Outer.NestedPlugin", "kind": 2, "access": 4 }
                 ]
             }
         }
@@ -57,15 +57,15 @@ The file is compact JSON, written on one line. Laid out:
 }
 ```
 
-| Field                                    | Meaning                                                                                                                                                                                                                                              |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `schema`                                 | The file format version. A file with any other version is ignored and rebuilt.                                                                                                                                                                       |
-| `scans`                                  | The types each request matched in each referenced assembly: request key, then assembly metadata name.                                                                                                                                                |
-| `scans.<key>.<assembly>.mvid`            | The module version id of the assembly when the entry was written.                                                                                                                                                                                    |
-| `scans.<key>.<assembly>.types[]`         | The matched types: `name` (full metadata name), `kind` (Roslyn `TypeKind`), `access` (Roslyn `Accessibility`), `accessible` (whether the consuming compilation can reference it), `arity`, and `assembly` when it differs from the entry's assembly. |
-| `store`                                  | The values a generator stored with `ScanCache.Set`: the generator's key, then assembly metadata name.                                                                                                                                                |
-| `store.<key>.<assembly>.mvid`, `version` | The assembly's MVID and the generator's data version when the value was written.                                                                                                                                                                     |
-| `store.<key>.<assembly>.data`            | The value, serialized with the generator's `JsonTypeInfo<T>`.                                                                                                                                                                                        |
+| Field                                    | Meaning                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `schema`                                 | The file format version. A file with any other version is ignored and rebuilt.                                                                                                                                                                                                                                                                |
+| `scans`                                  | The types each request matched in each referenced assembly: request key, then assembly metadata name.                                                                                                                                                                                                                                         |
+| `scans.<key>.<assembly>.mvid`            | The module version id of the assembly when the entry was written.                                                                                                                                                                                                                                                                             |
+| `scans.<key>.<assembly>.types[]`         | The matched types: `name` (full metadata name), `fullyQualifiedName` (the C# name, `global::`-qualified; an entry without it is a miss), `kind` (Roslyn `TypeKind`), `access` (Roslyn `Accessibility`), `accessible` (whether the consuming compilation can reference it), `arity`, and `assembly` when it differs from the entry's assembly. |
+| `store`                                  | The values a generator stored with `ScanCache.Set`: the generator's key, then assembly metadata name.                                                                                                                                                                                                                                         |
+| `store.<key>.<assembly>.mvid`, `version` | The assembly's MVID and the generator's data version when the value was written.                                                                                                                                                                                                                                                              |
+| `store.<key>.<assembly>.data`            | The value, serialized with the generator's `JsonTypeInfo<T>`.                                                                                                                                                                                                                                                                                 |
 
 Enums are written as numbers. Default values (`false`, `0`, `null`) are left out. Keys are written in ordinal order, so the
 same entries always produce the same bytes.

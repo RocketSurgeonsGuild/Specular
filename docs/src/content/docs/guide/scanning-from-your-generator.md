@@ -114,7 +114,7 @@ public sealed class PluginRegistryGenerator : IIncrementalGenerator
         var plugins = result.Select(static (scan, _) => new EquatableArray<string>(
             scan.Types
                 .Where(static type => type.IsAccessible)
-                .Select(static type => "global::" + type.MetadataName.Replace('+', '.'))
+                .Select(static type => type.FullyQualifiedName)
                 .ToImmutableArray()));
 
         context.RegisterSourceOutput(plugins, static (output, names) =>
@@ -228,17 +228,21 @@ The rules match Specular's own generator:
 - **`InNamespaces` and `NotInNamespaces` compare by prefix**, so `InNamespaces("MyApp.Foo")` also matches `MyApp.FooBar`.
   Use `InExactNamespaces` for an exact match.
 - **Generics.** Pass the generic definition (``GetTypeByMetadataName("MyLib.IHandler`1")``, or the string ``"MyLib.IHandler`1"``)
-  to match every closed form, through the type itself, its base types or its interfaces. Type arguments are not kept: a
-  constructed type such as `IHandler<int>` is recorded by its metadata name only, so it does not mean "only
-  `IHandler<int>`". Use a custom filter for that.
+  to match every closed form, through the type itself, its base types or its interfaces. Pass a constructed type, such as
+  `IHandler<int>` built with `handler.Construct(compilation.GetSpecialType(SpecialType.System_Int32))`, to match only that
+  closed type; variance applies as in C#, so `IVariant<object>` matches a type implementing `IVariant<string>`. Type
+  arguments must themselves be named types (nested, constructed, tuples and `int?` are fine); arrays, pointers, type
+  parameters and `dynamic` as arguments throw `ArgumentException`. The string overloads can't express type arguments.
 - **`object` is never a match** for `AssignableTo`, as in Specular.
 - **Attributes** are read from the type itself, not inherited. `WithAttribute(symbol)` needs the exact attribute class.
   `WithAnyAttribute(symbol, …)` compares name and namespace, so a generic attribute definition matches every closed use of it.
-- **A type that can't be found is dropped from its clause.** If a clause is left with no types, the whole clause is dropped,
-  and the clause no longer filters anything: `AssignableTo("MyLib.IHandlr")` with a typo matches every type. A type named by
-  string is looked up with `Compilation.GetTypeByMetadataName`, which also finds nothing when two referenced assemblies define
-  the same name. A symbol overload records the type's assembly, so it doesn't have that problem. Prefer symbol overloads, and
-  check for `null` when you look a symbol up, as the example does.
+- **A type that can't be found matches nothing.** An include clause whose types don't resolve matches no type, so
+  `AssignableTo("MyLib.IHandlr")` with a typo returns nothing rather than everything; an exclude clause ignores a type it
+  can't find. Every reference that didn't resolve is listed in `ScanResult.UnresolvedTypes`, so your generator can report a
+  diagnostic. A type named by string is looked up with `Compilation.GetTypeByMetadataName`, which also finds nothing when two
+  referenced assemblies define the same name; a symbol overload records the type's assembly, so it doesn't have that problem.
+  Prefer symbol overloads, and check for `null` when you look a symbol up, as the example does. A request with an unresolved
+  type is never cached, so it recovers as soon as the type appears.
 - `WithAttribute(string)` and its relatives compare the full metadata name of each applied attribute's class, without looking
   the name up.
 - Only named types can be selected. Arrays, pointers, type parameters and error types throw `ArgumentException`.
@@ -324,6 +328,7 @@ A scan returns a `ScanResult`:
 | `Request`              | The `ScanRequest` that produced it.                                                                                                     |
 | `Assemblies`           | `EquatableArray<ScannedAssembly>`: the assemblies that passed the assembly filter, ordered by name.                                     |
 | `Types`                | `EquatableArray<ScannedType>`: for a types scan, the matched types ordered by assembly and metadata name. Empty for an assemblies scan. |
+| `UnresolvedTypes`      | `EquatableArray<TypeReference>`: each type the request's filters named that couldn't be resolved, in order of first appearance.         |
 | `Resolve(Compilation)` | The same result as symbols, in a `ScanSymbols` (`Assemblies` and `Types` as immutable arrays).                                          |
 
 `ScannedAssembly` has the assembly's `Name` and `HasInaccessibleMatches`: whether any type matched in it can't be referenced
@@ -331,14 +336,15 @@ from the compilation.
 
 `ScannedType` describes a type by value, so results can be cached and compared:
 
-| Property                | Meaning                                                                                                                                            |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AssemblyName`          | The containing assembly's metadata name.                                                                                                           |
-| `MetadataName`          | The full metadata name, as `GetTypeByMetadataName` takes it (`MyLib.Outer+Inner`, ``MyLib.IHandler`1``).                                           |
-| `Kind`                  | The Roslyn `TypeKind`.                                                                                                                             |
-| `DeclaredAccessibility` | The declared accessibility.                                                                                                                        |
-| `IsAccessible`          | Whether the compilation can reference the type. This takes into account the declared accessibility, the containing types and `InternalsVisibleTo`. |
-| `Arity`                 | The number of generic type parameters.                                                                                                             |
+| Property                | Meaning                                                                                                                                                                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AssemblyName`          | The containing assembly's metadata name.                                                                                                                                                                 |
+| `MetadataName`          | The full metadata name, as `GetTypeByMetadataName` takes it (`MyLib.Outer+Inner`, ``MyLib.IHandler`1``).                                                                                                 |
+| `FullyQualifiedName`    | A `global::`-qualified C# name to emit (`global::MyLib.Outer.Inner`, `global::MyLib.IHandler<T>`). For `typeof` of an open generic, keep only the commas inside each `<…>` (`global::MyLib.IHandler<>`). |
+| `Kind`                  | The Roslyn `TypeKind`.                                                                                                                                                                                   |
+| `DeclaredAccessibility` | The declared accessibility.                                                                                                                                                                              |
+| `IsAccessible`          | Whether the compilation can reference the type. This takes into account the declared accessibility, the containing types and `InternalsVisibleTo`.                                                       |
+| `Arity`                 | The number of generic type parameters.                                                                                                                                                                   |
 
 Scans also return types your generated code can't name, such as `internal` types in another assembly. Check `IsAccessible`
 before you emit `typeof(...)` or a `new` expression.
@@ -419,46 +425,47 @@ public sealed class PluginManifest
 internal sealed partial class ManifestJsonContext : JsonSerializerContext { }
 ```
 
-Load the cache from the additional files, use it, then save it from an output step:
+Use the store through the `Scan` overload that takes a transform. The transform runs in the same pipeline step as the scans,
+gets the run's cache, and whatever it reads or writes is saved in the same file as the scan results, under the same consumer
+id:
 
 ```csharp
-// A different id from the one passed to context.Scan: each writes its own file.
-private const string StoreId = "PluginRegistry.Manifests";
 private const int ManifestVersion = 1;
 
-var cacheFiles = context.AdditionalTextsProvider
-    .Where(static file => ScanCache.IsCacheFile(file, StoreId))
-    .Collect();
-
-context.RegisterImplementationSourceOutput(
-    context.CompilationProvider.Combine(cacheFiles).Combine(context.AnalyzerConfigOptionsProvider),
-    static (output, input) =>
+IncrementalValueProvider<PluginModel> model = context.Scan(ConsumerId, requests, static scan =>
+{
+    var manifests = ImmutableArray.CreateBuilder<PluginManifest>();
+    foreach (var assembly in scan.Compilation.SourceModule.ReferencedAssemblySymbols)
     {
-        var ((compilation, files), options) = input;
-        var cache = ScanCache.Load(StoreId, compilation, files, output.CancellationToken);
-
-        foreach (var assembly in compilation.SourceModule.ReferencedAssemblySymbols)
+        if (!scan.Cache.TryGet("manifest", assembly, ManifestJsonContext.Default.PluginManifest, ManifestVersion, out var manifest))
         {
-            if (!cache.TryGet("manifest", assembly, ManifestJsonContext.Default.PluginManifest, ManifestVersion, out var manifest))
-            {
-                manifest = ReadManifest(assembly);
-                cache.Set("manifest", assembly, manifest, ManifestJsonContext.Default.PluginManifest, ManifestVersion);
-            }
-
-            // use manifest ...
+            manifest = ReadManifest(assembly);
+            scan.Cache.Set("manifest", assembly, manifest, ManifestJsonContext.Default.PluginManifest, ManifestVersion);
         }
 
-        cache.Save(options.GlobalOptions);
-    });
+        manifests.Add(manifest);
+    }
+
+    // The output is a pipeline value: make it equatable by value, and never keep symbols, the compilation or `scan` in it.
+    return new PluginModel(scan.Results, manifests.ToImmutable());
+});
 ```
+
+`scan` is a `ScanContext` with the `Compilation`, the `Results` in request order, the run's `Cache` and the
+`CancellationToken`. It's only valid while the transform runs, and the cache is saved for you: don't call `Save`. Store values
+are also remembered in memory while a referenced assembly is unchanged, as scan results are, so typing in the IDE doesn't
+recompute them.
+
+A generator that doesn't scan can still use the store by loading and saving a `ScanCache` itself in an implementation output:
+`ScanCache.Load(consumerId, compilation, additionalFiles)`, then `TryGet`/`Set`, then `Save(options.GlobalOptions)`. Don't
+combine that with `context.Scan` under the same consumer id: each writes the whole file, so they would drop each other's
+entries.
 
 - `TryGet` hits only when the assembly's MVID matches **and** the value was stored with the same data version. Bump your
   data version when the shape or meaning of the value changes.
 - `Set` does nothing for an assembly that can't be cached: the compilation's own, or a reference without an MVID.
 - `Save` writes the entries read or written in this run to `$(IntermediateOutputPath)ctp/<ConsumerId>.ctpjson`, and only when
   the content changed. It does nothing outside MSBuild and never throws on IO errors.
-- **Give the store its own consumer id.** `context.Scan` and `ScanCache.Save` each write a whole file. If they share an id,
-  each save drops the other's entries.
 - `ScanCache` is safe to use from several threads within one run. It isn't equatable, so don't pass it through the pipeline.
 
 ## Packaging and MSBuild
