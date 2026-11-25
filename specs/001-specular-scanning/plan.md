@@ -1,6 +1,6 @@
 # Implementation Plan: Specular.Scanning — shared compile-time scanning for source generators
 
-**Branch**: `claude/specular-scanning-library` | **Date**: 2026-11-24 | **Status**: Phase 0 (scaffolding) done; Phase 1 next
+**Branch**: `claude/specular-scanning-library` | **Date**: 2026-11-24 | **Status**: All phases (0–7) implemented on this branch; not yet reviewed as a PR
 **Baseline**: all file and API references verified against `origin/main` @ `6aa7d2eef`
 
 ## Summary
