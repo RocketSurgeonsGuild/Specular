@@ -4,7 +4,7 @@ using Specular.Analyzers.Descriptors;
 
 namespace Specular.Analyzers.Configuration;
 
-public record TypeFilterData
+internal sealed record TypeFilterData
 (
     [property: JsonPropertyName("b")]
     ClassFilter Filter,

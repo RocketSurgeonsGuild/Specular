@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Specular.Analyzers.AssemblyProviders;
+using Specular.Scanning;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
@@ -244,7 +244,7 @@ internal static class StatementGeneration
 
     public static ExpressionSyntax? GetAssemblyExpression(Compilation compilation, IAssemblySymbol assembly)
     {
-        if (FindTypeInAssembly.FindType(compilation, assembly) is not { } keyholdType) return null;
+        if (FindPublicType(assembly) is not { } keyholdType) return null;
         var typeExpression = GetTypeOfExpression(compilation, keyholdType, false);
         return typeExpression is null
             ? null
@@ -326,7 +326,7 @@ internal static class StatementGeneration
         foreach (var candidate in EnumerateTypeClosure(type))
         {
             if (!compilation.IsSymbolAccessibleWithin(candidate, compilation.Assembly)
-             && FindTypeInAssembly.FindType(compilation, candidate.ContainingAssembly) is null)
+             && FindPublicType(candidate.ContainingAssembly) is null)
             {
                 return candidate;
             }
@@ -377,6 +377,33 @@ internal static class StatementGeneration
         }
 
         return GetTypeOfExpression(compilation, type, allowPrivateTypeLookup);
+    }
+
+    /// <summary>
+    ///     The first public type in <paramref name="assembly" />, in declaration order, that can stand for it in generated code (an
+    ///     obsolete or experimental one would produce warnings or errors). Core assemblies never get one.
+    /// </summary>
+    private static INamedTypeSymbol? FindPublicType(IAssemblySymbol assembly)
+    {
+        if (AssemblyMatcher.IsCoreAssembly(assembly.Name)) return null;
+
+        INamedTypeSymbol? found = null;
+        _ = TypeWalker.Walk(
+            assembly.GlobalNamespace,
+            type =>
+            {
+                if (type.DeclaredAccessibility != Accessibility.Public
+                 || type.GetAttributes().Any(z => z is { AttributeClass.MetadataName: "ObsoleteAttribute" or "ExperimentalAttribute" }))
+                {
+                    return true;
+                }
+
+                found = type;
+                return false;
+            },
+            CancellationToken.None
+        );
+        return found;
     }
 
     private static readonly Regex SpecialCharacterRemover = new("[^\\w\\d]", RegexOptions.Compiled);

@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 
 namespace Specular.Analyzers.Configuration;
 
+// Serializes the [AssemblyMetadata] scan requests Specular writes into each assembly, the content hash, and Specular's entries in the
+// build cache (the typed store of Specular.Scanning's ScanCache). Source-generated, so no runtime reflection is involved.
 [JsonSourceGenerationOptions]
 [JsonSerializable(typeof(AssemblyCollectionData))]
 [JsonSerializable(typeof(ReflectionCollectionData))]
@@ -21,8 +23,7 @@ namespace Specular.Analyzers.Configuration;
 [JsonSerializable(typeof(GetAssemblyConfiguration))]
 [JsonSerializable(typeof(GetReflectionCollectionData))]
 [JsonSerializable(typeof(GetServiceDescriptorCollectionData))]
-[JsonSerializable(typeof(GeneratedAssemblyProviderData))]
-[JsonSerializable(typeof(GeneratedLocationAssemblyResolvedSourceCollection))]
+[JsonSerializable(typeof(ResolvedSourceLocation))]
 [JsonSerializable(typeof(ScanReportTypeData))]
 [JsonSerializable(typeof(ServiceDescriptorScanReportEntryData))]
-public partial class JsonSourceGenerationContext : JsonSerializerContext;
+internal sealed partial class JsonSourceGenerationContext : JsonSerializerContext;

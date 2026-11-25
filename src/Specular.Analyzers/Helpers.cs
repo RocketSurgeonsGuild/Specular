@@ -265,40 +265,6 @@ internal static class Helpers
         _ => default,
     };
 
-    public static bool HasImplicitGenericConversion(
-        Compilation compilation,
-        INamedTypeSymbol assignableToType,
-        INamedTypeSymbol assignableFromType
-    )
-    {
-        if (SymbolEqualityComparer.Default.Equals(compilation.ObjectType, assignableToType)) return false;
-
-        if (SymbolEqualityComparer.Default.Equals(compilation.ObjectType, assignableFromType)) return false;
-
-        if (SymbolEqualityComparer.Default.Equals(assignableToType, assignableFromType)) return true;
-
-        if (compilation.HasImplicitConversion(assignableFromType, assignableToType)) return true;
-
-        if (assignableToType is not { Arity: > 0, IsUnboundGenericType: true }) return false;
-
-        if (GetUnboundGenericType(assignableFromType) is { } unboundAssignableFromType
-         && compilation.HasImplicitConversion(assignableToType, unboundAssignableFromType))
-        {
-            return true;
-        }
-
-        var matchingBaseTypes = GetBaseTypes(compilation, assignableFromType)
-                               .Select(GetUnboundGenericType)
-                               .Where(symbol => symbol is { } && compilation.HasImplicitConversion(symbol, assignableToType));
-        if (matchingBaseTypes.Any()) return true;
-
-        var matchingInterfaces = assignableFromType
-                                .AllInterfaces
-                                .Select(GetUnboundGenericType)
-                                .Where(symbol => symbol is { } && compilation.HasImplicitConversion(symbol, assignableToType));
-        return matchingInterfaces.Any();
-    }
-
     internal static AttributeListSyntax AddAssemblyAttribute(string key, string? value) =>
         AttributeList(
                 SingletonSeparatedList(

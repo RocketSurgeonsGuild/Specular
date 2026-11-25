@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
 using Specular.Analyzers.Descriptors;
+using Specular.Scanning;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
@@ -30,27 +31,31 @@ internal static class ServiceDescriptorCollection
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
         Item item,
-        IAssemblySymbol targetAssembly
+        IAssemblySymbol targetAssembly,
+        CancellationToken cancellationToken
     )
     {
         try
         {
             return SymbolEqualityComparer.Default.Equals(targetAssembly, compilation.Assembly)
                 ? resolvedSourceLocation()
-                : configuration.CacheSourceLocation(
+                : configuration.Cache.GetOrAddSource(
                     item.Location,
+                    item.Selection.Request,
                     targetAssembly,
-                    resolvedSourceLocation
+                    () =>
+                    {
+                        var reported = diagnostics.Count;
+                        return (resolvedSourceLocation(), diagnostics.Count == reported);
+                    }
                 );
 
             ResolvedSourceLocation? resolvedSourceLocation()
             {
                 var pa = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
-                var reducedTypes = new TypeSymbolVisitor(compilation, item.AssemblyFilter, item.TypeFilter)
-                                  .GetReferencedTypes(targetAssembly)
-                                  .GetTypes();
+                var reducedTypes = item.Selection.GetTypes(targetAssembly, configuration.Cache.Scans, cancellationToken);
 
-                if (reducedTypes.Count == 0) return null;
+                if (reducedTypes.Length == 0) return null;
 
                 var descriptorGeneration = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa);
                 var localBlock = descriptorGeneration.Block.NormalizeWhitespace().ToFullString().Replace("\r", "");
@@ -58,7 +63,6 @@ internal static class ServiceDescriptorCollection
                     item.Location,
                     localBlock,
                     pa.Select(z => z.MetadataName).ToImmutableHashSet(),
-                    targetAssembly.GetCachedVersion(),
                     [],
                     DiscoveredAssemblies: [],
                     DiscoveredServiceDescriptors: descriptorGeneration.ReportEntries,
@@ -87,7 +91,8 @@ internal static class ServiceDescriptorCollection
         Compilation compilation,
         HashSet<Diagnostic> diagnostics,
         IReadOnlyList<Item> items,
-        IAssemblySymbol targetAssembly
+        IAssemblySymbol targetAssembly,
+        CancellationToken cancellationToken
     )
     {
         if (items.Count == 0) return ImmutableList<ResolvedSourceLocation>.Empty;
@@ -95,7 +100,7 @@ internal static class ServiceDescriptorCollection
         var results = new List<ResolvedSourceLocation>();
         foreach (var item in items)
         {
-            if (ResolveSource(configuration, compilation, diagnostics, item, targetAssembly) is not { } location) continue;
+            if (ResolveSource(configuration, compilation, diagnostics, item, targetAssembly, cancellationToken) is not { } location) continue;
 
             results.Add(location);
         }
@@ -106,19 +111,19 @@ internal static class ServiceDescriptorCollection
     public sealed record Item
     (
         SourceLocation Location,
-        CompiledAssemblyFilter AssemblyFilter,
-        CompiledTypeFilter TypeFilter,
+        ScanSelection Selection,
         CompiledServiceTypeDescriptors ServicesTypeFilter,
         int Lifetime);
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     internal static ImmutableList<Item> GetServiceDescriptorItems(
-        Compilation compilation,
+        ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
         IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
         CancellationToken cancellationToken
     )
     {
+        var compilation = environment.Compilation;
         var items = ImmutableList.CreateBuilder<Item>();
         foreach (var tuple in results)
         {
@@ -129,34 +134,30 @@ internal static class ServiceDescriptorCollection
                 var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
-                List<IAssemblyDescriptor> assemblies = [];
-                List<ITypeFilterDescriptor> typeFilters =
-                [
-                    new TypeKindFilterDescriptor(true, ImmutableHashSet.Create(TypeKind.Class)),
-                    new TypeInfoFilterDescriptor(false, ImmutableHashSet.Create(TypeInfoFilter.Abstract, TypeInfoFilter.Static)),
-                ];
+                var assemblies = new AssemblySelectionBuilder();
+                // Scan registers concrete classes only.
+                var typeFilters = new TypeSelectionBuilder(environment);
+                typeFilters.KindOf(true, ImmutableHashSet.Create(TypeKind.Class));
+                typeFilters.InfoOf(false, ImmutableHashSet.Create(TypeInfoFilter.Abstract, TypeInfoFilter.Static));
                 List<IServiceTypeDescriptor> serviceDescriptors = [];
-                var classFilter = ClassFilter.All;
                 var lifetime = 2;
 
                 DataHelpers.HandleInvocationExpressionSyntax(
                     diagnostics,
                     semanticModel,
                     selector,
+                    environment,
                     assemblies,
                     typeFilters,
                     serviceDescriptors,
                     ref lifetime,
-                    ref classFilter,
                     cancellationToken
                 );
 
                 var source = Helpers.CreateSourceLocation(SourceLocationKind.ServiceDescriptor, methodCallSyntax, compilation.Assembly.MetadataName, cancellationToken);
-                var assemblyFilter = new CompiledAssemblyFilter(assemblies.ToImmutableList(), source);
-                var typeFilter = new CompiledTypeFilter(classFilter, typeFilters.ToImmutableList(), source);
                 var serviceDescriptorFilter = new CompiledServiceTypeDescriptors(serviceDescriptors.ToImmutableArray(), lifetime);
 
-                var i = new Item(source, assemblyFilter, typeFilter, serviceDescriptorFilter, lifetime);
+                var i = new Item(source, new(environment, assemblies.Build(), typeFilters.Build()), serviceDescriptorFilter, lifetime);
                 items.Add(i);
             }
             catch (MustBeAnExpressionException e)
@@ -478,7 +479,7 @@ internal static class ServiceDescriptorCollection
                 // It should support open generic types as well (think abstract validator from fluent validation)
                 interfaces.AddRange(
                     asImplementedInterfaces is [{ InterfaceFilter: { } filter }]
-                        ? type.AllInterfaces.Where(item => filter.IsMatch(compilation, item))
+                        ? type.AllInterfaces.Where(filter.IsMatch)
                         : type.AllInterfaces
                 );
 
@@ -519,7 +520,7 @@ internal static class ServiceDescriptorCollection
             {
                 if (emittedTypes.Contains(asType)) continue;
 
-                if (!Helpers.HasImplicitGenericConversion(compilation, asType, type)) continue;
+                if (!ScanAssignability.HasImplicitGenericConversion(compilation, asType, type)) continue;
 
                 var closedServiceType = Helpers.GetClosedGenericConversion(compilation, asType, type);
                 var statement = !asSelf

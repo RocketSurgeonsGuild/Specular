@@ -33,24 +33,22 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: l4cim5mnIPk4MmmE29qzUw==
             case 16:
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
-                items.Add(typeof(global::TestAssembly.IGenericService<>));
-                items.Add(typeof(global::TestAssembly.IKeyedService));
-                items.Add(typeof(global::TestAssembly.IOther));
-                items.Add(typeof(global::TestAssembly.IRequest<>));
-                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.IServiceB));
-                items.Add(typeof(global::TestAssembly.IValidator));
-                items.Add(typeof(global::TestAssembly.IValidator<>));
+                switch (System.IO.Path.GetFileName(filePath))
+                {
+                    // FilePath: Input0.cs Expression: l4cim5mnIPk4MmmE29qzUw==
+                    case "Input0.cs":
+                        items.Add(typeof(global::TestAssembly.IGenericService<>));
+                        items.Add(typeof(global::TestAssembly.IKeyedService));
+                        items.Add(typeof(global::TestAssembly.IOther));
+                        items.Add(typeof(global::TestAssembly.IRequest<>));
+                        items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                        items.Add(typeof(global::TestAssembly.IService));
+                        items.Add(typeof(global::TestAssembly.IServiceB));
+                        items.Add(typeof(global::TestAssembly.IValidator));
+                        items.Add(typeof(global::TestAssembly.IValidator<>));
+                        break;
+                }
+
                 break;
         }
 

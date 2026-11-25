@@ -14,6 +14,15 @@ internal sealed class SpecularScanReport
         []
     , 
         [
+            new("TestProject", "z => z.FromAssemblies().DependenciesFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.WithAnyAttribute(typeof(ServiceRegistrationAttribute)))", 
+                [
+                    new("TestAssembly", 
+                        [
+                            new("global::TestAssembly.GenericService"), 
+                            new("global::TestAssembly.GenericServiceB"), 
+                            new("global::TestAssembly.RequestHandler")]
+                    )]
+            ), 
             new("OtherProject", "z => z.FromAssemblies().DependenciesFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.WithAnyAttribute(typeof(ServiceRegistrationAttribute)))", 
                 [
                     new("TestAssembly", 

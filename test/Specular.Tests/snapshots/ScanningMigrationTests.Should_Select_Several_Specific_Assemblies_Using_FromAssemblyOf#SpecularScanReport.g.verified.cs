@@ -1,0 +1,31 @@
+﻿//HintName: Specular.Analyzers/Specular.Analyzers.SpecularProviderGenerator/SpecularScanReport.g.cs
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+using Specular;
+using Specular.Abstractions;
+using Specular.Diagnostics;
+
+[System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+internal sealed class SpecularScanReport
+{
+    public static ScanResults GetScanResults() => new(
+        []
+    , 
+        []
+    , 
+        [
+            new("TestProject", "z => z.FromAssemblyOf<IServiceA>().FromAssemblyOf<IServiceB>().AddClasses(true).AsSelf().WithSingletonLifetime()", 
+                [
+                    new("DependencyProjectA", 
+                        [
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectA.ServiceA", "global::DependencyProjectA.ServiceA")]
+                    ), 
+                    new("DependencyProjectB", 
+                        [
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectB.ServiceB", "global::DependencyProjectB.ServiceB")]
+                    )]
+            )]
+    );
+}

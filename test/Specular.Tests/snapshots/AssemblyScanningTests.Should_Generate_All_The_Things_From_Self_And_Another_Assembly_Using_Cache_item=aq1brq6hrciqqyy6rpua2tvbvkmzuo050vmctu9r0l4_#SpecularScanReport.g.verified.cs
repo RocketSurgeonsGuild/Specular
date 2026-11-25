@@ -32,6 +32,16 @@ internal sealed class SpecularScanReport
                             new(ServiceLifetime.Singleton, "global::TestAssembly.RequestHandler", "global::TestAssembly.RequestHandler")]
                     )]
             ), 
+            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo<IServiceB>()).WithScopedLifetime()", 
+                [
+                    new("TestAssembly", 
+                        [
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.IServiceB", "global::TestAssembly.Service"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.Nested+ServiceA", "global::TestAssembly.Nested+ServiceA"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.Service", "global::TestAssembly.Service"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.ServiceB", "global::TestAssembly.ServiceB")]
+                    )]
+            ), 
             new("OtherProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IService), typeof(IServiceB))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo<IServiceB>()).WithScopedLifetime()", 
                 [
                     new("TestAssembly", 
