@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.0.0" PrivateAssets="all" />
-        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.21" />
+        <PackageReference Include="System.Collections.Immutable" VersionOverride="9.0.23" />
         <!--
             Not private: Specular.Scanning packs this build as lib/netstandard2.0 and takes the package's dependencies from this
             project's restore output, so generator authors get the System.Text.Json this build references.
         -->
-        <PackageReference Include="System.Text.Json" VersionOverride="9.0.21" GeneratePathProperty="true" />
+        <PackageReference Include="System.Text.Json" VersionOverride="9.0.23" GeneratePathProperty="true" />
     </ItemGroup>
 </Project>
