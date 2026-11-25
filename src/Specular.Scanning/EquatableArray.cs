@@ -1,8 +1,10 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
+#endif
+using System.Collections;
+using System.Collections.Immutable;
 
 namespace Specular.Scanning;
 

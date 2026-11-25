@@ -1,5 +1,7 @@
-using System.Collections.Concurrent;
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System.Diagnostics.CodeAnalysis;
+#endif
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 

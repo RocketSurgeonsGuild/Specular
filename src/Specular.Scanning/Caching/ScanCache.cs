@@ -1,12 +1,14 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
+#endif
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -76,8 +78,10 @@ sealed class ScanCache : IAssemblyScanCache
     private readonly ScanCacheFileData _previous;
     private readonly ConcurrentDictionary<IAssemblySymbol, Guid?> _mvids = new(SymbolEqualityComparer.Default);
     private readonly object _gate = new();
-    private readonly Dictionary<string, Dictionary<string, CachedScanEntry>> _scans = [with(StringComparer.Ordinal)];
-    private readonly Dictionary<string, Dictionary<string, CachedStoreEntry>> _store = [with(StringComparer.Ordinal)];
+    // String keys already compare ordinally by default. Passing StringComparer.Ordinal invites formatters to rewrite the
+    // initializer as a C# 15 collection expression argument, which the C# 14 floor of the Sources package can't compile.
+    private readonly Dictionary<string, Dictionary<string, CachedScanEntry>> _scans = new();
+    private readonly Dictionary<string, Dictionary<string, CachedStoreEntry>> _store = new();
     private readonly MemoizingStore? _storeMemo;
 
     /// <summary>Creates the cache from an already parsed file, so incremental pipelines can parse once per file change.</summary>
@@ -284,7 +288,7 @@ sealed class ScanCache : IAssemblyScanCache
     {
         if (!entries.TryGetValue(key, out var assemblies))
         {
-            assemblies = [with(StringComparer.Ordinal)];
+            assemblies = new();
             entries[key] = assemblies;
         }
 

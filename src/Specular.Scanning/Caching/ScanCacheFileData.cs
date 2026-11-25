@@ -1,5 +1,7 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
 using System.Collections.Generic;
+#endif
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.CodeAnalysis;

@@ -4,7 +4,7 @@
         no implicit or repo-wide global usings), so a change that breaks source consumers fails this repository's build instead of theirs.
     -->
     <PropertyGroup>
-        <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES</DefineConstants>
+        <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES;SPECULAR_SCANNING_EXPLICIT_USINGS</DefineConstants>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <ImplicitUsings>disable</ImplicitUsings>
     </PropertyGroup>

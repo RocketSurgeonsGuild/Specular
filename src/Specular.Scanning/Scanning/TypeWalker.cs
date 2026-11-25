@@ -1,5 +1,7 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
 using System.Threading;
+#endif
 using Microsoft.CodeAnalysis;
 
 namespace Specular.Scanning;

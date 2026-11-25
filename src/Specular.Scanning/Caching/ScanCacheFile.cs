@@ -1,5 +1,7 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
 using System.IO;
+#endif
 using System.Text.Json;
 
 namespace Specular.Scanning;

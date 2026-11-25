@@ -1,7 +1,11 @@
 <Project>
     <!-- Compiles the Specular.Scanning sources as internal types, so they never become part of the consuming generator's API. -->
     <PropertyGroup>
-        <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES</DefineConstants>
+        <!--
+            SPECULAR_SCANNING_EXPLICIT_USINGS turns on the sources' own using directives for System and friends: a consumer may compile
+            without implicit usings, and never has the global usings of Specular's repository, where those directives stay off.
+        -->
+        <DefineConstants>$(DefineConstants);SPECULAR_SCANNING_SOURCES;SPECULAR_SCANNING_EXPLICIT_USINGS</DefineConstants>
     </PropertyGroup>
 
     <!--

@@ -1,4 +1,6 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
+#endif
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using static Specular.Scanning.SelectorArguments;

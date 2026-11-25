@@ -1,4 +1,6 @@
+#if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
+#endif
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
