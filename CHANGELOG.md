@@ -53,8 +53,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   more types or registrations than before. Check those call sites: drop the selections you don't want, or
   exclude assemblies with `NotFromAssemblyOf<T>()`. Selectors with a single specific selection, with only
   `FromAssemblies()`, or with only exclusions behave as before.
+- Specular's generator is now built on `Specular.Scanning`. `SpecularProvider.ctpjson` has a new format and its
+  entries are validated by each referenced assembly's MVID instead of `SpecularHashAttribute` or the
+  informational version, so a referenced project rebuilt with changes is always rescanned. Existing cache files
+  are ignored once and rebuilt.
 
 ### Fixed
+
+- A cached build no longer generates different code from an uncached one when the project and a referenced
+  project contain an identical call site on the same file name and line: cached call-site results were keyed by
+  file name, line and expression only, so the two collided. Cached results are now also kept apart by target
+  (Native AOT or not) and by the request each call site resolved to.
+- An assembly marked `[assembly: ExcludeFromSpecular]` stays excluded on cached builds.
 
 - `[ServiceRegistration<TService>(lifetime)]` and the other generic `ServiceRegistrationAttribute<...>` variants
   are now collected by the generator; previously only the non-generic attribute was matched, so the generic
