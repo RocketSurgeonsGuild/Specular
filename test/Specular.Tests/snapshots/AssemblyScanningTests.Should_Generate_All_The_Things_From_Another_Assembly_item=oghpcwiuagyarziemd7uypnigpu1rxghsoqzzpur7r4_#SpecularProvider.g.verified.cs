@@ -21,26 +21,26 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
             case 16:
-                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                items.Add(OtherProject.GetType("SpecularScanReport")!);
-                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                break;
+                return
+                [
+                    typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
+                    OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
+                    OtherProject.GetType("SpecularScanReport")!,
+                    TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

@@ -52,9 +52,7 @@ internal static class SwitchGenerator
     {
         if (blocks is [var localBlock])
         {
-            return SwitchSection()
-                  .AddStatements(ParseStatements(localBlock.Expression).ToArray())
-                  .AddStatements(BreakStatement());
+            return SectionOf(ParseStatements(localBlock.Expression));
         }
 
         // Several call sites that all share this key (the same file name on a line, as a project's call site and the identical one a
@@ -107,11 +105,18 @@ internal static class SwitchGenerator
             )
     );
 
-    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) => SwitchSection()
-       .AddStatements(ParseStatements(innerGroup is [var first, ..] ? first.Expression : "").ToArray())
-       .AddStatements(BreakStatement());
+    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) =>
+        SectionOf(ParseStatements(innerGroup is [var first, ..] ? first.Expression : ""));
 
-    private static IEnumerable<StatementSyntax> ParseStatements(string expression)
+    // A section that already returns (GetTypes and GetAssemblies) would make a trailing break unreachable code (CS0162) in the
+    // consumer's build.
+    private static SwitchSectionSyntax SectionOf(IEnumerable<StatementSyntax> statements)
+    {
+        var section = SwitchSection().AddStatements(statements.ToArray());
+        return section.Statements.LastOrDefault() is ReturnStatementSyntax or ThrowStatementSyntax ? section : section.AddStatements(BreakStatement());
+    }
+
+    internal static IEnumerable<StatementSyntax> ParseStatements(string expression)
     {
         var tree = ParseSyntaxTree(expression, new CSharpParseOptions(kind: SourceCodeKind.Script));
         return tree

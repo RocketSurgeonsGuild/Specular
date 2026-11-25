@@ -222,7 +222,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
                 context.AddSource(
                     "SpecularProvider.g.cs",
-                    cu.NormalizeWhitespace().SyntaxTree.GetRoot().GetText(Encoding.UTF8)
+                    new CollectionReturnLayout().Visit(cu.NormalizeWhitespace()).GetText(Encoding.UTF8)
                 );
 
                 cache.Save(request.options.GlobalOptions);

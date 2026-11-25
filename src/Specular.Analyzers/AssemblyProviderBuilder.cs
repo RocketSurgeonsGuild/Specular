@@ -46,15 +46,15 @@ internal static class AssemblyProviderBuilder
         }
 
         var resolvedAssemblyDetails = assemblyRequests is { Count: > 0 }
-            ? GenerateMethodBody(AssembliesMethod, dohash(hasher, assemblyRequests, Configuration.JsonSourceGenerationContext.Default.ResolvedSourceLocation))
+            ? GenerateMethodBody(AssembliesMethod, dohash(hasher, assemblyRequests, Configuration.JsonSourceGenerationContext.Default.ResolvedSourceLocation), returnsCollection: true)
             : AssembliesMethod;
 
         var resolvedReflectionDetails = reflectionRequests is { Count: > 0 }
-            ? GenerateMethodBody(TypesMethod, dohash(hasher, reflectionRequests, Configuration.JsonSourceGenerationContext.Default.ResolvedSourceLocation))
+            ? GenerateMethodBody(TypesMethod, dohash(hasher, reflectionRequests, Configuration.JsonSourceGenerationContext.Default.ResolvedSourceLocation), returnsCollection: true)
             : TypesMethod;
 
         var resolvedServiceDescriptorDetails = serviceDescriptorRequests is { Count: > 0 }
-            ? GenerateMethodBody(ScanMethod, dohash(hasher, serviceDescriptorRequests, Configuration.JsonSourceGenerationContext.Default.ResolvedSourceLocation))
+            ? GenerateMethodBody(ScanMethod, dohash(hasher, serviceDescriptorRequests, Configuration.JsonSourceGenerationContext.Default.ResolvedSourceLocation), returnsCollection: false)
             : ScanMethod;
 
         var privateMembers = privateAssemblies
@@ -252,7 +252,10 @@ internal static class AssemblyProviderBuilder
             )
         );
 
-    private static MethodDeclarationSyntax GenerateMethodBody(MethodDeclarationSyntax baseMethod, IEnumerable<ResolvedSourceLocation> locations)
+    // GetTypes and GetAssemblies return each call site's items as one collection expression (returnsCollection); Scan adds to the
+    // services it was given. A call site's code arrives as one items.Add(...) block per scanned assembly, the form the build cache
+    // stores, and is joined below before it becomes that single return.
+    private static MethodDeclarationSyntax GenerateMethodBody(MethodDeclarationSyntax baseMethod, IEnumerable<ResolvedSourceLocation> locations, bool returnsCollection)
     {
         var item = baseMethod.Body?.Statements.ToArray() ?? Array.Empty<StatementSyntax>();
         var returnStatement = item.OfType<ReturnStatementSyntax>().Take(1).Cast<StatementSyntax>().ToImmutableList();
@@ -287,6 +290,7 @@ internal static class AssemblyProviderBuilder
                                                )
                                            )
                                     )
+                                   .Select(location => returnsCollection ? location with { Expression = ToCollectionReturn(location.Expression) } : location)
                                    .ToImmutableList()
                             )
                         )
@@ -295,23 +299,47 @@ internal static class AssemblyProviderBuilder
             );
     }
 
-    private static LocalDeclarationStatementSyntax GetCollectionVariable(TypeSyntax type) => LocalDeclarationStatement(
-        VariableDeclaration(IdentifierName(Identifier(TriviaList(), SyntaxKind.VarKeyword, "var", "var", TriviaList())))
-           .WithVariables(
-                SingletonSeparatedList(
-                    VariableDeclarator(Identifier("items"))
-                       .WithInitializer(
-                            EqualsValueClause(
-                                ObjectCreationExpression(
-                                        GenericName(Identifier("List"))
-                                           .WithTypeArgumentList(TypeArgumentList(SingletonSeparatedList(type)))
-                                    )
-                                   .WithArgumentList(ArgumentList())
-                            )
-                        )
-                )
-            )
-    );
+    // items.Add(a); items.Add(b); ... becomes return [a, b, ...];. Comments in the blocks (a type the generator could not name) are
+    // kept on the return.
+    private static string ToCollectionReturn(string expression)
+    {
+        var elements = new List<CollectionElementSyntax>();
+        var comments = new List<SyntaxTrivia>();
+        foreach (var statement in SwitchGenerator.ParseStatements(expression))
+        {
+            if (statement is ExpressionStatementSyntax
+                {
+                    Expression: InvocationExpressionSyntax
+                    {
+                        Expression: MemberAccessExpressionSyntax { Expression: IdentifierNameSyntax { Identifier.ValueText: "items" }, Name.Identifier.ValueText: "Add" },
+                        ArgumentList.Arguments: [var argument],
+                    },
+                })
+            {
+                elements.Add(ExpressionElement(argument.Expression));
+                continue;
+            }
+
+            if (statement is not EmptyStatementSyntax)
+            {
+                throw new InvalidOperationException($"Unexpected statement in a collection call site: {statement}");
+            }
+
+            AddComments(comments, statement.GetLeadingTrivia());
+            AddComments(comments, statement.GetTrailingTrivia());
+        }
+
+        var returnStatement = ReturnStatement(CollectionExpression(SeparatedList(elements))).WithLeadingTrivia(comments);
+        return Block(returnStatement).ToFullString();
+
+        static void AddComments(List<SyntaxTrivia> comments, SyntaxTriviaList trivia)
+        {
+            foreach (var item in trivia)
+            {
+                if (item.IsKind(SyntaxKind.SingleLineCommentTrivia)) comments.AddRange([item, CarriageReturnLineFeed]);
+            }
+        }
+    }
 
     // public static ISpecularProvider Instance { get; } = new SpecularProvider();
     // Exposes the generated provider as a compile-time singleton so consumers can reference it
@@ -379,12 +407,7 @@ internal static class AssemblyProviderBuilder
                 Parameter(Identifier("argumentExpression"))
                    .WithType(PredefinedType(Token(SyntaxKind.StringKeyword)))
             )
-           .WithBody(
-                Block(
-                    GetCollectionVariable(IdentifierName("Type")),
-                    ReturnStatement(IdentifierName("items"))
-                )
-            );
+           .WithBody(Block(ReturnStatement(CollectionExpression())));
 
     private static readonly MethodDeclarationSyntax ScanMethod =
         MethodDeclaration(ParseName("Microsoft.Extensions.DependencyInjection.IServiceCollection"), Identifier("Scan"))
@@ -422,10 +445,5 @@ internal static class AssemblyProviderBuilder
                 Parameter(Identifier("filePath")).WithType(PredefinedType(Token(SyntaxKind.StringKeyword))),
                 Parameter(Identifier("argumentExpression")).WithType(PredefinedType(Token(SyntaxKind.StringKeyword)))
             )
-           .WithBody(
-                Block(
-                    GetCollectionVariable(IdentifierName("Assembly")),
-                    ReturnStatement(IdentifierName("items"))
-                )
-            );
+           .WithBody(Block(ReturnStatement(CollectionExpression())));
 }

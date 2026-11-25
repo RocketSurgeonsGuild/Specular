@@ -21,14 +21,12 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
-        return items;
+        return [];
     }
 
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
-        return items;
+        return [];
     }
 
     Microsoft.Extensions.DependencyInjection.IServiceCollection ISpecularProvider.Scan(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Action<IServiceDescriptorAssemblySelector> selector, int lineNumber, string filePath, string argumentExpression)

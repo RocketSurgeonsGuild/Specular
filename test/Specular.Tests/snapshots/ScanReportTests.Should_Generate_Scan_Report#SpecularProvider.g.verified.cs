@@ -25,34 +25,36 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     IEnumerable<Assembly> ISpecularProvider.GetAssemblies(Action<IReflectionAssemblySelector> action, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Assembly>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: 2P1eaG0/r+RK+w4MBSkiXw==
             case 12:
-                items.Add(typeof(global::TestAssembly.IService).Assembly);
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IService).Assembly
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
-        var items = new List<Type>();
         switch (lineNumber)
         {
             // FilePath: Input0.cs Expression: j1kAY1VBS7g92zgylAhuvw==
             case 16:
-                items.Add(typeof(global::TestAssembly.IService));
-                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                items.Add(typeof(global::TestAssembly.Service));
-                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                break;
+                return
+                [
+                    typeof(global::TestAssembly.IService),
+                    typeof(global::TestAssembly.Nested.ServiceA),
+                    typeof(global::TestAssembly.Service),
+                    TestAssembly.GetType("TestAssembly.ServiceB")!
+                ];
         }
 
-        return items;
+        return [];
     }
 
     [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]

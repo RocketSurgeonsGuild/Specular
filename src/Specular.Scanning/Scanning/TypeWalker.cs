@@ -7,9 +7,10 @@ using Microsoft.CodeAnalysis;
 namespace Specular.Scanning;
 
 /// <summary>
-///     Walks the types of an assembly the way Specular's <c>TypeSymbolVisitorBase</c> does: every namespace, then every type and its
-///     nested types, offering only types that can be referenced by name (compiler-generated types are skipped, their nested types
-///     are still walked).
+///     Walks the types of an assembly: every namespace, then every type and its nested types, offering only types that can be
+///     referenced by name. A type that can't be (compiler-generated, such as the <c>&lt;&gt;z__ReadOnlyArray&lt;T&gt;</c> collection
+///     expressions emit) is skipped with everything nested in it: C# can't declare a type inside one, so whatever is nested there is
+///     compiler-generated too, even when its own name is speakable (<c>&lt;&gt;z__ReadOnlySingleElementList&lt;T&gt;.Enumerator</c>).
 /// </summary>
 internal static class TypeWalker
 {
@@ -34,7 +35,8 @@ internal static class TypeWalker
     private static bool WalkType(INamedTypeSymbol type, Func<INamedTypeSymbol, bool> visit, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        if (type.CanBeReferencedByName && !visit(type)) return false;
+        if (!type.CanBeReferencedByName) return true;
+        if (!visit(type)) return false;
 
         foreach (var nested in type.GetTypeMembers())
         {

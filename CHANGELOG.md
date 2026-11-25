@@ -54,6 +54,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   more types or registrations than before. Check those call sites: drop the selections you don't want, or
   exclude assemblies with `NotFromAssemblyOf<T>()`. Selectors with a single specific selection, with only
   `FromAssemblies()`, or with only exclusions behave as before.
+- `GetTypes` and `GetAssemblies` on the generated provider now return each call site's results as a read-only collection
+  (a collection expression) instead of a new `List<T>`, and an empty collection without allocating when no call site
+  matches. Enumerating them is about 3× faster and `ToList()` about 7× faster, with roughly half the allocations.
+  **Migrating:** code that cast the result to `List<T>` to modify it should copy it first (`.ToList()`).
 - Specular's generator is now built on `Specular.Scanning`. `SpecularProvider.ctpjson` has a new format and its
   entries are validated by each referenced assembly's MVID instead of `SpecularHashAttribute` or the
   informational version, so a referenced project rebuilt with changes is always rescanned. Existing cache files
@@ -66,6 +70,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   file name, line and expression only, so the two collided. Cached results are now also kept apart by target
   (Native AOT or not) and by the request each call site resolved to.
 - An assembly marked `[assembly: ExcludeFromSpecular]` stays excluded on cached builds.
+- Scanning a referenced assembly for all its types no longer picks up types nested inside compiler-generated ones, such as
+  the `Enumerator` of the `<>z__ReadOnlySingleElementList<T>` that C# 12 collection expressions emit, which the provider
+  could not load and returned as `null`.
 
 - `[ServiceRegistration<TService>(lifetime)]` and the other generic `ServiceRegistrationAttribute<...>` variants
   are now collected by the generator; previously only the non-generic attribute was matched, so the generic
