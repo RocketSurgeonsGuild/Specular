@@ -57,7 +57,7 @@ public class ScanningMigrationTests : GeneratorTest
                           .GenerateAsync(cancellationToken);
 
         var services = await StaticHelper.ExecuteStaticServiceCollectionMethod(result, "Program", "LoadServices");
-        var implementationTypes = services.Select(z => z.ImplementationType?.FullName).Order().ToArray();
+        var implementationTypes = services.Select(z => z.ImplementationType?.FullName ?? "").Order().ToArray();
         await Assert.That(implementationTypes).IsEquivalentTo(["DependencyProjectA.ServiceA", "DependencyProjectB.ServiceB"]);
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
@@ -179,7 +179,7 @@ public class ScanningMigrationTests : GeneratorTest
                .Results
                .SelectMany(z => z.Value.SyntaxTrees)
                .Single(z => z.FilePath.EndsWith("SpecularProvider.g.cs", StringComparison.Ordinal))
-               .GetText()
+               .GetText(CancellationToken.None)
                .ToString();
 
         static string WithoutHash(string provider) =>

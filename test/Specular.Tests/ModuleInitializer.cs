@@ -222,7 +222,7 @@ internal static partial class ModuleInitializer
                                        )
                                    );
 
-        var data = new Dictionary<string, object>
+        var data = new Dictionary<string, object?>
         {
             ["GlobalOptions"] = target.GlobalOptions,
             ["FileOptions"] = target.FileOptions,
@@ -260,10 +260,16 @@ internal static partial class ModuleInitializer
             {
                 foreach (var assembly in request.Value.EnumerateObject())
                 {
-                    var types = assembly.Value.TryGetProperty("types", out var typesElement)
-                        ? typesElement.EnumerateArray().Select(z => z.GetProperty("name").GetString() ?? "").ToArray()
-                        : [];
-                    scans.Add((assembly.Name, types));
+                    var types = new List<string>();
+                    if (assembly.Value.TryGetProperty("types", out var typesElement))
+                    {
+                        foreach (var type in typesElement.EnumerateArray())
+                        {
+                            types.Add(type.GetProperty("name").GetString() ?? "");
+                        }
+                    }
+
+                    scans.Add((assembly.Name, types.ToArray()));
                 }
             }
         }
