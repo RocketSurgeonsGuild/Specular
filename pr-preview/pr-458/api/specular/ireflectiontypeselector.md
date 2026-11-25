@@ -2,10 +2,10 @@
 
 - Kind: `interface`
 - Package: [Specular](/Specular/pr-preview/pr-458/api/specular.md)
-- Version: `0.4.3-pr.54`
+- Version: `0.4.3-pr.55`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0d4820f523c7a6fe6398c30e573a15ca7e396ffa/src/Specular/Abstractions/IReflectionTypeSelector.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0fc2d3763ad1af52ac3c220ba5c57d4f9a9198d7/src/Specular/Abstractions/IReflectionTypeSelector.cs)
 - Implements: [IReflectionAssemblySelector](/Specular/pr-preview/pr-458/api/specular/ireflectionassemblyselector.md)
 
 The Compiled Implementation Type Selector

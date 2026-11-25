@@ -2,10 +2,10 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/pr-preview/pr-458/api/specular.md)
-- Version: `0.4.3-pr.54`
+- Version: `0.4.3-pr.55`
 - Namespace: `Specular`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0d4820f523c7a6fe6398c30e573a15ca7e396ffa/src/Specular/RegistrationLifetimeAttribute.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0fc2d3763ad1af52ac3c220ba5c57d4f9a9198d7/src/Specular/RegistrationLifetimeAttribute.cs)
 - Inherits: `Attribute`
 
 Defines the lifetime that should be used service registrations created using the [ISpecularProvider](/Specular/pr-preview/pr-458/api/specular/ispecularprovider.md)
