@@ -187,6 +187,16 @@ context.RegisterSourceOutput(results, static (output, scans) =>
 Tuple element names are compile-time only, so they don't carry from the requests to the results: name the results where you
 read them, as above.
 
+If the requests come from different parts of your pipeline, pass the providers separately instead (2 to 8 of them). They're
+combined into one scan, and the results come back in parameter order:
+
+```csharp
+var handlers = context.CompilationProvider.Select(static (compilation, _) => ScanRequest.Build(compilation, BuildHandlerScan));
+var plugins = context.CompilationProvider.Select(static (compilation, _) => ScanRequest.Build(compilation, BuildPluginScan));
+
+IncrementalValueProvider<(ScanResult, ScanResult)> results = context.Scan(ConsumerId, handlers, plugins);
+```
+
 Don't call `Scan` twice with the same consumer id. Each call saves only the entries its own requests used, so two calls that
 share a file keep overwriting each other's entries.
 

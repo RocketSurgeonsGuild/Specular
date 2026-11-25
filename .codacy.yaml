@@ -1,0 +1,6 @@
+---
+# Codacy repository configuration. Once this file exists, the "Ignored files" set in Codacy's UI no longer apply: every exclusion
+# belongs here. Individual patterns (rules) can't be turned off from this file; that's done on the repository's Code patterns page.
+exclude_paths:
+    # Verify snapshots: generated test output, reviewed as snapshots in pull requests rather than analysed as source.
+    - 'test/**/snapshots/**'
