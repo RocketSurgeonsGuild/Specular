@@ -86,9 +86,9 @@ internal sealed class TypeReferenceResolver(Compilation compilation, IReadOnlyDi
     // all, so constructing with either would not name a type any scanned type could be assignable to.
     private INamedTypeSymbol? ResolveArgument(TypeReference reference)
     {
-        return  reference.UnboundGeneric || Resolve(reference) is not { } argument 
-            ?   null  
-            :  reference.TypeArguments.Count == 0 && ContainingTypesAndSelf(argument).Exists(static level => level.Arity > 0) ? null : argument;
+        return reference.UnboundGeneric || Resolve(reference) is not { } argument
+            ? null
+            : reference.TypeArguments.Count == 0 && ContainingTypesAndSelf(argument).Exists(static level => level.Arity > 0) ? null : argument;
     }
 
     private static List<INamedTypeSymbol> ContainingTypesAndSelf(INamedTypeSymbol type)
