@@ -14,7 +14,7 @@ Identifies a type selected by a type scan expression.
 - Name: `TypeName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.29783dc3f8d345cefecb806bc9490ff042876628/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92746cd764a24dc2a09e277715cf2ea1a1585dfc/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string TypeName { get; init; }

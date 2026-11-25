@@ -2,10 +2,10 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.2`
+- Version: `0.4.3-beta.3`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.29783dc3f8d345cefecb806bc9490ff042876628/src/Specular/Abstractions/SpecularHashAttribute.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92746cd764a24dc2a09e277715cf2ea1a1585dfc/src/Specular/Abstractions/SpecularHashAttribute.cs)
 - Inherits: `Attribute`
 
 Attribute used to define the compiled type provider for a given assembly

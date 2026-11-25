@@ -14,7 +14,7 @@ Contains the registrations produced by a service descriptor scan expression.
 - Name: `Entries`
 - Modifiers: `get; init`
 - Returns: `ImmutableList<ServiceDescriptorAssemblyScanReportEntry>`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.29783dc3f8d345cefecb806bc9490ff042876628/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92746cd764a24dc2a09e277715cf2ea1a1585dfc/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ImmutableList<ServiceDescriptorAssemblyScanReportEntry> Entries { get; init; }
@@ -27,7 +27,7 @@ public ImmutableList<ServiceDescriptorAssemblyScanReportEntry> Entries { get; in
 - Name: `SourceAssemblyName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.29783dc3f8d345cefecb806bc9490ff042876628/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92746cd764a24dc2a09e277715cf2ea1a1585dfc/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string SourceAssemblyName { get; init; }
@@ -40,7 +40,7 @@ public string SourceAssemblyName { get; init; }
 - Name: `SourceExpression`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.29783dc3f8d345cefecb806bc9490ff042876628/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92746cd764a24dc2a09e277715cf2ea1a1585dfc/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string SourceExpression { get; init; }
