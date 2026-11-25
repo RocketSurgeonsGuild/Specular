@@ -37,8 +37,12 @@ static partial class Scanner
             return new(request, passing.Select(static z => new ScannedAssembly(z.MetadataName, false)).ToImmutableArray(), EquatableArray<ScannedType>.Empty);
         }
 
-        // Built on first use: when every assembly comes from the cache, the filter's type references never need resolving.
-        TypeMatcher? typeMatcher = null;
+        // Resolved up front rather than on the first walk: which references resolve depends on the request and the compilation, not on
+        // which assemblies the cache serves, and the result reports the ones that did not.
+        var typeMatcher = new TypeMatcher(compilation, request.Types ?? TypeFilterData.All, new(compilation, byName));
+        // Results computed while a reference is unresolved (a typo, a missing or ambiguous reference) change when it starts resolving,
+        // without any scanned assembly's MVID changing; so such a scan neither trusts the cache nor writes to it.
+        var assemblyCache = typeMatcher.UnresolvedTypes.IsEmpty ? cache : null;
         var scannedAssemblies = ImmutableArray.CreateBuilder<ScannedAssembly>(passing.Count);
         var types = new List<ScannedType>();
         foreach (var assembly in passing)
@@ -54,17 +58,21 @@ static partial class Scanner
             scannedAssemblies.Add(new(assembly.MetadataName, hasInaccessibleMatches));
         }
 
-        return new(request, scannedAssemblies.MoveToImmutable(), types.OrderBy(static z => z.AssemblyName, StringComparer.Ordinal).ThenBy(static z => z.MetadataName, StringComparer.Ordinal).ToImmutableArray());
+        return new(request, scannedAssemblies.MoveToImmutable(), types.OrderBy(static z => z.AssemblyName, StringComparer.Ordinal).ThenBy(static z => z.MetadataName, StringComparer.Ordinal).ToImmutableArray())
+        {
+            UnresolvedTypes = typeMatcher.UnresolvedTypes,
+        };
 
         EquatableArray<ScannedType> GetAssemblyTypes(IAssemblySymbol assembly)
         {
+            if (typeMatcher.MatchesNothing) return EquatableArray<ScannedType>.Empty;
+
             // The compilation's own assembly changes with every edit, so only references go through the cache.
             var isReference = !SymbolEqualityComparer.Default.Equals(assembly, compilation.Assembly);
-            if (isReference && cache is { } && cache.TryGetTypes(request, assembly, out var cached)) return cached;
+            if (isReference && assemblyCache is { } && assemblyCache.TryGetTypes(request, assembly, out var cached)) return cached;
 
-            typeMatcher ??= new(compilation, request.Types ?? TypeFilterData.All, new(compilation, byName));
             var walked = WalkAssembly(compilation, assembly, typeMatcher, cancellationToken);
-            if (isReference) cache?.SetTypes(request, assembly, walked);
+            if (isReference) assemblyCache?.SetTypes(request, assembly, walked);
             return walked;
         }
     }

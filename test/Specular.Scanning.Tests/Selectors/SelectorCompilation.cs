@@ -19,6 +19,7 @@ internal static class SelectorCompilation
             public interface IHandler { }
             public interface IHandler<T> { }
             public sealed class LibraryAttribute : System.Attribute { }
+            public sealed class TagAttribute<T> : System.Attribute { }
         }
         """;
 
