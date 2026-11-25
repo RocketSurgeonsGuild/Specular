@@ -12,9 +12,10 @@ internal enum ExactTypeFilterKind
 }
 
 /// <summary>
-///     A type or attribute clause matched against the exact symbols a selector in source named. Specular.Scanning names types by metadata
-///     name, which cannot express a constructed generic such as <c>IHandler&lt;Request&gt;</c>; Specular uses this filter for any clause
-///     whose types would not resolve back to the same symbols, so selectors keep matching what they always have.
+///     A type or attribute clause matched against the exact symbols a selector in source named. Specular.Scanning names types by
+///     reference, which cannot express everything a symbol can (a type argument that is an array or a type parameter, a generic
+///     definition); Specular uses this filter for any clause whose types would not resolve back to the same symbols, so selectors keep
+///     matching what they always have.
 /// </summary>
 internal sealed class ExactTypeFilter(ExactTypeFilterKind kind, bool include, ImmutableArray<INamedTypeSymbol> types) : CustomTypeFilter
 {

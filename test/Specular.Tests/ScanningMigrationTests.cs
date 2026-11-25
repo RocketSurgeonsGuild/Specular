@@ -62,6 +62,64 @@ public class ScanningMigrationTests : GeneratorTest
         await Verify(new GeneratorTestResultsWithServices(result, services));
     }
 
+    // A closed generic in a selector matches that closed type only, whether a type reference can name it (IHandler<string>) or not
+    // (IHandler<string[]>, matched against the symbol itself).
+    [Test]
+    public async Task Should_Match_Closed_Generics_Exactly(CancellationToken cancellationToken)
+    {
+        var result = await Builder
+                          .AddSources(
+                               """
+                               using Specular;
+                               using Specular.Abstractions;
+                               using Microsoft.Extensions.DependencyInjection;
+
+                               namespace TestProject
+                               {
+                                   public interface IHandler<T> { }
+                                   public class StringHandler : IHandler<string> { }
+                                   public class IntHandler : IHandler<int> { }
+                                   public class ArrayHandler : IHandler<string[]> { }
+
+                                   public static class Program
+                                   {
+                                       static void Main() { }
+                                       static IServiceCollection LoadServices()
+                                       {
+                                           var services = new ServiceCollection();
+                                           ISpecularProvider provider = SpecularProvider.Instance;
+                                           provider.Scan(
+                                               services,
+                                               z => z
+                                                   .FromAssemblyOf<StringHandler>()
+                                                   .AddClasses(x => x.AssignableTo<IHandler<string>>())
+                                                   .AsSelf()
+                                                   .WithSingletonLifetime()
+                                           );
+                                           provider.Scan(
+                                               services,
+                                               z => z
+                                                   .FromAssemblyOf<StringHandler>()
+                                                   .AddClasses(x => x.AssignableTo(typeof(IHandler<string[]>)))
+                                                   .AsSelf()
+                                                   .WithScopedLifetime()
+                                           );
+                                           return services;
+                                       }
+                                   }
+                               }
+                               """
+                           )
+                          .AddCacheOptions(GetTempPath())
+                          .Build()
+                          .GenerateAsync(cancellationToken);
+
+        var services = await StaticHelper.ExecuteStaticServiceCollectionMethod(result, "Program", "LoadServices");
+        var registrations = services.Select(z => $"{z.Lifetime} {z.ImplementationType?.FullName}").Order().ToArray();
+        await Assert.That(registrations).IsEquivalentTo(["Scoped TestProject.ArrayHandler", "Singleton TestProject.StringHandler"]);
+        await Verify(new GeneratorTestResultsWithServices(result, services));
+    }
+
     // The cache file written by one run is read back by the next: a cached result for a referenced assembly is used as is.
     [Test]
     public async Task Should_Read_The_Cache_File_Back_On_The_Next_Run(CancellationToken cancellationToken)

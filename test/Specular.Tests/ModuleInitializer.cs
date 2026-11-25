@@ -317,8 +317,7 @@ internal static partial class ModuleInitializer
             JsonValueKind.Number => element.GetRawText(),
             JsonValueKind.True => true,
             JsonValueKind.False => false,
-            JsonValueKind.Undefined => throw new NotImplementedException(),
-            JsonValueKind.Null => throw new NotImplementedException(),
+            JsonValueKind.Null or JsonValueKind.Undefined => null,
             _ => null,
         };
 

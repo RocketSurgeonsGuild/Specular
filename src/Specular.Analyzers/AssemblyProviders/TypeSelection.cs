@@ -225,21 +225,18 @@ internal sealed class TypeSelectionBuilder(ScanEnvironment environment)
     // Sets enumerate in hash order, which for strings changes between processes; the request's cache key must not.
     private static ImmutableArray<string> Sorted(ImmutableHashSet<string> values) => values.OrderBy(static z => z, StringComparer.Ordinal).ToImmutableArray();
 
-    // A clause whose types all resolve back to the very same symbols is a plain Specular.Scanning clause. Anything else (a constructed
-    // generic, a type the compilation cannot find by name, no types at all) is matched against the symbols themselves.
+    // A clause whose types all resolve back to the very same symbols is a plain Specular.Scanning clause; a closed generic such as
+    // IHandler<int> keeps its type arguments. Anything that does not round-trip (a type argument a reference cannot name, such as an
+    // array or a type parameter; a generic definition; a type the compilation cannot find by name; no types at all) is matched against
+    // the symbols themselves, exactly as before.
     private void AddTypes(ExactTypeFilterKind kind, bool include, IEnumerable<INamedTypeSymbol> types)
     {
         var symbols = types.ToImmutableArray();
-        var references = ImmutableArray.CreateBuilder<TypeReference>(symbols.Length);
+        var references = new List<(TypeReference Reference, string Key)>(symbols.Length);
         foreach (var symbol in symbols)
         {
-            var reference = new TypeReference(
-                symbol.ContainingAssembly?.MetadataName ?? "",
-                ScanSymbolNames.GetFullMetadataName(symbol),
-                symbol.IsUnboundGenericType
-            );
-            if (!SymbolEqualityComparer.Default.Equals(environment.Resolver.Resolve(reference), symbol)) break;
-            references.Add(reference);
+            if (ToTypeReference(kind, symbol) is not { } reference) break;
+            references.Add((reference, symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)));
         }
 
         if (symbols.Length == 0 || references.Count != symbols.Length)
@@ -249,9 +246,11 @@ internal sealed class TypeSelectionBuilder(ScanEnvironment environment)
         }
 
         var sorted = references
-                    .OrderBy(static z => z.AssemblyName, StringComparer.Ordinal)
-                    .ThenBy(static z => z.MetadataName, StringComparer.Ordinal)
-                    .ThenBy(static z => z.UnboundGeneric)
+                    .OrderBy(static z => z.Reference.AssemblyName, StringComparer.Ordinal)
+                    .ThenBy(static z => z.Reference.MetadataName, StringComparer.Ordinal)
+                    .ThenBy(static z => z.Reference.UnboundGeneric)
+                    .ThenBy(static z => z.Key, StringComparer.Ordinal)
+                    .Select(static z => z.Reference)
                     .ToImmutableArray();
         switch (kind)
         {
@@ -267,6 +266,32 @@ internal sealed class TypeSelectionBuilder(ScanEnvironment environment)
             default:
                 throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
         }
+    }
+
+    // WithAnyAttribute compares attribute classes by name and namespace, so its references name the generic definition (no type
+    // arguments) and only have to resolve to the same definition.
+    private TypeReference? ToTypeReference(ExactTypeFilterKind kind, INamedTypeSymbol symbol)
+    {
+        TypeReference reference;
+        try
+        {
+            reference = SelectorArguments.ToTypeReference(symbol, nameof(symbol));
+        }
+        catch (ArgumentException)
+        {
+            return null;
+        }
+
+        if (kind == ExactTypeFilterKind.WithAnyAttribute)
+        {
+            reference = reference with { TypeArguments = EquatableArray<TypeReference>.Empty };
+            return environment.Resolver.Resolve(reference) is { } definition
+             && SymbolEqualityComparer.Default.Equals(definition.OriginalDefinition, symbol.OriginalDefinition)
+                ? reference
+                : null;
+        }
+
+        return SymbolEqualityComparer.Default.Equals(environment.Resolver.Resolve(reference), symbol) ? reference : null;
     }
 
     // The payload Specular has always written: each kind of clause in its own list, ordered as below so equal selectors write equal
