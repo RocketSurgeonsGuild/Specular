@@ -48,8 +48,11 @@ Requirements for both packages:
 </ItemGroup>
 ```
 
-When you pack the generator, the package adds `Specular.Scanning.dll` and its `System.Text.Json.dll` to every
-`analyzers/` folder your generator is packed into. See [Packaging](#packaging-and-msbuild).
+The package depends on `System.Text.Json` and `System.Collections.Immutable` 9.0.21 or later, so you don't reference them
+yourself; an older version pinned in your project fails restore with `NU1605`. When you pack the generator, the package adds
+`Specular.Scanning.dll` and its `System.Text.Json.dll` to every `analyzers/` folder your generator is packed into. If you
+reference a newer `System.Text.Json` than the bundled one, pack that `System.Text.Json.dll` beside your generator yourself; a
+file your project packs takes precedence. See [Packaging](#packaging-and-msbuild).
 
 ### `Specular.Scanning.Sources` (source-only)
 
@@ -411,8 +414,8 @@ The file format is described in [Scan cache file](../../architecture/scan-cache-
 
 A generator often derives something else from each referenced assembly, such as a manifest read from its attributes.
 `ScanCache` stores such values per assembly, under the same MVID rules, in a consumer's cache file. Values are serialized
-with a `JsonTypeInfo<T>` you supply, so your generator references `System.Text.Json` itself and uses a source-generated
-`JsonSerializerContext`:
+with a `JsonTypeInfo<T>` you supply from a source-generated `JsonSerializerContext` (the DLL package brings
+`System.Text.Json` and its source generator; with the Sources package you reference it yourself):
 
 ```csharp
 public sealed class PluginManifest
@@ -499,14 +502,15 @@ rescan on every build, and `Clean` still deletes the files.
 
 Set these in your generator's project file.
 
-| Property                             | Default                                    | Effect                                                                                                                                                                       |
-| ------------------------------------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `SpecularScanningPack`               | `true`                                     | `false` adds nothing to the package.                                                                                                                                         |
-| `SpecularScanningBundleLibrary`      | `true`                                     | `false` leaves `Specular.Scanning.dll` out of the `analyzers/` folders; the generator then has to ship it. DLL package only.                                                 |
-| `SpecularScanningPackCacheTargets`   | `true`                                     | `false` leaves the cache wiring out of the package. Projects using the generator then rescan on every build unless they import `Specular.Scanning.Cache.targets` themselves. |
-| `SpecularScanningAnalyzerPackPaths`  | empty                                      | The `analyzers/` folders the generator is packed into, separated by `;`. Replaces the folders read from the pack items; set it when you pack the generator some other way.   |
-| `SpecularScanningAddToTargetPath`    | `true` (`false` with `ImportCacheTargets`) | `false` stops returning `Specular.Scanning.dll` from `GetTargetPath`. DLL package only. See [ProjectReference](#using-the-generator-through-a-projectreference).             |
-| `SpecularScanningImportCacheTargets` | `false`                                    | `true` imports the cache wiring into this project. For a project that uses the generator through a `ProjectReference`.                                                       |
+| Property                             | Default                                    | Effect                                                                                                                                                                                                                                                                              |
+| ------------------------------------ | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SpecularScanningPack`               | `true`                                     | `false` adds nothing to the package.                                                                                                                                                                                                                                                |
+| `SpecularScanningBundleLibrary`      | `true`                                     | `false` leaves `Specular.Scanning.dll` out of the `analyzers/` folders; the generator then has to ship it. DLL package only.                                                                                                                                                        |
+| `SpecularScanningPackCacheTargets`   | `true`                                     | `false` leaves the cache wiring out of the package. Projects using the generator then rescan on every build unless they import `Specular.Scanning.Cache.targets` themselves.                                                                                                        |
+| `SpecularScanningAnalyzerPackPaths`  | empty                                      | The `analyzers/` folders the generator is packed into, separated by `;`. Replaces the folders read from the pack items; set it when you pack the generator some other way.                                                                                                          |
+| `SpecularScanningLibraryAssembly`    | the package's Roslyn 5.0 build             | The `Specular.Scanning.dll` returned from `GetTargetPath`, with the `System.Text.Json.dll` beside it. Empty with the Sources package. Set it when the generator references the library's project rather than a package; see [In this repository](#referencing-the-library-project). |
+| `SpecularScanningAddToTargetPath`    | `true` (`false` with `ImportCacheTargets`) | `false` stops returning `Specular.Scanning.dll` and its `System.Text.Json.dll` from `GetTargetPath`. See [ProjectReference](#using-the-generator-through-a-projectreference).                                                                                                       |
+| `SpecularScanningImportCacheTargets` | `false`                                    | `true` imports the cache wiring into this project. For a project that uses the generator through a `ProjectReference`.                                                                                                                                                              |
 
 The helper finds your `analyzers/` folders from what the project packs: `None` and `Content` items with `Pack="true"` and a
 `PackagePath`, and `TfmSpecificPackageFile` items. That covers the usual generator layouts.
@@ -537,9 +541,34 @@ Inside your own solution (tests, samples) you may use the generator through a `P
 </PropertyGroup>
 ```
 
-- With the DLL package, the generator's project returns `Specular.Scanning.dll` from `GetTargetPath`, so the referencing
-  project loads it beside the generator. A test project that references the generator gets it copied to its output.
+- With the DLL package, the generator's project returns `Specular.Scanning.dll` and its `System.Text.Json.dll` from
+  `GetTargetPath`, so the referencing project passes both to the compiler beside the generator.
+- A test project that runs the generator in-process (with `CSharpGeneratorDriver`) gets `Specular.Scanning.dll` copied to its
+  output but not listed in its `.deps.json`, so loading the generator fails with `FileNotFoundException`. Reference
+  `Specular.Scanning` from the test project too.
 - The referencing project imports the cache wiring itself, through the package reference and
   `SpecularScanningImportCacheTargets` above. Use the `Specular.Scanning` package for this even when your generator uses
   `Specular.Scanning.Sources`: the Sources package's build files also set the project's default `LangVersion` and define
   `SPECULAR_SCANNING_SOURCES`, which a project that only uses the generator doesn't want.
+
+### Referencing the library project
+
+A generator in the same repository as `Specular.Scanning` (as the samples in Specular's repository are) can't use the package's
+build files, which expect the package layout. Reference the project and import the pack helper directly, pointing
+`SpecularScanningLibraryAssembly` at the library's Roslyn 5.0 build:
+
+```xml
+<ItemGroup>
+    <ProjectReference Include="../Specular.Scanning/Specular.Scanning.csproj" PrivateAssets="all" />
+</ItemGroup>
+
+<PropertyGroup>
+    <SpecularScanningLibraryAssembly>$(MSBuildThisFileDirectory)../Specular.Scanning.supports/bin/roslyn5.0/$(Configuration)/netstandard2.0/Specular.Scanning.dll</SpecularScanningLibraryAssembly>
+</PropertyGroup>
+
+<Import Project="../Specular.Scanning/build/Specular.Scanning.Pack.targets" />
+```
+
+Projects that use such a generator import `Specular.Scanning/build/Specular.Scanning.Cache.targets` for the cache wiring.
+`samples/generators` in Specular's repository is a working example. Packing a generator wired this way bundles nothing; use
+the package for generators you publish.

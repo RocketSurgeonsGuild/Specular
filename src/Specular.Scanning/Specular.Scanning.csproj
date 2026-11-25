@@ -77,4 +77,21 @@
             Text="$(RestoreOutputAbsolutePath)project.assets.json is missing: restore Specular.Scanning before packing it, so the package declares the dependencies of its lib/netstandard2.0 build."
         />
     </Target>
+    <!--
+        RestoreOutputAbsolutePath is NuGet's internal property. If NuGet stops reading it, pack silently falls back to this project's
+        own dependencies, which have no System.Text.Json (it's PrivateAssets="all" here), so its absence in the nuspec shows the
+        redirect above stopped working.
+    -->
+    <Target Name="_ScanningVerifyPackedDependencies" AfterTargets="GenerateNuspec">
+        <XmlPeek
+            XmlInputPath="$(MSBuildProjectDirectory)/$(NuspecOutputPath)$(PackageId).$(PackageVersion).nuspec"
+            Query="//*[local-name()='dependency' and @id='System.Text.Json']/@version"
+        >
+            <Output TaskParameter="Result" PropertyName="_ScanningPackedJsonVersion" />
+        </XmlPeek>
+        <Error
+            Condition="'$(_ScanningPackedJsonVersion)' == ''"
+            Text="The Specular.Scanning package declares no System.Text.Json dependency: the redirect in _ScanningPackLibraryDependencies no longer takes effect, so the package would carry this project's dependencies instead of its lib/netstandard2.0 build's."
+        />
+    </Target>
 </Project>
