@@ -33,28 +33,21 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: btOVlu+Naw13LAV9tKR6WA==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: btOVlu+Naw13LAV9tKR6WA==
-                    case "Input0.cs":
-                        items.Add(typeof(global::TestAssembly.GenericServiceB));
-                        items.Add(typeof(global::TestAssembly.IGenericService<>));
-                        items.Add(typeof(global::TestAssembly.IKeyedService));
-                        items.Add(typeof(global::TestAssembly.IOther));
-                        items.Add(typeof(global::TestAssembly.IRequest<>));
-                        items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
-                        items.Add(typeof(global::TestAssembly.IService));
-                        items.Add(typeof(global::TestAssembly.IServiceB));
-                        items.Add(typeof(global::TestAssembly.IValidator));
-                        items.Add(typeof(global::TestAssembly.IValidator<>));
-                        items.Add(typeof(global::TestAssembly.KeyedService));
-                        items.Add(typeof(global::TestAssembly.Nested));
-                        items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                        items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                        items.Add(typeof(global::TestAssembly.Service));
-                        break;
-                }
-
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.IGenericService<>));
+                items.Add(typeof(global::TestAssembly.IKeyedService));
+                items.Add(typeof(global::TestAssembly.IOther));
+                items.Add(typeof(global::TestAssembly.IRequest<>));
+                items.Add(typeof(global::TestAssembly.IRequestHandler<, >));
+                items.Add(typeof(global::TestAssembly.IService));
+                items.Add(typeof(global::TestAssembly.IServiceB));
+                items.Add(typeof(global::TestAssembly.IValidator));
+                items.Add(typeof(global::TestAssembly.IValidator<>));
+                items.Add(typeof(global::TestAssembly.KeyedService));
+                items.Add(typeof(global::TestAssembly.Nested));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(typeof(global::TestAssembly.Service));
                 break;
         }
 

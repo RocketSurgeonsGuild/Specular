@@ -34,16 +34,9 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: wKWjmvTVoUad3a7CtkcMoA==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: wKWjmvTVoUad3a7CtkcMoA==
-                    case "Input0.cs":
-                        items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                        items.Add(typeof(global::TestAssembly.GenericServiceB));
-                        items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                        break;
-                }
-
+                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
                 break;
         }
 

@@ -34,15 +34,8 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
-                    case "Input0.cs":
-                        items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                        items.Add(typeof(global::TestAssembly.Nested));
-                        break;
-                }
-
+                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
+                items.Add(typeof(global::TestAssembly.Nested));
                 break;
         }
 

@@ -34,17 +34,10 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: PCRHvamF6J3xug7jJLIREw==
-                    case "Input0.cs":
-                        items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                        items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                        items.Add(OtherProject.GetType("SpecularScanReport")!);
-                        items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                        break;
-                }
-
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("SpecularScanReport")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
                 break;
         }
 

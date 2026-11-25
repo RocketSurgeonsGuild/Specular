@@ -27,25 +27,18 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: cHMQikM7PE1XjxkGcj0esw==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: cHMQikM7PE1XjxkGcj0esw==
-                    case "Input0.cs":
-                        items.Add(mscorlib);
-                        items.Add(netstandard);
-                        items.Add(OtherProject);
-                        items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
-                        items.Add(System);
-                        items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
-                        items.Add(typeof(global::System.IServiceProvider).Assembly);
-                        items.Add(SystemCore);
-                        items.Add(SystemPrivateCoreLib);
-                        items.Add(SystemRuntime);
-                        items.Add(typeof(global::TestAssembly.IService).Assembly);
-                        items.Add(TestProject);
-                        break;
-                }
-
+                items.Add(mscorlib);
+                items.Add(netstandard);
+                items.Add(OtherProject);
+                items.Add(typeof(global::Specular.ISpecularProvider).Assembly);
+                items.Add(System);
+                items.Add(typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly);
+                items.Add(typeof(global::System.IServiceProvider).Assembly);
+                items.Add(SystemCore);
+                items.Add(SystemPrivateCoreLib);
+                items.Add(SystemRuntime);
+                items.Add(typeof(global::TestAssembly.IService).Assembly);
+                items.Add(TestProject);
                 break;
         }
 

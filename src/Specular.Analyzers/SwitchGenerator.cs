@@ -18,7 +18,7 @@ internal static class SwitchGenerator
             var lineSwitchSection = createNestedSwitchSections(
                     lineItems,
                     InvocationExpression(
-                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ParseName("System.IO.Path"), IdentifierName("GetFileName"))
+                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, ParseName("global::System.IO.Path"), IdentifierName("GetFileName"))
                         )
                        .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("filePath"))))),
                     x => x.Location.FileName,
@@ -57,8 +57,16 @@ internal static class SwitchGenerator
                   .AddStatements(BreakStatement());
         }
 
+        // Several call sites that all share this key (the same file name on a line, as a project's call site and the identical one a
+        // referenced project carries) leave nothing for this switch to tell apart, so the next level is emitted directly.
+        var groups = Helpers.GroupInOrder(blocks, regroup);
+        if (groups is [var (_, onlyGroup)])
+        {
+            return next(onlyGroup);
+        }
+
         var section = SwitchStatement(identifier);
-        foreach (var (key, items) in Helpers.GroupInOrder(blocks, regroup))
+        foreach (var (key, items) in groups)
         {
             var location = items[0].Location;
             var newSection = next(items)

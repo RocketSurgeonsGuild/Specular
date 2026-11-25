@@ -27,16 +27,9 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: ApaVlALM8kzVxm/WHvukVQ==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: ApaVlALM8kzVxm/WHvukVQ==
-                    case "Input0.cs":
-                        items.Add(OtherProject);
-                        items.Add(typeof(global::TestAssembly.IService).Assembly);
-                        items.Add(TestProject);
-                        break;
-                }
-
+                items.Add(OtherProject);
+                items.Add(typeof(global::TestAssembly.IService).Assembly);
+                items.Add(TestProject);
                 break;
         }
 

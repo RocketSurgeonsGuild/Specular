@@ -34,33 +34,26 @@ internal sealed class SpecularProvider : ISpecularProvider
         {
             // FilePath: Input0.cs Expression: /W5+1QbQLNSoqBDFr/pvdA==
             case 16:
-                switch (System.IO.Path.GetFileName(filePath))
-                {
-                    // FilePath: Input0.cs Expression: /W5+1QbQLNSoqBDFr/pvdA==
-                    case "Input0.cs":
-                        items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
-                        items.Add(typeof(global::Program));
-                        items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                        items.Add(OtherProject.GetType("Program")!);
-                        items.Add(OtherProject.GetType("SpecularScanReport")!);
-                        items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
-                        items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
-                        items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
-                        items.Add(typeof(global::TestAssembly.GenericServiceB));
-                        items.Add(typeof(global::TestAssembly.KeyedService));
-                        items.Add(typeof(global::TestAssembly.Nested));
-                        items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
-                        items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
-                        items.Add(typeof(global::TestAssembly.Nested.ServiceA));
-                        items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
-                        items.Add(TestAssembly.GetType("TestAssembly.Request")!);
-                        items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
-                        items.Add(TestAssembly.GetType("TestAssembly.Response")!);
-                        items.Add(typeof(global::TestAssembly.Service));
-                        items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
-                        break;
-                }
-
+                items.Add(typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute));
+                items.Add(typeof(global::Program));
+                items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(OtherProject.GetType("Program")!);
+                items.Add(OtherProject.GetType("SpecularScanReport")!);
+                items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
+                items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
+                items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                items.Add(typeof(global::TestAssembly.GenericServiceB));
+                items.Add(typeof(global::TestAssembly.KeyedService));
+                items.Add(typeof(global::TestAssembly.Nested));
+                items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+                items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+                items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+                items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+                items.Add(typeof(global::TestAssembly.Service));
+                items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
                 break;
         }
 
