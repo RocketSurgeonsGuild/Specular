@@ -15,7 +15,8 @@ public
 partial record ScanRequest
 {
     // Bump when the canonical form below changes, so old cache entries can never alias new requests.
-    private const string CacheKeyFormat = "specular-scan-request/1";
+    // 2: type references carry their type arguments (closed generics), and unresolved references no longer drop their clause.
+    private const string CacheKeyFormat = "specular-scan-request/2";
 
     // Keyed by instance identity, so a `with` copy gets its own entry and record equality never sees the cached value (a field
     // would take part in the synthesized Equals).
@@ -135,10 +136,17 @@ partial record ScanRequest
         key.Count(references.Count);
         foreach (var reference in references)
         {
-            key.Text(reference.AssemblyName);
-            key.Text(reference.MetadataName);
-            key.Flag(reference.UnboundGeneric);
+            WriteTypeReference(key, reference);
         }
+    }
+
+    // Type arguments nest as count-prefixed lists, so IHandler<IHandler<int>> and [IHandler<int>, int] never share a form.
+    private static void WriteTypeReference(CanonicalWriter key, TypeReference reference)
+    {
+        key.Text(reference.AssemblyName);
+        key.Text(reference.MetadataName);
+        key.Flag(reference.UnboundGeneric);
+        WriteTypeReferences(key, reference.TypeArguments);
     }
 
     private sealed class CanonicalWriter

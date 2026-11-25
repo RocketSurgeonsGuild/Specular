@@ -14,6 +14,8 @@ public class TypeFilterTests
         var openHandler = Library("Library.Contracts.IHandler`1", true);
         var marker = App("App.Handlers.MarkerAttribute");
         var other = App("App.Handlers.OtherAttribute");
+        var closedHandler = Closed(Library("Library.Contracts.IHandler`1"), Special(SpecialType.System_Int32));
+        var closedTag = Closed(Library("Library.Contracts.TagAttribute`1"), Special(SpecialType.System_Int32));
 
         yield return () => new(
             "AssignableTo(symbol)",
@@ -33,7 +35,48 @@ public class TypeFilterTests
         yield return () => new(
             "AssignableTo(closed generic)",
             f => f.AssignableTo(Type("Library.Contracts.IHandler`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32))),
-            all with { AssignableTo = Array(new AssignableToFilterData(true, Array(Library("Library.Contracts.IHandler`1")))) }
+            all with { AssignableTo = Array(new AssignableToFilterData(true, Array(closedHandler))) }
+        );
+        yield return () => new(
+            "NotAssignableTo(closed generic)",
+            f => f.NotAssignableTo(Type("Library.Contracts.IHandler`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32))),
+            all with { AssignableTo = Array(new AssignableToFilterData(false, Array(closedHandler))) }
+        );
+        yield return () => new(
+            "AssignableToAny(closed generics differing only in type argument)",
+            f => f.AssignableToAny(
+                Type("Library.Contracts.IHandler`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32)),
+                Type("Library.Contracts.IHandler`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_String))
+            ),
+            all with
+            {
+                AssignableTo = Array(
+                    new AssignableToFilterData(true, Array(closedHandler, Closed(Library("Library.Contracts.IHandler`1"), Special(SpecialType.System_String))))
+                ),
+            }
+        );
+        yield return () => new(
+            "NotAssignableToAny(closed and open)",
+            f => f.NotAssignableToAny(
+                Type("Library.Contracts.IHandler`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32)),
+                Unbound("Library.Contracts.IHandler`1")
+            ),
+            all with { AssignableTo = Array(new AssignableToFilterData(false, Array(closedHandler, openHandler))) }
+        );
+        yield return () => new(
+            "WithAttribute(closed generic)",
+            f => f.WithAttribute(Type("Library.Contracts.TagAttribute`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32))),
+            all with { Attributes = Array(new AttributeFilterData(true, false, Array(closedTag))) }
+        );
+        yield return () => new(
+            "WithAnyAttribute(closed generic)",
+            f => f.WithAnyAttribute(Type("Library.Contracts.TagAttribute`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32))),
+            all with { Attributes = Array(new AttributeFilterData(true, true, Array(closedTag))) }
+        );
+        yield return () => new(
+            "WithoutAttribute(closed generic)",
+            f => f.WithoutAttribute(Type("Library.Contracts.TagAttribute`1").Construct(SelectorCompilation.Compilation.GetSpecialType(SpecialType.System_Int32))),
+            all with { Attributes = Array(new AttributeFilterData(false, false, Array(closedTag))) }
         );
         yield return () => new(
             "AssignableTo(nested in generic)",

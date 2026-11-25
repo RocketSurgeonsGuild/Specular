@@ -52,7 +52,9 @@ public class ScanRequestCacheKeyTests
     [Test]
     public async Task The_key_is_pinned() =>
         // A changed literal means every existing build cache entry is invalidated; only update it deliberately.
-        await Baseline.CacheKey.Should().BeEqualTo("t_j8nVLNLqRihEKG-Zz8XeUola4xPPOnwH-uN9kAc9s");
+        // Format 2 (was "t_j8nVLNLqRihEKG-Zz8XeUola4xPPOnwH-uN9kAc9s" under format 1): type references now encode their type arguments
+        // (closed generics), and entries cached when unresolved references dropped their clause must not be reused.
+        await Baseline.CacheKey.Should().BeEqualTo("fjWGd6RrfH7paR8Q8Y1sH630ZD48Ye8tUScNUpTlaXU");
 
     [Test]
     public async Task The_key_is_url_safe() => await Baseline.CacheKey.All(c => c is ( >= 'A' and <= 'Z' ) or ( >= 'a' and <= 'z' ) or ( >= '0' and <= '9' ) or '-' or '_').Should().BeTrue();
@@ -84,6 +86,9 @@ public class ScanRequestCacheKeyTests
     {
         var types = Baseline.Types!;
         var assemblies = Baseline.Assemblies;
+        var @int = new TypeReference("", "System.Int32", false);
+        static TypeReference closed(params TypeReference[] typeArguments) =>
+            new("Library", "Library.Contracts.IHandler`1", false) { TypeArguments = Array(typeArguments) };
         yield return () => new("Kind", Baseline with { Kind = ScanKind.Assemblies });
         yield return () => new("Types null", Baseline with { Types = null });
         yield return () => new("AllAssemblies", Baseline with { Assemblies = assemblies with { AllAssemblies = true } });
@@ -126,6 +131,24 @@ public class ScanRequestCacheKeyTests
                     AssignableTo = Array(new AssignableToFilterData(true, Array(new TypeReference("Library", "Library.Contracts.IHandler`1", false)))),
                 },
             }
+        );
+        yield return () => new("TypeReference type argument", Baseline with { Types = types with { AssignableTo = Array(new AssignableToFilterData(true, Array(closed(@int)))) } });
+        yield return () => new(
+            "TypeReference two type arguments",
+            Baseline with { Types = types with { AssignableTo = Array(new AssignableToFilterData(true, Array(closed(@int, @int)))) } }
+        );
+        yield return () => new(
+            "TypeReference nested type argument",
+            Baseline with { Types = types with { AssignableTo = Array(new AssignableToFilterData(true, Array(closed(closed(@int))))) } }
+        );
+        yield return () => new(
+            "TypeReference type argument then sibling",
+            // Same strings as "nested type argument" in a different shape: [IHandler<int>, int] next to [IHandler<IHandler<int>>].
+            Baseline with { Types = types with { AssignableTo = Array(new AssignableToFilterData(true, Array(closed(@int), @int))) } }
+        );
+        yield return () => new(
+            "Attribute type argument",
+            Baseline with { Types = types with { Attributes = Array(types.Attributes[0] with { Attributes = Array(types.Attributes[0].Attributes[0] with { TypeArguments = Array(@int) }) }) } }
         );
         yield return () => new("Attributes any", Baseline with { Types = types with { Attributes = Array(types.Attributes[0] with { Any = true }) } });
         yield return () => new("Attributes include", Baseline with { Types = types with { Attributes = Array(types.Attributes[0] with { Include = false }) } });

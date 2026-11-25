@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -40,7 +41,9 @@ internal static class SelectorArguments
     public static TypeReference ToTypeReference(ITypeSymbol? type, string paramName)
     {
         var named = NamedType(type, paramName);
-        return new(named.ContainingAssembly?.MetadataName ?? "", ScanSymbolNames.GetFullMetadataName(named), IsUnboundGeneric(named));
+        var reference = new TypeReference(named.ContainingAssembly?.MetadataName ?? "", ScanSymbolNames.GetFullMetadataName(named), IsUnboundGeneric(named));
+        // A closed generic keeps its arguments so IHandler<int> matches exactly; a definition or unbound form means any closed form.
+        return named.IsDefinition || named.IsUnboundGenericType ? reference : reference with { TypeArguments = TypeArguments(named, named, paramName) };
     }
 
     public static TypeReference ToTypeReference(string? metadataName, string paramName)
@@ -93,6 +96,55 @@ internal static class SelectorArguments
         }
 
         return converted.ToImmutable();
+    }
+
+    // Every type argument from the outermost containing type inwards, as metadata lists them: Outer<int>.Inner<string> gives [int, string].
+    private static ImmutableArray<TypeReference> TypeArguments(INamedTypeSymbol selected, INamedTypeSymbol constructed, string paramName)
+    {
+        var levels = new Stack<INamedTypeSymbol>();
+        for (var level = constructed; level is { }; level = level.ContainingType)
+        {
+            levels.Push(level);
+        }
+
+        var arguments = ImmutableArray.CreateBuilder<TypeReference>();
+        foreach (var level in levels)
+        {
+            foreach (var argument in level.TypeArguments)
+            {
+                arguments.Add(ToTypeArgumentReference(selected, argument, paramName));
+            }
+        }
+
+        return arguments.ToImmutable();
+    }
+
+    private static TypeReference ToTypeArgumentReference(INamedTypeSymbol selected, ITypeSymbol argument, string paramName)
+    {
+        // Only a named type can be found again by metadata name; a generic definition used as an argument fails one level down, on
+        // its own type parameters.
+        if (argument is not INamedTypeSymbol { TypeKind: not TypeKind.Error, IsUnboundGenericType: false } named)
+        {
+            var definition = selected.OriginalDefinition;
+            var anyClosedForm = definition.Arity > 0 ? definition.ConstructUnboundGenericType() : definition;
+            throw new ArgumentException(
+                $"'{selected.ToDisplayString()}' has the type argument '{argument.ToDisplayString()}', which cannot be selected: type arguments must be named types (nested and closed generic types included), not arrays, pointers, type parameters, dynamic or error types. Pass the generic definition to match any {anyClosedForm.ToDisplayString()}.",
+                paramName
+            );
+        }
+
+        var reference = new TypeReference(named.ContainingAssembly?.MetadataName ?? "", ScanSymbolNames.GetFullMetadataName(named), false);
+        return HasTypeArguments(named) ? reference with { TypeArguments = TypeArguments(selected, named, paramName) } : reference;
+    }
+
+    private static bool HasTypeArguments(INamedTypeSymbol type)
+    {
+        for (var level = type; level is { }; level = level.ContainingType)
+        {
+            if (level.Arity > 0) return true;
+        }
+
+        return false;
     }
 
     // A generic definition stands for every closed form, exactly like typeof(IHandler<>) does in Specular's runtime selectors.
