@@ -39,6 +39,62 @@ public class ScanCacheTests
     }
 
     [Test]
+    public async Task Fully_Qualified_Names_Survive_The_Round_Trip()
+    {
+        var image = EmitLibrary("public class A { }");
+        var (compilation, assembly) = Referencing(image);
+        var types = new EquatableArray<ScannedType>(
+            [
+                new("Lib", "N.Outer`1+Inner", TypeKind.Class, Accessibility.Public, true, 0) { FullyQualifiedName = "global::N.Outer<T>.Inner" },
+                new("Lib", "N.IHandler`2", TypeKind.Interface, Accessibility.Public, true, 2) { FullyQualifiedName = "global::N.IHandler<TRequest, TResponse>" },
+            ]
+        );
+        var first = ScanCache.Load(Consumer, compilation, []);
+        first.SetTypes("request", assembly, types);
+
+        var (nextCompilation, nextAssembly) = Referencing(image);
+        var second = ScanCache.Load(Consumer, nextCompilation, [CacheText(Consumer, first.Serialize())]);
+
+        await second.TryGetTypes("request", nextAssembly, out var cached).Should().BeTrue();
+        await cached.Select(static z => z.FullyQualifiedName).Should().BeEquivalentTo(["global::N.Outer<T>.Inner", "global::N.IHandler<TRequest, TResponse>"]);
+        await cached.Should().BeEqualTo(types);
+    }
+
+    [Test]
+    public async Task Ignores_A_File_Written_With_The_Previous_Schema()
+    {
+        var image = EmitLibrary("public class A { }");
+        var (compilation, assembly) = Referencing(image);
+        var mvid = ModuleVersionIds.Get(compilation, assembly);
+        // What version 1 wrote: no fully qualified names, which a hit would have to make up.
+        var text = Json(
+            $"{{'schema':1,'scans':{{'request':{{'Lib':{{'mvid':'{mvid}','types':[{{'name':'A','kind':2,'access':6,'accessible':true}}]}}}}}},"
+          + $"'store':{{'metadata':{{'Lib':{{'mvid':'{mvid}','version':1,'data':{{'Name':'x','Count':1}}}}}}}}}}"
+        );
+
+        var cache = ScanCache.Load(Consumer, compilation, [CacheText(Consumer, text)]);
+
+        await ScanCacheFile.SchemaVersion.Should().BeGreaterThan(1);
+        await cache.TryGetTypes("request", assembly, out _).Should().BeFalse();
+        await cache.TryGet("metadata", assembly, TestPayloadJsonContext.Default.TestPayload, 1, out _).Should().BeFalse();
+    }
+
+    [Test]
+    public async Task Misses_When_An_Entry_Has_No_Fully_Qualified_Name()
+    {
+        var image = EmitLibrary("public class A { }");
+        var (compilation, assembly) = Referencing(image);
+        var mvid = ModuleVersionIds.Get(compilation, assembly);
+        var text = Json(
+            $"{{'schema':{ScanCacheFile.SchemaVersion},'scans':{{'request':{{'Lib':{{'mvid':'{mvid}','types':[{{'name':'A','kind':2,'access':6,'accessible':true}}]}}}}}}}}"
+        );
+
+        var cache = ScanCache.Load(Consumer, compilation, [CacheText(Consumer, text)]);
+
+        await cache.TryGetTypes("request", assembly, out _).Should().BeFalse();
+    }
+
+    [Test]
     public async Task Misses_After_The_Assembly_Is_Rebuilt()
     {
         var (compilation, assembly) = Referencing(EmitLibrary("public class A { }"));

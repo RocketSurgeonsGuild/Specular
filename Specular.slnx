@@ -73,6 +73,11 @@
     </Project>
     <Project Path="samples/hosts/Specular.Samples.Web/Specular.Samples.Web.csproj" />
   </Folder>
+  <Folder Name="/samples/generators/">
+    <Project Path="samples/generators/Specular.Samples.HandlerRegistry.App/Specular.Samples.HandlerRegistry.App.csproj" />
+    <Project Path="samples/generators/Specular.Samples.HandlerRegistry.Generator/Specular.Samples.HandlerRegistry.Generator.csproj" />
+    <Project Path="samples/generators/Specular.Samples.HandlerRegistry.Handlers/Specular.Samples.HandlerRegistry.Handlers.csproj" />
+  </Folder>
   <Folder Name="/src/Specular.Analyzers.supports/">
     <File Path=".editorconfig" />
     <Project Path="src/Specular.Analyzers.supports/Specular.Analyzers.roslyn5.0.csproj" />

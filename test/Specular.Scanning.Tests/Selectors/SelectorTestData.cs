@@ -15,6 +15,16 @@ internal static class SelectorTestData
 
     public static TypeReference App(string metadataName, bool unboundGeneric = false) =>
         new(SelectorCompilation.AppAssemblyName, metadataName, unboundGeneric);
+
+    /// <summary>The reference the selector records for a special type such as <c>int</c>, wherever the test's core library puts it.</summary>
+    public static TypeReference Special(SpecialType specialType)
+    {
+        var type = SelectorCompilation.Compilation.GetSpecialType(specialType);
+        return new(type.ContainingAssembly.MetadataName, $"{type.ContainingNamespace.ToDisplayString()}.{type.MetadataName}", false);
+    }
+
+    public static TypeReference Closed(TypeReference definition, params TypeReference[] typeArguments) =>
+        definition with { TypeArguments = Array(typeArguments) };
 }
 
 internal sealed class NameLengthFilter(int length) : CustomTypeFilter

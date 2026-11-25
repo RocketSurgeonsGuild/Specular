@@ -146,15 +146,31 @@ public class TypeFilterTests
     public async Task A_reference_naming_the_wrong_assembly_falls_back_to_the_compilation() => await TestAssemblyTypes(AssignableTo(true, Type("TestAssembly.IService", assemblyName: "Specular"))).Should().BeEquivalentTo(serviceImplementations);
 
     [Test]
-    public async Task An_unresolvable_reference_drops_its_clause_like_Specular()
+    public async Task An_unresolvable_reference_fails_closed()
     {
+        // Specular's cache reload dropped such a clause, so AssignableTo("Typo.IHandler") matched every type; now nothing is
+        // assignable to (or carries) a type that does not resolve, and the result reports the reference instead.
         var single = TestAssemblyTypes(AssignableTo(true, Type("TestAssembly.IMissing")));
         var partlyResolved = TestAssemblyTypes(AssignableTo(true, Type("TestAssembly.IMissing"), Type("TestAssembly.IService")));
         var attribute = TestAssemblyTypes(Attributes(true, false, Type("Specular.MissingAttribute", "Specular")));
+        var anyAttribute = TestAssemblyTypes(Attributes(true, true, Type("Specular.MissingAttribute", "Specular")));
 
-        await single.Should().BeEquivalentTo(AllTestAssemblyTypes);
+        await single.Should().BeEmpty();
         await partlyResolved.Should().BeEquivalentTo(serviceImplementations);
-        await attribute.Should().BeEquivalentTo(AllTestAssemblyTypes);
+        await attribute.Should().BeEmpty();
+        await anyAttribute.Should().BeEmpty();
+    }
+
+    [Test]
+    public async Task An_unresolvable_reference_excludes_nothing()
+    {
+        var notAssignable = TestAssemblyTypes(AssignableTo(false, Type("TestAssembly.IMissing")));
+        var partlyResolved = TestAssemblyTypes(AssignableTo(false, Type("TestAssembly.IMissing"), Type("TestAssembly.IService")));
+        var withoutAttribute = TestAssemblyTypes(Attributes(false, false, Type("Specular.MissingAttribute", "Specular")));
+
+        await notAssignable.Should().BeEquivalentTo(AllTestAssemblyTypes);
+        await partlyResolved.Should().BeEquivalentTo(Except(AllTestAssemblyTypes, serviceImplementations));
+        await withoutAttribute.Should().BeEquivalentTo(AllTestAssemblyTypes);
     }
 
     [Test]
