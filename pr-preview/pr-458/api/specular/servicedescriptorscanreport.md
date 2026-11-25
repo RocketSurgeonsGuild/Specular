@@ -2,10 +2,10 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/pr-preview/pr-458/api/specular.md)
-- Version: `0.4.3-pr.53`
+- Version: `0.4.3-pr.54`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.f398584acaebb436a7dc6af0a2c4966988fca3fe/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0d4820f523c7a6fe6398c30e573a15ca7e396ffa/src/Specular/Diagnostics/ScanDiagnostics.cs)
 - Implements: `IEquatable<ServiceDescriptorScanReport>`
 
 Contains the registrations produced by a service descriptor scan expression.

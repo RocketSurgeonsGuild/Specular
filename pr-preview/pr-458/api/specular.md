@@ -1,9 +1,9 @@
 # Specular
 
 - Package: `Specular`
-- Version: `0.4.3-pr.53`
+- Version: `0.4.3-pr.54`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/tree/Branch.pull-458-merge.Sha.f398584acaebb436a7dc6af0a2c4966988fca3fe/src/Specular)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/tree/Branch.pull-458-merge.Sha.0d4820f523c7a6fe6398c30e573a15ca7e396ffa/src/Specular)
 - NuGet: [Specular](https://www.nuget.org/packages/Specular)
 
 ## Namespaces
