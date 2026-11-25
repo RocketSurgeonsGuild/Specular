@@ -20,7 +20,7 @@ internal
 #else
 public
 #endif
-static class ScanIncrementalExtensions
+static partial class ScanIncrementalExtensions
 {
     /// <summary>
     ///     Scans every request against the compilation and returns one result per request. Referenced assemblies' results are reused

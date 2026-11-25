@@ -167,6 +167,26 @@ var requests = context.CompilationProvider.SelectMany(static (compilation, _) =>
 IncrementalValuesProvider<ScanResult> results = context.Scan(ConsumerId, requests);
 ```
 
+When you know the scans up front, pass them as a tuple instead, and read each result by name. There are overloads for 2 to 8
+requests; the results come back in the same positions, and the tuple compares by value, so the pipeline caches it:
+
+```csharp
+var requests = context.CompilationProvider.Select(static (compilation, _) => (
+    ScanRequest.Build(compilation, s => s.FromAssemblies().GetTypes(f => f.EndsWith("Handler"))),
+    ScanRequest.Build(compilation, s => s.DependenciesFromAssembly("MyFramework"))));
+
+IncrementalValueProvider<(ScanResult, ScanResult)> results = context.Scan(ConsumerId, requests);
+
+context.RegisterSourceOutput(results, static (output, scans) =>
+{
+    var (handlers, dependents) = scans;
+    // ...
+});
+```
+
+Tuple element names are compile-time only, so they don't carry from the requests to the results: name the results where you
+read them, as above.
+
 Don't call `Scan` twice with the same consumer id. Each call saves only the entries its own requests used, so two calls that
 share a file keep overwriting each other's entries.
 
