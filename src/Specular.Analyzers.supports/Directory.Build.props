@@ -2,7 +2,7 @@
     <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
     <PropertyGroup>
         <_Analyzer_Roslyn_Version_>$(MSBuildProjectName.Replace('Specular.Analyzers.', ''))</_Analyzer_Roslyn_Version_>
-        <DefineConstants>$(DefineConstants);$(_Analyzer_Roslyn_Version_.Replace('.', '_').ToUpper())</DefineConstants>
+        <DefineConstants>$(DefineConstants);$(_Analyzer_Roslyn_Version_.Replace('.', '_').ToUpper());SPECULAR_SCANNING_SOURCES</DefineConstants>
         <BaseOutputPath>bin/$(_Analyzer_Roslyn_Version_)/</BaseOutputPath>
         <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj/$(_Analyzer_Roslyn_Version_)/</BaseIntermediateOutputPath>
         <NoWarn>NU5105;$(NoWarn)</NoWarn>
