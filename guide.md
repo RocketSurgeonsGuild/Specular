@@ -74,6 +74,7 @@ Specular performs the same logical scan at **compile time** using Roslyn's type 
 ## Next Steps
 
 - [Installation](./installation/) — add Specular to your project in under 5 minutes
+- [Scanning from your own generator](./scanning-from-your-generator/) — use Specular's compile-time scanner, with its build cache, in your own source generator
 
 ## Contributing to the Docs
 

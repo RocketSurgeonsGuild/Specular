@@ -56,7 +56,7 @@ The net result is a precise, build-time enumeration of every type that would hav
 After resolving all call sites, the generator builds a single `SpecularProvider.g.cs` file containing:
 
 1. A concrete class that implements `ISpecularProvider`, with each method returning a hard-coded collection for its call-site hash.
-2. An `[assembly: SpecularHashAttribute("…hash…")]` attribute that embeds a `GeneratedHash` for cross-assembly cache validation.
+2. An `[assembly: SpecularHashAttribute("…hash…")]` attribute that embeds a hash of the generated provider. Cached results for referenced assemblies are validated by their MVIDs instead; see [Cross-Assembly Caching](../cross-assembly-caching/).
 
 The generated provider is exposed through the static `SpecularProvider.Instance` property — you call into it directly, with zero reflection scanning.
 
