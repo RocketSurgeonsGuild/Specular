@@ -1,0 +1,50 @@
+﻿{
+  Kind: Types,
+  Assemblies: {
+    AllAssemblies: false,
+    IncludeSystemAssemblies: false,
+    Assemblies: [
+      App
+    ]
+  },
+  Types: {
+    PublicOnly: false,
+    Attributes: [
+      {
+        Include: true,
+        Any: false,
+        Attributes: [
+          {
+            AssemblyName: App,
+            MetadataName: App.Handlers.MarkerAttribute,
+            UnboundGeneric: false
+          }
+        ]
+      },
+      {
+        Include: true,
+        Any: true,
+        Attributes: [
+          {
+            AssemblyName: Library,
+            MetadataName: Library.Contracts.LibraryAttribute,
+            UnboundGeneric: false
+          },
+          {
+            AssemblyName: Library,
+            MetadataName: Library.Contracts.TagAttribute`1,
+            UnboundGeneric: true
+          }
+        ]
+      }
+    ],
+    AttributeNames: [
+      {
+        Include: false,
+        AttributeNames: [
+          App.Handlers.OtherAttribute
+        ]
+      }
+    ]
+  }
+}

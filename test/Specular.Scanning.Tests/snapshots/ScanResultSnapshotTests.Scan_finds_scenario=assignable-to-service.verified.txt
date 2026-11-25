@@ -1,0 +1,54 @@
+﻿{
+  Assemblies: [
+    {
+      Name: Microsoft.Extensions.DependencyInjection.Abstractions,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: Specular,
+      HasInaccessibleMatches: false
+    },
+    {
+      Name: TestAssembly,
+      HasInaccessibleMatches: true
+    },
+    {
+      Name: TestProject,
+      HasInaccessibleMatches: false
+    }
+  ],
+  Types: [
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IService,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.IService
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested+ServiceA,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Nested.ServiceA
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Service,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Service
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.ServiceB,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.ServiceB
+    }
+  ]
+}

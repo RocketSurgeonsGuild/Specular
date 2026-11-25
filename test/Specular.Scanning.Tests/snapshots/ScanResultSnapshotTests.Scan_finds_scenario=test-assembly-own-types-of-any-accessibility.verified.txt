@@ -1,0 +1,190 @@
+﻿{
+  Assemblies: [
+    {
+      Name: TestAssembly,
+      HasInaccessibleMatches: true
+    }
+  ],
+  Types: [
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.GenericService,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.GenericService
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.GenericServiceB,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.GenericServiceB
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IGenericService`1,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      Arity: 1,
+      FullyQualifiedName: global::TestAssembly.IGenericService<T>
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IKeyedService,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.IKeyedService
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IOther,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.IOther
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IRequestHandler`2,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      Arity: 2,
+      FullyQualifiedName: global::TestAssembly.IRequestHandler<T, R>
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IRequest`1,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      Arity: 1,
+      FullyQualifiedName: global::TestAssembly.IRequest<T>
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IService,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.IService
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IServiceB,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.IServiceB
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IValidator,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.IValidator
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.IValidator`1,
+      Kind: Interface,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      Arity: 1,
+      FullyQualifiedName: global::TestAssembly.IValidator<T>
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.KeyedService,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.KeyedService
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Nested
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested+GenericServiceA,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Nested.GenericServiceA
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested+MyRecord,
+      Kind: Class,
+      DeclaredAccessibility: Private,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.Nested.MyRecord
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested+ServiceA,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Nested.ServiceA
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Nested+Validator,
+      Kind: Class,
+      DeclaredAccessibility: Private,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.Nested.Validator
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Request,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.Request
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.RequestHandler,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.RequestHandler
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Response,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.Response
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.Service,
+      Kind: Class,
+      DeclaredAccessibility: Public,
+      IsAccessible: true,
+      FullyQualifiedName: global::TestAssembly.Service
+    },
+    {
+      AssemblyName: TestAssembly,
+      MetadataName: TestAssembly.ServiceB,
+      Kind: Class,
+      DeclaredAccessibility: Internal,
+      IsAccessible: false,
+      FullyQualifiedName: global::TestAssembly.ServiceB
+    }
+  ]
+}

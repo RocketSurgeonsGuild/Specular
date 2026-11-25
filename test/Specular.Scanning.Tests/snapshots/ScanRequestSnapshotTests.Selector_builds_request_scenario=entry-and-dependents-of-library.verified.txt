@@ -1,0 +1,13 @@
+﻿{
+  Kind: Assemblies,
+  Assemblies: {
+    AllAssemblies: false,
+    IncludeSystemAssemblies: false,
+    Assemblies: [
+      App
+    ],
+    DependenciesOf: [
+      Library
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+﻿{
+  Kind: Types,
+  Assemblies: {
+    AllAssemblies: true,
+    IncludeSystemAssemblies: false
+  },
+  Types: {
+    PublicOnly: true,
+    AssignableTo: [
+      {
+        Include: true,
+        Types: [
+          {
+            AssemblyName: Library,
+            MetadataName: Library.Contracts.IHandler,
+            UnboundGeneric: false
+          }
+        ]
+      }
+    ]
+  }
+}

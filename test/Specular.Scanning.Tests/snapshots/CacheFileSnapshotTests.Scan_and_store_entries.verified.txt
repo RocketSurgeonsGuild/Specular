@@ -1,0 +1,51 @@
+﻿{
+  schema: 2,
+  scans: {
+    WkkO_Fb0kEgAH-sL17MiDy5ODKvhf9H2L4bXq3pasPk: {
+      Lib: {
+        mvid: Guid_1,
+        types: [
+          {
+            name: Lib.FirstHandler,
+            kind: 2,
+            access: 6,
+            accessible: true,
+            fullyQualifiedName: global::Lib.FirstHandler
+          },
+          {
+            name: Lib.HiddenHandler,
+            kind: 2,
+            access: 4,
+            fullyQualifiedName: global::Lib.HiddenHandler
+          },
+          {
+            name: Lib.IHandler,
+            kind: 7,
+            access: 6,
+            accessible: true,
+            fullyQualifiedName: global::Lib.IHandler
+          },
+          {
+            name: Lib.Outer`1+NestedHandler,
+            kind: 2,
+            access: 6,
+            accessible: true,
+            fullyQualifiedName: global::Lib.Outer<T>.NestedHandler
+          }
+        ]
+      }
+    }
+  },
+  store: {
+    payload: {
+      Lib: {
+        mvid: Guid_1,
+        version: 1,
+        data: {
+          Name: lib,
+          Count: 3
+        }
+      }
+    }
+  }
+}
