@@ -2,10 +2,10 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.10`
+- Version: `0.4.3-beta.11`
 - Namespace: `Specular`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.472a8414f28afbc393dd0451dc464f6e4532feb5/src/Specular/ServiceRegistrationAttribute.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cb33ae29d8eb8c22a573feb1daf1f575008d9381/src/Specular/ServiceRegistrationAttribute.cs)
 - Inherits: `Attribute`
 
 Attribute used to define the service registration of a given type

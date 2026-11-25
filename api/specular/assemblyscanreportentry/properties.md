@@ -14,7 +14,7 @@ Identifies an assembly selected by an assembly scan expression.
 - Name: `AssemblyName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.472a8414f28afbc393dd0451dc464f6e4532feb5/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.cb33ae29d8eb8c22a573feb1daf1f575008d9381/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string AssemblyName { get; init; }
