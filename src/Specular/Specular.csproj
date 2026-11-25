@@ -28,6 +28,8 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="build/*.*" Pack="true" PackagePath="build" />
+        <!-- Specular.targets imports it from beside itself: the generator's cache is a Specular.Scanning scan cache. -->
+        <None Include="../Specular.Scanning/build/Specular.Scanning.Cache.targets" Pack="true" PackagePath="build" Visible="false" />
         <None Include="buildMultiTargeting/*.*" Pack="true" PackagePath="buildMultiTargeting" />
         <None Include="buildTransitive/*.*" Pack="true" PackagePath="buildTransitive" />
     </ItemGroup>
