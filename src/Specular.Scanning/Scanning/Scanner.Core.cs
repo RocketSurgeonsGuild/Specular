@@ -87,6 +87,7 @@ static partial class Scanner
                             compilation.IsSymbolAccessibleWithin(type, compilation.Assembly),
                             type.Arity
                         )
+                        { FullyQualifiedName = type.ToDisplayString(fullyQualifiedNameFormat) }
                     );
                 }
 
@@ -97,4 +98,11 @@ static partial class Scanner
 
         return matches.OrderBy(static z => z.MetadataName, StringComparer.Ordinal).ToImmutableArray();
     }
+
+    // Without UseSpecialTypes, and with tuples and nullables expanded, every name keeps the global:: prefix and the unbound typeof form.
+    private static readonly SymbolDisplayFormat fullyQualifiedNameFormat = SymbolDisplayFormat.FullyQualifiedFormat.WithMiscellaneousOptions(
+        SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+      | SymbolDisplayMiscellaneousOptions.ExpandNullable
+      | SymbolDisplayMiscellaneousOptions.ExpandValueTuple
+    );
 }

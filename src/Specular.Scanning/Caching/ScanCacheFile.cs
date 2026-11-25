@@ -8,7 +8,8 @@ namespace Specular.Scanning;
 internal static class ScanCacheFile
 {
     /// <summary>The cache file format version; a file written with any other version is ignored and rebuilt.</summary>
-    public const int SchemaVersion = 1;
+    /// <remarks>2: matched types carry their fully qualified name.</remarks>
+    public const int SchemaVersion = 2;
 
     /// <summary>The cache file extension.</summary>
     public const string Extension = ".ctpjson";

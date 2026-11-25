@@ -30,7 +30,11 @@ internal sealed record CachedScanEntry(Guid Mvid, List<CachedType?>? Types);
 /// <param name="Accessible">Whether the compilation can reference the type.</param>
 /// <param name="Arity">The number of generic type parameters.</param>
 /// <param name="Assembly">The containing assembly, written only when it differs from the entry's assembly.</param>
-internal sealed record CachedType(string? Name, TypeKind Kind, Accessibility Access, bool Accessible, int Arity, string? Assembly);
+internal sealed record CachedType(string? Name, TypeKind Kind, Accessibility Access, bool Accessible, int Arity, string? Assembly)
+{
+    /// <summary>The <see cref="ScannedType.FullyQualifiedName" />; an entry without one is a miss (added in schema 2).</summary>
+    public string? FullyQualifiedName { get; init; }
+}
 
 /// <summary>One typed-store value for one assembly.</summary>
 /// <param name="Mvid">The assembly's MVID when the entry was written.</param>

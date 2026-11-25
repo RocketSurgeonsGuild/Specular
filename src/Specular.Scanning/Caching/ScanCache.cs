@@ -24,6 +24,13 @@ namespace Specular.Scanning;
 ///     output. Only entries read or written during the run are saved, so entries for removed assemblies or requests drop out.
 ///     The consumer id names the file and must be unique to the generator; generators never see each other's entries. Safe for
 ///     concurrent use within a run.
+///     <para>
+///         A generator that also scans should use the cache <see cref="ScanContext.Cache" /> hands it instead (see
+///         <c>ScanIncrementalExtensions.Scan&lt;TOutput&gt;</c>): one consumer id then covers both, its typed-store entries are saved in
+///         the same file as the scans, and its values are also remembered in memory for as long as the compiler keeps the same reference
+///         (references without an MVID included), so edits in the IDE, where the file is neither read back nor written, don't recompute
+///         them.
+///     </para>
 /// </remarks>
 #if SPECULAR_SCANNING_SOURCES
 internal
@@ -71,13 +78,19 @@ sealed class ScanCache : IAssemblyScanCache
     private readonly object _gate = new();
     private readonly Dictionary<string, Dictionary<string, CachedScanEntry>> _scans = new(StringComparer.Ordinal);
     private readonly Dictionary<string, Dictionary<string, CachedStoreEntry>> _store = new(StringComparer.Ordinal);
+    private readonly MemoizingStore? _storeMemo;
 
     /// <summary>Creates the cache from an already parsed file, so incremental pipelines can parse once per file change.</summary>
     internal ScanCache(string consumerId, Compilation compilation, ScanCacheFileData previous)
+        : this(consumerId, compilation, previous, null) { }
+
+    /// <summary>Creates the cache from an already parsed file, with typed-store values also remembered in <paramref name="storeMemo" />.</summary>
+    internal ScanCache(string consumerId, Compilation compilation, ScanCacheFileData previous, MemoizingStore? storeMemo)
     {
         ConsumerId = ScanCacheFile.ValidateConsumerId(consumerId);
         _compilation = compilation;
         _previous = previous;
+        _storeMemo = storeMemo;
     }
 
     /// <summary>The consumer id that names this cache's file.</summary>
@@ -101,9 +114,26 @@ sealed class ScanCache : IAssemblyScanCache
         if (typeInfo is null) throw new ArgumentNullException(nameof(typeInfo));
 
         value = default;
+        var assemblyName = assembly.MetadataName;
+        if (_storeMemo is { } && _storeMemo.TryGet(assembly, key, dataVersion, out var remembered))
+        {
+            if (!TryDeserialize(remembered, typeInfo, out value)) return false;
+
+            // Saving keeps only the entries a run touched, so a remembered value must still reach the file.
+            if (GetMvid(assembly) is { } rememberedMvid)
+            {
+                var rememberedEntry = new CachedStoreEntry(rememberedMvid, dataVersion, ToElement(remembered));
+                lock (_gate)
+                {
+                    AddIfMissing(GetOrAdd(_store, key), assemblyName, rememberedEntry);
+                }
+            }
+
+            return true;
+        }
+
         if (GetMvid(assembly) is not { } mvid) return false;
 
-        var assemblyName = assembly.MetadataName;
         CachedStoreEntry? current;
         lock (_gate)
         {
@@ -124,6 +154,7 @@ sealed class ScanCache : IAssemblyScanCache
             }
         }
 
+        _storeMemo?.Set(assembly, key, dataVersion, entry.Data.GetRawText());
         return true;
     }
 
@@ -140,9 +171,14 @@ sealed class ScanCache : IAssemblyScanCache
         if (assembly is null) throw new ArgumentNullException(nameof(assembly));
         if (typeInfo is null) throw new ArgumentNullException(nameof(typeInfo));
 
-        if (GetMvid(assembly) is not { } mvid) return;
+        var mvid = GetMvid(assembly);
+        if (mvid is null && _storeMemo is null) return;
 
-        var entry = new CachedStoreEntry(mvid, dataVersion, JsonSerializer.SerializeToElement(value, typeInfo));
+        var data = JsonSerializer.SerializeToElement(value, typeInfo);
+        _storeMemo?.Set(assembly, key, dataVersion, data.GetRawText());
+        if (mvid is null) return;
+
+        var entry = new CachedStoreEntry(mvid.Value, dataVersion, data);
         lock (_gate)
         {
             GetOrAdd(_store, key)[assembly.MetadataName] = entry;
@@ -213,6 +249,7 @@ sealed class ScanCache : IAssemblyScanCache
                            type.Arity,
                            string.Equals(type.AssemblyName, assemblyName, StringComparison.Ordinal) ? null : type.AssemblyName
                        )
+               { FullyQualifiedName = type.FullyQualifiedName }
                 )
                .ToList()
         );
@@ -285,12 +322,34 @@ sealed class ScanCache : IAssemblyScanCache
         var builder = ImmutableArray.CreateBuilder<ScannedType>(entry.Types.Count);
         foreach (var type in entry.Types)
         {
-            if (type?.Name is not { Length: > 0 } name) return false;
-            builder.Add(new(type.Assembly ?? assemblyName, name, type.Kind, type.Access, type.Accessible, type.Arity));
+            if (type?.Name is not { Length: > 0 } name || type.FullyQualifiedName is not { } fullyQualifiedName) return false;
+            builder.Add(new(type.Assembly ?? assemblyName, name, type.Kind, type.Access, type.Accessible, type.Arity) { FullyQualifiedName = fullyQualifiedName });
         }
 
         types = builder.MoveToImmutable();
         return true;
+    }
+
+    private static bool TryDeserialize<T>(string json, JsonTypeInfo<T> typeInfo, [MaybeNullWhen(false)] out T value)
+    {
+        try
+        {
+            value = JsonSerializer.Deserialize(json, typeInfo)!;
+            return true;
+        }
+#pragma warning disable CA1031 // A payload that no longer fits the consumer's type is a cache miss, never a build failure.
+        catch (Exception)
+#pragma warning restore CA1031
+        {
+            value = default;
+            return false;
+        }
+    }
+
+    private static JsonElement ToElement(string json)
+    {
+        using var document = JsonDocument.Parse(json);
+        return document.RootElement.Clone();
     }
 
     private static bool TryDeserialize<T>(JsonElement data, JsonTypeInfo<T> typeInfo, [MaybeNullWhen(false)] out T value)

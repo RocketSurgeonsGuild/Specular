@@ -37,16 +37,36 @@ public class ScanResultTests
 
         await Single(result, "TestAssembly.IRequestHandler`2")
              .Should()
-             .BeEqualTo(new ScannedType("TestAssembly", "TestAssembly.IRequestHandler`2", TypeKind.Interface, Accessibility.Public, true, 2));
+             .BeEqualTo(
+                  new ScannedType("TestAssembly", "TestAssembly.IRequestHandler`2", TypeKind.Interface, Accessibility.Public, true, 2)
+                  {
+                      FullyQualifiedName = "global::TestAssembly.IRequestHandler<T, R>",
+                  }
+              );
         await Single(result, "TestAssembly.ServiceB")
              .Should()
-             .BeEqualTo(new ScannedType("TestAssembly", "TestAssembly.ServiceB", TypeKind.Class, Accessibility.Internal, false, 0));
+             .BeEqualTo(
+                  new ScannedType("TestAssembly", "TestAssembly.ServiceB", TypeKind.Class, Accessibility.Internal, false, 0)
+                  {
+                      FullyQualifiedName = "global::TestAssembly.ServiceB",
+                  }
+              );
         await Single(result, "TestAssembly.Nested+MyRecord")
              .Should()
-             .BeEqualTo(new ScannedType("TestAssembly", "TestAssembly.Nested+MyRecord", TypeKind.Class, Accessibility.Private, false, 0));
+             .BeEqualTo(
+                  new ScannedType("TestAssembly", "TestAssembly.Nested+MyRecord", TypeKind.Class, Accessibility.Private, false, 0)
+                  {
+                      FullyQualifiedName = "global::TestAssembly.Nested.MyRecord",
+                  }
+              );
         await Single(result, "TestAssembly.Nested+ServiceA")
              .Should()
-             .BeEqualTo(new ScannedType("TestAssembly", "TestAssembly.Nested+ServiceA", TypeKind.Class, Accessibility.Public, true, 0));
+             .BeEqualTo(
+                  new ScannedType("TestAssembly", "TestAssembly.Nested+ServiceA", TypeKind.Class, Accessibility.Public, true, 0)
+                  {
+                      FullyQualifiedName = "global::TestAssembly.Nested.ServiceA",
+                  }
+              );
     }
 
     [Test]
