@@ -32,6 +32,22 @@ internal sealed class SpecularScanReport
                             new(ServiceLifetime.Singleton, "global::TestAssembly.RequestHandler", "global::TestAssembly.RequestHandler")]
                     )]
             ), 
+            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo(typeof(IGenericService<>))).AsSelfWithInterfaces().WithScopedLifetime()", 
+                [
+                    new("TestAssembly", 
+                        [
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.GenericService", "global::TestAssembly.GenericService"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.GenericServiceB", "global::TestAssembly.GenericServiceB"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Decimal>", "global::TestAssembly.GenericServiceB"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Int32>", "global::TestAssembly.GenericService"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.IGenericService<global::System.String>", "global::TestAssembly.GenericService"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.IGenericService<global::System.String>", "global::TestAssembly.Nested+GenericServiceA"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericService"), 
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericServiceB"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.IOther", "global::TestAssembly.Nested+GenericServiceA"), 
+                            new(ServiceLifetime.Scoped, "global::TestAssembly.Nested+GenericServiceA", "global::TestAssembly.Nested+GenericServiceA")]
+                    )]
+            ), 
             new("OtherProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo(typeof(IGenericService<>))).AsSelfWithInterfaces().WithScopedLifetime()", 
                 [
                     new("TestAssembly", 

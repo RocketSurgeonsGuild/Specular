@@ -26,6 +26,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         return items;
     }
 
+    [global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe."), global::System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("Trimming", "IL2072:DynamicallyAccessedMembers", Justification = "Types resolved by string literal are preserved with their public constructors via [DynamicDependency], so this reflection is trim- and AOT-safe.")]
     IEnumerable<Type> ISpecularProvider.GetTypes(Func<IReflectionTypeSelector, IEnumerable<Type>> selector, int lineNumber, string filePath, string argumentExpression)
     {
         var items = new List<Type>();
@@ -38,6 +39,27 @@ internal sealed class SpecularProvider : ISpecularProvider
                     // FilePath: Input0.cs Expression: qOfjb0SDPwHcKNlpG9ytrQ==
                     case "Input0.cs":
                         items.Add(typeof(global::Program));
+                        items.Add(OtherProject.GetType("Program")!);
+                        items.Add(OtherProject.GetType("SpecularScanReport")!);
+                        items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.GenericService")!);
+                        items.Add(typeof(global::TestAssembly.GenericServiceB));
+                        items.Add(typeof(global::TestAssembly.IKeyedService));
+                        items.Add(typeof(global::TestAssembly.IOther));
+                        items.Add(typeof(global::TestAssembly.IService));
+                        items.Add(typeof(global::TestAssembly.IServiceB));
+                        items.Add(typeof(global::TestAssembly.IValidator));
+                        items.Add(typeof(global::TestAssembly.KeyedService));
+                        items.Add(typeof(global::TestAssembly.Nested));
+                        items.Add(typeof(global::TestAssembly.Nested.GenericServiceA));
+                        items.Add(TestAssembly.GetType("TestAssembly.Nested+MyRecord")!);
+                        items.Add(typeof(global::TestAssembly.Nested.ServiceA));
+                        items.Add(TestAssembly.GetType("TestAssembly.Nested+Validator")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.Request")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.RequestHandler")!);
+                        items.Add(TestAssembly.GetType("TestAssembly.Response")!);
+                        items.Add(typeof(global::TestAssembly.Service));
+                        items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
                         break;
                 }
 
@@ -70,7 +92,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly")]
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Program", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "OtherProject"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "FxResources.System.Collections.Immutable.SR", "System.Collections.Immutable"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _OtherProject;
     private Assembly OtherProject => _OtherProject ??= _context.LoadFromAssemblyName(new AssemblyName("OtherProject, Version=version, Culture=neutral, PublicKeyToken=null"));

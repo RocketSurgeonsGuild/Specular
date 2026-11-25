@@ -1,318 +1,507 @@
 ﻿{
-  EmptyAssemblies: [
-    mscorlib,
-    netstandard,
-    System,
-    System.Collections.Immutable,
-    System.ComponentModel,
-    System.Core,
-    System.Private.CoreLib,
-    System.Runtime,
-    TestAssembly
-  ],
-  FinalDiagnostics: [],
-  GeneratedCache: {
-    OtherProject: {
-      InternalReflectionRequests: [
-        {
-          Assembly: {
-            Location: {
-              Kind: Reflection,
-              LineNumber: 16,
-              ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
-              SourceAssemblyName: OtherProject,
-              SourceExpression: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
-              FileName: Input0.cs
+  Cache: {
+    Requests: {
+      OtherProject: {
+        ExcludeFromResolution: false,
+        InternalReflectionRequests: [
+          {
+            a: {
+              a: {
+                a: true,
+                i: false
+              },
+              l: {
+                e: 4VaAjHpBsAH5j0EYKpAqQw==,
+                k: 1,
+                l: 16,
+                sa: OtherProject,
+                se: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill"))
+              }
             },
-            Assembly: {
-              AllAssembly: true,
-              IncludeSystem: false,
-              Assembly: null,
-              NotAssembly: null,
-              AssemblyDependencies: null
-            }
-          },
-          Reflection: {
-            Type: {
-              Filter: All,
-              NamespaceFilters: [
-                {
-                  Filter: NotIn,
-                  Namespaces: [
-                    JetBrains.Annotations,
-                    Polyfills,
-                    System
-                  ]
-                }
-              ],
-              NameFilters: [
-                {
-                  Include: false,
-                  Names: [
-                    Polyfill
-                  ]
-                }
-              ],
-              TypeKindFilters: [
-                {
-                  Include: false,
-                  TypeKinds: [
-                    Delegate
-                  ]
-                },
-                {
-                  Include: false,
-                  TypeKinds: [
-                    Interface
-                  ]
-                }
-              ],
-              TypeInfoFilters: null,
-              WithAttributeFilters: null,
-              WithAttributeStringFilters: null,
-              WithAnyAttributeFilters: null,
-              WithAnyAttributeStringFilters: null,
-              AssignableToTypeFilters: [
-                {
-                  Include: false,
-                  Assembly: Specular,
-                  Type: Specular.ISpecularProvider,
-                  UnboundGenericType: false
-                }
-              ],
-              AssignableToAnyTypeFilters: null
-            }
-          },
-          Type: GetReflectionCollectionData
-        }
-      ],
-      ExcludeFromResolution: false,
-      CacheVersion: {Scrubbed},
-      IsEmpty: false
+            r: {
+              t: {
+                b: 1,
+                c: [
+                  {
+                    f: 3,
+                    n: [
+                      JetBrains.Annotations,
+                      Polyfills,
+                      System
+                    ]
+                  }
+                ],
+                d: [
+                  {
+                    f: 0,
+                    i: false,
+                    n: [
+                      Polyfill
+                    ]
+                  }
+                ],
+                e: [
+                  {
+                    f: false,
+                    t: [
+                      3
+                    ]
+                  },
+                  {
+                    f: false,
+                    t: [
+                      7
+                    ]
+                  }
+                ],
+                k: [
+                  {
+                    a: Specular,
+                    i: false,
+                    t: Specular.ISpecularProvider,
+                    u: false
+                  }
+                ]
+              }
+            },
+            t: GetReflectionCollectionData
+          }
+        ]
+      },
+      Specular: {
+        ExcludeFromResolution: false,
+        InternalServiceDescriptorRequests: [
+          {
+            a: {
+              a: {
+                a: true,
+                i: false
+              },
+              l: {
+                e: QGmxhNh0sTcsPjKev+mVvQ==,
+                k: 2,
+                l: 20,
+                sa: Specular,
+                se: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime()
+              }
+            },
+            r: {
+              t: {
+                b: 1,
+                e: [
+                  {
+                    f: true,
+                    t: [
+                      2
+                    ]
+                  }
+                ],
+                i: [
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute,
+                    i: true,
+                    u: false
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`1,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`2,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`3,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`4,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`5,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`6,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`7,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.KeyedServiceRegistrationAttribute`8,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute,
+                    i: true,
+                    u: false
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`2,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`3,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`4,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`5,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`6,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`7,
+                    i: true,
+                    u: true
+                  },
+                  {
+                    a: Specular,
+                    b: Specular.ServiceRegistrationAttribute`8,
+                    i: true,
+                    u: true
+                  }
+                ]
+              }
+            },
+            s: {
+              s: {
+                Lifetime: 0,
+                ServiceTypeDescriptors: [
+                  {
+                    Identifier: s,
+                    TypeData: null,
+                    TypeFilter: null
+                  }
+                ]
+              },
+              z: 0
+            },
+            t: GetServiceDescriptorCollectionData
+          }
+        ]
+      },
+      System: {
+        ExcludeFromResolution: false
+      },
+      System.Collections.Immutable: {
+        ExcludeFromResolution: false
+      },
+      System.ComponentModel: {
+        ExcludeFromResolution: false
+      },
+      System.Core: {
+        ExcludeFromResolution: false
+      },
+      System.Private.CoreLib: {
+        ExcludeFromResolution: false
+      },
+      System.Runtime: {
+        ExcludeFromResolution: false
+      },
+      TestAssembly: {
+        ExcludeFromResolution: false
+      },
+      mscorlib: {
+        ExcludeFromResolution: false
+      },
+      netstandard: {
+        ExcludeFromResolution: false
+      }
     },
-    Specular: {
-      InternalServiceDescriptorRequests: [
-        {
-          Assembly: {
-            Location: {
-              Kind: ServiceDescriptor,
-              LineNumber: 20,
-              ExpressionHash: QGmxhNh0sTcsPjKev+mVvQ==,
-              SourceAssemblyName: Specular,
-              SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
-              FileName: SpecularProviderServiceCollectionExtensions.cs
+    Scans: [
+      {
+        Assembly: OtherProject
+      },
+      {
+        Assembly: OtherProject,
+        Types: [
+          Program,
+          SpecularScanReport,
+          Microsoft.CodeAnalysis.EmbeddedAttribute
+        ]
+      },
+      {
+        Assembly: Specular
+      },
+      {
+        Assembly: Specular,
+        Types: [
+          SpecularScanReport,
+          Microsoft.CodeAnalysis.EmbeddedAttribute,
+          Specular.KeyedServiceRegistrationBaseAttribute,
+          Specular.KeyedServiceRegistrationAttribute,
+          Specular.KeyedServiceRegistrationAttribute`1,
+          Specular.KeyedServiceRegistrationAttribute`2,
+          Specular.KeyedServiceRegistrationAttribute`3,
+          Specular.KeyedServiceRegistrationAttribute`4,
+          Specular.KeyedServiceRegistrationAttribute`5,
+          Specular.KeyedServiceRegistrationAttribute`6,
+          Specular.KeyedServiceRegistrationAttribute`7,
+          Specular.KeyedServiceRegistrationAttribute`8,
+          Specular.RegistrationLifetimeAttribute,
+          Specular.ServiceRegistrationBaseAttribute,
+          Specular.ServiceRegistrationAttribute,
+          Specular.ServiceRegistrationAttribute`1,
+          Specular.ServiceRegistrationAttribute`2,
+          Specular.ServiceRegistrationAttribute`3,
+          Specular.ServiceRegistrationAttribute`4,
+          Specular.ServiceRegistrationAttribute`5,
+          Specular.ServiceRegistrationAttribute`6,
+          Specular.ServiceRegistrationAttribute`7,
+          Specular.ServiceRegistrationAttribute`8,
+          Specular.SpecularProviderServiceCollectionExtensions,
+          Specular.SpecularSupport,
+          Specular.Abstractions.ExcludeFromSpecularAttribute,
+          Specular.Abstractions.SpecularHashAttribute,
+          Specular.Abstractions.TypeInfoFilter,
+          Specular.Abstractions.TypeKindFilter,
+          Specular.Diagnostics.ScanResults,
+          Specular.Diagnostics.AssemblyScanReport,
+          Specular.Diagnostics.AssemblyScanReportEntry,
+          Specular.Diagnostics.TypeScanReport,
+          Specular.Diagnostics.TypeScanAssemblyReportEntry,
+          Specular.Diagnostics.TypeScanReportEntry,
+          Specular.Diagnostics.ServiceDescriptorScanReport,
+          Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry,
+          Specular.Diagnostics.ServiceDescriptorScanReportEntry
+        ]
+      },
+      {
+        Assembly: System.Collections.Immutable
+      },
+      {
+        Assembly: System.Collections.Immutable,
+        Types: [
+          FxResources.System.Collections.Immutable.SR
+        ]
+      },
+      {
+        Assembly: System.ComponentModel
+      },
+      {
+        Assembly: System.ComponentModel
+      },
+      {
+        Assembly: TestAssembly,
+        Types: [
+          Microsoft.CodeAnalysis.EmbeddedAttribute,
+          TestAssembly.Service,
+          TestAssembly.Nested,
+          TestAssembly.Nested+ServiceA,
+          TestAssembly.Nested+GenericServiceA,
+          TestAssembly.Nested+MyRecord,
+          TestAssembly.Nested+Validator,
+          TestAssembly.ServiceB,
+          TestAssembly.Request,
+          TestAssembly.Response,
+          TestAssembly.RequestHandler,
+          TestAssembly.GenericService,
+          TestAssembly.GenericServiceB,
+          TestAssembly.KeyedService
+        ]
+      },
+      {
+        Assembly: TestAssembly,
+        Types: [
+          TestAssembly.RequestHandler,
+          TestAssembly.GenericService,
+          TestAssembly.GenericServiceB,
+          TestAssembly.KeyedService
+        ]
+      }
+    ],
+    Sources: [
+      {
+        Assembly: OtherProject,
+        Source: {
+          DiscoveredTypes: [
+            {
+              t: global::Microsoft.CodeAnalysis.EmbeddedAttribute
             },
-            Assembly: {
-              AllAssembly: true,
-              IncludeSystem: false,
-              Assembly: null,
-              NotAssembly: null,
-              AssemblyDependencies: null
+            {
+              t: global::Program
+            },
+            {
+              t: global::SpecularScanReport
             }
-          },
-          Reflection: {
-            Type: {
-              Filter: All,
-              NamespaceFilters: null,
-              NameFilters: null,
-              TypeKindFilters: [
-                {
-                  Include: true,
-                  TypeKinds: [
-                    Class
-                  ]
-                }
-              ],
-              TypeInfoFilters: [
-                {
-                  Include: false,
-                  TypeInfos: [
-                    Static,
-                    Abstract
-                  ]
-                }
-              ],
-              WithAttributeFilters: null,
-              WithAttributeStringFilters: null,
-              WithAnyAttributeFilters: [
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute,
-                  UnboundGenericType: false
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`1,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`2,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`3,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`4,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`5,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`6,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`7,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.KeyedServiceRegistrationAttribute`8,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute,
-                  UnboundGenericType: false
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`2,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`3,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`4,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`5,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`6,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`7,
-                  UnboundGenericType: true
-                },
-                {
-                  Include: true,
-                  Assembly: Specular,
-                  Attribute: Specular.ServiceRegistrationAttribute`8,
-                  UnboundGenericType: true
-                }
-              ],
-              WithAnyAttributeStringFilters: null,
-              AssignableToTypeFilters: null,
-              AssignableToAnyTypeFilters: null
-            }
-          },
-          ServiceDescriptor: {
-            ServiceDescriptor: {
-              ServiceTypeDescriptors: [
-                {
-                  Identifier: s
-                }
-              ]
-            }
-          },
-          Type: GetServiceDescriptorCollectionData
-        }
-      ],
-      ExcludeFromResolution: false,
-      CacheVersion: {Scrubbed},
-      IsEmpty: false
-    }
-  },
-  GeneratorDiagnostics: {
-    Specular.Analyzers.SpecularProviderGenerator: []
-  },
-  GlobalOptions: {
-    build_property.ExcludeAssemblyFromCTP: Microsoft.Extensions.DependencyInjection,
-    build_property.IntermediateOutputPath: obj/net9.0,
-    build_property.ProjectDir: {TempPath}/test,
-    build_property.SpecularEmitProvider: true
-  },
-  PartialsCached: {
-    iRI98pD4Uwff/fOJs0SxSg==: {
-      ResolvedSources: {
-        OtherProject: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 16,
-            ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
-            SourceAssemblyName: OtherProject,
-            SourceExpression: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
-            FileName: Input0.cs
-          },
+          ],
           Expression:
 {
     items.Add(OtherProject.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
     items.Add(OtherProject.GetType("Program")!);
     items.Add(OtherProject.GetType("SpecularScanReport")!);
 },
+          Location: {
+            e: 4VaAjHpBsAH5j0EYKpAqQw==,
+            k: 1,
+            l: 16,
+            sa: OtherProject,
+            se: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill"))
+          },
           PrivateAssemblies: [
             OtherProject
           ],
-          CacheVersion: {Scrubbed},
+          ScannedAssemblyName: OtherProject
+        }
+      },
+      {
+        Assembly: Specular,
+        Source: {
           DiscoveredTypes: [
             {
-              Type: global::Microsoft.CodeAnalysis.EmbeddedAttribute
+              t: global::Microsoft.CodeAnalysis.EmbeddedAttribute
             },
             {
-              Type: global::Program
+              t: global::Specular.Abstractions.ExcludeFromSpecularAttribute
             },
             {
-              Type: global::SpecularScanReport
+              t: global::Specular.Abstractions.SpecularHashAttribute
+            },
+            {
+              t: global::Specular.Abstractions.TypeInfoFilter
+            },
+            {
+              t: global::Specular.Abstractions.TypeKindFilter
+            },
+            {
+              t: global::Specular.Diagnostics.AssemblyScanReport
+            },
+            {
+              t: global::Specular.Diagnostics.AssemblyScanReportEntry
+            },
+            {
+              t: global::Specular.Diagnostics.ScanResults
+            },
+            {
+              t: global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry
+            },
+            {
+              t: global::Specular.Diagnostics.ServiceDescriptorScanReport
+            },
+            {
+              t: global::Specular.Diagnostics.ServiceDescriptorScanReportEntry
+            },
+            {
+              t: global::Specular.Diagnostics.TypeScanAssemblyReportEntry
+            },
+            {
+              t: global::Specular.Diagnostics.TypeScanReport
+            },
+            {
+              t: global::Specular.Diagnostics.TypeScanReportEntry
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,,,,,,,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,,,,,,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,,,,,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,,,,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,,,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<,>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationAttribute<>
+            },
+            {
+              t: global::Specular.KeyedServiceRegistrationBaseAttribute
+            },
+            {
+              t: global::Specular.RegistrationLifetimeAttribute
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,,,,,,,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,,,,,,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,,,,,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,,,,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,,,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<,>
+            },
+            {
+              t: global::Specular.ServiceRegistrationAttribute<>
+            },
+            {
+              t: global::Specular.ServiceRegistrationBaseAttribute
+            },
+            {
+              t: global::Specular.SpecularProviderServiceCollectionExtensions
+            },
+            {
+              t: global::Specular.SpecularSupport
+            },
+            {
+              t: global::SpecularScanReport
             }
           ],
-          ScannedAssemblyName: OtherProject
-        },
-        Specular: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 16,
-            ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
-            SourceAssemblyName: OtherProject,
-            SourceExpression: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
-            FileName: Input0.cs
-          },
           Expression:
 {
     items.Add(Specular.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
@@ -354,161 +543,91 @@
     items.Add(typeof(global::Specular.SpecularSupport));
     items.Add(Specular.GetType("SpecularScanReport")!);
 },
+          Location: {
+            e: 4VaAjHpBsAH5j0EYKpAqQw==,
+            k: 1,
+            l: 16,
+            sa: OtherProject,
+            se: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill"))
+          },
           PrivateAssemblies: [
             Specular
           ],
-          CacheVersion: {Scrubbed},
+          ScannedAssemblyName: Specular
+        }
+      },
+      {
+        Assembly: System.Collections.Immutable,
+        Source: {
           DiscoveredTypes: [
             {
-              Type: global::Microsoft.CodeAnalysis.EmbeddedAttribute
-            },
-            {
-              Type: global::Specular.Abstractions.ExcludeFromSpecularAttribute
-            },
-            {
-              Type: global::Specular.Abstractions.SpecularHashAttribute
-            },
-            {
-              Type: global::Specular.Abstractions.TypeInfoFilter
-            },
-            {
-              Type: global::Specular.Abstractions.TypeKindFilter
-            },
-            {
-              Type: global::Specular.Diagnostics.AssemblyScanReport
-            },
-            {
-              Type: global::Specular.Diagnostics.AssemblyScanReportEntry
-            },
-            {
-              Type: global::Specular.Diagnostics.ScanResults
-            },
-            {
-              Type: global::Specular.Diagnostics.ServiceDescriptorAssemblyScanReportEntry
-            },
-            {
-              Type: global::Specular.Diagnostics.ServiceDescriptorScanReport
-            },
-            {
-              Type: global::Specular.Diagnostics.ServiceDescriptorScanReportEntry
-            },
-            {
-              Type: global::Specular.Diagnostics.TypeScanAssemblyReportEntry
-            },
-            {
-              Type: global::Specular.Diagnostics.TypeScanReport
-            },
-            {
-              Type: global::Specular.Diagnostics.TypeScanReportEntry
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,,,,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,,,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,,,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<,>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationAttribute<>
-            },
-            {
-              Type: global::Specular.KeyedServiceRegistrationBaseAttribute
-            },
-            {
-              Type: global::Specular.RegistrationLifetimeAttribute
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,,,,,,,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,,,,,,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,,,,,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,,,,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,,,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<,>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationAttribute<>
-            },
-            {
-              Type: global::Specular.ServiceRegistrationBaseAttribute
-            },
-            {
-              Type: global::Specular.SpecularProviderServiceCollectionExtensions
-            },
-            {
-              Type: global::Specular.SpecularSupport
-            },
-            {
-              Type: global::SpecularScanReport
+              t: global::FxResources.System.Collections.Immutable.SR
             }
           ],
-          ScannedAssemblyName: Specular
-        },
-        System.Collections.Immutable: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 16,
-            ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
-            SourceAssemblyName: OtherProject,
-            SourceExpression: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
-            FileName: Input0.cs
-          },
           Expression:
 {
     items.Add(SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!);
 },
+          Location: {
+            e: 4VaAjHpBsAH5j0EYKpAqQw==,
+            k: 1,
+            l: 16,
+            sa: OtherProject,
+            se: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill"))
+          },
           PrivateAssemblies: [
             System.Collections.Immutable
           ],
-          CacheVersion: {Scrubbed},
+          ScannedAssemblyName: System.Collections.Immutable
+        }
+      },
+      {
+        Assembly: TestAssembly,
+        Source: {
           DiscoveredTypes: [
             {
-              Type: global::FxResources.System.Collections.Immutable.SR
+              t: global::Microsoft.CodeAnalysis.EmbeddedAttribute
+            },
+            {
+              t: global::TestAssembly.GenericService
+            },
+            {
+              t: global::TestAssembly.GenericServiceB
+            },
+            {
+              t: global::TestAssembly.KeyedService
+            },
+            {
+              t: global::TestAssembly.Nested
+            },
+            {
+              t: global::TestAssembly.Nested+GenericServiceA
+            },
+            {
+              t: global::TestAssembly.Nested+MyRecord
+            },
+            {
+              t: global::TestAssembly.Nested+ServiceA
+            },
+            {
+              t: global::TestAssembly.Nested+Validator
+            },
+            {
+              t: global::TestAssembly.Request
+            },
+            {
+              t: global::TestAssembly.RequestHandler
+            },
+            {
+              t: global::TestAssembly.Response
+            },
+            {
+              t: global::TestAssembly.Service
+            },
+            {
+              t: global::TestAssembly.ServiceB
             }
           ],
-          ScannedAssemblyName: System.Collections.Immutable
-        },
-        TestAssembly: {
-          Location: {
-            Kind: Reflection,
-            LineNumber: 16,
-            ExpressionHash: 4VaAjHpBsAH5j0EYKpAqQw==,
-            SourceAssemblyName: OtherProject,
-            SourceExpression: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill")),
-            FileName: Input0.cs
-          },
           Expression:
 {
     items.Add(TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!);
@@ -526,69 +645,74 @@
     items.Add(typeof(global::TestAssembly.Service));
     items.Add(TestAssembly.GetType("TestAssembly.ServiceB")!);
 },
+          Location: {
+            e: 4VaAjHpBsAH5j0EYKpAqQw==,
+            k: 1,
+            l: 16,
+            sa: OtherProject,
+            se: z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotKindOf(TypeKindFilter.Delegate).NotKindOf(TypeKindFilter.Interface).NotInNamespaces("JetBrains.Annotations", "Polyfills", "System").NotStartsWith("Polyfill"))
+          },
           PrivateAssemblies: [
             TestAssembly
           ],
-          CacheVersion: {Scrubbed},
-          DiscoveredTypes: [
-            {
-              Type: global::Microsoft.CodeAnalysis.EmbeddedAttribute
-            },
-            {
-              Type: global::TestAssembly.GenericService
-            },
-            {
-              Type: global::TestAssembly.GenericServiceB
-            },
-            {
-              Type: global::TestAssembly.KeyedService
-            },
-            {
-              Type: global::TestAssembly.Nested
-            },
-            {
-              Type: global::TestAssembly.Nested+GenericServiceA
-            },
-            {
-              Type: global::TestAssembly.Nested+MyRecord
-            },
-            {
-              Type: global::TestAssembly.Nested+ServiceA
-            },
-            {
-              Type: global::TestAssembly.Nested+Validator
-            },
-            {
-              Type: global::TestAssembly.Request
-            },
-            {
-              Type: global::TestAssembly.RequestHandler
-            },
-            {
-              Type: global::TestAssembly.Response
-            },
-            {
-              Type: global::TestAssembly.Service
-            },
-            {
-              Type: global::TestAssembly.ServiceB
-            }
-          ],
           ScannedAssemblyName: TestAssembly
         }
-      }
-    },
-    MMNcCWWfhJvVVl35NFMXOw==: {
-      ResolvedSources: {
-        TestAssembly: {
-          Location: {
-            Kind: ServiceDescriptor,
-            LineNumber: 20,
-            ExpressionHash: QGmxhNh0sTcsPjKev+mVvQ==,
-            SourceAssemblyName: Specular,
-            SourceExpression: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime(),
-            FileName: SpecularProviderServiceCollectionExtensions.cs
-          },
+      },
+      {
+        Assembly: TestAssembly,
+        Source: {
+          DiscoveredServiceDescriptors: [
+            {
+              i: global::TestAssembly.GenericService,
+              l: Singleton,
+              s: global::TestAssembly.GenericService
+            },
+            {
+              i: global::TestAssembly.GenericService,
+              l: Singleton,
+              s: global::TestAssembly.IGenericService<global::System.Int32>
+            },
+            {
+              i: global::TestAssembly.GenericService,
+              l: Singleton,
+              s: global::TestAssembly.IOther
+            },
+            {
+              i: global::TestAssembly.GenericServiceB,
+              l: Singleton,
+              s: global::TestAssembly.GenericServiceB
+            },
+            {
+              i: global::TestAssembly.GenericServiceB,
+              l: Singleton,
+              s: global::TestAssembly.IGenericService<global::System.Decimal>
+            },
+            {
+              i: global::TestAssembly.GenericServiceB,
+              l: Singleton,
+              s: global::TestAssembly.IOther
+            },
+            {
+              i: global::TestAssembly.KeyedService,
+              l: Singleton,
+              s: global::TestAssembly.KeyedService
+            },
+            {
+              i: global::TestAssembly.KeyedService,
+              l: Singleton,
+              s: global::TestAssembly.IKeyedService
+            },
+            {
+              i: global::TestAssembly.RequestHandler,
+              l: Singleton,
+              s: global::TestAssembly.RequestHandler
+            },
+            {
+              i: global::TestAssembly.RequestHandler,
+              l: Singleton,
+              s: global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>
+            }
+          ],
           Expression:
 {
     services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.GenericService")!, TestAssembly.GetType("TestAssembly.GenericService")!));
@@ -602,66 +726,30 @@
     services.Add(ServiceDescriptor.Singleton(TestAssembly.GetType("TestAssembly.RequestHandler")!, TestAssembly.GetType("TestAssembly.RequestHandler")!));
     services.Add(ServiceDescriptor.Singleton(typeof(global::TestAssembly.IRequestHandler<, >).MakeGenericType(TestAssembly.GetType("TestAssembly.Request")!, TestAssembly.GetType("TestAssembly.Response")!)!, a => a.GetRequiredService(TestAssembly.GetType("TestAssembly.RequestHandler")!)));
 },
+          Location: {
+            e: QGmxhNh0sTcsPjKev+mVvQ==,
+            k: 2,
+            l: 20,
+            sa: Specular,
+            se: z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime()
+          },
           PrivateAssemblies: [
             TestAssembly
-          ],
-          CacheVersion: {Scrubbed},
-          DiscoveredServiceDescriptors: [
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.GenericService,
-              ImplementationType: global::TestAssembly.GenericService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IGenericService<global::System.Int32>,
-              ImplementationType: global::TestAssembly.GenericService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IOther,
-              ImplementationType: global::TestAssembly.GenericService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.GenericServiceB,
-              ImplementationType: global::TestAssembly.GenericServiceB
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IGenericService<global::System.Decimal>,
-              ImplementationType: global::TestAssembly.GenericServiceB
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IOther,
-              ImplementationType: global::TestAssembly.GenericServiceB
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.KeyedService,
-              ImplementationType: global::TestAssembly.KeyedService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IKeyedService,
-              ImplementationType: global::TestAssembly.KeyedService
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.RequestHandler,
-              ImplementationType: global::TestAssembly.RequestHandler
-            },
-            {
-              Lifetime: Singleton,
-              ServiceType: global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>,
-              ImplementationType: global::TestAssembly.RequestHandler
-            }
           ],
           ScannedAssemblyName: TestAssembly
         }
       }
-    }
+    ]
+  },
+  FinalDiagnostics: [],
+  GeneratorDiagnostics: {
+    Specular.Analyzers.SpecularProviderGenerator: []
+  },
+  GlobalOptions: {
+    build_property.ExcludeAssemblyFromCTP: Microsoft.Extensions.DependencyInjection,
+    build_property.IntermediateOutputPath: obj/net9.0,
+    build_property.ProjectDir: {TempPath}/test,
+    build_property.SpecularEmitProvider: true
   },
   References: [
     <in-memory assembly>,

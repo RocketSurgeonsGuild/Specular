@@ -16,6 +16,33 @@ internal sealed class SpecularScanReport
         [
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.Abstract).NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))", 
                 [
+                    new("OtherProject", 
+                        [
+                            new("global::Microsoft.CodeAnalysis.EmbeddedAttribute"), 
+                            new("global::Program"), 
+                            new("global::SpecularScanReport")]
+                    ), 
+                    new("System.Collections.Immutable", 
+                        [
+                            new("global::FxResources.System.Collections.Immutable.SR")]
+                    ), 
+                    new("TestAssembly", 
+                        [
+                            new("global::Microsoft.CodeAnalysis.EmbeddedAttribute"), 
+                            new("global::TestAssembly.GenericService"), 
+                            new("global::TestAssembly.GenericServiceB"), 
+                            new("global::TestAssembly.KeyedService"), 
+                            new("global::TestAssembly.Nested"), 
+                            new("global::TestAssembly.Nested+GenericServiceA"), 
+                            new("global::TestAssembly.Nested+MyRecord"), 
+                            new("global::TestAssembly.Nested+ServiceA"), 
+                            new("global::TestAssembly.Nested+Validator"), 
+                            new("global::TestAssembly.Request"), 
+                            new("global::TestAssembly.RequestHandler"), 
+                            new("global::TestAssembly.Response"), 
+                            new("global::TestAssembly.Service"), 
+                            new("global::TestAssembly.ServiceB")]
+                    ), 
                     new("TestProject", 
                         [
                             new("global::Microsoft.CodeAnalysis.EmbeddedAttribute"), 

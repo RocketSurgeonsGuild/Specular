@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Specular.Analyzers.Configuration;
 
-public record GetReflectionCollectionData
+internal sealed record GetReflectionCollectionData
 (
     [property: JsonPropertyName("a")]
     AssemblyCollectionData Assembly,

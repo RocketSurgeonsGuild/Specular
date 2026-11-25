@@ -1,4 +1,3 @@
-using Specular.Analyzers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Rocket.Surgery.Extensions.Testing.SourceGenerators;
@@ -28,7 +27,7 @@ internal static partial class VerifyExtensions
     {
         if (!Path.IsPathRooted(tempPath)) tempPath = Path.Combine(ModuleInitializer.TempDirectory, tempPath);
 
-        var cachePath = $"{IntermediateOutputPath}/ctp/{Constants.SpecularProviderCacheFileName}";
+        var cachePath = $"{IntermediateOutputPath}/ctp/{CacheFileName}";
         var fullCachePath = Path.Combine(tempPath, cachePath);
         return !File.Exists(fullCachePath)
             ? throw new FileNotFoundException("Cache file not found", fullCachePath)
@@ -44,4 +43,7 @@ internal static partial class VerifyExtensions
     }
 
     private const string IntermediateOutputPath = "obj/net9.0";
+
+    // Specular's consumer id in the Specular.Scanning build cache names the file.
+    public const string CacheFileName = "SpecularProvider.ctpjson";
 }

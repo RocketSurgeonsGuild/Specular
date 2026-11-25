@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.Descriptors;
+using Specular.Scanning;
 
 namespace Specular.Analyzers.AssemblyProviders;
 
@@ -12,11 +13,11 @@ internal static class DataHelpers
         HashSet<Diagnostic> diagnostics,
         SemanticModel semanticModel,
         ExpressionSyntax selectorExpression,
-        List<IAssemblyDescriptor> assemblies,
-        List<ITypeFilterDescriptor> typeFilters,
+        ScanEnvironment environment,
+        AssemblySelectionBuilder assemblies,
+        TypeSelectionBuilder typeFilters,
         List<IServiceTypeDescriptor> serviceTypeFilters,
         ref int lifetime,
-        ref ClassFilter classFilter,
         CancellationToken cancellationToken
     )
     {
@@ -47,11 +48,11 @@ internal static class DataHelpers
                 diagnostics,
                 semanticModel,
                 childExpression,
+                environment,
                 assemblies,
                 typeFilters,
                 serviceTypeFilters,
                 ref lifetime,
-                ref classFilter,
                 cancellationToken
             );
         }
@@ -63,33 +64,28 @@ internal static class DataHelpers
                      or "Specular.Abstractions.IServiceDescriptorAssemblySelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
-            var selector = HandleCompiledAssemblySelector(semanticModel, expression, memberAccessExpressionSyntax.Name);
-            if (selector is { }) assemblies.Add(selector);
+            _ = HandleCompiledAssemblySelector(semanticModel, expression, memberAccessExpressionSyntax.Name, assemblies);
         }
 
         if (typeName is "Specular.Abstractions.IReflectionTypeSelector"
                      or "Specular.Abstractions.IServiceDescriptorTypeSelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
-            var selector = HandleCompiledAssemblySelector(semanticModel, expression, memberAccessExpressionSyntax.Name);
-            if (selector is { })
-                assemblies.Add(selector);
-            else
-                classFilter = HandleCompiledImplementationTypeSelector(expression, memberAccessExpressionSyntax.Name);
+            if (!HandleCompiledAssemblySelector(semanticModel, expression, memberAccessExpressionSyntax.Name, assemblies))
+                typeFilters.ClassFilter = HandleCompiledImplementationTypeSelector(expression, memberAccessExpressionSyntax.Name);
         }
 
         if (typeName == "Specular.Abstractions.ITypeFilter")
         {
             if (cancellationToken.IsCancellationRequested) return;
-            if (HandleCompiledTypeFilter(diagnostics, semanticModel, expression, memberAccessExpressionSyntax.Name) is { } filter)
-                typeFilters.Add(filter);
+            HandleCompiledTypeFilter(diagnostics, semanticModel, expression, memberAccessExpressionSyntax.Name, typeFilters);
         }
 
         if (typeName is "Specular.Abstractions.IServiceTypeSelector"
                      or "Specular.Abstractions.IServiceLifetimeSelector")
         {
             if (cancellationToken.IsCancellationRequested) return;
-            serviceTypeFilters.AddRange(HandleCompiledServiceTypeFilter(diagnostics, semanticModel, expression, memberAccessExpressionSyntax.Name, cancellationToken));
+            serviceTypeFilters.AddRange(HandleCompiledServiceTypeFilter(diagnostics, semanticModel, expression, memberAccessExpressionSyntax.Name, environment, cancellationToken));
         }
 
         if (typeName is "Specular.Abstractions.IServiceLifetimeSelector")
@@ -107,11 +103,11 @@ internal static class DataHelpers
                 diagnostics,
                 semanticModel,
                 argument.Expression,
+                environment,
                 assemblies,
                 typeFilters,
                 serviceTypeFilters,
                 ref lifetime,
-                ref classFilter,
                 cancellationToken
             );
         }
@@ -151,36 +147,49 @@ internal static class DataHelpers
         };
     }
 
-    private static IAssemblyDescriptor? HandleCompiledAssemblySelector(
+    // Whether the call was an assembly clause that could be recorded.
+    private static bool HandleCompiledAssemblySelector(
         SemanticModel semanticModel,
         InvocationExpressionSyntax expression,
-        SimpleNameSyntax name
+        SimpleNameSyntax name,
+        AssemblySelectionBuilder assemblies
     )
     {
-        if (name.ToFullString() == "EntryAssembly")
-            return new AssemblyDescriptor(semanticModel.Compilation.Assembly);
-        if (name.ToFullString() == "FromAssemblies")
-            return new AllAssemblyDescriptor();
-        if (name.ToFullString() == "IncludeSystemAssemblies")
-            return new IncludeSystemAssembliesDescriptor();
+        switch (name.ToFullString())
+        {
+            case "EntryAssembly":
+                assemblies.FromAssembly(semanticModel.Compilation.Assembly);
+                return true;
+            case "FromAssemblies":
+                assemblies.FromAssemblies();
+                return true;
+            case "IncludeSystemAssemblies":
+                assemblies.IncludeSystemAssemblies();
+                return true;
+            default:
+                break;
+        }
 
         var typeSyntax = ExtractSyntaxFromMethod(expression, name);
         if (typeSyntax == null)
-            return null;
+            return false;
 
-        var typeInfo = ModelExtensions.GetTypeInfo(semanticModel, typeSyntax).Type;
-        return typeInfo is null
-            ? null
-            : typeInfo switch
-            {
-                INamedTypeSymbol nts when name is { Identifier.Text: "DependenciesFromAssemblyOf" } =>
-                    new AssemblyDependenciesDescriptor(nts.ContainingAssembly),
-                INamedTypeSymbol namedType when name is { Identifier.Text: "FromAssemblyOf" or "NotFromAssemblyOf" } =>
-                    name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal)
-                        ? new NotAssemblyDescriptor(namedType.ContainingAssembly)
-                        : new AssemblyDescriptor(namedType.ContainingAssembly),
-                _ => null,
-            };
+        if (ModelExtensions.GetTypeInfo(semanticModel, typeSyntax).Type is not INamedTypeSymbol namedType) return false;
+
+        switch (name.Identifier.Text)
+        {
+            case "DependenciesFromAssemblyOf":
+                assemblies.DependenciesOf(namedType.ContainingAssembly);
+                return true;
+            case "NotFromAssemblyOf":
+                assemblies.NotFromAssembly(namedType.ContainingAssembly);
+                return true;
+            case "FromAssemblyOf":
+                assemblies.FromAssembly(namedType.ContainingAssembly);
+                return true;
+            default:
+                return false;
+        }
     }
 
     private static ClassFilter HandleCompiledImplementationTypeSelector(
@@ -200,84 +209,64 @@ internal static class DataHelpers
         return ClassFilter.All;
     }
 
-    private static ITypeFilterDescriptor? HandleCompiledTypeFilter(
+    private static void HandleCompiledTypeFilter(
         HashSet<Diagnostic> diagnostics,
         SemanticModel semanticModel,
         InvocationExpressionSyntax expression,
-        SimpleNameSyntax name
+        SimpleNameSyntax name,
+        TypeSelectionBuilder filters
     )
     {
-        return (name, GetSyntaxTypeInfo(semanticModel, expression, name)) switch
+        switch (name, GetSyntaxTypeInfo(semanticModel, expression, name))
         {
-            ({ Identifier.Text: "AssignableToAny" or "NotAssignableToAny" }, _) =>
-                createAssignableToAnyTypeFilterDescriptor(name, expression, semanticModel),
-            ({ Identifier.Text: "AssignableTo" or "NotAssignableTo" }, { } namedType) =>
-                createAssignableToTypeFilterDescriptor(name, namedType),
-            ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, { } namedType) =>
-                createWithAttributeFilterDescriptor(name, namedType),
-            ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, _) =>
-                createWithAttributeStringFilterDescriptor(diagnostics, name, expression, semanticModel),
-            ({ Identifier.Text: "WithAnyAttribute" }, { } namedType) =>
-                createWithAnyAttributeFilterDescriptor(name, expression, semanticModel),
-            ({ Identifier.Text: "WithAnyAttribute" }, _) =>
-                createWithAnyAttributeStringFilterDescriptor(name, expression, semanticModel),
-            ({ Identifier.Text: "InExactNamespaceOf" or "InNamespaceOf" or "NotInNamespaceOf" }, _) =>
-                createNamespaceTypeFilterDescriptor(diagnostics, name, expression, semanticModel),
-            ({ Identifier.Text: "InExactNamespaces" or "InNamespaces" or "NotInNamespaces" }, _) =>
-                createNamespaceStringFilterDescriptor(diagnostics, name, expression, semanticModel),
-            ({ Identifier.Text: "EndsWith" or "StartsWith" or "Contains" or "NotEndsWith" or "NotStartsWith" or "NotContains" }, _) =>
-                createNameFilterDescriptor(diagnostics, name, expression),
-            ({ Identifier.Text: "KindOf" or "NotKindOf" }, _) =>
-                createTypeKindFilterDescriptor(diagnostics, name, expression),
-            ({ Identifier.Text: "InfoOf" or "NotInfoOf" }, _) =>
-                createTypeInfoFilterDescriptor(diagnostics, name, expression),
-            _ => null,
-            //                   _ => throw new NotSupportedException($"Not supported type filter. Method: {name.ToFullString()}  {expression.ToFullString()} method."),
-        };
-
-        static ITypeFilterDescriptor createAssignableToTypeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType)
-        {
-            return name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal)
-                ? new NotAssignableToTypeFilterDescriptor(namedType)
-                : new AssignableToTypeFilterDescriptor(namedType);
+            case ({ Identifier.Text: "AssignableToAny" or "NotAssignableToAny" }, _):
+                filters.AssignableToAny(!name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal), getTypeArguments(name, expression, semanticModel));
+                break;
+            case ({ Identifier.Text: "AssignableTo" or "NotAssignableTo" }, { } namedType):
+                filters.AssignableTo(!name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal), namedType);
+                break;
+            case ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, { } namedType):
+                filters.WithAttribute(!name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal), namedType);
+                break;
+            case ({ Identifier.Text: "WithAttribute" or "WithoutAttribute" }, _):
+                addWithAttributeString(diagnostics, name, expression, semanticModel, filters);
+                break;
+            case ({ Identifier.Text: "WithAnyAttribute" }, { }):
+                filters.WithAnyAttribute(getTypeArguments(name, expression, semanticModel));
+                break;
+            case ({ Identifier.Text: "WithAnyAttribute" }, _):
+                filters.WithAnyAttribute(getAttributeNames(name, expression, semanticModel));
+                break;
+            case ({ Identifier.Text: "InExactNamespaceOf" or "InNamespaceOf" or "NotInNamespaceOf" }, _):
+                addNamespaceTypeFilter(diagnostics, name, expression, semanticModel, filters);
+                break;
+            case ({ Identifier.Text: "InExactNamespaces" or "InNamespaces" or "NotInNamespaces" }, _):
+                addNamespaceStringFilter(diagnostics, name, expression, semanticModel, filters);
+                break;
+            case ({ Identifier.Text: "EndsWith" or "StartsWith" or "Contains" or "NotEndsWith" or "NotStartsWith" or "NotContains" }, _):
+                addNameFilter(diagnostics, name, expression, filters);
+                break;
+            case ({ Identifier.Text: "KindOf" or "NotKindOf" }, _):
+                addTypeKindFilter(diagnostics, name, expression, filters);
+                break;
+            case ({ Identifier.Text: "InfoOf" or "NotInfoOf" }, _):
+                addTypeInfoFilter(diagnostics, name, expression, filters);
+                break;
+            default:
+                break;
         }
 
-        static ITypeFilterDescriptor createWithAttributeFilterDescriptor(SimpleNameSyntax name, INamedTypeSymbol namedType) => name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal) ? new WithoutAttributeFilterDescriptor(namedType) : new WithAttributeFilterDescriptor(namedType);
+        static ImmutableHashSet<INamedTypeSymbol> getTypeArguments(SimpleNameSyntax name, InvocationExpressionSyntax expression, SemanticModel semanticModel) =>
+            expression
+               .ArgumentList.Arguments.Select(z => GetSyntaxTypeInfo(semanticModel, z.Expression, name))
+               .OfType<INamedTypeSymbol>()
+               .ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 
-        static ITypeFilterDescriptor createWithAnyAttributeFilterDescriptor(
-            SimpleNameSyntax name,
-            InvocationExpressionSyntax expression,
-            SemanticModel semanticModel
-        )
-        {
-            var arguments = expression
-                           .ArgumentList.Arguments.Select(z => GetSyntaxTypeInfo(semanticModel, z.Expression, name))
-                           .OfType<INamedTypeSymbol>()
-                           .ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
-
-            return new WithAnyAttributeFilterDescriptor(arguments);
-        }
-
-        static ITypeFilterDescriptor createAssignableToAnyTypeFilterDescriptor(
-            SimpleNameSyntax name,
-            InvocationExpressionSyntax expression,
-            SemanticModel semanticModel
-        )
-        {
-            var arguments = expression
-                           .ArgumentList.Arguments.Select(z => GetSyntaxTypeInfo(semanticModel, z.Expression, name))
-                           .OfType<INamedTypeSymbol>()
-                           .ToImmutableHashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
-
-            return name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal)
-                ? new NotAssignableToAnyTypeFilterDescriptor(arguments)
-                : new AssignableToAnyTypeFilterDescriptor(arguments);
-        }
-
-        static ITypeFilterDescriptor createNameFilterDescriptor(
+        static void addNameFilter(
             HashSet<Diagnostic> diagnostics,
             SimpleNameSyntax name,
-            InvocationExpressionSyntax expression
+            InvocationExpressionSyntax expression,
+            TypeSelectionBuilder filters
         )
         {
             var filter = name.Identifier.Text switch
@@ -301,14 +290,15 @@ internal static class DataHelpers
                 stringValues.Add(item);
             }
 
-            return new NameFilterDescriptor(!name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal), filter, stringValues.ToImmutable());
+            filters.Names(!name.Identifier.Text.StartsWith("Not", StringComparison.Ordinal), filter, stringValues.ToImmutable());
         }
 
-        static NamespaceFilterDescriptor createNamespaceTypeFilterDescriptor(
+        static void addNamespaceTypeFilter(
             HashSet<Diagnostic> diagnostics,
             SimpleNameSyntax name,
             InvocationExpressionSyntax expression,
-            SemanticModel semanticModel
+            SemanticModel semanticModel,
+            TypeSelectionBuilder filters
         )
         {
             var filter = name.Identifier.Text switch
@@ -340,14 +330,15 @@ internal static class DataHelpers
                 namespaces.Add(type2.ContainingNamespace.ToDisplayString());
             }
 
-            return new(filter, namespaces.ToImmutable());
+            filters.Namespaces(filter, namespaces.ToImmutable());
         }
 
-        static NamespaceFilterDescriptor createNamespaceStringFilterDescriptor(
+        static void addNamespaceStringFilter(
             HashSet<Diagnostic> diagnostics,
             SimpleNameSyntax name,
             InvocationExpressionSyntax expression,
-            SemanticModel semanticModel
+            SemanticModel semanticModel,
+            TypeSelectionBuilder filters
         )
         {
             var filter = name.Identifier.Text switch
@@ -382,40 +373,39 @@ internal static class DataHelpers
                 diagnostics.Add(Diagnostic.Create(Diagnostics.MustBeAString, argument.GetLocation()));
             }
 
-            return new(filter, namespaces.ToImmutable());
+            filters.Namespaces(filter, namespaces.ToImmutable());
         }
 
-        static ITypeFilterDescriptor? createWithAttributeStringFilterDescriptor(
+        static void addWithAttributeString(
             HashSet<Diagnostic> diagnostics,
             SimpleNameSyntax name,
             InvocationExpressionSyntax expression,
-            SemanticModel semanticModel
+            SemanticModel semanticModel,
+            TypeSelectionBuilder filters
         )
         {
-            if (expression is not { ArgumentList.Arguments: [var argument] }) return null;
+            if (expression is not { ArgumentList.Arguments: [var argument] }) return;
+            var include = !name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal);
             if (argument.Expression is MemberAccessExpressionSyntax
                 {
                     Name.Identifier.Text: "FullName", Expression: TypeOfExpressionSyntax typeOfExpressionSyntax,
                 }
              && GetSyntaxTypeInfo(semanticModel, typeOfExpressionSyntax, name) is { } type)
             {
-                return name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal)
-                    ? new WithoutAttributeStringFilterDescriptor(Helpers.GetFullMetadataName(type))
-                    : new WithAttributeStringFilterDescriptor(Helpers.GetFullMetadataName(type));
+                filters.WithAttribute(include, Helpers.GetFullMetadataName(type));
+                return;
             }
 
             if (getStringValue(argument) is { Length: > 0 } item)
             {
-                return name.Identifier.Text.StartsWith("Without", StringComparison.Ordinal)
-                    ? new WithoutAttributeStringFilterDescriptor(item)
-                    : new WithAttributeStringFilterDescriptor(item);
+                filters.WithAttribute(include, item);
+                return;
             }
 
             diagnostics.Add(Diagnostic.Create(Diagnostics.MustBeAString, argument.GetLocation()));
-            return null;
         }
 
-        static ITypeFilterDescriptor createWithAnyAttributeStringFilterDescriptor(
+        static ImmutableHashSet<string> getAttributeNames(
             SimpleNameSyntax name,
             InvocationExpressionSyntax expression,
             SemanticModel semanticModel
@@ -439,18 +429,19 @@ internal static class DataHelpers
                 }
             }
 
-            return new WithAnyAttributeStringFilterDescriptor(results.ToImmutable());
+            return results.ToImmutable();
         }
 
-        static TypeKindFilterDescriptor createTypeKindFilterDescriptor(
+        static void addTypeKindFilter(
             HashSet<Diagnostic> diagnostics,
             SimpleNameSyntax name,
-            InvocationExpressionSyntax expression
+            InvocationExpressionSyntax expression,
+            TypeSelectionBuilder filters
         )
         {
             var include = name.Identifier.Text switch { "KindOf" => true, _ => false };
 
-            var namespaces = ImmutableHashSet.CreateBuilder<TypeKind>();
+            var typeKinds = ImmutableHashSet.CreateBuilder<TypeKind>();
             foreach (var argument in expression.ArgumentList.Arguments)
             {
                 if (getStringValue(argument) is not { Length: > 0 } item)
@@ -459,21 +450,22 @@ internal static class DataHelpers
                     continue;
                 }
 
-                namespaces.Add(Enum.TryParse<TypeKind>(item, ignoreCase: false, out var result) ? result : TypeKind.Unknown);
+                typeKinds.Add(Enum.TryParse<TypeKind>(item, ignoreCase: false, out var result) ? result : TypeKind.Unknown);
             }
 
-            return new(include, namespaces.ToImmutable());
+            filters.KindOf(include, typeKinds.ToImmutable());
         }
 
-        static TypeInfoFilterDescriptor createTypeInfoFilterDescriptor(
+        static void addTypeInfoFilter(
             HashSet<Diagnostic> diagnostics,
             SimpleNameSyntax name,
-            InvocationExpressionSyntax expression
+            InvocationExpressionSyntax expression,
+            TypeSelectionBuilder filters
         )
         {
             var include = name.Identifier.Text switch { "InfoOf" => true, _ => false };
 
-            var namespaces = ImmutableHashSet.CreateBuilder<TypeInfoFilter>();
+            var typeInfos = ImmutableHashSet.CreateBuilder<TypeInfoFilter>();
             foreach (var argument in expression.ArgumentList.Arguments)
             {
                 if (getStringValue(argument) is not { Length: > 0 } item)
@@ -482,10 +474,10 @@ internal static class DataHelpers
                     continue;
                 }
 
-                namespaces.Add(Enum.TryParse<TypeInfoFilter>(item, ignoreCase: false, out var result) ? result : TypeInfoFilter.Unknown);
+                typeInfos.Add(Enum.TryParse<TypeInfoFilter>(item, ignoreCase: false, out var result) ? result : TypeInfoFilter.Unknown);
             }
 
-            return new(include, namespaces.ToImmutable());
+            filters.InfoOf(include, typeInfos.ToImmutable());
         }
 
         static string? getStringValue(ArgumentSyntax argument)
@@ -509,6 +501,7 @@ internal static class DataHelpers
         SemanticModel semanticModel,
         InvocationExpressionSyntax expression,
         SimpleNameSyntax name,
+        ScanEnvironment environment,
         CancellationToken cancellationToken
     )
     {
@@ -525,28 +518,26 @@ internal static class DataHelpers
 
         if (name.ToFullString() is "AsImplementedInterfaces" or "AsSelfWithInterfaces")
         {
-            CompiledTypeFilter? interfaceFilter = null;
+            TypeSelection? interfaceFilter = null;
             if (expression is
                 {
                     ArgumentList.Arguments: [{ Expression: SimpleLambdaExpressionSyntax { ExpressionBody: InvocationExpressionSyntax expressionBody } }],
                 })
             {
-                var interfaceFilters = new List<ITypeFilterDescriptor>();
-                var classFilter = ClassFilter.All;
+                var interfaceFilters = new TypeSelectionBuilder(environment);
                 var lifetime = 0;
                 HandleInvocationExpressionSyntax(
                     diagnostics,
                     semanticModel,
                     expressionBody,
-                    [],
+                    environment,
+                    new(),
                     interfaceFilters,
                     [],
                     ref lifetime,
-                    ref classFilter,
                     cancellationToken
                 );
-                // ReSharper disable once UseCollectionExpression
-                interfaceFilter = new(classFilter, interfaceFilters.ToImmutableList());
+                interfaceFilter = interfaceFilters.Build();
             }
 
             yield return new ImplementedInterfacesServiceTypeDescriptor(interfaceFilter);

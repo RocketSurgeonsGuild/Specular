@@ -14,6 +14,13 @@ internal sealed class SpecularScanReport
         []
     , 
         [
+            new("TestProject", "z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().WithAttribute<EditorBrowsableAttribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))", 
+                [
+                    new("Specular", 
+                        [
+                            new("global::Specular.SpecularSupport")]
+                    )]
+            ), 
             new("OtherProject", "z => z.FromAssemblies().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().WithAttribute<EditorBrowsableAttribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))", 
                 [
                     new("Specular", 
