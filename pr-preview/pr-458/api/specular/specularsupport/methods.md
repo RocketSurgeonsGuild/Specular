@@ -15,7 +15,7 @@ Support class for Specular, this is used to hash the argument expression for the
 - Name: `GetArgumentExpressionHash(string)`
 - Modifiers: `static`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0fc2d3763ad1af52ac3c220ba5c57d4f9a9198d7/src/Specular/SpecularSupport.cs#L22-L33)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.20db85ca70c7d1c6b702a37793b1ebebbea6d081/src/Specular/SpecularSupport.cs#L22-L33)
 
 Method used to ensure the argument expression is hashed correctly each time.
 

@@ -14,7 +14,7 @@ Describes one service descriptor produced by a service descriptor scan.
 - Name: `ImplementationTypeName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0fc2d3763ad1af52ac3c220ba5c57d4f9a9198d7/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.20db85ca70c7d1c6b702a37793b1ebebbea6d081/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string ImplementationTypeName { get; init; }
@@ -27,7 +27,7 @@ public string ImplementationTypeName { get; init; }
 - Name: `ServiceLifetime`
 - Modifiers: `get; init`
 - Returns: `ServiceLifetime`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0fc2d3763ad1af52ac3c220ba5c57d4f9a9198d7/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.20db85ca70c7d1c6b702a37793b1ebebbea6d081/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public ServiceLifetime ServiceLifetime { get; init; }
@@ -40,7 +40,7 @@ public ServiceLifetime ServiceLifetime { get; init; }
 - Name: `ServiceTypeName`
 - Modifiers: `get; init`
 - Returns: `string`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.0fc2d3763ad1af52ac3c220ba5c57d4f9a9198d7/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-458-merge.Sha.20db85ca70c7d1c6b702a37793b1ebebbea6d081/src/Specular/Diagnostics/ScanDiagnostics.cs)
 
 ```csharp
 public string ServiceTypeName { get; init; }
