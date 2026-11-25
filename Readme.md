@@ -56,12 +56,18 @@ Libraries that should be scanned by the application, without a provider of their
 
 ## Packages
 
-| Package                                        | NuGet                                                         | What it does                                                                                          |
-| ---------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [Specular][nuget-Specular]                     | [![nuget-Specular-badge]][nuget-Specular]                     | `ISpecularProvider`, the selector and type filter interfaces, and the service registration attributes |
-| [Specular.Analyzers][nuget-Specular.Analyzers] | [![nuget-Specular.Analyzers-badge]][nuget-Specular.Analyzers] | The source generator that resolves each query and writes `SpecularProvider`                           |
+| Package                                                      | NuGet                                                                       | What it does                                                                                          |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [Specular][nuget-Specular]                                   | [![nuget-Specular-badge]][nuget-Specular]                                   | `ISpecularProvider`, the selector and type filter interfaces, and the service registration attributes |
+| [Specular.Analyzers][nuget-Specular.Analyzers]               | [![nuget-Specular.Analyzers-badge]][nuget-Specular.Analyzers]               | The source generator that resolves each query and writes `SpecularProvider`                           |
+| [Specular.Scanning][nuget-Specular.Scanning]                 | [![nuget-Specular.Scanning-badge]][nuget-Specular.Scanning]                 | Specular's compile-time scanner and build cache, for your own source generators                       |
+| [Specular.Scanning.Sources][nuget-Specular.Scanning.Sources] | [![nuget-Specular.Scanning.Sources-badge]][nuget-Specular.Scanning.Sources] | The same library as source, compiled into your generator                                              |
 
 `Specular` brings in `Specular.Analyzers`, so you don't reference it yourself.
+
+Writing your own source generator? `Specular.Scanning` lets it scan the compilation and its references with the same
+selectors, for example `FromAssemblies().GetTypes(f => f.AssignableTo(handler))`, and caches the results across builds. See
+[Scanning from your own generator](https://rocketsurgeonsguild.github.io/Specular/guide/scanning-from-your-generator/).
 
 ## How it works
 
@@ -185,3 +191,7 @@ Run `mise install` before building: it installs the .NET SDK and the extra .NET 
 [nuget-Specular-badge]: https://img.shields.io/nuget/v/Specular.svg?logo=nuget&style=flat
 [nuget-Specular.Analyzers]: https://www.nuget.org/packages/Specular.Analyzers/
 [nuget-Specular.Analyzers-badge]: https://img.shields.io/nuget/v/Specular.Analyzers.svg?logo=nuget&style=flat
+[nuget-Specular.Scanning]: https://www.nuget.org/packages/Specular.Scanning/
+[nuget-Specular.Scanning-badge]: https://img.shields.io/nuget/v/Specular.Scanning.svg?logo=nuget&style=flat
+[nuget-Specular.Scanning.Sources]: https://www.nuget.org/packages/Specular.Scanning.Sources/
+[nuget-Specular.Scanning.Sources-badge]: https://img.shields.io/nuget/v/Specular.Scanning.Sources.svg?logo=nuget&style=flat

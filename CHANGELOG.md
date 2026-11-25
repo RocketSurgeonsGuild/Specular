@@ -18,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   counterpart to `ServiceRegistrationAttribute`, producing `ServiceDescriptor.Keyed*` registrations
   resolved via `GetRequiredKeyedService`. `AddSpecularServiceRegistrations` now discovers both
   attribute families in a single scan.
+- `Specular.Scanning`: Specular's compile-time assembly and type scanning for your own Roslyn source
+  generators. Describe a scan with `ScanRequest.Build(compilation, s => s.FromAssemblies().GetTypes(...))`,
+  a symbol-based mirror of Specular's runtime selectors, and run it with `context.Scan(consumerId, request)`
+  in an incremental pipeline or `Scanner.Run` directly. Results for referenced assemblies are reused in
+  memory and cached across builds in `obj/ctp/<ConsumerId>.ctpjson`, keyed by each assembly's MVID, and
+  `ScanCache` offers a typed per-assembly store on the same rules. Packing a generator that references the
+  package bundles `Specular.Scanning.dll` beside it and adds the MSBuild wiring that feeds the cache back
+  (`SPECSCAN001`–`SPECSCAN004` flag packaging mistakes). Needs Roslyn 5.0 or later.
+- `Specular.Scanning.Sources`: the same library as source, compiled into your generator as `internal`
+  types so no separate assembly is loaded beside it. Needs C# 14 (`SPECSCAN005` otherwise).
 
 ### Changed
 
@@ -27,6 +37,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `netstandard2.0` build; move to `net10.0` or later to get the AOT-annotated build.
 - The `net11.0` build is compiled with runtime async and references the 11.0 `Microsoft.Extensions.*` packages;
   the `net10.0` build stays on 10.0.x.
+- **Behaviour change:** several specific assembly selections (`EntryAssembly`, `FromAssemblyOf`,
+  `DependenciesFromAssemblyOf`) are now alternatives. They used to all have to match, so
+  `FromAssemblyOf<A>().FromAssemblyOf<B>()` found nothing; it now finds the types of both assemblies. Likewise
+  `FromAssemblyOf<A>().DependenciesFromAssemblyOf<C>()` now finds `A`'s assembly plus every assembly that
+  references `C`'s, and two `DependenciesFromAssemblyOf` calls find the assemblies that reference either one
+  rather than both. `FromAssemblies()` remains the starting point these narrow, so
+  `FromAssemblies().DependenciesFromAssemblyOf<T>()` still means the assemblies that reference `T`'s, and
+  `NotFromAssemblyOf<T>()` always excludes, whatever else selected the assembly.
+  **Migrating:** only selectors that chain more than one specific selection change, and they can now return
+  more types or registrations than before. Check those call sites: drop the selections you don't want, or
+  exclude assemblies with `NotFromAssemblyOf<T>()`. Selectors with a single specific selection, with only
+  `FromAssemblies()`, or with only exclusions behave as before.
 
 ### Fixed
 
