@@ -12,7 +12,7 @@ Exclude the given assembly from compiled type provider resolution.
 ## ExcludeFromSpecularAttribute
 
 - Name: `Constructor`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.92746cd764a24dc2a09e277715cf2ea1a1585dfc/src/Specular/Abstractions/ExcludeFromSpecularAttribute.cs#L9)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.e5c021749f0331c39313b2934dda1475f69a2acd/src/Specular/Abstractions/ExcludeFromSpecularAttribute.cs#L9)
 
 Exclude the given assembly from compiled type provider resolution.
 
