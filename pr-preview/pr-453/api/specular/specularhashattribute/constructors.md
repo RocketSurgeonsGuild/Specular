@@ -13,7 +13,7 @@ Attribute used to define the compiled type provider for a given assembly
 ## SpecularHashAttribute(string)
 
 - Name: `Constructor(string)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.e15ed429f3bf41f14f92fb73273b178497785fb7/src/Specular/Abstractions/SpecularHashAttribute.cs#L8-L13)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-453-merge.Sha.d1561de846b65d15eda03f20e32d72b48aaa290d/src/Specular/Abstractions/SpecularHashAttribute.cs#L8-L13)
 
 Attribute used to define the compiled type provider for a given assembly
 
