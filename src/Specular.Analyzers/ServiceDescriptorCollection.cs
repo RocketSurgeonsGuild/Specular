@@ -15,7 +15,7 @@ namespace Specular.Analyzers;
 
 internal static class ServiceDescriptorCollection
 {
-    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel)>> Create(
+    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector)>> Create(
         SyntaxValueProvider valueProvider,
         IncrementalValueProvider<bool> hasAssemblyLoadContext
     ) => valueProvider
@@ -58,7 +58,7 @@ internal static class ServiceDescriptorCollection
                 if (reducedTypes.Length == 0) return null;
 
                 var descriptorGeneration = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa);
-                var localBlock = descriptorGeneration.Block.NormalizeWhitespace().ToFullString().Replace("\r", "");
+                var localBlock = GeneratedCodeLayout.ToText(descriptorGeneration.Block);
                 return new(
                     item.Location,
                     localBlock,
@@ -119,7 +119,7 @@ internal static class ServiceDescriptorCollection
     internal static ImmutableList<Item> GetServiceDescriptorItems(
         ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
-        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
+        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector)> results,
         CancellationToken cancellationToken
     )
     {
@@ -129,9 +129,9 @@ internal static class ServiceDescriptorCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, _) = tuple;
+                (var methodCallSyntax, var selector) = tuple;
 
-                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                var semanticModel = environment.GetSemanticModel(methodCallSyntax.SyntaxTree);
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
                 var assemblies = new AssemblySelectionBuilder();
@@ -343,7 +343,7 @@ internal static class ServiceDescriptorCollection
                 foreach (var attributeData in keyedServiceRegistrationAttributes)
                 {
                     var keyExpression = GetKeyExpression(attributeData.ConstructorArguments[0]);
-                    var keyText = keyExpression.NormalizeWhitespace().ToFullString();
+                    var keyText = GeneratedCodeLayout.ToText(keyExpression);
                     var attributeLifetime = attributeData.ConstructorArguments is [_, { Kind: TypedConstantKind.Enum } lifetimeArgument, ..]
                         ? GetLifetimeValue(lifetimeArgument)
                         : null;
@@ -740,14 +740,14 @@ internal static class ServiceDescriptorCollection
             ? (invocationExpressionSyntax, expression)
             : default;
 
-    private static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetServiceDescriptorMethod(GeneratorSyntaxContext context)
+    private static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetServiceDescriptorMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetMethod(context.Node);
         // Structural detection only; genuine ISpecularProvider validation is deferred to GetServiceDescriptorItems,
         // which runs against the shell-augmented compilation. See SpecularProviderGenerator.CreateSemanticCompilation.
         return method is null || selector is null
             ? default
-            : (method, selector, semanticModel: context.SemanticModel);
+            : (method, selector);
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetMethod(node) is { method: { }, selector: { } };

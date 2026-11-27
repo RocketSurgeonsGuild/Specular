@@ -23,21 +23,28 @@ internal static class Helpers
 
     public static CompilationUnitSyntax AddSharedTrivia(this CompilationUnitSyntax source) =>
         source
-           .WithLeadingTrivia(
-                Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true)),
-                Trivia(
-                    PragmaWarningDirectiveTrivia(Token(SyntaxKind.DisableKeyword), true)
-                       .WithErrorCodes(SeparatedList(List(DisabledWarnings.Value)))
-                )
-            )
-           .WithTrailingTrivia(
-                Trivia(
-                    PragmaWarningDirectiveTrivia(Token(SyntaxKind.RestoreKeyword), true)
-                       .WithErrorCodes(SeparatedList(List(DisabledWarnings.Value)))
-                ),
-                Trivia(NullableDirectiveTrivia(Token(SyntaxKind.RestoreKeyword), true)),
-                CarriageReturnLineFeed
-            );
+           .WithLeadingTrivia(NullableDirective(SyntaxKind.EnableKeyword), PragmaWarningDirective(SyntaxKind.DisableKeyword))
+           .WithTrailingTrivia(PragmaWarningDirective(SyntaxKind.RestoreKeyword), NullableDirective(SyntaxKind.RestoreKeyword));
+
+    // Directives are trivia the layout keeps as they are, so they carry their own spacing and line break.
+    private static SyntaxTrivia NullableDirective(SyntaxKind setting) =>
+        Trivia(
+            NullableDirectiveTrivia(Token(setting), true)
+               .WithNullableKeyword(Token(SyntaxKind.NullableKeyword).WithTrailingTrivia(Space))
+               .WithEndOfDirectiveToken(DirectiveEnd())
+        );
+
+    private static SyntaxTrivia PragmaWarningDirective(SyntaxKind action) =>
+        Trivia(
+            PragmaWarningDirectiveTrivia(Token(action).WithTrailingTrivia(Space), true)
+               .WithPragmaKeyword(Token(SyntaxKind.PragmaKeyword).WithTrailingTrivia(Space))
+               .WithWarningKeyword(Token(SyntaxKind.WarningKeyword).WithTrailingTrivia(Space))
+               .WithErrorCodes(DisabledWarnings.Value)
+               .WithEndOfDirectiveToken(DirectiveEnd())
+        );
+
+    private static SyntaxToken DirectiveEnd() =>
+        Token(TriviaList(), SyntaxKind.EndOfDirectiveToken, TriviaList(EndOfLine(GeneratedCodeLayout.SourceEndOfLine)));
 
     public static string AssemblyVariableName(IAssemblySymbol symbol) => SpecialCharacterRemover.Replace(symbol.Identity.GetDisplayName(true), "");
 
@@ -307,7 +314,8 @@ internal static class Helpers
             throw new InvalidOperationException("Invalid method call syntax");
         }
 
-        var normalizedExpression = argumentExpression.NormalizeWhitespace().ToFullString();
+        // The selector as the scan report and the cache show it; a multi-line lambda keeps the CRLF NormalizeWhitespace gave it.
+        var normalizedExpression = GeneratedCodeLayout.ToText(argumentExpression, GeneratedCodeLayout.SourceEndOfLine);
         var expression = string.Concat(
             argumentExpression
                .ToFullString()
@@ -319,12 +327,7 @@ internal static class Helpers
 
         var source = new SourceLocation(
             kind,
-            memberAccess
-               .Name
-               .SyntaxTree.GetText(cancellationToken)
-               .Lines.First(z => z.Span.IntersectsWith(memberAccess.Name.Span))
-               .LineNumber
-          + 1,
+            memberAccess.Name.SyntaxTree.GetText(cancellationToken).Lines.GetLineFromPosition(memberAccess.Name.SpanStart).LineNumber + 1,
             memberAccess.SyntaxTree.FilePath,
             hash,
             sourceAssemblyName,
@@ -385,8 +388,11 @@ internal static class Helpers
         "IL2072",
     ];
 
-    private static readonly Lazy<ImmutableArray<ExpressionSyntax>> DisabledWarnings = new(
-        () => _disabledWarnings.Select(z => (ExpressionSyntax)IdentifierName(z)).ToImmutableArray()
+    private static readonly Lazy<SeparatedSyntaxList<ExpressionSyntax>> DisabledWarnings = new(
+        () => SeparatedList<ExpressionSyntax>(
+            _disabledWarnings.Select(z => IdentifierName(z)),
+            Enumerable.Repeat(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space), _disabledWarnings.Length - 1)
+        )
     );
 
     private static readonly Regex SpecialCharacterRemover = new("[^\\w\\d]", RegexOptions.Compiled);

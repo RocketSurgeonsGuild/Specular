@@ -10,27 +10,23 @@ using Specular.Diagnostics;
 [System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class SpecularScanReport
 {
-    public static ScanResults GetScanResults() => new(
-        []
-    , 
+    public static ScanResults GetScanResults() => new([],
         [
-            new("RootDependencyProject", "s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())", 
+            new("RootDependencyProject", "s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())",
                 [
-                    new("TestProject", 
+                    new("TestProject",
                         [
-                            new("global::OptionsA"), 
-                            new("global::OptionsB")]
-                    )]
-            ), 
-            new("TestProject", "s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())", 
+                            new("global::OptionsA"),
+                            new("global::OptionsB")
+                        ])
+                ]),
+            new("TestProject", "s => s.DependenciesFromAssemblyOf<RegisterOptionsConfigurationAttribute>().GetTypes(f => f.WithAttribute<RegisterOptionsConfigurationAttribute>())",
                 [
-                    new("TestProject", 
+                    new("TestProject",
                         [
-                            new("global::OptionsA"), 
-                            new("global::OptionsB")]
-                    )]
-            )]
-    , 
-        []
-    );
+                            new("global::OptionsA"),
+                            new("global::OptionsB")
+                        ])
+                ])
+        ], []);
 }

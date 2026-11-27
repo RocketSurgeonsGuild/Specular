@@ -116,9 +116,11 @@ internal static class SwitchGenerator
         return section.Statements.LastOrDefault() is ReturnStatementSyntax or ThrowStatementSyntax ? section : section.AddStatements(BreakStatement());
     }
 
+    private static readonly CSharpParseOptions ScriptParseOptions = new(kind: SourceCodeKind.Script);
+
     internal static IEnumerable<StatementSyntax> ParseStatements(string expression)
     {
-        var tree = ParseSyntaxTree(expression, new CSharpParseOptions(kind: SourceCodeKind.Script));
+        var tree = ParseSyntaxTree(expression, ScriptParseOptions);
         return tree
               .GetRoot()
               .DescendantNodes()

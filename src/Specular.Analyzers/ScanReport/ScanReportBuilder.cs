@@ -83,14 +83,12 @@ internal static class ScanReportBuilder
         var reportDelcaration = ClassDeclaration("SpecularScanReport")
                                .AddAttributeLists(Helpers.CompilerGeneratedAttributes)
                                .WithModifiers(TokenList(Token(SyntaxKind.InternalKeyword), Token(SyntaxKind.SealedKeyword)))
-                               .NormalizeWhitespace()
                                .WithMembers(
                                     SingletonList<MemberDeclarationSyntax>(
                                         MethodDeclaration(IdentifierName("ScanResults"), Identifier("GetScanResults"))
                                            .WithModifiers(
-                                                TokenList(Token(SyntaxKind.PublicKeyword).WithTrailingTrivia(TriviaList(Space)), Token(SyntaxKind.StaticKeyword).WithTrailingTrivia(TriviaList(Space)))
+                                                TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword))
                                             )
-                                           .NormalizeWhitespace()
                                            .WithExpressionBody(
                                                 ArrowExpressionClause(
                                                     ImplicitObjectCreationExpression()

@@ -12,7 +12,7 @@ namespace Specular.Analyzers;
 
 internal static class ReflectionCollection
 {
-    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel)>> Create(
+    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector)>> Create(
         SyntaxValueProvider valueProvider,
         IncrementalValueProvider<bool> hasAssemblyLoadContext
     ) => valueProvider
@@ -22,14 +22,14 @@ internal static class ReflectionCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
-    public static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetTypesMethod(GeneratorSyntaxContext context)
+    public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetTypesMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetTypesMethod(context.Node);
         // Structural detection only; genuine ISpecularProvider validation is deferred to GetReflectionItems, which
         // runs against the shell-augmented compilation. See SpecularProviderGenerator.CreateSemanticCompilation.
         return method is null || selector is null
             ? default
-            : (method, selector, semanticModel: context.SemanticModel);
+            : (method, selector);
     }
 
     public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetTypesMethod(SyntaxNode node) =>
@@ -90,7 +90,7 @@ internal static class ReflectionCollection
             var (localBlock, results) = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa);
             return new(
                 item.Location,
-                localBlock.NormalizeWhitespace().ToFullString().Replace("\r", ""),
+                GeneratedCodeLayout.ToText(localBlock),
                 pa.Select(z => z.MetadataName).ToImmutableHashSet(),
                 results,
                 [],
@@ -128,7 +128,7 @@ internal static class ReflectionCollection
     internal static ImmutableList<Item> GetReflectionItems(
         ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
-        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
+        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector)> results,
         CancellationToken cancellationToken
     )
     {
@@ -138,9 +138,9 @@ internal static class ReflectionCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, _) = tuple;
+                (var methodCallSyntax, var selector) = tuple;
 
-                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                var semanticModel = environment.GetSemanticModel(methodCallSyntax.SyntaxTree);
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
                 var assemblies = new AssemblySelectionBuilder();

@@ -11,7 +11,7 @@ namespace Specular.Analyzers;
 
 internal static class AssemblyCollection
 {
-    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel)>> Create(
+    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector)>> Create(
         SyntaxValueProvider valueProvider,
         IncrementalValueProvider<bool> hasAssemblyLoadContext
     ) => valueProvider
@@ -25,7 +25,7 @@ internal static class AssemblyCollection
     public static ImmutableList<Item> GetAssemblyItems(
         ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
-        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
+        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector)> results,
         CancellationToken cancellationToken
     )
     {
@@ -35,9 +35,9 @@ internal static class AssemblyCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, _) = tuple;
+                (var methodCallSyntax, var selector) = tuple;
 
-                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                var semanticModel = environment.GetSemanticModel(methodCallSyntax.SyntaxTree);
                 // The compilation passed here is augmented with an SpecularProvider shell so the receiver binds.
                 // Only treat this as a scan when the call actually resolves to ISpecularProvider; otherwise a
                 // syntactically-similar call would produce an empty (match-everything) filter.
@@ -91,7 +91,7 @@ internal static class AssemblyCollection
         return items.ToImmutable();
     }
 
-    public static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetMethod(
+    public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetMethod(
         GeneratorSyntaxContext context
     )
     {
@@ -102,7 +102,7 @@ internal static class AssemblyCollection
         // against a shell-augmented compilation. See SpecularProviderGenerator.CreateSemanticCompilation.
         return method is null || selector is null
             ? default
-            : (method, selector, semanticModel: context.SemanticModel);
+            : (method, selector);
     }
 
     public static (InvocationExpressionSyntax? method, ExpressionSyntax? selector) GetMethod(SyntaxNode node) =>
@@ -147,7 +147,7 @@ internal static class AssemblyCollection
 
                 results.Add(new(
                     item.Location,
-                    descriptors.NormalizeWhitespace().ToFullString().Replace("\r", ""),
+                    GeneratedCodeLayout.ToText(descriptors),
                     privateAssemblyNames.ToImmutable(),
                     [],
                     reportEntries,

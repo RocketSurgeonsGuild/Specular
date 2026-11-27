@@ -1,8 +1,6 @@
 using System.Collections.Immutable;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
@@ -222,7 +220,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
                 context.AddSource(
                     "SpecularProvider.g.cs",
-                    new CollectionReturnLayout().Visit(cu.NormalizeWhitespace()).GetText(Encoding.UTF8)
+                    GeneratedCodeLayout.ToSourceText(cu)
                 );
 
                 cache.Save(request.options.GlobalOptions);
@@ -234,58 +232,6 @@ public class SpecularProviderGenerator : IIncrementalGenerator
             }
         );
     }
-    private sealed class TypeInferenceRewriter : CSharpSyntaxRewriter
-    {
-        private int indentLevel = 1;
-
-        //        public override SyntaxNode? VisitImplicitObjectCreationExpression(ImplicitObjectCreationExpressionSyntax node)
-        //        {
-        //            try
-        //            {
-        //                indentLevel++;
-        //
-        //                return base.VisitImplicitObjectCreationExpression(((node.ReplaceNode(node.ArgumentList, Indent(node.ArgumentList)))));
-        //            }
-        //            finally
-        //            {
-        //                indentLevel--;
-        //            }
-        //        }
-
-        public override SyntaxNode? VisitExpressionElement(ExpressionElementSyntax node)
-        {
-            try
-            {
-                indentLevel++;
-
-                return base.VisitExpressionElement(Indent(node));
-            }
-            finally
-            {
-                indentLevel--;
-            }
-        }
-
-        public override SyntaxNode? VisitCollectionExpression(CollectionExpressionSyntax node)
-        {
-            try
-            {
-                indentLevel++;
-
-                return base.VisitCollectionExpression(Outdent(Indent(node)));
-            }
-            finally
-            {
-                indentLevel--;
-            }
-        }
-
-        private T Indent<T>(T node) where T : SyntaxNode
-            => node.WithLeadingTrivia(TriviaList([.. node.GetLeadingTrivia(), LineFeed, .. Enumerable.Range(0, indentLevel).SelectMany(_ => Enumerable.Range(0, 4).Select(z => Space))]));
-        private T Outdent<T>(T node) where T : SyntaxNode
-            => node.WithTrailingTrivia(TriviaList([.. node.GetTrailingTrivia(), LineFeed, .. Enumerable.Range(0, indentLevel - 1).SelectMany(_ => Enumerable.Range(0, 4).Select(z => Space))]));
-    }
-
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "A source generator must never crash the build; unexpected exceptions are surfaced as diagnostics.")]
     private static void TryAddScanReport(
         SourceProductionContext context,
@@ -312,15 +258,9 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                              ]
                          )
                      )
-                    .AddMembers(scanReport)
-                    .NormalizeWhitespace();
+                    .AddMembers(scanReport);
 
-            TypeInferenceRewriter rewriter = new();
-
-            var rewritten = rewriter.Visit(cu.SyntaxTree.GetRoot());
-
-
-            context.AddSource("SpecularScanReport.g.cs", rewritten.GetText(Encoding.UTF8));
+            context.AddSource("SpecularScanReport.g.cs", GeneratedCodeLayout.ToSourceText(cu));
         }
         catch (Exception e)
         {
