@@ -29,8 +29,8 @@
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="TUnit.Assertions.Should" Version="1.84.0-beta" />
-    <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="11.0.1" />
-    <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.1" />
+    <PackageVersion Include="Rocket.Surgery.Extensions.Testing.TUnit" Version="11.0.2" />
+    <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.2" />
     <PackageVersion Include="TUnit" Version="1.87.12" />
     <PackageVersion Include="Verify.TUnit" Version="33.7.3" />
   </ItemGroup>
