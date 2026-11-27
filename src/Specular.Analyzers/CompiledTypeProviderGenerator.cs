@@ -1,12 +1,12 @@
 using System.Collections.Immutable;
+using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
 using Specular.Scanning;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
 
@@ -178,20 +178,6 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         var reflectionSources = model.ReflectionSources.AsImmutableArray().ToImmutableList();
         var serviceDescriptorSources = model.ServiceDescriptorSources.AsImmutableArray().ToImmutableList();
 
-        var cu = CompilationUnit()
-           .WithUsings(
-                List(
-                    [
-                        UsingDirective(ParseName("System")),
-                        UsingDirective(ParseName("System.Collections.Generic")),
-                        UsingDirective(ParseName("System.Reflection")),
-                        UsingDirective(ParseName("Microsoft.Extensions.DependencyInjection")),
-                        UsingDirective(ParseName("Specular")),
-                        UsingDirective(ParseName("Specular.Abstractions")),
-                    ]
-                )
-            );
-
         var assemblyProvider = AssemblyProviderBuilder.GetAssemblyProvider(
             assemblySources,
             reflectionSources,
@@ -201,43 +187,51 @@ public class SpecularProviderGenerator : IIncrementalGenerator
             model.IsAot,
             out var cacheHash
         );
-        cu = cu
-            .AddSharedTrivia()
-            .AddAttributeLists([.. model.AssemblyAttributes.Select(z => Helpers.AddAssemblyAttribute(z.Key, z.Value))])
-            .AddAttributeLists(
-                 AttributeList(
-                         SingletonSeparatedList(
-                             Attribute(
-                                 ParseName("Specular.Abstractions.SpecularHashAttribute"),
-                                 AttributeArgumentList(
-                                     SeparatedList(
-                                         [
-                                             AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(cacheHash))),
-                                         ]
-                                     )
-                                 )
-                             )
-                         )
-                     )
-                    .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)))
-             );
+
+        var text = new StringBuilder(assemblyProvider.Length + 4096).Append(Helpers.FileHeader);
+        foreach (var @namespace in ProviderUsings)
+        {
+            _ = text.Append("using ").Append(@namespace).Append(';').Append(CodeText.SourceEndOfLine);
+        }
 
         // Only emit the provider implementation (and the attribute that points at it)
-        // when this assembly is configured to do so. The scan-metadata attributes above
+        // when this assembly is configured to do so. The scan-metadata attributes
         // are always emitted so that downstream assemblies can reuse the resolved data.
-        if (model.EmitProvider)
+        if (model.EmitProvider && privateAssemblies.Count != 0 && !model.IsAot)
         {
-            if (privateAssemblies.Count != 0 && !model.IsAot) cu = cu.AddUsings(UsingDirective(ParseName("System.Runtime.Loader")));
-            cu = cu.AddMembers(assemblyProvider);
+            _ = text.Append("using System.Runtime.Loader;").Append(CodeText.SourceEndOfLine);
         }
+
+        _ = text.Append(CodeText.SourceEndOfLine);
+        foreach (var (key, value) in model.AssemblyAttributes)
+        {
+            _ = text.Append(Helpers.AddAssemblyAttribute(key, value)).Append(CodeText.SourceEndOfLine);
+        }
+
+        _ = text
+           .Append("[assembly: Specular.Abstractions.SpecularHashAttribute(")
+           .Append(CodeText.Literal(cacheHash))
+           .Append(")]")
+           .Append(CodeText.SourceEndOfLine);
+        if (model.EmitProvider) _ = text.Append(assemblyProvider);
 
         if (model.GenerateScanReport)
         {
             TryAddScanReport(context, assemblySources, reflectionSources, serviceDescriptorSources);
         }
 
-        context.AddSource("SpecularProvider.g.cs", GeneratedCodeLayout.ToSourceText(cu));
+        context.AddSource("SpecularProvider.g.cs", SourceText.From(text.Append(Helpers.FileFooter).ToString(), Encoding.UTF8));
     }
+
+    private static readonly string[] ProviderUsings =
+    [
+        "System",
+        "System.Collections.Generic",
+        "System.Reflection",
+        "Microsoft.Extensions.DependencyInjection",
+        "Specular",
+        "Specular.Abstractions",
+    ];
 
     private static bool GetMsBuildBoolean(AnalyzerConfigOptions options, string propertyName, bool @default) =>
         options.TryGetValue($"build_property.{propertyName}", out var value) && bool.TryParse(value, out var parsedValue) ? parsedValue : @default;
@@ -311,24 +305,20 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         try
         {
             var scanReport = ScanReport.ScanReportBuilder.GetScanReport(assemblySources, reflectionSources, serviceDescriptorSources);
-            var cu = CompilationUnit()
-                    .WithUsings(
-                         List(
-                             [
-                                 UsingDirective(ParseName("System")),
-                                 UsingDirective(ParseName("System.Collections.Generic")),
-                                 UsingDirective(ParseName("System.Reflection")),
-                                 UsingDirective(ParseName("Microsoft.Extensions.DependencyInjection")),
-                                 UsingDirective(ParseName("Specular")),
-                                 UsingDirective(ParseName("Specular.Abstractions")),
-                                 UsingDirective(ParseName("Specular.Diagnostics")),
-                             ]
-                         )
-                     )
-                    .AddMembers(scanReport);
+            var text = new StringBuilder(scanReport.Length + 512);
+            foreach (var @namespace in ProviderUsings)
+            {
+                _ = text.Append("using ").Append(@namespace).Append(';').Append(CodeText.SourceEndOfLine);
+            }
 
-            context.AddSource("SpecularScanReport.g.cs", GeneratedCodeLayout.ToSourceText(cu));
+            _ = text
+               .Append("using Specular.Diagnostics;")
+               .Append(CodeText.SourceEndOfLine)
+               .Append(CodeText.SourceEndOfLine)
+               .Append(scanReport);
+            context.AddSource("SpecularScanReport.g.cs", SourceText.From(text.ToString(), Encoding.UTF8));
         }
+
         catch (Exception e)
         {
             context.ReportDiagnostic(

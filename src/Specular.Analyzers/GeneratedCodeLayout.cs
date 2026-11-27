@@ -2,7 +2,6 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Specular.Analyzers;
 
@@ -30,12 +29,6 @@ internal sealed class GeneratedCodeLayout
     private const int IndentSize = 4;
     private const int CachedIndentDepth = 16;
     private static readonly string[] Indents = Enumerable.Range(0, CachedIndentDepth).Select(depth => new string(' ', depth * IndentSize)).ToArray();
-
-    /// <summary>The laid-out source of <paramref name="node" /> with <see cref="SourceEndOfLine" /> line endings, for <c>AddSource</c>.</summary>
-    public static SourceText ToSourceText(SyntaxNode node) => SourceText.From(Write(node, SourceEndOfLine), Encoding.UTF8);
-
-    /// <summary>The laid-out text of <paramref name="node" /> with <c>\n</c> line endings, the form the build cache stores and hashes.</summary>
-    public static string ToText(SyntaxNode node) => Write(node, "\n");
 
     /// <summary>The laid-out text of <paramref name="node" /> with the given line endings.</summary>
     public static string ToText(SyntaxNode node, string endOfLine) => Write(node, endOfLine);
