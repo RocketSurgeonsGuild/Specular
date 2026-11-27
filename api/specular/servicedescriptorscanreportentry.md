@@ -2,10 +2,10 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.4`
+- Version: `0.4.3-beta.5`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.e5c021749f0331c39313b2934dda1475f69a2acd/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.fffe1f81b9e9af9b881f4cce8eeab42dedabd88f/src/Specular/Diagnostics/ScanDiagnostics.cs)
 - Implements: `IEquatable<ServiceDescriptorScanReportEntry>`
 
 Describes one service descriptor produced by a service descriptor scan.
