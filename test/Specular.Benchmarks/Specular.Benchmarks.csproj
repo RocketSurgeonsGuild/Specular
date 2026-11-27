@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Run by hand, never in CI. See GeneratorBenchmarks for the command. -->
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <IsTestProject>false</IsTestProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <!-- Setup and validation code, never measured: the allocation rules (ZA) are for shipping hot paths. -->
+        <NoWarn>$(NoWarn);CA1822;CA1515;CA1001;CA2007;CA1050;ZA0208;ZA0501;ZA0601</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Specular.Analyzers\Specular.Analyzers.csproj" />
+        <ProjectReference Include="..\..\src\Specular\Specular.csproj" />
+        <ProjectReference Include="..\TestAssembly\TestAssembly.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" />
+        <PackageReference Include="Basic.Reference.Assemblies.AspNet100" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\Specular.Tests\GetTypesTestsData.cs" Link="Shared\GetTypesTestsData.cs" />
+        <Compile Include="..\Specular.Tests\TestSource.cs" Link="Shared\TestSource.cs" />
+    </ItemGroup>
+</Project>

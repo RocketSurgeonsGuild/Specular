@@ -33,6 +33,8 @@
     <PackageVersion Include="Rocket.Surgery.Extensions.Testing.SourceGenerators" Version="11.0.2" />
     <PackageVersion Include="TUnit" Version="1.87.12" />
     <PackageVersion Include="Verify.TUnit" Version="33.7.3" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
+    <PackageVersion Include="Basic.Reference.Assemblies.AspNet100" Version="1.8.15" />
   </ItemGroup>
   <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net11.0'))">
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.15" />
