@@ -154,6 +154,41 @@ internal sealed partial class AssemblyProviderConfiguration
             yield return (ServiceDescriptorTypesKey, GetServiceDescriptorToString(diagnostics, request));
         }
     }
+    /// <summary>
+    ///     Binds requests serialized as <see cref="ToAssemblyAttributes" /> writes them (the form referenced assemblies carry) against
+    ///     this configuration's compilation.
+    /// </summary>
+    public (
+        ImmutableList<AssemblyCollection.Item> Assemblies,
+        ImmutableList<ReflectionCollection.Item> Reflection,
+        ImmutableList<ServiceDescriptorCollection.Item> ServiceDescriptors
+        ) LoadRequests(IEnumerable<(string Key, string Value)> requests, ImmutableDictionary<string, IAssemblySymbol> assemblySymbols)
+    {
+        var assemblies = ImmutableList.CreateBuilder<AssemblyCollection.Item>();
+        var reflection = ImmutableList.CreateBuilder<ReflectionCollection.Item>();
+        var serviceDescriptors = ImmutableList.CreateBuilder<ServiceDescriptorCollection.Item>();
+        foreach (var (key, value) in requests)
+        {
+            if (key == AssembliesKey) assemblies.Add(GetAssembliesFromString(assemblySymbols, value));
+            else if (key == ReflectionTypesKey) reflection.Add(GetReflectionFromString(assemblySymbols, value));
+            else if (key == ServiceDescriptorTypesKey) serviceDescriptors.Add(GetServiceDescriptorFromString(assemblySymbols, value));
+        }
+
+        return (assemblies.ToImmutable(), reflection.ToImmutable(), serviceDescriptors.ToImmutable());
+    }
+
+    /// <summary>Requests in the serialized form <see cref="LoadRequests" /> reads, in the order given.</summary>
+    public static IEnumerable<(string Key, string Value)> SerializeRequests(
+        HashSet<Diagnostic> diagnostics,
+        IEnumerable<AssemblyCollection.Item> assemblies,
+        IEnumerable<ReflectionCollection.Item> reflection,
+        IEnumerable<ServiceDescriptorCollection.Item> serviceDescriptors
+    ) =>
+        assemblies
+           .Select(z => (AssembliesKey, GetAssembliesToString(z)))
+           .Concat(reflection.Select(z => (ReflectionTypesKey, GetReflectionToString(z))))
+           .Concat(serviceDescriptors.Select(z => (ServiceDescriptorTypesKey, GetServiceDescriptorToString(diagnostics, z))));
+
     private static string CompressString(byte[] bytes) => Convert.ToBase64String(bytes);
 
     private static byte[] DecompressString(string base64String) => Convert.FromBase64String(base64String);
