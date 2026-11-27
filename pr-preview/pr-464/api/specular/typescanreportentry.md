@@ -2,10 +2,10 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/pr-preview/pr-464/api/specular.md)
-- Version: `0.4.3-pr.18`
+- Version: `0.4.3-pr.19`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-464-merge.Sha.d88e931508bfb565b643d441110c0f76aec5ab72/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.pull-464-merge.Sha.508f50752fa3740945d130055b251429b230fc35/src/Specular/Diagnostics/ScanDiagnostics.cs)
 - Implements: `IEquatable<TypeScanReportEntry>`
 
 Identifies a type selected by a type scan expression.
