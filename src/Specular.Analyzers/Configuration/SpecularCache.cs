@@ -86,7 +86,20 @@ internal sealed class SpecularCache
 
     // The whole location (two call sites can share a file, line and expression yet come from different assemblies), the request the
     // call site resolved to, and whether the build targets Native AOT, which changes what is generated.
+    // Memoized for the run: a call site is looked up once per referenced assembly, and its key doesn't depend on which.
     private string GetSourceKey(SourceLocation location, ScanRequest request)
+    {
+        var memoKey = (location, request.CacheKey);
+        if (_sourceKeys.TryGetValue(memoKey, out var known)) return known;
+
+        var key = ComputeSourceKey(location, request);
+        _sourceKeys[memoKey] = key;
+        return key;
+    }
+
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<(SourceLocation Location, string RequestKey), string> _sourceKeys = new();
+
+    private string ComputeSourceKey(SourceLocation location, ScanRequest request)
     {
         var text = JsonSerializer.Serialize(location, JsonSourceGenerationContext.Default.SourceLocation) + "\n" + request.CacheKey + "\n" + ( _isAot ? "aot" : "jit" );
         using var sha = SHA256.Create();

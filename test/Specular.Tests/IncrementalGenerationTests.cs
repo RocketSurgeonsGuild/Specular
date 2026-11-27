@@ -31,6 +31,24 @@ public class IncrementalGenerationTests : GeneratorTest
     }
 
     [Test]
+    public async Task Should_Not_Resolve_Against_References_Again_When_Only_Source_Changes(CancellationToken cancellationToken)
+    {
+        var (driver, compilation, _) = await RunOnce(cancellationToken);
+
+        var added = CSharpSyntaxTree.ParseText(
+            "public class AddedService : TestAssembly.IService { }",
+            (CSharpParseOptions)compilation.SyntaxTrees.First().Options,
+            cancellationToken: cancellationToken
+        );
+        driver = driver.RunGenerators(compilation.AddSyntaxTrees(added), cancellationToken);
+
+        var reasons = StepReasons(driver, "SpecularReferenced");
+        await Assert.That(reasons).IsNotEmpty();
+        await Assert.That(reasons).DoesNotContain(IncrementalStepRunReason.Modified);
+        await Assert.That(reasons).DoesNotContain(IncrementalStepRunReason.New);
+    }
+
+    [Test]
     public async Task Should_Write_The_Provider_Again_When_A_Scanned_Type_Is_Added(CancellationToken cancellationToken)
     {
         var (driver, compilation, _) = await RunOnce(cancellationToken);
@@ -45,8 +63,10 @@ public class IncrementalGenerationTests : GeneratorTest
         await Assert.That(ModelReasons(driver)).Contains(IncrementalStepRunReason.Modified);
     }
 
-    private static List<IncrementalStepRunReason> ModelReasons(GeneratorDriver driver) =>
-        [.. driver.GetRunResult().Results[0].TrackedSteps[ModelStep].SelectMany(z => z.Outputs).Select(z => z.Reason)];
+    private static List<IncrementalStepRunReason> ModelReasons(GeneratorDriver driver) => StepReasons(driver, ModelStep);
+
+    private static List<IncrementalStepRunReason> StepReasons(GeneratorDriver driver, string step) =>
+        [.. driver.GetRunResult().Results[0].TrackedSteps[step].SelectMany(z => z.Outputs).Select(z => z.Reason)];
 
     private async Task<(GeneratorDriver Driver, Compilation Compilation, SyntaxTree Tree)> RunOnce(CancellationToken cancellationToken)
     {
