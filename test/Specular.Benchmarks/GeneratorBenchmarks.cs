@@ -16,7 +16,7 @@ namespace Specular.Benchmarks;
 ///     Each measured invocation is a single generator run; the setup that prepares it (new references, the edited compilation) is not timed.
 /// </summary>
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, warmupCount: 3, iterationCount: 15, invocationCount: 1)]
+[SimpleJob(RunStrategy.Monitoring, warmupCount: 5, iterationCount: 50, invocationCount: 1)]
 public class GeneratorBenchmarks
 {
     private Workload _workload = null!;
@@ -40,6 +40,7 @@ public class GeneratorBenchmarks
         // Binding the references is the compiler's work, done before any generator runs in a real build.
         _ = _compilation.SourceModule.ReferencedAssemblySymbols;
         _driver = _workload.CreateDriver();
+        Settle();
     }
 
     [Benchmark]
@@ -61,6 +62,15 @@ public class GeneratorBenchmarks
         var edited = _editedTree.WithChangedText(text.WithChanges(new TextChange(new(text.Length, 0), $"\n// edit {_edits++}")));
         _compilation = _compilation.ReplaceSyntaxTree(_editedTree, edited);
         _editedTree = edited;
+        Settle();
+    }
+
+    // A full collection before each measured run, so one run's garbage is not collected on the next run's time.
+    private static void Settle()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
     }
 
     [Benchmark]
