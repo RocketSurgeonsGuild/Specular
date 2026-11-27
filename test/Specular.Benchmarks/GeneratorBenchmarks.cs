@@ -1,5 +1,8 @@
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -16,9 +19,23 @@ namespace Specular.Benchmarks;
 ///     Each measured invocation is a single generator run; the setup that prepares it (new references, the edited compilation) is not timed.
 /// </summary>
 [MemoryDiagnoser]
-[SimpleJob(RunStrategy.Monitoring, warmupCount: 5, iterationCount: 50, invocationCount: 1)]
+[Config(typeof(Config))]
 public class GeneratorBenchmarks
 {
+    // In process: a separate benchmark build races the analyzer's per-Roslyn support builds, which all write Specular.Analyzers.dll.
+    private sealed class Config : ManualConfig
+    {
+        public Config() => AddJob(
+            Job.Default
+               .WithStrategy(RunStrategy.Monitoring)
+               .WithWarmupCount(5)
+               .WithIterationCount(50)
+               .WithInvocationCount(1)
+               .WithUnrollFactor(1)
+               .WithToolchain(InProcessEmitToolchain.Instance)
+        );
+    }
+
     private Workload _workload = null!;
     private GeneratorDriver _driver = null!;
     private Compilation _compilation = null!;
