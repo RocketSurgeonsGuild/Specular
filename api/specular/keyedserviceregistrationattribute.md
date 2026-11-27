@@ -2,10 +2,10 @@
 
 - Kind: `class`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.5`
+- Version: `0.4.3-beta.6`
 - Namespace: `Specular`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.fffe1f81b9e9af9b881f4cce8eeab42dedabd88f/src/Specular/KeyedServiceRegistrationAttribute.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.fa706afb7f53c34a576fc835a76c7a7d2a9c6bae/src/Specular/KeyedServiceRegistrationAttribute.cs)
 - Inherits: [KeyedServiceRegistrationBaseAttribute](/Specular/api/specular/keyedserviceregistrationbaseattribute.md)
 
 Attribute used to define the keyed service registration of a given type. Behaves the same as [ServiceRegistrationAttribute](/Specular/api/specular/serviceregistrationattribute.md) except the resulting registration is a [keyed service](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-10.0#keyed-services).
