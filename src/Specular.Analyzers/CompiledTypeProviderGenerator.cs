@@ -146,6 +146,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
     private static ReferencedResult ResolveReferenced(RequestsResult requests, ScanCacheFileData cacheFile, CancellationToken cancellationToken)
     {
+        using var names = Helpers.CacheNames();
         var compilation = requests.Compilation;
         var diagnostics = new HashSet<Diagnostic>();
         var cache = new SpecularCache(compilation, cacheFile, requests.Key.IsAot);
@@ -165,6 +166,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
     private static AnalysisResult Analyze(RequestsResult requests, ReferencedResult referenced, CancellationToken cancellationToken)
     {
+        using var names = Helpers.CacheNames();
         var compilation = requests.Compilation;
         var emitProvider = GetMsBuildBoolean(requests.GlobalOptions, "SpecularEmitProvider", true);
         var generateScanReport = GetMsBuildBoolean(requests.GlobalOptions, "SpecularGenerateDiagnostics", true);
@@ -215,6 +217,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
     private static void Render(SourceProductionContext context, GenerationModel model, Compilation compilation)
     {
+        using var names = Helpers.CacheNames();
         var assemblySymbols = GetAssemblySymbols(compilation, []);
         var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
         foreach (var name in model.PrivateAssemblies)
