@@ -2,10 +2,10 @@
 
 - Kind: `enum`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.9`
+- Version: `0.4.3-beta.10`
 - Namespace: `Specular.Abstractions`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.b4b7b28bd99a511855ab3d8d319a755d355d8612/src/Specular/Abstractions/TypeInfoFilter.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.77320c11b083e3a88e62cfc40b219a20663bfc08/src/Specular/Abstractions/TypeInfoFilter.cs)
 
 Enumeration for possible type information filters.
 

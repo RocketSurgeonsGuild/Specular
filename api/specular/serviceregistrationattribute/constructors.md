@@ -13,7 +13,7 @@ Attribute used to define the service registration of a given type
 ## ServiceRegistrationAttribute(ServiceLifetime, Type[])
 
 - Name: `Constructor(ServiceLifetime, Type[])`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.b4b7b28bd99a511855ab3d8d319a755d355d8612/src/Specular/ServiceRegistrationAttribute.cs#L40)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.77320c11b083e3a88e62cfc40b219a20663bfc08/src/Specular/ServiceRegistrationAttribute.cs#L40)
 
 Attribute used to define the service registration of a given type
 

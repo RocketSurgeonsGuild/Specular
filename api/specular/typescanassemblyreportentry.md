@@ -2,10 +2,10 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.9`
+- Version: `0.4.3-beta.10`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.b4b7b28bd99a511855ab3d8d319a755d355d8612/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.77320c11b083e3a88e62cfc40b219a20663bfc08/src/Specular/Diagnostics/ScanDiagnostics.cs)
 - Implements: `IEquatable<TypeScanAssemblyReportEntry>`
 
 Contains the types selected from one assembly by a type scan expression.
