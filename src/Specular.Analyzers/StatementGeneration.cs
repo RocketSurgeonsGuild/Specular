@@ -71,14 +71,14 @@ internal static class StatementGeneration
     {
         var methodName = key is null ? lifetime : $"Keyed{lifetime}";
         var isServiceTypeAccessible = compilation.IsSymbolAccessibleWithin(serviceType, compilation.Assembly);
-        return  isServiceTypeAccessible
+        return isServiceTypeAccessible
          && serviceTypeExpression.TypeOfType is { } serviceTypeName
          && implementationTypeExpression.TypeOfType is { } implementationTypeName
          && !IsOpenGenericType(serviceType)
          && !IsOpenGenericType(implementationType)
-         && compilation.IsSymbolAccessibleWithin(implementationType, compilation.Assembly) 
-            ?   new($"ServiceDescriptor.{methodName}<{serviceTypeName}, {implementationTypeName}>({key})")  
-            :   isServiceTypeAccessible
+         && compilation.IsSymbolAccessibleWithin(implementationType, compilation.Assembly)
+            ? new($"ServiceDescriptor.{methodName}<{serviceTypeName}, {implementationTypeName}>({key})")
+            : isServiceTypeAccessible
          && serviceTypeExpression.TypeOfType is { } lambdaServiceTypeName
          && implementationTypeExpression.IsLambda
          && !IsOpenGenericType(serviceType)
