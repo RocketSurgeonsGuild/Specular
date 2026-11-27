@@ -31,7 +31,9 @@ internal sealed class SpecularCache
 
     public SpecularCache(Compilation compilation, ScanCacheFileData previous, bool isAot)
     {
-        _cache = new(ConsumerId, compilation, previous);
+        // The store memo keeps each referenced assembly's entries in memory for as long as the reference lives: in the IDE the file is
+        // neither read back nor written while typing, so without it every edit would resolve every call site against every reference.
+        _cache = new(ConsumerId, compilation, previous, new MemoizingStore(compilation, ConsumerId));
         _isAot = isAot;
         // In front of the file: a reference's scan results are reused in memory for as long as the reference lives.
         Scans = new MemoizingScanCache(compilation, _cache);

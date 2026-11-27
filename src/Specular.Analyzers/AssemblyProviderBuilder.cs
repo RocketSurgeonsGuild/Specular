@@ -22,12 +22,11 @@ internal static class AssemblyProviderBuilder
         ImmutableList<ResolvedSourceLocation> reflectionRequests,
         ImmutableList<ResolvedSourceLocation> serviceDescriptorRequests,
         HashSet<IAssemblySymbol> privateAssemblies,
-        Configuration.AssemblyProviderConfiguration configuration,
+        Compilation compilation,
+        bool isAot,
         out string cacheHash
     )
     {
-        var compilation = configuration.Compilation;
-        var isAot = configuration.IsAot;
         using var hasher = MD5.Create();
 
         static void addStringToHash(ICryptoTransform hasher, string textToHash)
@@ -290,8 +289,8 @@ internal static class AssemblyProviderBuilder
                                                )
                                            )
                                     )
-                                   .Select(location => returnsCollection ? location with { Expression = ToCollectionReturn(location.Expression) } : location)
-                                   .ToImmutableList()
+                                   .ToImmutableList(),
+                                returnsCollection ? ToCollectionReturn : SwitchGenerator.ParseStatements
                             )
                         )
                        .AddRange(returnStatement)
@@ -300,8 +299,8 @@ internal static class AssemblyProviderBuilder
     }
 
     // items.Add(a); items.Add(b); ... becomes return [a, b, ...];. Comments in the blocks (a type the generator could not name) are
-    // kept on the return.
-    private static string ToCollectionReturn(string expression)
+    // kept on the return. The parsed elements go straight into the return, so the cached text is parsed once.
+    private static IReadOnlyList<StatementSyntax> ToCollectionReturn(string expression)
     {
         var elements = new List<CollectionElementSyntax>();
         var comments = new List<SyntaxTrivia>();
@@ -329,8 +328,7 @@ internal static class AssemblyProviderBuilder
             AddComments(comments, statement.GetTrailingTrivia());
         }
 
-        var returnStatement = ReturnStatement(CollectionExpression(SeparatedList(elements))).WithLeadingTrivia(comments);
-        return Block(returnStatement).ToFullString();
+        return [ReturnStatement(CollectionExpression(SeparatedList(elements))).WithLeadingTrivia(comments)];
 
         static void AddComments(List<SyntaxTrivia> comments, SyntaxTriviaList trivia)
         {
