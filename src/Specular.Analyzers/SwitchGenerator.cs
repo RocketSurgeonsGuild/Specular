@@ -7,7 +7,12 @@ namespace Specular.Analyzers;
 
 internal static class SwitchGenerator
 {
-    public static SwitchStatementSyntax GenerateSwitchStatement(IReadOnlyList<ResolvedSourceLocation> items)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="items">The call sites, each with its cached block text.</param>
+    /// <param name="statementsOf">Turns a call site's cached text into the statements of its section, parsing it once.</param>
+    public static SwitchStatementSyntax GenerateSwitchStatement(IReadOnlyList<ResolvedSourceLocation> items, Func<string, IReadOnlyList<StatementSyntax>> statementsOf)
     {
         var lineNumberIdentifier = IdentifierName("lineNumber");
         var switchStatement = SwitchStatement(lineNumberIdentifier);
@@ -22,8 +27,9 @@ internal static class SwitchGenerator
                         )
                        .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("filePath"))))),
                     x => x.Location.FileName,
-                    generateFilePathSwitchStatement,
-                    value => LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value))
+                    inner => generateFilePathSwitchStatement(inner, statementsOf),
+                    value => LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value)),
+                    statementsOf
                 )
                .AddLabels(
                     CaseSwitchLabel(LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(lineNumber)))
@@ -47,12 +53,13 @@ internal static class SwitchGenerator
         ExpressionSyntax identifier,
         Func<ResolvedSourceLocation, T> regroup,
         Func<IReadOnlyList<ResolvedSourceLocation>, SwitchSectionSyntax> next,
-        Func<T, LiteralExpressionSyntax> literalFactory
+        Func<T, LiteralExpressionSyntax> literalFactory,
+        Func<string, IReadOnlyList<StatementSyntax>> statementsOf
     ) where T : notnull
     {
         if (blocks is [var localBlock])
         {
-            return SectionOf(ParseStatements(localBlock.Expression));
+            return SectionOf(statementsOf(localBlock.Expression));
         }
 
         // Several call sites that all share this key (the same file name on a line, as a project's call site and the identical one a
@@ -86,7 +93,10 @@ internal static class SwitchGenerator
         return SwitchSection().AddStatements(section, BreakStatement());
     }
 
-    private static SwitchSectionSyntax generateFilePathSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) => createNestedSwitchSections(
+    private static SwitchSectionSyntax generateFilePathSwitchStatement(
+        IReadOnlyList<ResolvedSourceLocation> innerGroup,
+        Func<string, IReadOnlyList<StatementSyntax>> statementsOf
+    ) => createNestedSwitchSections(
         innerGroup.GroupBy(z => z.Location.ExpressionHash).Select(z => z.First()).ToArray(),
         InvocationExpression(
                 MemberAccessExpression(
@@ -97,34 +107,33 @@ internal static class SwitchGenerator
             )
            .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(IdentifierName("argumentExpression"))))),
         x => x.Location.ExpressionHash,
-        generateExpressionHashSwitchStatement,
+        group => SectionOf(statementsOf(group is [var first, ..] ? first.Expression : "")),
         value =>
             LiteralExpression(
                 SyntaxKind.StringLiteralExpression,
                 Literal(value)
-            )
+            ),
+        statementsOf
     );
-
-    private static SwitchSectionSyntax generateExpressionHashSwitchStatement(IReadOnlyList<ResolvedSourceLocation> innerGroup) =>
-        SectionOf(ParseStatements(innerGroup is [var first, ..] ? first.Expression : ""));
 
     // A section that already returns (GetTypes and GetAssemblies) would make a trailing break unreachable code (CS0162) in the
     // consumer's build.
-    private static SwitchSectionSyntax SectionOf(IEnumerable<StatementSyntax> statements)
+    private static SwitchSectionSyntax SectionOf(IReadOnlyList<StatementSyntax> statements)
     {
-        var section = SwitchSection().AddStatements(statements.ToArray());
+        var section = SwitchSection().AddStatements([.. statements]);
         return section.Statements.LastOrDefault() is ReturnStatementSyntax or ThrowStatementSyntax ? section : section.AddStatements(BreakStatement());
     }
 
     private static readonly CSharpParseOptions ScriptParseOptions = new(kind: SourceCodeKind.Script);
 
-    internal static IEnumerable<StatementSyntax> ParseStatements(string expression)
+    internal static List<StatementSyntax> ParseStatements(string expression)
     {
         var tree = ParseSyntaxTree(expression, ScriptParseOptions);
         return tree
               .GetRoot()
               .DescendantNodes()
               .OfType<BlockSyntax>()
-              .SelectMany(z => z.Statements);
+              .SelectMany(z => z.Statements)
+              .ToList();
     }
 }

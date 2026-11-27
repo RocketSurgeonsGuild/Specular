@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,6 +10,8 @@ namespace Specular.Tests;
 /// <summary>
 ///     A timing and allocation harness for the generator, run by hand (it is explicit) when changing how the generator builds or
 ///     lays out code: <c>dotnet run --project test/Specular.Tests -- --treenode-filter "/*/*/GeneratorPerformanceTests/*"</c>.
+///     Every run is in one process, so referenced assemblies' results come from the in-memory memo after the first run, as they do
+///     in the IDE; a command-line build starts without them.
 /// </summary>
 [Explicit]
 [NotInParallel]
@@ -55,6 +56,58 @@ public class GeneratorPerformanceTests : GeneratorTest
         if (Environment.GetEnvironmentVariable("SPECULAR_PERF_OUT") is { Length: > 0 } outputPath) await File.AppendAllTextAsync(outputPath, report + "\n", cancellationToken);
     }
 
+    // What the IDE pays per keystroke: the same driver runs again on a compilation whose only change is an edited comment.
+    [Test]
+    [Arguments("Microsoft")]
+    [Arguments("")]
+    public async Task Measure_Edit_Rerun(string excludedAssemblies, CancellationToken cancellationToken)
+    {
+        var item = AssemblyScanningTestData.GetTestData().Select(z => z()).Single(z => z.Name == "all-together");
+        var input = await Builder
+                         .AddSources(item.Source)
+                         .AddReferences(typeof(IService))
+                         .AddGlobalOption("build_property.ExcludeAssemblyFromCTP", excludedAssemblies)
+                         .Build()
+                         .GenerateAsync(cancellationToken);
+
+        var compilation = input.InputCompilation;
+        var tree = compilation.SyntaxTrees.First(z => z.ToString().Contains("class Program", StringComparison.Ordinal));
+        GeneratorDriver driver = CSharpGeneratorDriver.Create(
+            [new SpecularProviderGenerator().AsSourceGenerator()],
+            parseOptions: input.ParseOptions,
+            optionsProvider: new GlobalOptionsProvider(input.GlobalOptions)
+        );
+        driver = driver.RunGenerators(compilation, cancellationToken);
+
+        var times = new List<double>();
+        var allocations = new List<long>();
+        for (var i = 0; i < WarmupIterations + MeasuredIterations; i++)
+        {
+            var text = tree.GetText(cancellationToken);
+            var edited = tree.WithChangedText(text.WithChanges(new Microsoft.CodeAnalysis.Text.TextChange(new(text.Length, 0), $"\n// edit {i}")));
+            compilation = compilation.ReplaceSyntaxTree(tree, edited);
+            tree = edited;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            var before = GC.GetTotalAllocatedBytes(true);
+            var stopwatch = Stopwatch.StartNew();
+            driver = driver.RunGenerators(compilation, cancellationToken);
+            stopwatch.Stop();
+            if (i < WarmupIterations) continue;
+
+            times.Add(stopwatch.Elapsed.TotalMilliseconds);
+            allocations.Add(GC.GetTotalAllocatedBytes(true) - before);
+        }
+
+        times.Sort();
+        allocations.Sort();
+        var report =
+            $"edit-rerun exclude='{excludedAssemblies}' | median {times[times.Count / 2]:F1} ms (min {times[0]:F1}, max {times[^1]:F1}) | median allocated {allocations[allocations.Count / 2] / 1024.0 / 1024.0:F1} MB";
+        Console.WriteLine(report);
+        if (Environment.GetEnvironmentVariable("SPECULAR_PERF_OUT") is { Length: > 0 } outputPath) await File.AppendAllTextAsync(outputPath, report + "\n", cancellationToken);
+    }
+
     private static (TimeSpan Elapsed, long Allocated, long GeneratedLength) RunOnce(
         Compilation compilation,
         CSharpParseOptions parseOptions,
@@ -75,18 +128,5 @@ public class GeneratorPerformanceTests : GeneratorTest
         var allocated = GC.GetTotalAllocatedBytes(true) - before;
         var generated = driver.GetRunResult().GeneratedTrees.Sum(z => (long)z.Length);
         return (stopwatch.Elapsed, allocated, generated);
-    }
-
-    private sealed class GlobalOptionsProvider(ImmutableDictionary<string, string> globalOptions) : AnalyzerConfigOptionsProvider
-    {
-        public override AnalyzerConfigOptions GlobalOptions { get; } = new Options(globalOptions);
-        public override AnalyzerConfigOptions GetOptions(SyntaxTree tree) => Options.Empty;
-        public override AnalyzerConfigOptions GetOptions(AdditionalText textFile) => Options.Empty;
-
-        private sealed class Options(ImmutableDictionary<string, string> values) : AnalyzerConfigOptions
-        {
-            public static Options Empty { get; } = new([]);
-            public override bool TryGetValue(string key, [NotNullWhen(true)] out string? value) => values.TryGetValue(key, out value);
-        }
     }
 }
