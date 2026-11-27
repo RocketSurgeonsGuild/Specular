@@ -2,10 +2,10 @@
 
 - Kind: `record`
 - Package: [Specular](/Specular/api/specular.md)
-- Version: `0.4.3-beta.8`
+- Version: `0.4.3-beta.9`
 - Namespace: `Specular.Diagnostics`
 - Target framework: `net10.0`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.4fa7b6a1dfdd2b88d9fb2eee7f65e035b74e1c7e/src/Specular/Diagnostics/ScanDiagnostics.cs)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.b4b7b28bd99a511855ab3d8d319a755d355d8612/src/Specular/Diagnostics/ScanDiagnostics.cs)
 - Implements: `IEquatable<ScanResults>`
 
 Contains the compile-time results for all Specular scans in an assembly.
