@@ -10,22 +10,18 @@ using Specular.Diagnostics;
 [System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class SpecularScanReport
 {
-    public static ScanResults GetScanResults() => new(
-        []
-    , 
-        []
-    , 
+    public static ScanResults GetScanResults() => new([], [],
         [
-            new("TestProject", "z => z.FromAssemblyOf<IServiceA>().FromAssemblyOf<IServiceB>().AddClasses(true).AsSelf().WithSingletonLifetime()", 
+            new("TestProject", "z => z.FromAssemblyOf<IServiceA>().FromAssemblyOf<IServiceB>().AddClasses(true).AsSelf().WithSingletonLifetime()",
                 [
-                    new("DependencyProjectA", 
+                    new("DependencyProjectA",
                         [
-                            new(ServiceLifetime.Singleton, "global::DependencyProjectA.ServiceA", "global::DependencyProjectA.ServiceA")]
-                    ), 
-                    new("DependencyProjectB", 
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectA.ServiceA", "global::DependencyProjectA.ServiceA")
+                        ]),
+                    new("DependencyProjectB",
                         [
-                            new(ServiceLifetime.Singleton, "global::DependencyProjectB.ServiceB", "global::DependencyProjectB.ServiceB")]
-                    )]
-            )]
-    );
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectB.ServiceB", "global::DependencyProjectB.ServiceB")
+                        ])
+                ])
+        ]);
 }

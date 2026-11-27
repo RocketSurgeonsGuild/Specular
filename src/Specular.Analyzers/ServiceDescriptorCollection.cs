@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Globalization;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
@@ -15,7 +14,7 @@ namespace Specular.Analyzers;
 
 internal static class ServiceDescriptorCollection
 {
-    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel)>> Create(
+    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector)>> Create(
         SyntaxValueProvider valueProvider,
         IncrementalValueProvider<bool> hasAssemblyLoadContext
     ) => valueProvider
@@ -58,7 +57,7 @@ internal static class ServiceDescriptorCollection
                 if (reducedTypes.Length == 0) return null;
 
                 var descriptorGeneration = GenerateDescriptors(configuration, diagnostics, reducedTypes, item.ServicesTypeFilter, pa);
-                var localBlock = descriptorGeneration.Block.NormalizeWhitespace().ToFullString().Replace("\r", "");
+                var localBlock = descriptorGeneration.Block;
                 return new(
                     item.Location,
                     localBlock,
@@ -119,7 +118,7 @@ internal static class ServiceDescriptorCollection
     internal static ImmutableList<Item> GetServiceDescriptorItems(
         ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
-        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
+        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector)> results,
         CancellationToken cancellationToken
     )
     {
@@ -129,9 +128,9 @@ internal static class ServiceDescriptorCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, _) = tuple;
+                (var methodCallSyntax, var selector) = tuple;
 
-                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                var semanticModel = environment.GetSemanticModel(methodCallSyntax.SyntaxTree);
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
                 var assemblies = new AssemblySelectionBuilder();
@@ -201,7 +200,7 @@ internal static class ServiceDescriptorCollection
         var keyedServiceRegistrationBaseAttribute = compilation.GetTypeByMetadataName("Specular.KeyedServiceRegistrationBaseAttribute")!;
 
         var orderedAsSpecificTypes = asSpecificTypes.OrderBy(Helpers.GetFullMetadataName).ToArray();
-        var services = new List<InvocationExpressionSyntax>();
+        var services = new List<string>();
         var reportEntries = ImmutableList.CreateBuilder<ServiceDescriptorScanReportEntryData>();
 
         foreach (var type in types.OrderBy(Helpers.GetFullMetadataName))
@@ -295,7 +294,7 @@ internal static class ServiceDescriptorCollection
                 }
             }
 
-            if (abort) return new(Block(), []);
+            if (abort) return new(CodeText.Block([]), []);
 
             foreach (var (_, items) in lifetimeRegistrations)
             {
@@ -321,7 +320,7 @@ internal static class ServiceDescriptorCollection
                 }
                 else
                 {
-                    services.Add(statement);
+                    services.Add($"services.Add({statement.Value.Text});");
                     reportEntries.Add(new(lifetime, Helpers.GetGenericDisplayName(serviceType), Helpers.GetGenericDisplayName(type)));
                 }
 
@@ -339,21 +338,20 @@ internal static class ServiceDescriptorCollection
 
             if (keyedServiceRegistrationAttributes.Count > 0)
             {
-                var keyedServiceTypes = new List<(ExpressionSyntax KeyExpression, string KeyText, string Lifetime, INamedTypeSymbol Type)>();
+                var keyedServiceTypes = new List<(string KeyText, string Lifetime, INamedTypeSymbol Type)>();
                 foreach (var attributeData in keyedServiceRegistrationAttributes)
                 {
-                    var keyExpression = GetKeyExpression(attributeData.ConstructorArguments[0]);
-                    var keyText = keyExpression.NormalizeWhitespace().ToFullString();
+                    var keyText = GetKeyExpression(attributeData.ConstructorArguments[0]);
                     var attributeLifetime = attributeData.ConstructorArguments is [_, { Kind: TypedConstantKind.Enum } lifetimeArgument, ..]
                         ? GetLifetimeValue(lifetimeArgument)
                         : null;
 
                     var serviceTypesForAttribute = GetAttributeServiceTypes(attributeData, 2, type);
 
-                    keyedServiceTypes.Add((keyExpression, keyText, GetRegistrationLifetime(type, registrationLifetimeAttribute) ?? attributeLifetime ?? GetLifetimeValue(discoveredLifetime) ?? "Singleton", type));
+                    keyedServiceTypes.Add((keyText, GetRegistrationLifetime(type, registrationLifetimeAttribute) ?? attributeLifetime ?? GetLifetimeValue(discoveredLifetime) ?? "Singleton", type));
                     foreach (var serviceType in serviceTypesForAttribute)
                     {
-                        keyedServiceTypes.Add((keyExpression, keyText, GetRegistrationLifetime(serviceType, registrationLifetimeAttribute) ?? attributeLifetime ?? GetLifetimeValue(discoveredLifetime) ?? "Singleton", serviceType));
+                        keyedServiceTypes.Add((keyText, GetRegistrationLifetime(serviceType, registrationLifetimeAttribute) ?? attributeLifetime ?? GetLifetimeValue(discoveredLifetime) ?? "Singleton", serviceType));
                     }
                 }
 
@@ -376,7 +374,7 @@ internal static class ServiceDescriptorCollection
                     }
                 }
 
-                if (keyedAbort) return new(Block(), []);
+                if (keyedAbort) return new(CodeText.Block([]), []);
 
                 foreach (var (_, items) in keyedRegistrations)
                 {
@@ -387,14 +385,14 @@ internal static class ServiceDescriptorCollection
                             registration.Type,
                             type,
                             registration.Lifetime,
-                            registration.KeyExpression
+                            registration.KeyText
                         )
                         : StatementGeneration.GenerateServiceType(
                             compilation,
                             registration.Type,
                             type,
                             registration.Lifetime,
-                            registration.KeyExpression
+                            registration.KeyText
                         );
                     if (statement is null)
                     {
@@ -402,7 +400,7 @@ internal static class ServiceDescriptorCollection
                     }
                     else
                     {
-                        services.Add(statement);
+                        services.Add($"services.Add({statement.Value.Text});");
                         reportEntries.Add(new(registration.Lifetime, Helpers.GetGenericDisplayName(registration.Type), Helpers.GetGenericDisplayName(type)));
                     }
 
@@ -427,7 +425,7 @@ internal static class ServiceDescriptorCollection
                 }
                 else
                 {
-                    services.Add(statement);
+                    services.Add($"services.Add({statement.Value.Text});");
                     reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(type), Helpers.GetGenericDisplayName(type)));
                 }
 
@@ -461,7 +459,7 @@ internal static class ServiceDescriptorCollection
                     }
                     else
                     {
-                        services.Add(statement);
+                        services.Add($"services.Add({statement.Value.Text});");
                         reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(type), Helpers.GetGenericDisplayName(type)));
                     }
 
@@ -506,7 +504,7 @@ internal static class ServiceDescriptorCollection
                     }
                     else
                     {
-                        services.Add(statement);
+                        services.Add($"services.Add({statement.Value.Text});");
                         reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(@interface), Helpers.GetGenericDisplayName(type)));
                     }
 
@@ -542,7 +540,7 @@ internal static class ServiceDescriptorCollection
                 }
                 else
                 {
-                    services.Add(statement);
+                    services.Add($"services.Add({statement.Value.Text});");
                     reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(closedServiceType), Helpers.GetGenericDisplayName(type)));
                 }
 
@@ -567,7 +565,7 @@ internal static class ServiceDescriptorCollection
                     }
                     else
                     {
-                        services.Add(statement);
+                        services.Add($"services.Add({statement.Value.Text});");
                         reportEntries.Add(new(serviceTypes.GetLifetime(), Helpers.GetGenericDisplayName(@interface), Helpers.GetGenericDisplayName(type)));
                     }
 
@@ -576,23 +574,10 @@ internal static class ServiceDescriptorCollection
             }
         }
 
-        var block = Block();
-        foreach (var service in services)
-        {
-            block = block.AddStatements(
-                ExpressionStatement(
-                    InvocationExpression(
-                            MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("services"), IdentifierName("Add"))
-                        )
-                       .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(service))))
-                )
-            );
-        }
-
-        return new(block, reportEntries.ToImmutable());
+        return new(CodeText.Block(services), reportEntries.ToImmutable());
     }
 
-    private sealed record ServiceDescriptorGeneration(BlockSyntax Block, ImmutableList<ServiceDescriptorScanReportEntryData> ReportEntries);
+    private sealed record ServiceDescriptorGeneration(string Block, ImmutableList<ServiceDescriptorScanReportEntryData> ReportEntries);
 
     // The service types an attribute registers: a non-empty Type[] passed as its last constructor argument (at typesArgumentIndex),
     // else its generic type arguments, else every interface the implementation type has.
@@ -665,18 +650,18 @@ internal static class ServiceDescriptorCollection
         return value.Name;
     }
 
-    private static ExpressionSyntax GetKeyExpression(TypedConstant constant) =>
+    private static string GetKeyExpression(TypedConstant constant) =>
         constant.IsNull
-            ? LiteralExpression(SyntaxKind.NullLiteralExpression)
+            ? "null"
             : constant.Kind switch
             {
                 TypedConstantKind.Enum => GetEnumKeyExpression(constant),
-                TypedConstantKind.Type => TypeOfExpression(ParseTypeName(Helpers.GetTypeOfName((ISymbol)constant.Value!))),
+                TypedConstantKind.Type => CodeText.TypeOf(Helpers.GetTypeOfName((ISymbol)constant.Value!)).Text,
                 TypedConstantKind.Primitive => GetPrimitiveKeyExpression(constant),
-                TypedConstantKind.Array or TypedConstantKind.Error or _ => LiteralExpression(SyntaxKind.NullLiteralExpression),
+                TypedConstantKind.Array or TypedConstantKind.Error or _ => "null",
             };
 
-    private static ExpressionSyntax GetEnumKeyExpression(TypedConstant constant)
+    private static string GetEnumKeyExpression(TypedConstant constant)
     {
         var enumType = (INamedTypeSymbol)constant.Type!;
         var member = enumType
@@ -684,47 +669,33 @@ internal static class ServiceDescriptorCollection
                     .OfType<IFieldSymbol>()
                     .FirstOrDefault(z => z.HasConstantValue && Equals(z.ConstantValue, constant.Value));
 
+        var typeName = CodeText.TypeName(Helpers.GetTypeOfName(enumType));
         return member is null
-            ? CastExpression(ParseTypeName(Helpers.GetTypeOfName(enumType)), LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(Convert.ToInt64(constant.Value, CultureInfo.InvariantCulture))))
-            : MemberAccessExpression(
-                SyntaxKind.SimpleMemberAccessExpression,
-                ParseTypeName(Helpers.GetTypeOfName(enumType)),
-                IdentifierName(member.Name)
-            );
+            ? $"({typeName}){Literal(Convert.ToInt64(constant.Value, CultureInfo.InvariantCulture)).Text}"
+            : $"{typeName}.{member.Name}";
     }
 
+    // The literals take their spelling (suffixes, escapes) from SyntaxFactory.Literal, which only makes a token.
     [SuppressMessage("Style", "IDE0072:Add missing cases", Justification = "SpecialType has dozens of members; only the ones attribute arguments can carry are meaningful here, the rest fall through to the default.")]
-    private static ExpressionSyntax GetPrimitiveKeyExpression(TypedConstant constant)
+    private static string GetPrimitiveKeyExpression(TypedConstant constant)
     {
         var value = constant.Value!;
         return constant.Type?.SpecialType switch
         {
-            SpecialType.System_String => LiteralExpression(SyntaxKind.StringLiteralExpression, Literal((string)value)),
-            SpecialType.System_Boolean => LiteralExpression((bool)value ? SyntaxKind.TrueLiteralExpression : SyntaxKind.FalseLiteralExpression),
-            SpecialType.System_Char => LiteralExpression(SyntaxKind.CharacterLiteralExpression, Literal((char)value)),
-            SpecialType.System_Int32 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((int)value)),
-            SpecialType.System_Int64 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((long)value)),
-            SpecialType.System_UInt32 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((uint)value)),
-            SpecialType.System_UInt64 => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((ulong)value)),
-            SpecialType.System_Double => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((double)value)),
-            SpecialType.System_Single => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((float)value)),
-            SpecialType.System_Byte => CastExpression(
-                PredefinedType(Token(SyntaxKind.ByteKeyword)),
-                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((byte)value))
-            ),
-            SpecialType.System_SByte => CastExpression(
-                PredefinedType(Token(SyntaxKind.SByteKeyword)),
-                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((sbyte)value))
-            ),
-            SpecialType.System_Int16 => CastExpression(
-                PredefinedType(Token(SyntaxKind.ShortKeyword)),
-                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((short)value))
-            ),
-            SpecialType.System_UInt16 => CastExpression(
-                PredefinedType(Token(SyntaxKind.UShortKeyword)),
-                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((ushort)value))
-            ),
-            _ => LiteralExpression(SyntaxKind.NullLiteralExpression),
+            SpecialType.System_String => CodeText.Literal((string)value),
+            SpecialType.System_Boolean => (bool)value ? "true" : "false",
+            SpecialType.System_Char => Literal((char)value).Text,
+            SpecialType.System_Int32 => Literal((int)value).Text,
+            SpecialType.System_Int64 => Literal((long)value).Text,
+            SpecialType.System_UInt32 => Literal((uint)value).Text,
+            SpecialType.System_UInt64 => Literal((ulong)value).Text,
+            SpecialType.System_Double => Literal((double)value).Text,
+            SpecialType.System_Single => Literal((float)value).Text,
+            SpecialType.System_Byte => $"(byte){Literal((byte)value).Text}",
+            SpecialType.System_SByte => $"(sbyte){Literal((sbyte)value).Text}",
+            SpecialType.System_Int16 => $"(short){Literal((short)value).Text}",
+            SpecialType.System_UInt16 => $"(ushort){Literal((ushort)value).Text}",
+            _ => "null",
         };
     }
 
@@ -740,14 +711,14 @@ internal static class ServiceDescriptorCollection
             ? (invocationExpressionSyntax, expression)
             : default;
 
-    private static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetServiceDescriptorMethod(GeneratorSyntaxContext context)
+    private static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetServiceDescriptorMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetMethod(context.Node);
         // Structural detection only; genuine ISpecularProvider validation is deferred to GetServiceDescriptorItems,
         // which runs against the shell-augmented compilation. See SpecularProviderGenerator.CreateSemanticCompilation.
         return method is null || selector is null
             ? default
-            : (method, selector, semanticModel: context.SemanticModel);
+            : (method, selector);
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetMethod(node) is { method: { }, selector: { } };

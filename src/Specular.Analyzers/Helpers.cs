@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
 
@@ -21,23 +20,13 @@ internal static class Helpers
         return ( info.Symbol ?? info.CandidateSymbols.FirstOrDefault() ) is IMethodSymbol { ContainingType.MetadataName: "ISpecularProvider" };
     }
 
-    public static CompilationUnitSyntax AddSharedTrivia(this CompilationUnitSyntax source) =>
-        source
-           .WithLeadingTrivia(
-                Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true)),
-                Trivia(
-                    PragmaWarningDirectiveTrivia(Token(SyntaxKind.DisableKeyword), true)
-                       .WithErrorCodes(SeparatedList(List(DisabledWarnings.Value)))
-                )
-            )
-           .WithTrailingTrivia(
-                Trivia(
-                    PragmaWarningDirectiveTrivia(Token(SyntaxKind.RestoreKeyword), true)
-                       .WithErrorCodes(SeparatedList(List(DisabledWarnings.Value)))
-                ),
-                Trivia(NullableDirectiveTrivia(Token(SyntaxKind.RestoreKeyword), true)),
-                CarriageReturnLineFeed
-            );
+    /// <summary>The directives that open every generated provider file, each line ending in <see cref="CodeText.SourceEndOfLine" />.</summary>
+    public static string FileHeader =>
+        $"#nullable enable{CodeText.SourceEndOfLine}#pragma warning disable {string.Join(", ", _disabledWarnings)}{CodeText.SourceEndOfLine}";
+
+    /// <summary>The directives that close every generated provider file.</summary>
+    public static string FileFooter =>
+        $"#pragma warning restore {string.Join(", ", _disabledWarnings)}{CodeText.SourceEndOfLine}#nullable restore{CodeText.SourceEndOfLine}";
 
     public static string AssemblyVariableName(IAssemblySymbol symbol) => SpecialCharacterRemover.Replace(symbol.Identity.GetDisplayName(true), "");
 
@@ -265,27 +254,8 @@ internal static class Helpers
         _ => default,
     };
 
-    internal static AttributeListSyntax AddAssemblyAttribute(string key, string? value) =>
-        AttributeList(
-                SingletonSeparatedList(
-                    Attribute(QualifiedName(QualifiedName(IdentifierName("System"), IdentifierName("Reflection")), IdentifierName("AssemblyMetadata")))
-                       .WithArgumentList(
-                            AttributeArgumentList(
-                                SeparatedList(
-                                    [
-                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(key))),
-                                        AttributeArgument(
-                                            value is null
-                                                ? LiteralExpression(SyntaxKind.NullLiteralExpression)
-                                                : LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value))
-                                        ),
-                                    ]
-                                )
-                            )
-                        )
-                )
-            )
-           .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)));
+    internal static string AddAssemblyAttribute(string key, string? value) =>
+        $"[assembly: System.Reflection.AssemblyMetadata({CodeText.Literal(key)}, {( value is null ? "null" : CodeText.Literal(value) )})]";
 
     [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
     internal static SourceLocation CreateSourceLocation(
@@ -307,7 +277,8 @@ internal static class Helpers
             throw new InvalidOperationException("Invalid method call syntax");
         }
 
-        var normalizedExpression = argumentExpression.NormalizeWhitespace().ToFullString();
+        // The selector as the scan report and the cache show it; a multi-line lambda keeps the CRLF NormalizeWhitespace gave it.
+        var normalizedExpression = GeneratedCodeLayout.ToText(argumentExpression, GeneratedCodeLayout.SourceEndOfLine);
         var expression = string.Concat(
             argumentExpression
                .ToFullString()
@@ -319,12 +290,7 @@ internal static class Helpers
 
         var source = new SourceLocation(
             kind,
-            memberAccess
-               .Name
-               .SyntaxTree.GetText(cancellationToken)
-               .Lines.First(z => z.Span.IntersectsWith(memberAccess.Name.Span))
-               .LineNumber
-          + 1,
+            memberAccess.Name.SyntaxTree.GetText(cancellationToken).Lines.GetLineFromPosition(memberAccess.Name.SpanStart).LineNumber + 1,
             memberAccess.SyntaxTree.FilePath,
             hash,
             sourceAssemblyName,
@@ -333,37 +299,9 @@ internal static class Helpers
         return source;
     }
 
-    internal static AttributeListSyntax CompilerGeneratedAttributes =
-        AttributeList(
-            SeparatedList(
-                [
-                    Attribute(ParseName("System.CodeDom.Compiler.GeneratedCode"))
-                       .WithArgumentList(
-                            AttributeArgumentList(
-                                SeparatedList(
-                                    [
-                                        AttributeArgument(
-                                            LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Literal(AssemblyInfo.Project.AssemblyName)
-                                            )
-                                        ),
-                                        AttributeArgument(
-                                            LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Literal(AssemblyInfo.Attributes.FileVersion)
-                                            )
-                                        ),
-                                    ]
-                                )
-                            )
-                        ),
-                    Attribute(ParseName("System.Runtime.CompilerServices.CompilerGenerated")),
-                    Attribute(ParseName("Microsoft.CodeAnalysis.EmbeddedAttribute")),
-                    Attribute(ParseName("System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage")),
-                ]
-            )
-        );
+    internal static string CompilerGeneratedAttributes =>
+        $"[System.CodeDom.Compiler.GeneratedCode({CodeText.Literal(AssemblyInfo.Project.AssemblyName)}, {CodeText.Literal(AssemblyInfo.Attributes.FileVersion)}), "
+      + "System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]";
 
     private static bool IsRootNamespace(ISymbol symbol)
     {
@@ -384,10 +322,6 @@ internal static class Helpers
         "IL2026",
         "IL2072",
     ];
-
-    private static readonly Lazy<ImmutableArray<ExpressionSyntax>> DisabledWarnings = new(
-        () => _disabledWarnings.Select(z => (ExpressionSyntax)IdentifierName(z)).ToImmutableArray()
-    );
 
     private static readonly Regex SpecialCharacterRemover = new("[^\\w\\d]", RegexOptions.Compiled);
 }

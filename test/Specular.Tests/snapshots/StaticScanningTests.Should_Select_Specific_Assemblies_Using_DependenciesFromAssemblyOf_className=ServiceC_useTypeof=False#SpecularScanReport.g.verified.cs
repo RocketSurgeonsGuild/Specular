@@ -10,23 +10,19 @@ using Specular.Diagnostics;
 [System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class SpecularScanReport
 {
-    public static ScanResults GetScanResults() => new(
-        []
-    , 
-        []
-    , 
+    public static ScanResults GetScanResults() => new([], [],
         [
-            new("TestProject", "z => z.DependenciesFromAssemblyOf<ServiceC>().AddClasses(x => x.AssignableTo(typeof(IService)), true).AsSelf().AsImplementedInterfaces().WithSingletonLifetime()", 
+            new("TestProject", "z => z.DependenciesFromAssemblyOf<ServiceC>().AddClasses(x => x.AssignableTo(typeof(IService)), true).AsSelf().AsImplementedInterfaces().WithSingletonLifetime()",
                 [
-                    new("DependencyProjectD", 
+                    new("DependencyProjectD",
                         [
-                            new(ServiceLifetime.Singleton, "global::DependencyProjectD.HardReferenceA", "global::DependencyProjectD.HardReferenceA"), 
-                            new(ServiceLifetime.Singleton, "global::DependencyProjectD.HardReferenceC", "global::DependencyProjectD.HardReferenceC"), 
-                            new(ServiceLifetime.Singleton, "global::DependencyProjectD.ServiceD", "global::DependencyProjectD.ServiceD"), 
-                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IService", "global::DependencyProjectD.HardReferenceA"), 
-                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IService", "global::DependencyProjectD.HardReferenceC"), 
-                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IService", "global::DependencyProjectD.ServiceD")]
-                    )]
-            )]
-    );
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectD.HardReferenceA", "global::DependencyProjectD.HardReferenceA"),
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectD.HardReferenceC", "global::DependencyProjectD.HardReferenceC"),
+                            new(ServiceLifetime.Singleton, "global::DependencyProjectD.ServiceD", "global::DependencyProjectD.ServiceD"),
+                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IService", "global::DependencyProjectD.HardReferenceA"),
+                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IService", "global::DependencyProjectD.HardReferenceC"),
+                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IService", "global::DependencyProjectD.ServiceD")
+                        ])
+                ])
+        ]);
 }

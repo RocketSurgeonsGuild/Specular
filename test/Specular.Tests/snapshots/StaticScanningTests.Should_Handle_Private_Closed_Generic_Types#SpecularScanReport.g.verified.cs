@@ -10,18 +10,14 @@ using Specular.Diagnostics;
 [System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class SpecularScanReport
 {
-    public static ScanResults GetScanResults() => new(
-        []
-    , 
-        []
-    , 
+    public static ScanResults GetScanResults() => new([], [],
         [
-            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo(typeof(IRequestHandler<, >))).AsImplementedInterfaces().WithSingletonLifetime()", 
+            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo(typeof(IRequestHandler<, >))).AsImplementedInterfaces().WithSingletonLifetime()",
                 [
-                    new("RootDependencyProject", 
+                    new("RootDependencyProject",
                         [
-                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IRequestHandler<global::RootDependencyProject.Request,global::RootDependencyProject.Response>", "global::RootDependencyProject.RequestHandler")]
-                    )]
-            )]
-    );
+                            new(ServiceLifetime.Singleton, "global::RootDependencyProject.IRequestHandler<global::RootDependencyProject.Request,global::RootDependencyProject.Response>", "global::RootDependencyProject.RequestHandler")
+                        ])
+                ])
+        ]);
 }

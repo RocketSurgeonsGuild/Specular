@@ -12,37 +12,35 @@ internal sealed class SpecularScanReport
 {
     public static ScanResults GetScanResults() => new(
         [
-            new("TestProject", "z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()", 
+            new("TestProject", "z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()",
                 [
-                    new("OtherProject"), 
-                    new("TestAssembly"), 
-                    new("TestProject")]
-            ), 
-            new("OtherProject", "z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()", 
+                    new("OtherProject"),
+                    new("TestAssembly"),
+                    new("TestProject")
+                ]),
+            new("OtherProject", "z => z.DependenciesFromAssemblyOf<ServiceRegistrationAttribute>()",
                 [
-                    new("OtherProject"), 
-                    new("TestAssembly"), 
-                    new("TestProject")]
-            )]
-    , 
-        []
-    , 
+                    new("OtherProject"),
+                    new("TestAssembly"),
+                    new("TestProject")
+                ])
+        ], [],
         [
-            new("Specular", "z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime()", 
+            new("Specular", "z => z.FromAssemblies().AddClasses(f => f.WithAnyAttribute(typeof(ServiceRegistrationAttribute), typeof(ServiceRegistrationAttribute<, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,, >), typeof(ServiceRegistrationAttribute<,,, >), typeof(ServiceRegistrationAttribute<,,,, >), typeof(ServiceRegistrationAttribute<,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,, >), typeof(ServiceRegistrationAttribute<,,,,,,, >), typeof(KeyedServiceRegistrationAttribute), typeof(KeyedServiceRegistrationAttribute<>), typeof(KeyedServiceRegistrationAttribute<, >), typeof(KeyedServiceRegistrationAttribute<,, >), typeof(KeyedServiceRegistrationAttribute<,,, >), typeof(KeyedServiceRegistrationAttribute<,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,, >), typeof(KeyedServiceRegistrationAttribute<,,,,,,, >))).AsSelf().WithSingletonLifetime()",
                 [
-                    new("TestAssembly", 
+                    new("TestAssembly",
                         [
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.GenericService", "global::TestAssembly.GenericService"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.GenericServiceB", "global::TestAssembly.GenericServiceB"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Decimal>", "global::TestAssembly.GenericServiceB"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Int32>", "global::TestAssembly.GenericService"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.IKeyedService", "global::TestAssembly.KeyedService"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericService"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericServiceB"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>", "global::TestAssembly.RequestHandler"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.KeyedService", "global::TestAssembly.KeyedService"), 
-                            new(ServiceLifetime.Singleton, "global::TestAssembly.RequestHandler", "global::TestAssembly.RequestHandler")]
-                    )]
-            )]
-    );
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.GenericService", "global::TestAssembly.GenericService"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.GenericServiceB", "global::TestAssembly.GenericServiceB"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Decimal>", "global::TestAssembly.GenericServiceB"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IGenericService<global::System.Int32>", "global::TestAssembly.GenericService"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IKeyedService", "global::TestAssembly.KeyedService"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericService"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IOther", "global::TestAssembly.GenericServiceB"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.IRequestHandler<global::TestAssembly.Request,global::TestAssembly.Response>", "global::TestAssembly.RequestHandler"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.KeyedService", "global::TestAssembly.KeyedService"),
+                            new(ServiceLifetime.Singleton, "global::TestAssembly.RequestHandler", "global::TestAssembly.RequestHandler")
+                        ])
+                ])
+        ]);
 }
