@@ -10,26 +10,22 @@ using Specular.Diagnostics;
 [System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class SpecularScanReport
 {
-    public static ScanResults GetScanResults() => new(
-        []
-    , 
-        []
-    , 
+    public static ScanResults GetScanResults() => new([], [],
         [
-            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IService>()).AsSelf().AsImplementedInterfaces().WithScopedLifetime()", 
+            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IService>()).AsSelf().AsImplementedInterfaces().WithScopedLifetime()",
                 [
-                    new("TestProject", 
+                    new("TestProject",
                         [
-                            new(ServiceLifetime.Scoped, "global::IService", "global::Service"), 
-                            new(ServiceLifetime.Scoped, "global::Service", "global::Service")]
-                    )]
-            ), 
-            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IServiceB>(), false).AsSelf().AsMatchingInterface().WithLifetime(ServiceLifetime.Scoped)", 
+                            new(ServiceLifetime.Scoped, "global::IService", "global::Service"),
+                            new(ServiceLifetime.Scoped, "global::Service", "global::Service")
+                        ])
+                ]),
+            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableTo<IServiceB>(), false).AsSelf().AsMatchingInterface().WithLifetime(ServiceLifetime.Scoped)",
                 [
-                    new("TestProject", 
+                    new("TestProject",
                         [
-                            new(ServiceLifetime.Scoped, "global::ServiceB", "global::ServiceB")]
-                    )]
-            )]
-    );
+                            new(ServiceLifetime.Scoped, "global::ServiceB", "global::ServiceB")
+                        ])
+                ])
+        ]);
 }

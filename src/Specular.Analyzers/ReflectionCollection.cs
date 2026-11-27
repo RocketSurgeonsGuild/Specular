@@ -1,10 +1,8 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
 
@@ -12,7 +10,7 @@ namespace Specular.Analyzers;
 
 internal static class ReflectionCollection
 {
-    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel)>> Create(
+    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector)>> Create(
         SyntaxValueProvider valueProvider,
         IncrementalValueProvider<bool> hasAssemblyLoadContext
     ) => valueProvider
@@ -22,14 +20,14 @@ internal static class ReflectionCollection
         .Select((tuple, _) => tuple.Left)
         .Collect();
 
-    public static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetTypesMethod(GeneratorSyntaxContext context)
+    public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetTypesMethod(GeneratorSyntaxContext context)
     {
         (var method, var selector) = GetTypesMethod(context.Node);
         // Structural detection only; genuine ISpecularProvider validation is deferred to GetReflectionItems, which
         // runs against the shell-augmented compilation. See SpecularProviderGenerator.CreateSemanticCompilation.
         return method is null || selector is null
             ? default
-            : (method, selector, semanticModel: context.SemanticModel);
+            : (method, selector);
     }
 
     public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetTypesMethod(SyntaxNode node) =>
@@ -90,7 +88,7 @@ internal static class ReflectionCollection
             var (localBlock, results) = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa);
             return new(
                 item.Location,
-                localBlock.NormalizeWhitespace().ToFullString().Replace("\r", ""),
+                localBlock,
                 pa.Select(z => z.MetadataName).ToImmutableHashSet(),
                 results,
                 [],
@@ -128,7 +126,7 @@ internal static class ReflectionCollection
     internal static ImmutableList<Item> GetReflectionItems(
         ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
-        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
+        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector)> results,
         CancellationToken cancellationToken
     )
     {
@@ -138,9 +136,9 @@ internal static class ReflectionCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, _) = tuple;
+                (var methodCallSyntax, var selector) = tuple;
 
-                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                var semanticModel = environment.GetSemanticModel(methodCallSyntax.SyntaxTree);
                 if (!Helpers.IsSpecularProviderCall(semanticModel, methodCallSyntax)) continue;
 
                 var assemblies = new AssemblySelectionBuilder();
@@ -186,12 +184,12 @@ internal static class ReflectionCollection
     }
 
 
-    private sealed record TypeScanGeneration(BlockSyntax Block, ImmutableList<TypeScanReportEntryData> ReportEntries);
+    private sealed record TypeScanGeneration(string Block, ImmutableList<TypeScanReportEntryData> ReportEntries);
 
     private static TypeScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<INamedTypeSymbol> types, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
-        var block = Block();
+        var statements = new List<string>();
         var reportEntries = ImmutableList.CreateBuilder<TypeScanReportEntryData>();
         foreach (var type in types.OrderBy(Helpers.GetGenericDisplayName))
         {
@@ -206,20 +204,13 @@ internal static class ReflectionCollection
             var privateType = StatementGeneration.GetTypeOfExpression(compilation, type, true);
             if (privateType is { })
             {
-                block = block.AddStatements(
-                    ExpressionStatement(
-                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                           .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(privateType))))
-                    )
-                );
+                statements.Add($"items.Add({privateType.Value.Text});");
                 reportEntries.Add(new(Helpers.GetGenericDisplayName(type)));
             }
             else
             {
                 // add a comment stating we could reach the private type
-                block = block.AddStatements(
-                    EmptyStatement().WithTrailingTrivia(TriviaList(Comment($"// Could not generate typeof expression for {Helpers.GetGenericDisplayName(type)}")))
-                );
+                statements.Add($"; // Could not generate typeof expression for {Helpers.GetGenericDisplayName(type)}");
             }
 
             if (compilation.IsSymbolAccessibleWithin(type, compilation.Assembly)) continue;
@@ -227,7 +218,7 @@ internal static class ReflectionCollection
             _ = privateAssemblies.Add(type.ContainingAssembly);
         }
 
-        return new(block, reportEntries.ToImmutable());
+        return new(CodeText.Block(statements), reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetTypesMethod(node) is { method: { }, selector: { } };

@@ -10,24 +10,20 @@ using Specular.Diagnostics;
 [System.CodeDom.Compiler.GeneratedCode("Specular.Analyzers", "version"), System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 internal sealed class SpecularScanReport
 {
-    public static ScanResults GetScanResults() => new(
-        []
-    , 
-        []
-    , 
+    public static ScanResults GetScanResults() => new([], [],
         [
-            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IOther))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo(typeof(IService<>))).WithScopedLifetime()", 
+            new("TestProject", "z => z.FromAssemblies().AddClasses(x => x.AssignableToAny(typeof(IOther))).AsSelf().AsImplementedInterfaces(z => z.AssignableTo(typeof(IService<>))).WithScopedLifetime()",
                 [
-                    new("TestProject", 
+                    new("TestProject",
                         [
-                            new(ServiceLifetime.Scoped, "global::IService<global::System.Decimal>", "global::ServiceB"), 
-                            new(ServiceLifetime.Scoped, "global::IService<global::System.Int32>", "global::Service"), 
-                            new(ServiceLifetime.Scoped, "global::IService<global::System.String>", "global::Nested+ServiceA"), 
-                            new(ServiceLifetime.Scoped, "global::IService<global::System.String>", "global::Service"), 
-                            new(ServiceLifetime.Scoped, "global::Nested+ServiceA", "global::Nested+ServiceA"), 
-                            new(ServiceLifetime.Scoped, "global::Service", "global::Service"), 
-                            new(ServiceLifetime.Scoped, "global::ServiceB", "global::ServiceB")]
-                    )]
-            )]
-    );
+                            new(ServiceLifetime.Scoped, "global::IService<global::System.Decimal>", "global::ServiceB"),
+                            new(ServiceLifetime.Scoped, "global::IService<global::System.Int32>", "global::Service"),
+                            new(ServiceLifetime.Scoped, "global::IService<global::System.String>", "global::Nested+ServiceA"),
+                            new(ServiceLifetime.Scoped, "global::IService<global::System.String>", "global::Service"),
+                            new(ServiceLifetime.Scoped, "global::Nested+ServiceA", "global::Nested+ServiceA"),
+                            new(ServiceLifetime.Scoped, "global::Service", "global::Service"),
+                            new(ServiceLifetime.Scoped, "global::ServiceB", "global::ServiceB")
+                        ])
+                ])
+        ]);
 }

@@ -23,4 +23,19 @@ internal sealed class ScanEnvironment
 
     /// <summary>Resolves type references taken from symbols in this compilation's source.</summary>
     public TypeReferenceResolver Resolver { get; }
+
+    /// <summary>
+    ///     One semantic model per syntax tree for the whole run. A new model per call site would bind the enclosing method again for
+    ///     every scan call in it, which grows with the square of the calls in one method.
+    /// </summary>
+    public SemanticModel GetSemanticModel(SyntaxTree syntaxTree)
+    {
+        if (_semanticModels.TryGetValue(syntaxTree, out var semanticModel)) return semanticModel;
+
+        semanticModel = Compilation.GetSemanticModel(syntaxTree);
+        _semanticModels.Add(syntaxTree, semanticModel);
+        return semanticModel;
+    }
+
+    private readonly Dictionary<SyntaxTree, SemanticModel> _semanticModels = [];
 }

@@ -2,7 +2,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Descriptors;
 using Specular.Scanning;
@@ -11,7 +10,7 @@ namespace Specular.Analyzers.Configuration;
 
 internal sealed partial class AssemblyProviderConfiguration
 (
-    SourceProductionContext context,
+    HashSet<Diagnostic> reportedDiagnostics,
     ScanEnvironment environment,
     bool isAot,
     SpecularCache cache
@@ -123,8 +122,9 @@ internal sealed partial class AssemblyProviderConfiguration
         return result;
     }
 
-    public static IEnumerable<AttributeListSyntax> ToAssemblyAttributes(
-        SourceProductionContext context,
+    /// <summary>The [AssemblyMetadata] key and value each request is carried in, for assemblies that reference this one.</summary>
+    public static IEnumerable<(string Key, string Value)> ToAssemblyAttributes(
+        HashSet<Diagnostic> diagnostics,
         ImmutableList<AssemblyCollection.Item> assemblyRequests,
         ImmutableList<ReflectionCollection.Item> reflectionTypes,
         ImmutableList<ServiceDescriptorCollection.Item> serviceDescriptorTypes
@@ -135,7 +135,7 @@ internal sealed partial class AssemblyProviderConfiguration
                                .ThenBy(z => z.Location.LineNumber)
                                .ThenBy(z => z.Location.ExpressionHash))
         {
-            yield return Helpers.AddAssemblyAttribute(AssembliesKey, GetAssembliesToString(request));
+            yield return (AssembliesKey, GetAssembliesToString(request));
         }
 
         foreach (var request in reflectionTypes
@@ -143,7 +143,7 @@ internal sealed partial class AssemblyProviderConfiguration
                                .ThenBy(z => z.Location.LineNumber)
                                .ThenBy(z => z.Location.ExpressionHash))
         {
-            yield return Helpers.AddAssemblyAttribute(ReflectionTypesKey, GetReflectionToString(request));
+            yield return (ReflectionTypesKey, GetReflectionToString(request));
         }
 
         foreach (var request in serviceDescriptorTypes
@@ -151,9 +151,44 @@ internal sealed partial class AssemblyProviderConfiguration
                                .ThenBy(z => z.Location.LineNumber)
                                .ThenBy(z => z.Location.ExpressionHash))
         {
-            yield return Helpers.AddAssemblyAttribute(ServiceDescriptorTypesKey, GetServiceDescriptorToString(context, request));
+            yield return (ServiceDescriptorTypesKey, GetServiceDescriptorToString(diagnostics, request));
         }
     }
+    /// <summary>
+    ///     Binds requests serialized as <see cref="ToAssemblyAttributes" /> writes them (the form referenced assemblies carry) against
+    ///     this configuration's compilation.
+    /// </summary>
+    public (
+        ImmutableList<AssemblyCollection.Item> Assemblies,
+        ImmutableList<ReflectionCollection.Item> Reflection,
+        ImmutableList<ServiceDescriptorCollection.Item> ServiceDescriptors
+        ) LoadRequests(IEnumerable<(string Key, string Value)> requests, ImmutableDictionary<string, IAssemblySymbol> assemblySymbols)
+    {
+        var assemblies = ImmutableList.CreateBuilder<AssemblyCollection.Item>();
+        var reflection = ImmutableList.CreateBuilder<ReflectionCollection.Item>();
+        var serviceDescriptors = ImmutableList.CreateBuilder<ServiceDescriptorCollection.Item>();
+        foreach (var (key, value) in requests)
+        {
+            if (key == AssembliesKey) assemblies.Add(GetAssembliesFromString(assemblySymbols, value));
+            else if (key == ReflectionTypesKey) reflection.Add(GetReflectionFromString(assemblySymbols, value));
+            else if (key == ServiceDescriptorTypesKey) serviceDescriptors.Add(GetServiceDescriptorFromString(assemblySymbols, value));
+        }
+
+        return (assemblies.ToImmutable(), reflection.ToImmutable(), serviceDescriptors.ToImmutable());
+    }
+
+    /// <summary>Requests in the serialized form <see cref="LoadRequests" /> reads, in the order given.</summary>
+    public static IEnumerable<(string Key, string Value)> SerializeRequests(
+        HashSet<Diagnostic> diagnostics,
+        IEnumerable<AssemblyCollection.Item> assemblies,
+        IEnumerable<ReflectionCollection.Item> reflection,
+        IEnumerable<ServiceDescriptorCollection.Item> serviceDescriptors
+    ) =>
+        assemblies
+           .Select(z => (AssembliesKey, GetAssembliesToString(z)))
+           .Concat(reflection.Select(z => (ReflectionTypesKey, GetReflectionToString(z))))
+           .Concat(serviceDescriptors.Select(z => (ServiceDescriptorTypesKey, GetServiceDescriptorToString(diagnostics, z))));
+
     private static string CompressString(byte[] bytes) => Convert.ToBase64String(bytes);
 
     private static byte[] DecompressString(string base64String) => Convert.FromBase64String(base64String);
@@ -264,7 +299,7 @@ internal sealed partial class AssemblyProviderConfiguration
             new(
                 assemblyBuilder.Select(GetAssemblyCollectionData).ToImmutableList(),
                 reflectionBuilder.Select(GetReflectionCollectionData).ToImmutableList(),
-                serviceDescriptorBuilder.Select(z => GetServiceDescriptorCollectionData(context, z)).ToImmutableList(),
+                serviceDescriptorBuilder.Select(z => GetServiceDescriptorCollectionData(reportedDiagnostics, z)).ToImmutableList(),
                 excludeFromResolution
             )
         );
@@ -298,12 +333,12 @@ internal sealed partial class AssemblyProviderConfiguration
         return CompressString(result);
     }
 
-    private static GetServiceDescriptorCollectionData GetServiceDescriptorCollectionData(SourceProductionContext context, ServiceDescriptorCollection.Item item)
+    private static GetServiceDescriptorCollectionData GetServiceDescriptorCollectionData(HashSet<Diagnostic> diagnostics, ServiceDescriptorCollection.Item item)
     {
         var data = new GetServiceDescriptorCollectionData(
             new(item.Location, item.Selection.Assemblies.Data),
             new(item.Selection.Types!.Data),
-            new(LoadServiceDescriptorsData(context, item.ServicesTypeFilter), item.Lifetime)
+            new(LoadServiceDescriptorsData(diagnostics, item.ServicesTypeFilter), item.Lifetime)
         );
         return data;
     }
@@ -332,9 +367,9 @@ internal sealed partial class AssemblyProviderConfiguration
         return GetServiceDescriptorFromData(assemblySymbols, config);
     }
 
-    private static string GetServiceDescriptorToString(SourceProductionContext context, ServiceDescriptorCollection.Item item)
+    private static string GetServiceDescriptorToString(HashSet<Diagnostic> diagnostics, ServiceDescriptorCollection.Item item)
     {
-        var data = GetServiceDescriptorCollectionData(context, item);
+        var data = GetServiceDescriptorCollectionData(diagnostics, item);
         var result = JsonSerializer.SerializeToUtf8Bytes(data, JsonSourceGenerationContext.Default.GetServiceDescriptorCollectionData);
         return CompressString(result);
     }
@@ -371,7 +406,7 @@ internal sealed partial class AssemblyProviderConfiguration
     }
 
     private static ServiceDescriptorFilterData LoadServiceDescriptorsData(
-        SourceProductionContext context,
+        HashSet<Diagnostic> diagnostics,
         CompiledServiceTypeDescriptors serviceTypeDescriptors
     )
     {
@@ -384,7 +419,7 @@ internal sealed partial class AssemblyProviderConfiguration
                                                return true;
                                            }
 
-                                           context.ReportDiagnostic(Diagnostic.Create(Diagnostics.CouldNotFindServiceType, null, descriptor.Data.Assembly, descriptor.Data.Type));
+                                           _ = diagnostics.Add(Diagnostic.Create(Diagnostics.CouldNotFindServiceType, null, descriptor.Data.Assembly, descriptor.Data.Type));
                                            return false;
                                        }
                                  )

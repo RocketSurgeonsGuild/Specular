@@ -1,17 +1,15 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
 using Specular.Analyzers.Descriptors;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
 
 internal static class AssemblyCollection
 {
-    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel)>> Create(
+    public static IncrementalValueProvider<ImmutableArray<(InvocationExpressionSyntax method, ExpressionSyntax selector)>> Create(
         SyntaxValueProvider valueProvider,
         IncrementalValueProvider<bool> hasAssemblyLoadContext
     ) => valueProvider
@@ -25,7 +23,7 @@ internal static class AssemblyCollection
     public static ImmutableList<Item> GetAssemblyItems(
         ScanEnvironment environment,
         HashSet<Diagnostic> diagnostics,
-        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector, SemanticModel semanticModel)> results,
+        IReadOnlyList<(InvocationExpressionSyntax expression, ExpressionSyntax selector)> results,
         CancellationToken cancellationToken
     )
     {
@@ -35,9 +33,9 @@ internal static class AssemblyCollection
         {
             try
             {
-                (var methodCallSyntax, var selector, _) = tuple;
+                (var methodCallSyntax, var selector) = tuple;
 
-                var semanticModel = compilation.GetSemanticModel(tuple.expression.SyntaxTree);
+                var semanticModel = environment.GetSemanticModel(methodCallSyntax.SyntaxTree);
                 // The compilation passed here is augmented with an SpecularProvider shell so the receiver binds.
                 // Only treat this as a scan when the call actually resolves to ISpecularProvider; otherwise a
                 // syntactically-similar call would produce an empty (match-everything) filter.
@@ -91,7 +89,7 @@ internal static class AssemblyCollection
         return items.ToImmutable();
     }
 
-    public static (InvocationExpressionSyntax method, ExpressionSyntax selector, SemanticModel semanticModel) GetMethod(
+    public static (InvocationExpressionSyntax method, ExpressionSyntax selector) GetMethod(
         GeneratorSyntaxContext context
     )
     {
@@ -102,7 +100,7 @@ internal static class AssemblyCollection
         // against a shell-augmented compilation. See SpecularProviderGenerator.CreateSemanticCompilation.
         return method is null || selector is null
             ? default
-            : (method, selector, semanticModel: context.SemanticModel);
+            : (method, selector);
     }
 
     public static (InvocationExpressionSyntax? method, ExpressionSyntax? selector) GetMethod(SyntaxNode node) =>
@@ -147,7 +145,7 @@ internal static class AssemblyCollection
 
                 results.Add(new(
                     item.Location,
-                    descriptors.NormalizeWhitespace().ToFullString().Replace("\r", ""),
+                    descriptors,
                     privateAssemblyNames.ToImmutable(),
                     [],
                     reportEntries,
@@ -176,11 +174,11 @@ internal static class AssemblyCollection
 
     public sealed record Item(SourceLocation Location, ScanSelection Selection);
 
-    private sealed record AssemblyScanGeneration(BlockSyntax Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
+    private sealed record AssemblyScanGeneration(string Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
     private static AssemblyScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
-        var block = Block();
+        var statements = new List<string>();
         var reportEntries = ImmutableList.CreateBuilder<AssemblyScanReportEntryData>();
         foreach (var assembly in assemblies.OrderBy(z => z.MetadataName))
         {
@@ -196,26 +194,16 @@ internal static class AssemblyCollection
                 }
 
                 privateAssemblies.Add(assembly);
-                block = block.AddStatements(
-                    ExpressionStatement(
-                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                           .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(StatementGeneration.GetPrivateAssembly(assembly)))))
-                    )
-                );
+                statements.Add($"items.Add({StatementGeneration.GetPrivateAssembly(assembly)});");
                 reportEntries.Add(new(assembly.Identity.Name));
                 continue;
             }
 
-            block = block.AddStatements(
-                ExpressionStatement(
-                    InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                       .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(assemblyExpression))))
-                )
-            );
+            statements.Add($"items.Add({assemblyExpression.Text});");
             reportEntries.Add(new(assembly.Identity.Name));
         }
 
-        return new(block, reportEntries.ToImmutable());
+        return new(CodeText.Block(statements), reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetMethod(node) is { method: { }, selector: { } };
