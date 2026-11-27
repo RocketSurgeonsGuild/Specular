@@ -18,6 +18,8 @@ internal sealed class SpecularScanReport
                         [
                             new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.ActivatorUtilities+ConstructorInfoEx", "global::Microsoft.Extensions.DependencyInjection.ActivatorUtilities+ConstructorInfoEx"),
                             new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructorAttribute", "global::Microsoft.Extensions.DependencyInjection.ActivatorUtilitiesConstructorAttribute"),
+                            new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.EmptyServiceProvider", "global::Microsoft.Extensions.DependencyInjection.EmptyServiceProvider"),
+                            new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.EmptyServiceProvider+EmptyServiceScope", "global::Microsoft.Extensions.DependencyInjection.EmptyServiceProvider+EmptyServiceScope"),
                             new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute", "global::Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute"),
                             new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.KeyedService+AnyKeyObj", "global::Microsoft.Extensions.DependencyInjection.KeyedService+AnyKeyObj"),
                             new(ServiceLifetime.Transient, "global::Microsoft.Extensions.DependencyInjection.ServiceCollection", "global::Microsoft.Extensions.DependencyInjection.ServiceCollection"),
