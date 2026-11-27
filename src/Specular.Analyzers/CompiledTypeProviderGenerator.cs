@@ -64,7 +64,8 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                                tuple.Right.serviceDescriptors,
                                cancellationToken
                            )
-                       );
+                       )
+                      .WithTrackingName(RequestsTrackingName);
 
         var referenced = requests
                         .WithComparer(SameReferencedInputComparer.Instance)
@@ -74,7 +75,10 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
         context.RegisterImplementationSourceOutput(referenced, static (_, result) => result.Cache.Save(result.GlobalOptions));
 
-        var analysis = requests.Combine(referenced).Select(static (tuple, cancellationToken) => Analyze(tuple.Left, tuple.Right, cancellationToken));
+        var analysis = requests
+                      .Combine(referenced)
+                      .Select(static (tuple, cancellationToken) => Analyze(tuple.Left, tuple.Right, cancellationToken))
+                      .WithTrackingName(AnalysisTrackingName);
 
         context.RegisterImplementationSourceOutput(
             analysis,
@@ -98,6 +102,12 @@ public class SpecularProviderGenerator : IIncrementalGenerator
 
     /// <summary>The tracking name of the step whose value decides whether the provider and the scan report are written again.</summary>
     internal const string ModelTrackingName = "SpecularModel";
+
+    /// <summary>The tracking name of the step that binds the call sites in source to scan requests.</summary>
+    internal const string RequestsTrackingName = "SpecularRequests";
+
+    /// <summary>The tracking name of the step that resolves every request against the compilation's own assembly.</summary>
+    internal const string AnalysisTrackingName = "SpecularAnalysis";
 
     /// <summary>The tracking name of the step that resolves the call sites against referenced assemblies.</summary>
     internal const string ReferencedTrackingName = "SpecularReferenced";

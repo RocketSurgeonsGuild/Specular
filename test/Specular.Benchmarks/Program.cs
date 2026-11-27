@@ -7,6 +7,12 @@ if (args is ["--validate"])
     return;
 }
 
+if (args is ["--steps", var workloadName])
+{
+    StepTimings.Print(workloadName);
+    return;
+}
+
 _ = BenchmarkSwitcher.FromAssembly(typeof(GeneratorBenchmarks).Assembly).Run(args);
 
 namespace Specular.Tests
