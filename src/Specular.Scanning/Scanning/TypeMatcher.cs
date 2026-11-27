@@ -86,7 +86,7 @@ internal sealed class TypeMatcher
 
         if (_filter.Namespaces.Count > 0)
         {
-            var @namespace = type.ContainingNamespace.ToDisplayString();
+            var @namespace = ScanSymbolNames.GetNamespaceName(type.ContainingNamespace);
             foreach (var clause in _filter.Namespaces)
             {
                 if (!NamespaceMatches(clause, @namespace)) return false;
