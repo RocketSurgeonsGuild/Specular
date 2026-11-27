@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Specular.Scanning;
 
@@ -37,5 +38,28 @@ internal sealed class ScanEnvironment
         return semanticModel;
     }
 
+    /// <summary>
+    ///     Every type the compilation's own assembly declares, in the order <see cref="TypeWalker" /> offers them, listed once for the run.
+    ///     Each scan of the own assembly (one per local and inherited request) filters this list instead of walking the source again.
+    /// </summary>
+    public ImmutableArray<INamedTypeSymbol> GetOwnTypes(CancellationToken cancellationToken)
+    {
+        if (!_ownTypes.IsDefault) return _ownTypes;
+
+        var types = ImmutableArray.CreateBuilder<INamedTypeSymbol>();
+        _ = TypeWalker.Walk(
+            Compilation.Assembly.GlobalNamespace,
+            type =>
+            {
+                types.Add(type);
+                return true;
+            },
+            cancellationToken
+        );
+        _ownTypes = types.ToImmutable();
+        return _ownTypes;
+    }
+
     private readonly Dictionary<SyntaxTree, SemanticModel> _semanticModels = [];
+    private ImmutableArray<INamedTypeSymbol> _ownTypes;
 }
