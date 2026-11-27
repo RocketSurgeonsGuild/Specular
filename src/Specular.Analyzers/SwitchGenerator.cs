@@ -55,8 +55,8 @@ internal static class SwitchGenerator
         // Several call sites that all share this key (the same file name on a line, as a project's call site and the identical one a
         // referenced project carries) leave nothing for this switch to tell apart, so the next level is emitted directly.
         var groups = Helpers.GroupInOrder(blocks, regroup);
-        return  groups is [var (_, onlyGroup)] 
-            ?  next(onlyGroup) 
+        return groups is [var (_, onlyGroup)]
+            ? next(onlyGroup)
             : ( writer =>
         {
             _ = writer.Line($"switch ({switchOn})").Open();

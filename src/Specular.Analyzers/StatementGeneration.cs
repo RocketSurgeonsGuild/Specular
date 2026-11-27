@@ -71,26 +71,23 @@ internal static class StatementGeneration
     {
         var methodName = key is null ? lifetime : $"Keyed{lifetime}";
         var isServiceTypeAccessible = compilation.IsSymbolAccessibleWithin(serviceType, compilation.Assembly);
-        if (isServiceTypeAccessible
+        return  isServiceTypeAccessible
          && serviceTypeExpression.TypeOfType is { } serviceTypeName
          && implementationTypeExpression.TypeOfType is { } implementationTypeName
          && !IsOpenGenericType(serviceType)
          && !IsOpenGenericType(implementationType)
-         && compilation.IsSymbolAccessibleWithin(implementationType, compilation.Assembly))
-        {
-            return new($"ServiceDescriptor.{methodName}<{serviceTypeName}, {implementationTypeName}>({key})");
-        }
-
-        return  isServiceTypeAccessible
+         && compilation.IsSymbolAccessibleWithin(implementationType, compilation.Assembly) 
+            ?   new($"ServiceDescriptor.{methodName}<{serviceTypeName}, {implementationTypeName}>({key})")  
+            :   isServiceTypeAccessible
          && serviceTypeExpression.TypeOfType is { } lambdaServiceTypeName
          && implementationTypeExpression.IsLambda
-         && !IsOpenGenericType(serviceType) 
-            ?   new(
+         && !IsOpenGenericType(serviceType)
+            ? new(
                 key is null
                     ? $"ServiceDescriptor.{methodName}<{lambdaServiceTypeName}>({implementationTypeExpression.Text})"
                     : $"ServiceDescriptor.{methodName}<{lambdaServiceTypeName}>({key}, {implementationTypeExpression.Text})"
-            )  
-            :   new(
+            )
+            : new(
             key is null
                 ? $"ServiceDescriptor.{methodName}({serviceTypeExpression.Text}, {implementationTypeExpression.Text})"
                 : $"ServiceDescriptor.{methodName}({serviceTypeExpression.Text}, {key}, {implementationTypeExpression.Text})"
@@ -121,9 +118,9 @@ internal static class StatementGeneration
 
     public static CodeExpression? GetAssemblyExpression(Compilation compilation, IAssemblySymbol assembly)
     {
-        return  FindPublicType(assembly) is not { } keyholdType 
-            ?   null  
-            :  GetTypeOfExpression(compilation, keyholdType, false) is { } typeExpression ? new CodeExpression($"{typeExpression.Text}.Assembly") : null ;
+        return FindPublicType(assembly) is not { } keyholdType
+            ? null
+            : GetTypeOfExpression(compilation, keyholdType, false) is { } typeExpression ? new CodeExpression($"{typeExpression.Text}.Assembly") : null;
     }
 
     public static CodeExpression? GetTypeOfExpression(Compilation compilation, INamedTypeSymbol type, bool allowPrivateTypeLookup)
