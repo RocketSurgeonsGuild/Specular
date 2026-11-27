@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
 
@@ -21,30 +20,13 @@ internal static class Helpers
         return ( info.Symbol ?? info.CandidateSymbols.FirstOrDefault() ) is IMethodSymbol { ContainingType.MetadataName: "ISpecularProvider" };
     }
 
-    public static CompilationUnitSyntax AddSharedTrivia(this CompilationUnitSyntax source) =>
-        source
-           .WithLeadingTrivia(NullableDirective(SyntaxKind.EnableKeyword), PragmaWarningDirective(SyntaxKind.DisableKeyword))
-           .WithTrailingTrivia(PragmaWarningDirective(SyntaxKind.RestoreKeyword), NullableDirective(SyntaxKind.RestoreKeyword));
+    /// <summary>The directives that open every generated provider file, each line ending in <see cref="CodeText.SourceEndOfLine" />.</summary>
+    public static string FileHeader =>
+        $"#nullable enable{CodeText.SourceEndOfLine}#pragma warning disable {string.Join(", ", _disabledWarnings)}{CodeText.SourceEndOfLine}";
 
-    // Directives are trivia the layout keeps as they are, so they carry their own spacing and line break.
-    private static SyntaxTrivia NullableDirective(SyntaxKind setting) =>
-        Trivia(
-            NullableDirectiveTrivia(Token(setting), true)
-               .WithNullableKeyword(Token(SyntaxKind.NullableKeyword).WithTrailingTrivia(Space))
-               .WithEndOfDirectiveToken(DirectiveEnd())
-        );
-
-    private static SyntaxTrivia PragmaWarningDirective(SyntaxKind action) =>
-        Trivia(
-            PragmaWarningDirectiveTrivia(Token(action).WithTrailingTrivia(Space), true)
-               .WithPragmaKeyword(Token(SyntaxKind.PragmaKeyword).WithTrailingTrivia(Space))
-               .WithWarningKeyword(Token(SyntaxKind.WarningKeyword).WithTrailingTrivia(Space))
-               .WithErrorCodes(DisabledWarnings.Value)
-               .WithEndOfDirectiveToken(DirectiveEnd())
-        );
-
-    private static SyntaxToken DirectiveEnd() =>
-        Token(TriviaList(), SyntaxKind.EndOfDirectiveToken, TriviaList(EndOfLine(GeneratedCodeLayout.SourceEndOfLine)));
+    /// <summary>The directives that close every generated provider file.</summary>
+    public static string FileFooter =>
+        $"#pragma warning restore {string.Join(", ", _disabledWarnings)}{CodeText.SourceEndOfLine}#nullable restore{CodeText.SourceEndOfLine}";
 
     public static string AssemblyVariableName(IAssemblySymbol symbol) => SpecialCharacterRemover.Replace(symbol.Identity.GetDisplayName(true), "");
 
@@ -272,27 +254,8 @@ internal static class Helpers
         _ => default,
     };
 
-    internal static AttributeListSyntax AddAssemblyAttribute(string key, string? value) =>
-        AttributeList(
-                SingletonSeparatedList(
-                    Attribute(QualifiedName(QualifiedName(IdentifierName("System"), IdentifierName("Reflection")), IdentifierName("AssemblyMetadata")))
-                       .WithArgumentList(
-                            AttributeArgumentList(
-                                SeparatedList(
-                                    [
-                                        AttributeArgument(LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(key))),
-                                        AttributeArgument(
-                                            value is null
-                                                ? LiteralExpression(SyntaxKind.NullLiteralExpression)
-                                                : LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value))
-                                        ),
-                                    ]
-                                )
-                            )
-                        )
-                )
-            )
-           .WithTarget(AttributeTargetSpecifier(Token(SyntaxKind.AssemblyKeyword)));
+    internal static string AddAssemblyAttribute(string key, string? value) =>
+        $"[assembly: System.Reflection.AssemblyMetadata({CodeText.Literal(key)}, {( value is null ? "null" : CodeText.Literal(value) )})]";
 
     [SuppressMessage("Security", "CA5351:Do Not Use Broken Cryptographic Algorithms", Justification = "MD5 is used only as a stable, non-cryptographic cache key for selector text; it is never used for security.")]
     internal static SourceLocation CreateSourceLocation(
@@ -336,37 +299,9 @@ internal static class Helpers
         return source;
     }
 
-    internal static AttributeListSyntax CompilerGeneratedAttributes =
-        AttributeList(
-            SeparatedList(
-                [
-                    Attribute(ParseName("System.CodeDom.Compiler.GeneratedCode"))
-                       .WithArgumentList(
-                            AttributeArgumentList(
-                                SeparatedList(
-                                    [
-                                        AttributeArgument(
-                                            LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Literal(AssemblyInfo.Project.AssemblyName)
-                                            )
-                                        ),
-                                        AttributeArgument(
-                                            LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Literal(AssemblyInfo.Attributes.FileVersion)
-                                            )
-                                        ),
-                                    ]
-                                )
-                            )
-                        ),
-                    Attribute(ParseName("System.Runtime.CompilerServices.CompilerGenerated")),
-                    Attribute(ParseName("Microsoft.CodeAnalysis.EmbeddedAttribute")),
-                    Attribute(ParseName("System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage")),
-                ]
-            )
-        );
+    internal static string CompilerGeneratedAttributes =>
+        $"[System.CodeDom.Compiler.GeneratedCode({CodeText.Literal(AssemblyInfo.Project.AssemblyName)}, {CodeText.Literal(AssemblyInfo.Attributes.FileVersion)}), "
+      + "System.Runtime.CompilerServices.CompilerGenerated, Microsoft.CodeAnalysis.EmbeddedAttribute, System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]";
 
     private static bool IsRootNamespace(ISymbol symbol)
     {
@@ -387,13 +322,6 @@ internal static class Helpers
         "IL2026",
         "IL2072",
     ];
-
-    private static readonly Lazy<SeparatedSyntaxList<ExpressionSyntax>> DisabledWarnings = new(
-        () => SeparatedList<ExpressionSyntax>(
-            _disabledWarnings.Select(z => IdentifierName(z)),
-            Enumerable.Repeat(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space), _disabledWarnings.Length - 1)
-        )
-    );
 
     private static readonly Regex SpecialCharacterRemover = new("[^\\w\\d]", RegexOptions.Compiled);
 }

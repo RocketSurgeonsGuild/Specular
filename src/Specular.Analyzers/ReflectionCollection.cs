@@ -1,10 +1,8 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 // ReSharper disable UseCollectionExpression
 
@@ -90,7 +88,7 @@ internal static class ReflectionCollection
             var (localBlock, results) = GenerateDescriptors(configuration, diagnostics, reducedTypes, pa);
             return new(
                 item.Location,
-                GeneratedCodeLayout.ToText(localBlock),
+                localBlock,
                 pa.Select(z => z.MetadataName).ToImmutableHashSet(),
                 results,
                 [],
@@ -186,12 +184,12 @@ internal static class ReflectionCollection
     }
 
 
-    private sealed record TypeScanGeneration(BlockSyntax Block, ImmutableList<TypeScanReportEntryData> ReportEntries);
+    private sealed record TypeScanGeneration(string Block, ImmutableList<TypeScanReportEntryData> ReportEntries);
 
     private static TypeScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<INamedTypeSymbol> types, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
-        var block = Block();
+        var statements = new List<string>();
         var reportEntries = ImmutableList.CreateBuilder<TypeScanReportEntryData>();
         foreach (var type in types.OrderBy(Helpers.GetGenericDisplayName))
         {
@@ -206,20 +204,13 @@ internal static class ReflectionCollection
             var privateType = StatementGeneration.GetTypeOfExpression(compilation, type, true);
             if (privateType is { })
             {
-                block = block.AddStatements(
-                    ExpressionStatement(
-                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                           .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(privateType))))
-                    )
-                );
+                statements.Add($"items.Add({privateType.Value.Text});");
                 reportEntries.Add(new(Helpers.GetGenericDisplayName(type)));
             }
             else
             {
                 // add a comment stating we could reach the private type
-                block = block.AddStatements(
-                    EmptyStatement().WithTrailingTrivia(TriviaList(Comment($"// Could not generate typeof expression for {Helpers.GetGenericDisplayName(type)}")))
-                );
+                statements.Add($"; // Could not generate typeof expression for {Helpers.GetGenericDisplayName(type)}");
             }
 
             if (compilation.IsSymbolAccessibleWithin(type, compilation.Assembly)) continue;
@@ -227,7 +218,7 @@ internal static class ReflectionCollection
             _ = privateAssemblies.Add(type.ContainingAssembly);
         }
 
-        return new(block, reportEntries.ToImmutable());
+        return new(CodeText.Block(statements), reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetTypesMethod(node) is { method: { }, selector: { } };

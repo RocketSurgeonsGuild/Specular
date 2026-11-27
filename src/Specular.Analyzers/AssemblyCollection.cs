@@ -1,11 +1,9 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Specular.Analyzers.AssemblyProviders;
 using Specular.Analyzers.Configuration;
 using Specular.Analyzers.Descriptors;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Specular.Analyzers;
 
@@ -147,7 +145,7 @@ internal static class AssemblyCollection
 
                 results.Add(new(
                     item.Location,
-                    GeneratedCodeLayout.ToText(descriptors),
+                    descriptors,
                     privateAssemblyNames.ToImmutable(),
                     [],
                     reportEntries,
@@ -176,11 +174,11 @@ internal static class AssemblyCollection
 
     public sealed record Item(SourceLocation Location, ScanSelection Selection);
 
-    private sealed record AssemblyScanGeneration(BlockSyntax Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
+    private sealed record AssemblyScanGeneration(string Block, ImmutableList<AssemblyScanReportEntryData> ReportEntries);
     private static AssemblyScanGeneration GenerateDescriptors(AssemblyProviderConfiguration configuration, HashSet<Diagnostic> diagnostics, IEnumerable<IAssemblySymbol> assemblies, HashSet<IAssemblySymbol> privateAssemblies)
     {
         var compilation = configuration.Compilation;
-        var block = Block();
+        var statements = new List<string>();
         var reportEntries = ImmutableList.CreateBuilder<AssemblyScanReportEntryData>();
         foreach (var assembly in assemblies.OrderBy(z => z.MetadataName))
         {
@@ -196,26 +194,16 @@ internal static class AssemblyCollection
                 }
 
                 privateAssemblies.Add(assembly);
-                block = block.AddStatements(
-                    ExpressionStatement(
-                        InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                           .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(StatementGeneration.GetPrivateAssembly(assembly)))))
-                    )
-                );
+                statements.Add($"items.Add({StatementGeneration.GetPrivateAssembly(assembly)});");
                 reportEntries.Add(new(assembly.Identity.Name));
                 continue;
             }
 
-            block = block.AddStatements(
-                ExpressionStatement(
-                    InvocationExpression(MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName("items"), IdentifierName("Add")))
-                       .WithArgumentList(ArgumentList(SingletonSeparatedList(Argument(assemblyExpression))))
-                )
-            );
+            statements.Add($"items.Add({assemblyExpression.Text});");
             reportEntries.Add(new(assembly.Identity.Name));
         }
 
-        return new(block, reportEntries.ToImmutable());
+        return new(CodeText.Block(statements), reportEntries.ToImmutable());
     }
 
     private static bool IsValidMethod(SyntaxNode node) => GetMethod(node) is { method: { }, selector: { } };
