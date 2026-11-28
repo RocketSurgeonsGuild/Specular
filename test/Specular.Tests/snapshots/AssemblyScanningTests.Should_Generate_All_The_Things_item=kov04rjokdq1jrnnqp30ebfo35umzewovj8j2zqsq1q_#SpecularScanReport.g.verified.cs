@@ -15,9 +15,6 @@ internal sealed class SpecularScanReport
             new("TestProject", "z => z.FromAssemblies()",
                 [
                     new("Specular"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
-                    new("System.Runtime.Serialization.Formatters"),
                     new("TestAssembly"),
                     new("TestProject")
                 ]),
@@ -38,18 +35,12 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>()",
                 [
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
-                    new("System.Runtime.Serialization.Formatters"),
                     new("TestAssembly"),
                     new("TestProject")
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<IService>()",
                 [
                     new("Specular"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
-                    new("System.Runtime.Serialization.Formatters"),
                     new("TestProject")
                 ]),
             new("TestProject", "z => z.EntryAssembly()",
@@ -140,14 +131,6 @@ internal sealed class SpecularScanReport
                             new("global::Specular.SpecularSupport"),
                             new("global::SpecularScanReport")
                         ]),
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::Microsoft.CodeAnalysis.EmbeddedAttribute"),
@@ -220,14 +203,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().InfoOf(TypeInfoFilter.Static).NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.Nested")
@@ -278,14 +253,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.Abstract).NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::Microsoft.CodeAnalysis.EmbeddedAttribute"),
@@ -311,14 +278,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.Visible).NotAssignableTo<Attribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),
@@ -345,14 +304,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.ValueType).NotAssignableTo<Attribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),
@@ -385,14 +336,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.Sealed).NotAssignableTo<Attribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),
@@ -425,14 +368,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.GenericType).NotAssignableTo<Attribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),
@@ -475,14 +410,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().WithoutAttribute(typeof(EditorBrowsableAttribute)).NotAssignableTo(typeof(Attribute)).NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),
@@ -515,14 +442,6 @@ internal sealed class SpecularScanReport
                 ]),
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().WithoutAttribute<EditorBrowsableAttribute>().NotAssignableTo<Attribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),

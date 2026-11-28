@@ -21,15 +21,15 @@ public class GeneratorPerformanceTests : GeneratorTest
     private const int MeasuredIterations = 20;
 
     [Test]
-    [Arguments("Microsoft")]
     [Arguments("")]
-    public async Task Measure_All_Together(string excludedAssemblies, CancellationToken cancellationToken)
+    [Arguments("*")]
+    public async Task Measure_All_Together(string includedAssemblies, CancellationToken cancellationToken)
     {
         var item = AssemblyScanningTestData.GetTestData().Select(z => z()).Single(z => z.Name == "all-together");
         var input = await Builder
                          .AddSources(item.Source)
                          .AddReferences(typeof(IService))
-                         .AddGlobalOption("build_property.ExcludeAssemblyFromCTP", excludedAssemblies)
+                         .AddGlobalOption("build_property.SpecularProviderIncludeAssemblies", includedAssemblies)
                          .Build()
                          .GenerateAsync(cancellationToken);
 
@@ -51,22 +51,22 @@ public class GeneratorPerformanceTests : GeneratorTest
         times.Sort();
         allocations.Sort();
         var report =
-            $"exclude='{excludedAssemblies}' generated={generatedLength:N0} chars | median {times[times.Count / 2]:F1} ms (min {times[0]:F1}, max {times[^1]:F1}) | median allocated {allocations[allocations.Count / 2] / 1024.0 / 1024.0:F1} MB";
+            $"include='{includedAssemblies}' generated={generatedLength:N0} chars | median {times[times.Count / 2]:F1} ms (min {times[0]:F1}, max {times[^1]:F1}) | median allocated {allocations[allocations.Count / 2] / 1024.0 / 1024.0:F1} MB";
         Console.WriteLine(report);
         if (Environment.GetEnvironmentVariable("SPECULAR_PERF_OUT") is { Length: > 0 } outputPath) await File.AppendAllTextAsync(outputPath, report + "\n", cancellationToken);
     }
 
     // What the IDE pays per keystroke: the same driver runs again on a compilation whose only change is an edited comment.
     [Test]
-    [Arguments("Microsoft")]
     [Arguments("")]
-    public async Task Measure_Edit_Rerun(string excludedAssemblies, CancellationToken cancellationToken)
+    [Arguments("*")]
+    public async Task Measure_Edit_Rerun(string includedAssemblies, CancellationToken cancellationToken)
     {
         var item = AssemblyScanningTestData.GetTestData().Select(z => z()).Single(z => z.Name == "all-together");
         var input = await Builder
                          .AddSources(item.Source)
                          .AddReferences(typeof(IService))
-                         .AddGlobalOption("build_property.ExcludeAssemblyFromCTP", excludedAssemblies)
+                         .AddGlobalOption("build_property.SpecularProviderIncludeAssemblies", includedAssemblies)
                          .Build()
                          .GenerateAsync(cancellationToken);
 
@@ -103,7 +103,7 @@ public class GeneratorPerformanceTests : GeneratorTest
         times.Sort();
         allocations.Sort();
         var report =
-            $"edit-rerun exclude='{excludedAssemblies}' | median {times[times.Count / 2]:F1} ms (min {times[0]:F1}, max {times[^1]:F1}) | median allocated {allocations[allocations.Count / 2] / 1024.0 / 1024.0:F1} MB";
+            $"edit-rerun include='{includedAssemblies}' | median {times[times.Count / 2]:F1} ms (min {times[0]:F1}, max {times[^1]:F1}) | median allocated {allocations[allocations.Count / 2] / 1024.0 / 1024.0:F1} MB";
         Console.WriteLine(report);
         if (Environment.GetEnvironmentVariable("SPECULAR_PERF_OUT") is { Length: > 0 } outputPath) await File.AppendAllTextAsync(outputPath, report + "\n", cancellationToken);
     }

@@ -12,7 +12,7 @@ using TestAssembly;
 namespace Specular.Benchmarks;
 
 /// <summary>What one benchmark case compiles: the app's sources, its references and the generator options.</summary>
-public sealed class Workload(string name, ImmutableArray<SyntaxTree> sources, Func<ImmutableArray<MetadataReference>> references, string excludedAssemblies)
+public sealed class Workload(string name, ImmutableArray<SyntaxTree> sources, Func<ImmutableArray<MetadataReference>> references, string includedAssemblies = "")
 {
     public string Name { get; } = name;
 
@@ -24,7 +24,7 @@ public sealed class Workload(string name, ImmutableArray<SyntaxTree> sources, Fu
     public AnalyzerConfigOptionsProvider Options { get; } = new GlobalOptionsProvider(
         ImmutableDictionary<string, string>.Empty
            .Add("build_property.SpecularEmitProvider", "true")
-           .Add("build_property.ExcludeAssemblyFromCTP", excludedAssemblies)
+           .Add("build_property.SpecularProviderIncludeAssemblies", includedAssemblies)
     );
 
     /// <summary>
@@ -60,15 +60,15 @@ public static class Workloads
     [
         "all-together",
         .. from types in SweepTypes from requests in SweepRequests select $"synthetic-t{types}-r{requests}",
-        "aspnet-exclude-none",
-        "aspnet-exclude-microsoft",
+        "aspnet-default-scope",
+        "aspnet-everything",
     ];
 
     public static Workload Get(string name) => name switch
     {
         "all-together" => AllTogether(),
-        "aspnet-exclude-none" => AspNet(""),
-        "aspnet-exclude-microsoft" => AspNet("Microsoft"),
+        "aspnet-default-scope" => AspNet(""),
+        "aspnet-everything" => AspNet("*"),
         _ when name.StartsWith("synthetic-t", StringComparison.Ordinal) => ParseSynthetic(name),
         _ => throw new ArgumentOutOfRangeException(nameof(name), name, null),
     };
@@ -90,7 +90,7 @@ public static class Workloads
     private static Workload AllTogether()
     {
         var item = AssemblyScanningTestData.GetTestData().Select(z => z()).Single(z => z.Name == "all-together");
-        return new("all-together", [Parse(item.Source, "Program.cs")], () => [.. HostReferences(), Load(typeof(IService))], "Microsoft");
+        return new("all-together", [Parse(item.Source, "Program.cs")], () => [.. HostReferences(), Load(typeof(IService))]);
     }
 
     // A large app: generated services and scans, plus a library that declares scans of its own (inherited requests).
@@ -100,14 +100,14 @@ public static class Workloads
         return new(
             name,
             [Parse(ProgramSource(requests, "Synthetic"), "Program.cs"), Parse(TypesSource("Synthetic", types), "Types.cs")],
-            () => [.. HostReferences(), MetadataReference.CreateFromImage(library)],
-            "Microsoft"
+            () => [.. HostReferences(), MetadataReference.CreateFromImage(library)]
         );
     }
 
     // The same app shape against the full ASP.NET Core reference set (~200 assemblies), to stress walking references.
-    private static Workload AspNet(string excluded) => new(
-        excluded.Length == 0 ? "aspnet-exclude-none" : "aspnet-exclude-microsoft",
+    // The framework default leaves out nearly all of them; Include="*" scans them all, as every scan did before there was a default.
+    private static Workload AspNet(string included) => new(
+        included.Length == 0 ? "aspnet-default-scope" : "aspnet-everything",
         [Parse(ProgramSource(AspNetRequests, "Synthetic"), "Program.cs"), Parse(TypesSource("Synthetic", AspNetTypes), "Types.cs")],
         () =>
         [
@@ -115,7 +115,7 @@ public static class Workloads
             Load(typeof(ISpecularProvider)),
             MetadataReference.CreateFromImage(Library.Value),
         ],
-        excluded
+        included
     );
 
     /// <summary>A library with its own services and scans, compiled once with the generator so it carries its requests in [AssemblyMetadata].</summary>
@@ -131,17 +131,17 @@ public static class Workloads
             [new SpecularProviderGenerator().AsSourceGenerator()],
             parseOptions: ParseOptions,
             optionsProvider: new GlobalOptionsProvider(
-                ImmutableDictionary<string, string>.Empty.Add("build_property.SpecularEmitProvider", "true").Add("build_property.ExcludeAssemblyFromCTP", "Microsoft")
+                ImmutableDictionary<string, string>.Empty.Add("build_property.SpecularEmitProvider", "true")
             )
         );
         _ = driver.RunGeneratorsAndUpdateCompilation(compilation, out var output, out _);
         using var stream = new MemoryStream();
         var result = output.Emit(stream);
-        return  !result.Success 
+        return !result.Success
             ? throw new InvalidOperationException(
                 "The synthetic library did not compile:\n" + string.Join("\n", result.Diagnostics.Where(z => z.Severity == DiagnosticSeverity.Error))
             )
-            :   [.. stream.ToArray()];
+            : [.. stream.ToArray()];
     });
 
     private static IEnumerable<MetadataReference> HostReferences() =>

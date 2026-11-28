@@ -44,6 +44,13 @@ internal sealed partial class AssemblyProviderConfiguration
         var internalServiceDescriptorRequestsBuilder = ImmutableList.CreateBuilder<ServiceDescriptorCollection.Item>();
         foreach (var assembly in assemblySymbols.Values.Except([Compilation.Assembly]).OrderBy(z => z.MetadataName))
         {
+            // Only assemblies in the project's scope contribute the requests they declare; any assembly can still opt out of every scan.
+            if (!environment.Scope.Contains(Compilation, assembly))
+            {
+                if (HasExcludeFromSpecular(assembly)) assemblySymbols = assemblySymbols.Remove(assembly.MetadataName);
+                continue;
+            }
+
             try
             {
                 GetAssemblyExpressionData(
@@ -188,6 +195,16 @@ internal sealed partial class AssemblyProviderConfiguration
            .Select(z => (AssembliesKey, GetAssembliesToString(z)))
            .Concat(reflection.Select(z => (ReflectionTypesKey, GetReflectionToString(z))))
            .Concat(serviceDescriptors.Select(z => (ServiceDescriptorTypesKey, GetServiceDescriptorToString(diagnostics, z))));
+
+    private static bool HasExcludeFromSpecular(IAssemblySymbol assembly)
+    {
+        foreach (var attribute in assembly.GetAttributes())
+        {
+            if (attribute is { AttributeClass.MetadataName: "ExcludeFromSpecularAttribute" }) return true;
+        }
+
+        return false;
+    }
 
     private static string CompressString(byte[] bytes) => Convert.ToBase64String(bytes);
 

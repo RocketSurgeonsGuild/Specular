@@ -1,11 +1,10 @@
 <Project>
-    <PropertyGroup>
-        <ExcludeAssemblyFromCTP>netstandard;System;mscorlib;Microsoft</ExcludeAssemblyFromCTP>
-    </PropertyGroup>
     <ItemGroup>
         <CompilerVisibleProperty Include="IntermediateOutputPath" />
         <CompilerVisibleProperty Include="ProjectDir" />
-        <CompilerVisibleProperty Include="ExcludeAssemblyFromCTP" />
+        <!-- Set from SpecularExcludeAssemblies and SpecularIncludeAssemblies in Specular.targets. -->
+        <CompilerVisibleProperty Include="SpecularProviderExcludeAssemblies" />
+        <CompilerVisibleProperty Include="SpecularProviderIncludeAssemblies" />
         <CompilerVisibleProperty Include="SpecularEmitProvider" />
         <CompilerVisibleProperty Include="PublishAot" />
         <CompilerVisibleProperty Include="EnableAotAnalyzer" />

@@ -15,6 +15,22 @@
       <SpecularGenerateDiagnostics Condition="'$(SpecularGenerateDiagnostics)' == ''">false</SpecularGenerateDiagnostics>
     </PropertyGroup>
 
+    <!--
+        The assemblies Specular's scans look in when a selector does not name them. By default every assembly but the framework's (those
+        signed with Microsoft's framework keys, and netstandard, mscorlib, System, System.*, Microsoft.* and WindowsBase). Patterns use *
+        and ?, match the whole assembly name and ignore case, and are separated by ; or ,. An include always wins over an exclude:
+
+            <SpecularExcludeAssemblies>$(SpecularExcludeAssemblies);Contoso.Legacy.*</SpecularExcludeAssemblies>
+            <SpecularIncludeAssemblies>$(SpecularIncludeAssemblies);Microsoft.Extensions.Logging</SpecularIncludeAssemblies>
+
+        Properties rather than items: MSBuild expands * and ? in an item's Include as a file glob. Specular.Scanning reads the patterns as
+        <consumer id>ExcludeAssemblies / IncludeAssemblies, and Specular's consumer id is SpecularProvider.
+    -->
+    <PropertyGroup>
+        <SpecularProviderExcludeAssemblies>$(SpecularExcludeAssemblies)</SpecularProviderExcludeAssemblies>
+        <SpecularProviderIncludeAssemblies>$(SpecularIncludeAssemblies)</SpecularProviderIncludeAssemblies>
+    </PropertyGroup>
+
     <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
         <Using Include="Specular" />
     </ItemGroup>

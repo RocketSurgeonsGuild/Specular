@@ -7,18 +7,22 @@ namespace Specular.Analyzers.AssemblyProviders;
 /// <summary>What one generator run scans against: the compilation and every assembly it can see, found the way Specular.Scanning finds them.</summary>
 internal sealed class ScanEnvironment
 {
-    public ScanEnvironment(Compilation compilation)
+    public ScanEnvironment(Compilation compilation, ScanAssemblyScope scope)
     {
         Compilation = compilation;
+        Scope = scope;
         AllAssemblies = ScanAssemblies.ByName(ScanAssemblies.Get(compilation));
         Resolver = new(compilation, AllAssemblies);
     }
 
     public Compilation Compilation { get; }
 
+    /// <summary>The assemblies a selector that does not name them looks in: the project's SpecularExcludeAssemblies / SpecularIncludeAssemblies over the framework default.</summary>
+    public ScanAssemblyScope Scope { get; }
+
     /// <summary>
-    ///     Every assembly by metadata name, including those <c>ExcludeAssemblyFromCTP</c> leaves out of the scan: a selector written in
-    ///     source names its assemblies and types by symbol, so it can still refer to them.
+    ///     Every assembly by metadata name, including those <see cref="Scope" /> leaves out: a selector written in source names its
+    ///     assemblies and types by symbol, so it can still refer to them, and a selector that names one scans it.
     /// </summary>
     public IReadOnlyDictionary<string, IAssemblySymbol> AllAssemblies { get; }
 

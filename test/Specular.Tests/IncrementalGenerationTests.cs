@@ -74,7 +74,7 @@ public class IncrementalGenerationTests : GeneratorTest
         var input = await Builder
                          .AddSources(item.Source)
                          .AddReferences(typeof(IService))
-                         .AddGlobalOption("build_property.ExcludeAssemblyFromCTP", "Microsoft")
+                         .AddGlobalOption("build_property.SpecularProviderExcludeAssemblies", "Microsoft*")
                          .Build()
                          .GenerateAsync(cancellationToken);
 

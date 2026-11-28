@@ -121,9 +121,9 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         CancellationToken cancellationToken
     )
     {
-        var excluded = options.GlobalOptions.TryGetValue("build_property.ExcludeAssemblyFromCTP", out var value) ? value : "";
+        var scope = ScanAssemblyScope.FromOptions(options.GlobalOptions, SpecularCache.ConsumerId);
         var diagnostics = new HashSet<Diagnostic>();
-        var environment = new ScanEnvironment(compilation);
+        var environment = new ScanEnvironment(compilation, scope);
         var assemblyRequests = AssemblyCollection.GetAssemblyItems(environment, diagnostics, assemblies, cancellationToken);
         var reflectionRequests = ReflectionCollection.GetReflectionItems(environment, diagnostics, reflection, cancellationToken);
         var serviceDescriptorRequests = ServiceDescriptorCollection.GetServiceDescriptorItems(environment, diagnostics, serviceDescriptors, cancellationToken);
@@ -140,7 +140,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
             serviceDescriptorRequests,
             attributes,
             diagnostics,
-            new(new([.. serialized]), StatementGeneration.IsAotCompilation(options), excluded)
+            new(new([.. serialized]), StatementGeneration.IsAotCompilation(options), scope)
         );
     }
 
@@ -151,7 +151,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         var diagnostics = new HashSet<Diagnostic>();
         var cache = new SpecularCache(compilation, cacheFile, requests.Key.IsAot);
         var config = new AssemblyProviderConfiguration(diagnostics, requests.Environment, requests.Key.IsAot, cache);
-        var assemblySymbols = GetAssemblySymbols(compilation, ParseExcluded(requests.Key.ExcludedAssemblies));
+        var assemblySymbols = GetAssemblySymbols(compilation);
         var all = assemblySymbols;
 
         var (internalAssemblyRequests, internalReflectionRequests, reflectionSources, internalServiceDescriptorRequests, serviceDescriptorSources) =
@@ -177,7 +177,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         // Scans of the compilation's own assembly are never cached, so this cache is only a place for them to pass through.
         var cache = new SpecularCache(compilation, SpecularCache.Parse(null), isAot);
         var config = new AssemblyProviderConfiguration(diagnostics, requests.Environment, isAot, cache);
-        var assemblySymbols = GetAssemblySymbols(compilation, ParseExcluded(requests.Key.ExcludedAssemblies)).RemoveRange(referenced.ExcludedFromResolution);
+        var assemblySymbols = GetAssemblySymbols(compilation).RemoveRange(referenced.ExcludedFromResolution);
         var (internalAssemblyRequests, internalReflectionRequests, internalServiceDescriptorRequests) = config.LoadRequests(referenced.InternalRequests, assemblySymbols);
 
         var assemblyRequests = requests.Assemblies.AddRange(internalAssemblyRequests);
@@ -213,12 +213,10 @@ public class SpecularProviderGenerator : IIncrementalGenerator
         return new(model, [.. diagnostics]);
     }
 
-    private static HashSet<string> ParseExcluded(string excluded) => [.. excluded.Split([';', ','], StringSplitOptions.RemoveEmptyEntries)];
-
     private static void Render(SourceProductionContext context, GenerationModel model, Compilation compilation)
     {
         using var names = Helpers.CacheNames();
-        var assemblySymbols = GetAssemblySymbols(compilation, []);
+        var assemblySymbols = GetAssemblySymbols(compilation);
         var privateAssemblies = new HashSet<IAssemblySymbol>(SymbolEqualityComparer.Default);
         foreach (var name in model.PrivateAssemblies)
         {
@@ -287,7 +285,8 @@ public class SpecularProviderGenerator : IIncrementalGenerator
     private static bool GetMsBuildBoolean(AnalyzerConfigOptions options, string propertyName, bool @default) =>
         options.TryGetValue($"build_property.{propertyName}", out var value) && bool.TryParse(value, out var parsedValue) ? parsedValue : @default;
 
-    private static ImmutableDictionary<string, IAssemblySymbol> GetAssemblySymbols(Compilation compilation, HashSet<string> excludedAssemblies) =>
+    // Every assembly the compilation sees: which of them a selection looks in is the selection's and the assembly scope's question.
+    private static ImmutableDictionary<string, IAssemblySymbol> GetAssemblySymbols(Compilation compilation) =>
         compilation
            .References
            .Select(compilation.GetAssemblyOrModuleSymbol)
@@ -301,7 +300,6 @@ public class SpecularProviderGenerator : IIncrementalGenerator
                    }
             )
            .Where(z => z is { })
-           .Where(z => excludedAssemblies.All(a => !z.MetadataName.StartsWith(a, StringComparison.OrdinalIgnoreCase)))
            .GroupBy(z => z.MetadataName, z => z, (s, symbols) => (Key: s, Symbol: symbols.First()))
            .ToImmutableDictionary(z => z.Key, z => z.Symbol);
 
@@ -325,7 +323,7 @@ public class SpecularProviderGenerator : IIncrementalGenerator
     }
 
     /// <summary>What resolving against referenced assemblies depends on besides the references: compared by value.</summary>
-    private sealed record ReferencedKey(EquatableArray<(string Key, string Value)> Requests, bool IsAot, string ExcludedAssemblies);
+    private sealed record ReferencedKey(EquatableArray<(string Key, string Value)> Requests, bool IsAot, ScanAssemblyScope Scope);
 
     private sealed class RequestsResult(
         Compilation compilation,

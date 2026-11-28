@@ -19,7 +19,10 @@ internal sealed class ScanSelection(ScanEnvironment environment, AssemblySelecti
     /// <summary>The Specular.Scanning request: it keys the scan results kept in the build cache.</summary>
     public ScanRequest Request { get; } = new(types is null ? ScanKind.Assemblies : ScanKind.Types, assemblies.Filter, types?.Filter);
 
-    public bool IsMatch(IAssemblySymbol assembly) => ( _assemblyMatcher ??= new(Assemblies.Filter, _environment.AllAssemblies) ).IsMatch(assembly);
+    /// <summary>Whether this selection looks in <paramref name="assembly" />: it matches, and the project's assembly scope allows it for this selection.</summary>
+    public bool IsMatch(IAssemblySymbol assembly) =>
+        ( _assemblyMatcher ??= new(Assemblies.Filter, _environment.AllAssemblies) ).IsMatch(assembly)
+     && _environment.Scope.Allows(_environment.Compilation, assembly, Assemblies.Filter);
 
     /// <summary>
     ///     The types this selection finds in <paramref name="assembly" />, in declaration order. A referenced assembly's types come from

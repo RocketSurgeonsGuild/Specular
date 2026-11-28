@@ -34,6 +34,9 @@ internal static class ServiceDescriptorCollection
         CancellationToken cancellationToken
     )
     {
+        // Before the cache: an entry from an earlier build may be for an assembly the project has since taken out of scope.
+        if (!item.Selection.IsMatch(targetAssembly)) return null;
+
         try
         {
             return SymbolEqualityComparer.Default.Equals(targetAssembly, compilation.Assembly)

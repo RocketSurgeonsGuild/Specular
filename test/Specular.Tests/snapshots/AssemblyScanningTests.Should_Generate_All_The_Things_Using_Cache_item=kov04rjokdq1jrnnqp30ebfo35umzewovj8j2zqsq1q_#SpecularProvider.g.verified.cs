@@ -78,8 +78,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Specular.ISpecularProvider).Assembly,
-                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
-                    typeof(global::System.IServiceProvider).Assembly,
                     typeof(global::TestAssembly.IService).Assembly,
                     TestProject
                 ];
@@ -103,8 +101,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             case 18:
                 return
                 [
-                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
-                    typeof(global::System.IServiceProvider).Assembly,
                     typeof(global::TestAssembly.IService).Assembly,
                     TestProject
                 ];
@@ -113,8 +109,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Specular.ISpecularProvider).Assembly,
-                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
-                    typeof(global::System.IServiceProvider).Assembly,
                     TestProject
                 ];
             // FilePath: Input0.cs Expression: /wvNd0rNqfzrIH57jso7mA==
@@ -190,7 +184,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                     typeof(global::Specular.SpecularProviderServiceCollectionExtensions),
                     typeof(global::Specular.SpecularSupport),
                     Specular.GetType("SpecularScanReport")!,
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
@@ -248,7 +241,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 [
                     typeof(global::Microsoft.CodeAnalysis.EmbeddedAttribute),
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("Microsoft.CodeAnalysis.EmbeddedAttribute")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
@@ -269,7 +261,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     TestAssembly.GetType("TestAssembly.Nested+MyRecord")!,
                     TestAssembly.GetType("TestAssembly.Nested+Validator")!,
@@ -283,7 +274,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
                     typeof(global::TestAssembly.IGenericService<>),
@@ -312,7 +302,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
                     typeof(global::TestAssembly.IGenericService<>),
@@ -341,7 +330,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
                     typeof(global::TestAssembly.IKeyedService),
@@ -366,7 +354,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
                     typeof(global::TestAssembly.IGenericService<>),
@@ -395,7 +382,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Program),
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
                     TestAssembly.GetType("TestAssembly.GenericService")!,
                     typeof(global::TestAssembly.GenericServiceB),
                     typeof(global::TestAssembly.IGenericService<>),
@@ -430,13 +416,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     typeof(global::Specular.SpecularSupport)
-                ];
-            // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
-            case 93:
-                return
-                [
-                    SystemCollectionsImmutable.GetType("FxResources.System.Collections.Immutable.SR")!,
-                    typeof(global::TestAssembly.Nested)
                 ];
             // FilePath: Input0.cs Expression: cizxMQ3lnxFjX801wlpqbw==
             case 23:
@@ -499,6 +478,12 @@ internal sealed class SpecularProvider : ISpecularProvider
                     typeof(global::TestAssembly.Nested.GenericServiceA),
                     typeof(global::TestAssembly.Nested.ServiceA),
                     typeof(global::TestAssembly.Service)
+                ];
+            // FilePath: Input0.cs Expression: +FkT4btNbS4PRfcftoFbtA==
+            case 93:
+                return
+                [
+                    typeof(global::TestAssembly.Nested)
                 ];
             // FilePath: Input0.cs Expression: /Q4AySzV41Tdwlkpfg/GKA==
             case 113:
@@ -751,7 +736,7 @@ internal sealed class SpecularProvider : ISpecularProvider
         return services;
     }
 
-    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "FxResources.System.Collections.Immutable.SR", "System.Collections.Immutable"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
+    [global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "SpecularScanReport", "Specular"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "Microsoft.CodeAnalysis.EmbeddedAttribute", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.GenericService", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+MyRecord", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Nested+Validator", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Request", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.RequestHandler", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.Response", "TestAssembly"), global::System.Diagnostics.CodeAnalysis.DynamicDependency(global::System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.All, "TestAssembly.ServiceB", "TestAssembly")]
     private AssemblyLoadContext _context = AssemblyLoadContext.GetLoadContext(typeof(SpecularProvider).Assembly)!;
     private Assembly _mscorlib;
     private Assembly mscorlib => _mscorlib ??= _context.LoadFromAssemblyName(new AssemblyName("mscorlib, Version=version, Culture=neutral, PublicKey=Guid_1"));
@@ -764,9 +749,6 @@ internal sealed class SpecularProvider : ISpecularProvider
 
     private Assembly _System;
     private Assembly System => _System ??= _context.LoadFromAssemblyName(new AssemblyName("System, Version=version, Culture=neutral, PublicKey=Guid_1"));
-
-    private Assembly _SystemCollectionsImmutable;
-    private Assembly SystemCollectionsImmutable => _SystemCollectionsImmutable ??= _context.LoadFromAssemblyName(new AssemblyName("System.Collections.Immutable, Version=version, Culture=neutral, PublicKey=002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad236132102900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc093344d5ad293"));
 
     private Assembly _SystemCore;
     private Assembly SystemCore => _SystemCore ??= _context.LoadFromAssemblyName(new AssemblyName("System.Core, Version=version, Culture=neutral, PublicKey=Guid_1"));

@@ -28,9 +28,6 @@ internal sealed class SpecularProvider : ISpecularProvider
             case 16:
                 return
                 [
-                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
-                    typeof(global::System.IServiceProvider).Assembly,
-                    typeof(global::System.Runtime.Serialization.SerializationEventHandler).Assembly,
                     typeof(global::TestAssembly.IService).Assembly,
                     TestProject
                 ];

@@ -15,8 +15,6 @@ internal sealed class SpecularScanReport
             new("OtherProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>()",
                 [
                     new("OtherProject"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
                     new("TestAssembly"),
                     new("TestProject")
                 ])
