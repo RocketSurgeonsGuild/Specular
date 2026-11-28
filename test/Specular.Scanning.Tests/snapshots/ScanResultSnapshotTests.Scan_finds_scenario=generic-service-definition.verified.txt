@@ -1,10 +1,6 @@
 ﻿{
   Assemblies: [
     {
-      Name: Microsoft.Extensions.DependencyInjection.Abstractions,
-      HasInaccessibleMatches: false
-    },
-    {
       Name: Specular,
       HasInaccessibleMatches: false
     },

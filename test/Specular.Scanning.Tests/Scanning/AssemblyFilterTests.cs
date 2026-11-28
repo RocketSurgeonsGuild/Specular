@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using TUnit.Assertions.Should.Extensions;
 using static Specular.Scanning.Tests.Scanning.Scans;
 
@@ -5,12 +6,15 @@ namespace Specular.Scanning.Tests.Scanning;
 
 public class AssemblyFilterTests
 {
+    // These pin the selection's own rules, so they scan with nothing left out by the project's assembly scope (see ScanAssemblyScopeTests).
+    private static ScanResult Scan(Compilation compilation, ScanRequest request) => Scanner.Scan(compilation, request, ScanAssemblyScope.Everything);
+
     private const string DependencyInjection = "Microsoft.Extensions.DependencyInjection.Abstractions";
 
     [Test]
     public async Task All_assemblies_skip_system_assemblies_by_default()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(AllAssemblies));
+        var result = Scan(ScanCompilation.Create(), Assemblies(AllAssemblies));
 
         await AssemblyNames(result).Should().BeEquivalentTo([DependencyInjection, "Specular", "TestAssembly", "TestProject"]);
         await result.Types.Should().BeEmpty();
@@ -19,7 +23,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task Including_system_assemblies_adds_the_core_assemblies()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(AllAssemblies with { IncludeSystemAssemblies = true }));
+        var result = Scan(ScanCompilation.Create(), Assemblies(AllAssemblies with { IncludeSystemAssemblies = true }));
 
         await AssemblyNames(result)
            .Should()
@@ -29,7 +33,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task A_specific_assembly_is_the_only_match()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly")));
+        var result = Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly")));
 
         await AssemblyNames(result).Should().BeEquivalentTo(["TestAssembly"]);
     }
@@ -37,7 +41,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task The_compilations_own_assembly_can_be_selected()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies(ScanCompilation.ProjectAssemblyName)));
+        var result = Scan(ScanCompilation.Create(), Assemblies(FromAssemblies(ScanCompilation.ProjectAssemblyName)));
 
         await AssemblyNames(result).Should().BeEquivalentTo([ScanCompilation.ProjectAssemblyName]);
     }
@@ -47,8 +51,8 @@ public class AssemblyFilterTests
     {
         var compilation = ScanCompilation.Create();
 
-        var without = Scanner.Scan(compilation, Assemblies(FromAssemblies("System.Runtime")));
-        var with = Scanner.Scan(compilation, Assemblies(FromAssemblies("System.Runtime") with { IncludeSystemAssemblies = true }));
+        var without = Scan(compilation, Assemblies(FromAssemblies("System.Runtime")));
+        var with = Scan(compilation, Assemblies(FromAssemblies("System.Runtime") with { IncludeSystemAssemblies = true }));
 
         await AssemblyNames(without).Should().BeEmpty();
         await AssemblyNames(with).Should().BeEquivalentTo(["System.Runtime"]);
@@ -58,7 +62,7 @@ public class AssemblyFilterTests
     public async Task Several_specific_assemblies_select_each_of_them()
     {
         // Positive selections are alternatives: FromAssemblyOf(A).FromAssemblyOf(B) means "from A or B".
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly", "Specular")));
+        var result = Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly", "Specular")));
 
         await AssemblyNames(result).Should().BeEquivalentTo(["Specular", "TestAssembly"]);
     }
@@ -66,7 +70,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task A_specific_assembly_and_dependencies_of_another_select_both()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("Specular") with { DependenciesOf = Array("TestAssembly") }));
+        var result = Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("Specular") with { DependenciesOf = Array("TestAssembly") }));
 
         await AssemblyNames(result).Should().BeEquivalentTo(["Specular", "TestProject"]);
     }
@@ -77,8 +81,8 @@ public class AssemblyFilterTests
         // FromAssemblies().FromAssemblyOf<T>() and FromAssemblies().DependenciesFromAssemblyOf<T>() narrow, as in Specular.
         var compilation = ScanCompilation.Create();
 
-        var specific = Scanner.Scan(compilation, Assemblies(AllAssemblies with { Assemblies = Array("TestAssembly") }));
-        var dependencies = Scanner.Scan(compilation, Assemblies(AllAssemblies with { DependenciesOf = Array("TestAssembly") }));
+        var specific = Scan(compilation, Assemblies(AllAssemblies with { Assemblies = Array("TestAssembly") }));
+        var dependencies = Scan(compilation, Assemblies(AllAssemblies with { DependenciesOf = Array("TestAssembly") }));
 
         await AssemblyNames(specific).Should().BeEquivalentTo(["TestAssembly"]);
         await AssemblyNames(dependencies).Should().BeEquivalentTo(["TestProject"]);
@@ -87,7 +91,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task An_unknown_specific_assembly_does_not_hide_the_known_ones()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("Missing", "TestAssembly")));
+        var result = Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("Missing", "TestAssembly")));
 
         await AssemblyNames(result).Should().BeEquivalentTo(["TestAssembly"]);
     }
@@ -95,7 +99,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task Not_assemblies_are_excluded_from_all_assemblies()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(AllAssemblies with { NotAssemblies = Array("TestAssembly", "Specular") }));
+        var result = Scan(ScanCompilation.Create(), Assemblies(AllAssemblies with { NotAssemblies = Array("TestAssembly", "Specular") }));
 
         await AssemblyNames(result).Should().BeEquivalentTo([DependencyInjection, "TestProject"]);
     }
@@ -103,7 +107,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task Not_assemblies_alone_select_every_other_assembly_like_Specular()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(AssemblyFilterData.Empty with { NotAssemblies = Array("TestAssembly") }));
+        var result = Scan(ScanCompilation.Create(), Assemblies(AssemblyFilterData.Empty with { NotAssemblies = Array("TestAssembly") }));
 
         await AssemblyNames(result).Should().BeEquivalentTo([DependencyInjection, "Specular", "TestProject"]);
     }
@@ -111,7 +115,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task Not_assemblies_override_a_specific_assembly()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly") with { NotAssemblies = Array("TestAssembly") }));
+        var result = Scan(ScanCompilation.Create(), Assemblies(FromAssemblies("TestAssembly") with { NotAssemblies = Array("TestAssembly") }));
 
         await AssemblyNames(result).Should().BeEmpty();
     }
@@ -119,7 +123,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task An_unknown_not_assembly_excludes_nothing()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(AllAssemblies with { NotAssemblies = Array("Missing") }));
+        var result = Scan(ScanCompilation.Create(), Assemblies(AllAssemblies with { NotAssemblies = Array("Missing") }));
 
         await AssemblyNames(result).Should().BeEquivalentTo([DependencyInjection, "Specular", "TestAssembly", "TestProject"]);
     }
@@ -129,8 +133,8 @@ public class AssemblyFilterTests
     {
         var compilation = ScanCompilation.Create();
 
-        var ofSpecular = Scanner.Scan(compilation, Assemblies(AssemblyFilterData.Empty with { DependenciesOf = Array("Specular") }));
-        var ofTestAssembly = Scanner.Scan(compilation, Assemblies(AssemblyFilterData.Empty with { DependenciesOf = Array("TestAssembly") }));
+        var ofSpecular = Scan(compilation, Assemblies(AssemblyFilterData.Empty with { DependenciesOf = Array("Specular") }));
+        var ofTestAssembly = Scan(compilation, Assemblies(AssemblyFilterData.Empty with { DependenciesOf = Array("TestAssembly") }));
 
         await AssemblyNames(ofSpecular).Should().BeEquivalentTo(["TestAssembly", "TestProject"]);
         await AssemblyNames(ofTestAssembly).Should().BeEquivalentTo(["TestProject"]);
@@ -141,8 +145,8 @@ public class AssemblyFilterTests
     {
         var compilation = ScanCompilation.Create();
 
-        var specific = Scanner.Scan(compilation, Assemblies(FromAssemblies("Missing")));
-        var dependencies = Scanner.Scan(compilation, Assemblies(AssemblyFilterData.Empty with { DependenciesOf = Array("Missing") }));
+        var specific = Scan(compilation, Assemblies(FromAssemblies("Missing")));
+        var dependencies = Scan(compilation, Assemblies(AssemblyFilterData.Empty with { DependenciesOf = Array("Missing") }));
 
         await AssemblyNames(specific).Should().BeEmpty();
         await AssemblyNames(dependencies).Should().BeEmpty();
@@ -151,7 +155,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task An_empty_filter_matches_nothing()
     {
-        var result = Scanner.Scan(ScanCompilation.Create(), Assemblies(AssemblyFilterData.Empty));
+        var result = Scan(ScanCompilation.Create(), Assemblies(AssemblyFilterData.Empty));
 
         await AssemblyNames(result).Should().BeEmpty();
     }
@@ -160,7 +164,7 @@ public class AssemblyFilterTests
     public async Task Assemblies_are_ordered_by_name_ordinally()
     {
         var lowercase = ScanCompilation.EmitReference("namespace Lower { public class Thing; }", "alpha");
-        var result = Scanner.Scan(ScanCompilation.Create(additionalReferences: lowercase), Assemblies(AllAssemblies));
+        var result = Scan(ScanCompilation.Create(additionalReferences: lowercase), Assemblies(AllAssemblies));
 
         // Ordinal puts upper case before lower case; a culture-aware sort would put "alpha" first.
         await string.Join(",", AssemblyNames(result))
@@ -171,7 +175,7 @@ public class AssemblyFilterTests
     [Test]
     public async Task A_types_scan_reports_every_passing_assembly_even_without_matches()
     {
-        var result = Scanner.Scan(
+        var result = Scan(
             ScanCompilation.Create(),
             Types(AllAssemblies, TypeFilterData.All with { Names = Array(new NameFilterData(true, TextDirectionFilter.StartsWith, Array("IRequestHandler"))) })
         );
