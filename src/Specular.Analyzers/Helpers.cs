@@ -153,10 +153,13 @@ internal static class Helpers
         public readonly Dictionary<ISymbol, string> TypeOfNames = [with(SymbolEqualityComparer.Default)];
     }
 
-    internal readonly struct NameCacheScope(NameCache? previous) : IDisposable
+    /// <summary>Puts back the cache that was in place when <see cref="CacheNames" /> opened this one, once per step.</summary>
+    internal sealed class NameCacheScope(NameCache? previous) : IDisposable
     {
-        public void Dispose() => nameCache = previous;
+        public void Dispose() => Restore(previous);
     }
+
+    private static void Restore(NameCache? previous) => nameCache = previous;
 
     private static string Cached(Dictionary<ISymbol, string>? cache, ISymbol symbol, Func<ISymbol, string> compute)
     {
