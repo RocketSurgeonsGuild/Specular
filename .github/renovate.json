@@ -24,8 +24,8 @@
   ],
   "packageRules": [
     {
-      "description": "The per-Roslyn-version analyzer builds pin their dependencies on purpose",
-      "matchFileNames": ["src/*.Analyzers.supports/**"],
+      "description": "The per-Roslyn-version builds (Specular.Analyzers.supports, Specular.Scanning.supports) pin their dependencies on purpose: each must load in the compiler of the Roslyn version it targets",
+      "matchFileNames": ["src/*.supports/**"],
       "enabled": false
     },
     {
