@@ -1,6 +1,5 @@
 #if SPECULAR_SCANNING_EXPLICIT_USINGS
 using System;
-using System.Collections.Generic;
 using System.Linq;
 #endif
 using System.Collections.Immutable;
