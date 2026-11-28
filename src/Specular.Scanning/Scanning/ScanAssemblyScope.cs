@@ -59,7 +59,7 @@ sealed record ScanAssemblyScope(EquatableArray<string> Exclude, EquatableArray<s
     /// </summary>
     public bool Allows(Compilation compilation, IAssemblySymbol assembly, AssemblyFilterData selection)
     {
-        return  selection is null 
+        return selection is null
             ? throw new ArgumentNullException(nameof(selection))
             : Decide(compilation, assembly) switch
             {
