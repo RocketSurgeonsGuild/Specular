@@ -84,11 +84,13 @@ project's patterns from the MSBuild properties `<consumerId>ExcludeAssemblies` a
     <CompilerVisibleProperty Include="SpecularProviderIncludeAssemblies" />
 </ItemGroup>
 
-<!-- build/YourGenerator.targets: after the project file, so the user's values are set -->
-<PropertyGroup>
-    <SpecularProviderExcludeAssemblies>$(SpecularExcludeAssemblies)</SpecularProviderExcludeAssemblies>
-    <SpecularProviderIncludeAssemblies>$(SpecularIncludeAssemblies)</SpecularProviderIncludeAssemblies>
-</PropertyGroup>
+<!-- build/YourGenerator.targets: in a target, so values set by later imports (Directory.Build.targets) are seen -->
+<Target Name="_SpecularAssemblyScope" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+    <PropertyGroup>
+        <SpecularProviderExcludeAssemblies>$(SpecularExcludeAssemblies)</SpecularProviderExcludeAssemblies>
+        <SpecularProviderIncludeAssemblies>$(SpecularIncludeAssemblies)</SpecularProviderIncludeAssemblies>
+    </PropertyGroup>
+</Target>
 ```
 
 `Scanner.Scan(compilation, request)` applies the framework default; pass a `ScanAssemblyScope` to choose another

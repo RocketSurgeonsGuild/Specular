@@ -26,10 +26,13 @@
         Properties rather than items: MSBuild expands * and ? in an item's Include as a file glob. Specular.Scanning reads the patterns as
         <consumer id>ExcludeAssemblies / IncludeAssemblies, and Specular's consumer id is SpecularProvider.
     -->
-    <PropertyGroup>
-        <SpecularProviderExcludeAssemblies>$(SpecularExcludeAssemblies)</SpecularProviderExcludeAssemblies>
-        <SpecularProviderIncludeAssemblies>$(SpecularIncludeAssemblies)</SpecularProviderIncludeAssemblies>
-    </PropertyGroup>
+    <!-- In a target, not at evaluation: a Directory.Build.targets (or any import after this file) can still set the two properties. -->
+    <Target Name="_SpecularAssemblyScope" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+        <PropertyGroup>
+            <SpecularProviderExcludeAssemblies>$(SpecularExcludeAssemblies)</SpecularProviderExcludeAssemblies>
+            <SpecularProviderIncludeAssemblies>$(SpecularIncludeAssemblies)</SpecularProviderIncludeAssemblies>
+        </PropertyGroup>
+    </Target>
 
     <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
         <Using Include="Specular" />

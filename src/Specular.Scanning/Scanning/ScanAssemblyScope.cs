@@ -65,8 +65,9 @@ sealed record ScanAssemblyScope(EquatableArray<string> Exclude, EquatableArray<s
             {
                 Decision.InScope => true,
                 Decision.FrameworkDefault => selection.IncludeSystemAssemblies || Names(selection, assembly),
-                Decision.Excluded => throw new NotImplementedException(),
-                _ => Names(selection, assembly),
+                // A project exclude: only a selection that names the assembly reaches it; IncludeSystemAssemblies does not.
+                Decision.Excluded => Names(selection, assembly),
+                _ => false,
             };
     }
 
