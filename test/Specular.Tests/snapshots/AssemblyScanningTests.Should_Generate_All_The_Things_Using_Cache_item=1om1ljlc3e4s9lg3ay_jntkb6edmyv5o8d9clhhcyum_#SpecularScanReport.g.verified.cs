@@ -15,8 +15,6 @@ internal sealed class SpecularScanReport
             new("TestProject", "z => z.FromAssemblies()",
                 [
                     new("Specular"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
                     new("TestAssembly"),
                     new("TestProject")
                 ])

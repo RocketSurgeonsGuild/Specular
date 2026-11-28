@@ -10,7 +10,7 @@ public class ScannerCacheTests
     public async Task A_miss_walks_the_assembly_and_stores_its_matches()
     {
         var cache = new FakeAssemblyScanCache();
-        var result = Scanner.Scan(ScanCompilation.Create(), Types(AllAssemblies), cache, CancellationToken.None);
+        var result = Scanner.Scan(ScanCompilation.Create(), Types(AllAssemblies), ScanAssemblyScope.Everything, cache, CancellationToken.None);
 
         await cache.Lookups.Should().BeEquivalentTo(["Microsoft.Extensions.DependencyInjection.Abstractions", "Specular", "TestAssembly"]);
         await cache.Stored.Select(static z => z.Assembly).Should().BeEquivalentTo(cache.Lookups);
@@ -25,7 +25,7 @@ public class ScannerCacheTests
     public async Task The_compilations_own_assembly_is_never_cached()
     {
         var cache = new FakeAssemblyScanCache();
-        _ = Scanner.Scan(ScanCompilation.Create("public class Mine;"), Types(FromAssemblies(ScanCompilation.ProjectAssemblyName)), cache, CancellationToken.None);
+        _ = Scanner.Scan(ScanCompilation.Create("public class Mine;"), Types(FromAssemblies(ScanCompilation.ProjectAssemblyName)), ScanAssemblyScope.Everything, cache, CancellationToken.None);
 
         await cache.Lookups.Should().BeEmpty();
         await cache.Stored.Should().BeEmpty();
@@ -35,7 +35,7 @@ public class ScannerCacheTests
     public async Task An_assemblies_scan_never_consults_the_cache()
     {
         var cache = new FakeAssemblyScanCache();
-        _ = Scanner.Scan(ScanCompilation.Create(), Assemblies(AllAssemblies), cache, CancellationToken.None);
+        _ = Scanner.Scan(ScanCompilation.Create(), Assemblies(AllAssemblies), ScanAssemblyScope.Everything, cache, CancellationToken.None);
 
         await cache.Lookups.Should().BeEmpty();
         await cache.Stored.Should().BeEmpty();
@@ -45,7 +45,7 @@ public class ScannerCacheTests
     public async Task Only_assemblies_that_pass_the_filter_are_looked_up()
     {
         var cache = new FakeAssemblyScanCache();
-        _ = Scanner.Scan(ScanCompilation.Create(), Types(FromAssemblies("TestAssembly")), cache, CancellationToken.None);
+        _ = Scanner.Scan(ScanCompilation.Create(), Types(FromAssemblies("TestAssembly")), ScanAssemblyScope.Everything, cache, CancellationToken.None);
 
         await cache.Lookups.Should().BeEquivalentTo(["TestAssembly"]);
     }
@@ -76,7 +76,7 @@ public class ScannerCacheTests
         var cached = new ScannedType("Specular", "Specular.FromCache", TypeKind.Class, Accessibility.Public, true, 0);
         var cache = new FakeAssemblyScanCache { Entries = { ["Specular"] = Array(cached) } };
 
-        var result = Scanner.Scan(ScanCompilation.Create("public class Mine;"), Types(AllAssemblies), cache, CancellationToken.None);
+        var result = Scanner.Scan(ScanCompilation.Create("public class Mine;"), Types(AllAssemblies), ScanAssemblyScope.Everything, cache, CancellationToken.None);
 
         var names = TypeNames(result);
         await names.Should().Contain("Specular.FromCache");

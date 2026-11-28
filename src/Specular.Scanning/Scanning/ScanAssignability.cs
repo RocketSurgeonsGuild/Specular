@@ -20,7 +20,7 @@ internal static class ScanAssignability
 
         if (SymbolEqualityComparer.Default.Equals(assignableToType, assignableFromType)) return true;
 
-        if (compilation.HasImplicitConversion(assignableFromType, assignableToType)) return true;
+        if (!CannotConvertToInterface(assignableToType, assignableFromType) && compilation.HasImplicitConversion(assignableFromType, assignableToType)) return true;
 
         if (assignableToType is not { Arity: > 0, IsUnboundGenericType: true }) return false;
 
@@ -41,6 +41,28 @@ internal static class ScanAssignability
         }
 
         return false;
+    }
+
+    /// <summary>
+    ///     Whether <paramref name="from" /> certainly has no implicit conversion to the interface <paramref name="to" />, decided without
+    ///     asking the compiler, which scans test against every type. C# allows no user-defined conversion to an interface, so the only
+    ///     ones are reference and boxing conversions through an interface the type is or implements, and variance keeps the generic
+    ///     definition: with none of them sharing <paramref name="to" />'s definition there is no conversion. Anything else is left to
+    ///     the compiler.
+    /// </summary>
+    private static bool CannotConvertToInterface(INamedTypeSymbol to, INamedTypeSymbol from)
+    {
+        if (to.TypeKind != TypeKind.Interface) return false;
+
+        var definition = to.OriginalDefinition;
+        if (from.TypeKind == TypeKind.Interface && SymbolEqualityComparer.Default.Equals(from.OriginalDefinition, definition)) return false;
+
+        foreach (var @interface in from.AllInterfaces)
+        {
+            if (SymbolEqualityComparer.Default.Equals(@interface.OriginalDefinition, definition)) return false;
+        }
+
+        return true;
     }
 
     private static IEnumerable<INamedTypeSymbol> GetBaseTypes(Compilation compilation, INamedTypeSymbol namedTypeSymbol)

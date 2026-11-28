@@ -29,8 +29,6 @@ internal sealed class SpecularProvider : ISpecularProvider
                 return
                 [
                     OtherProject,
-                    typeof(global::System.Collections.Frozen.FrozenDictionary).Assembly,
-                    typeof(global::System.IServiceProvider).Assembly,
                     typeof(global::TestAssembly.IService).Assembly,
                     TestProject
                 ];

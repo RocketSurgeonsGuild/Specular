@@ -19,11 +19,14 @@ internal sealed class ScanSelection(ScanEnvironment environment, AssemblySelecti
     /// <summary>The Specular.Scanning request: it keys the scan results kept in the build cache.</summary>
     public ScanRequest Request { get; } = new(types is null ? ScanKind.Assemblies : ScanKind.Types, assemblies.Filter, types?.Filter);
 
-    public bool IsMatch(IAssemblySymbol assembly) => ( _assemblyMatcher ??= new(Assemblies.Filter, _environment.AllAssemblies) ).IsMatch(assembly);
+    /// <summary>Whether this selection looks in <paramref name="assembly" />: it matches, and the project's assembly scope allows it for this selection.</summary>
+    public bool IsMatch(IAssemblySymbol assembly) =>
+        ( _assemblyMatcher ??= new(Assemblies.Filter, _environment.AllAssemblies) ).IsMatch(assembly)
+     && _environment.Scope.Allows(_environment.Compilation, assembly, Assemblies.Filter);
 
     /// <summary>
     ///     The types this selection finds in <paramref name="assembly" />, in declaration order. A referenced assembly's types come from
-    ///     <paramref name="cache" /> while the assembly is unchanged; the compilation's own assembly is always walked.
+    ///     <paramref name="cache" /> while the assembly is unchanged; the compilation's own types are filtered from the run's list of them.
     /// </summary>
     public ImmutableArray<INamedTypeSymbol> GetTypes(IAssemblySymbol assembly, IAssemblyScanCache? cache, CancellationToken cancellationToken)
     {
@@ -38,6 +41,16 @@ internal sealed class ScanSelection(ScanEnvironment environment, AssemblySelecti
 
         var matcher = Types.GetMatcher();
         var types = ImmutableArray.CreateBuilder<INamedTypeSymbol>();
+        if (!isReference)
+        {
+            foreach (var type in _environment.GetOwnTypes(cancellationToken))
+            {
+                if (matcher.IsMatch(type)) types.Add(type);
+            }
+
+            return types.ToImmutable();
+        }
+
         _ = TypeWalker.Walk(
             assembly.GlobalNamespace,
             type =>
@@ -48,24 +61,21 @@ internal sealed class ScanSelection(ScanEnvironment environment, AssemblySelecti
             cancellationToken
         );
 
-        if (isReference)
-        {
-            cache?.SetTypes(
-                Request,
-                assembly,
-                types
-                   .Select(type => new ScannedType(
-                               assembly.MetadataName,
-                               ScanSymbolNames.GetFullMetadataName(type),
-                               type.TypeKind,
-                               type.DeclaredAccessibility,
-                               compilation.IsSymbolAccessibleWithin(type, compilation.Assembly),
-                               type.Arity
-                           )
-                    )
-                   .ToImmutableArray()
-            );
-        }
+        cache?.SetTypes(
+            Request,
+            assembly,
+            types
+               .Select(type => new ScannedType(
+                           assembly.MetadataName,
+                           ScanSymbolNames.GetFullMetadataName(type),
+                           type.TypeKind,
+                           type.DeclaredAccessibility,
+                           compilation.IsSymbolAccessibleWithin(type, compilation.Assembly),
+                           type.Arity
+                       )
+                )
+               .ToImmutableArray()
+        );
 
         return types.ToImmutable();
     }

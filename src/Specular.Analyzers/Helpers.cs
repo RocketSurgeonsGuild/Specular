@@ -132,9 +132,52 @@ internal static class Helpers
         return ordered;
     }
 
-    public static string GetFullMetadataName(ISymbol? symbol)
+    // The three names below depend only on the symbol, and generating code asks for them again for every request a type matches and
+    // every registration it gets. Inside CacheNames() each is built once per symbol for the step that opened it; outside one they are
+    // built on every call. A dictionary per step rather than a ConditionalWeakTable: a cold run meets thousands of new symbols, and
+    // every table entry is a dependent handle the GC has to track.
+    public static NameCacheScope CacheNames()
     {
-        if (symbol is null || IsRootNamespace(symbol)) return "";
+        var previous = nameCache;
+        nameCache = new();
+        return new(previous);
+    }
+
+    [ThreadStatic]
+    private static NameCache? nameCache;
+
+    internal sealed class NameCache
+    {
+        public readonly Dictionary<ISymbol, string> FullMetadataNames = [with(SymbolEqualityComparer.Default)];
+        public readonly Dictionary<ISymbol, string> GenericDisplayNames = [with(SymbolEqualityComparer.Default)];
+        public readonly Dictionary<ISymbol, string> TypeOfNames = [with(SymbolEqualityComparer.Default)];
+    }
+
+    /// <summary>Puts back the cache that was in place when <see cref="CacheNames" /> opened this one, once per step.</summary>
+    internal sealed class NameCacheScope(NameCache? previous) : IDisposable
+    {
+        public void Dispose() => Restore(previous);
+    }
+
+    private static void Restore(NameCache? previous) => nameCache = previous;
+
+    private static string Cached(Dictionary<ISymbol, string>? cache, ISymbol symbol, Func<ISymbol, string> compute)
+    {
+        if (cache is null) return compute(symbol);
+        if (cache.TryGetValue(symbol, out var name)) return name;
+
+        name = compute(symbol);
+        cache[symbol] = name;
+        return name;
+    }
+
+    public static string GetFullMetadataName(ISymbol? symbol) =>
+        symbol is null || IsRootNamespace(symbol) ? "" : Cached(nameCache?.FullMetadataNames, symbol, computeFullMetadataName);
+
+    private static readonly Func<ISymbol, string> computeFullMetadataName = ComputeFullMetadataName;
+
+    private static string ComputeFullMetadataName(ISymbol symbol)
+    {
 
         var sb = new StringBuilder(symbol.MetadataName);
 
@@ -153,9 +196,13 @@ internal static class Helpers
         return sb.ToString();
     }
 
-    public static string GetGenericDisplayName(ISymbol? symbol)
+    public static string GetGenericDisplayName(ISymbol? symbol) =>
+        symbol is null || IsRootNamespace(symbol) ? "" : Cached(nameCache?.GenericDisplayNames, symbol, computeGenericDisplayName);
+
+    private static readonly Func<ISymbol, string> computeGenericDisplayName = ComputeGenericDisplayName;
+
+    private static string ComputeGenericDisplayName(ISymbol symbol)
     {
-        if (symbol is null || IsRootNamespace(symbol)) return "";
 
         var sb = new StringBuilder(symbol.MetadataName);
         if (symbol is INamedTypeSymbol namedTypeSymbol && ( namedTypeSymbol.IsOpenGenericType() || namedTypeSymbol.IsGenericType ))
@@ -201,9 +248,13 @@ internal static class Helpers
         return sb.ToString();
     }
 
-    public static string GetTypeOfName(ISymbol? symbol)
+    public static string GetTypeOfName(ISymbol? symbol) =>
+        symbol is null || IsRootNamespace(symbol) ? "" : Cached(nameCache?.TypeOfNames, symbol, computeTypeOfName);
+
+    private static readonly Func<ISymbol, string> computeTypeOfName = ComputeTypeOfName;
+
+    private static string ComputeTypeOfName(ISymbol symbol)
     {
-        if (symbol is null || IsRootNamespace(symbol)) return "";
 
         var sb = new StringBuilder(symbol.MetadataName);
         if (symbol is INamedTypeSymbol namedTypeSymbol && ( namedTypeSymbol.IsOpenGenericType() || namedTypeSymbol.IsGenericType ))

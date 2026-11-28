@@ -55,14 +55,6 @@ internal sealed class SpecularScanReport
                             new("global::Specular.SpecularSupport"),
                             new("global::SpecularScanReport")
                         ]),
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::Microsoft.CodeAnalysis.EmbeddedAttribute"),

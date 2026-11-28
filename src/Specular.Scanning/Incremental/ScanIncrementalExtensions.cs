@@ -94,11 +94,28 @@ static partial class ScanIncrementalExtensions
                                .Select(static (texts, _) => ScanCacheFile.Parse(texts.FirstOrDefault()))
                                .WithTrackingName(ScanTrackingNames.CacheFile);
 
+        // The project's assembly scope for this consumer: its <consumerId>ExcludeAssemblies and <consumerId>IncludeAssemblies properties.
+        var scope = context
+                   .AnalyzerConfigOptionsProvider
+                   .Select((options, _) => ScanAssemblyScope.FromOptions(options.GlobalOptions, consumerId))
+                   .WithTrackingName(ScanTrackingNames.Scope);
+
         var run = requests
                  .Collect()
                  .Combine(context.CompilationProvider)
                  .Combine(previousCacheFile)
-                 .Select((input, cancellationToken) => Run(consumerId, input.Left.Left, input.Left.Right, input.Right, transform, cancellationToken))
+                 .Combine(scope)
+                 .Select(
+                      (input, cancellationToken) => Run(
+                          consumerId,
+                          input.Left.Left.Left,
+                          input.Left.Left.Right,
+                          input.Left.Right,
+                          input.Right,
+                          transform,
+                          cancellationToken
+                      )
+                  )
                  .WithTrackingName(ScanTrackingNames.Run);
 
         // Implementation-only, as Specular's own cache: the IDE never writes into obj/, and only builds read the file back anyway.
@@ -115,6 +132,7 @@ static partial class ScanIncrementalExtensions
         ImmutableArray<ScanRequest> requests,
         Compilation compilation,
         ScanCacheFileData previousCacheFile,
+        ScanAssemblyScope scope,
         Func<ScanContext, TOutput> transform,
         CancellationToken cancellationToken
     )
@@ -129,7 +147,7 @@ static partial class ScanIncrementalExtensions
         {
             if (!scanned.TryGetValue(request, out var result))
             {
-                result = Scanner.Scan(compilation, request, cache, cancellationToken);
+                result = Scanner.Scan(compilation, request, scope, cache, cancellationToken);
                 scanned[request] = result;
             }
 

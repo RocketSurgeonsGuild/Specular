@@ -36,6 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Scans look in the project's assembly scope: by default every assembly but the framework's (assemblies signed with
+  Microsoft's framework keys, and `netstandard`, `mscorlib`, `System`, `System.*`, `Microsoft.*`, `WindowsBase`).
+  The `SpecularExcludeAssemblies` and `SpecularIncludeAssemblies` properties change it, with `*` and `?` wildcards over
+  the whole name; an include always wins. A selector that names an assembly still scans it.
+  Generators built on `Specular.Scanning` get the same default and read `<consumerId>ExcludeAssemblies` /
+  `<consumerId>IncludeAssemblies`.
+- **Breaking:** `ExcludeAssemblyFromCTP` is no longer read. It matched by prefix (`System` also excluded
+  `Systems.Billing`); move added entries to `SpecularExcludeAssemblies`.
 - `ServiceRegistrationAttribute` (and its generic variants) now require an explicit `ServiceLifetime`
   argument; the previous no-lifetime constructors defaulting to `Singleton` have been removed.
 - **Breaking:** the `net8.0` build is gone. Projects still on .NET 8 fall back to the

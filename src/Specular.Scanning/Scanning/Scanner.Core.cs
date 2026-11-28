@@ -18,7 +18,13 @@ public
 #endif
 static partial class Scanner
 {
-    private static partial ScanResult ScanCore(Compilation compilation, ScanRequest request, IAssemblyScanCache? cache, CancellationToken cancellationToken)
+    private static partial ScanResult ScanCore(
+        Compilation compilation,
+        ScanRequest request,
+        ScanAssemblyScope scope,
+        IAssemblyScanCache? cache,
+        CancellationToken cancellationToken
+    )
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -29,7 +35,7 @@ static partial class Scanner
         foreach (var assembly in assemblies)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (assemblyMatcher.IsMatch(assembly)) passing.Add(assembly);
+            if (assemblyMatcher.IsMatch(assembly) && scope.Allows(compilation, assembly, request.Assemblies)) passing.Add(assembly);
         }
 
         passing.Sort(static (left, right) => StringComparer.Ordinal.Compare(left.MetadataName, right.MetadataName));

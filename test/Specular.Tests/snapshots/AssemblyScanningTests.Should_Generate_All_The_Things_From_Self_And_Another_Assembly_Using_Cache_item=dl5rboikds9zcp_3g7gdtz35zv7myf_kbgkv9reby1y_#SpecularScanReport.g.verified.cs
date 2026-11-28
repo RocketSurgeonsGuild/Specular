@@ -18,10 +18,6 @@ internal sealed class SpecularScanReport
                         [
                             new("global::Program")
                         ]),
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),
@@ -57,10 +53,6 @@ internal sealed class SpecularScanReport
                     new("OtherProject",
                         [
                             new("global::Program")
-                        ]),
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
                         ]),
                     new("TestAssembly",
                         [

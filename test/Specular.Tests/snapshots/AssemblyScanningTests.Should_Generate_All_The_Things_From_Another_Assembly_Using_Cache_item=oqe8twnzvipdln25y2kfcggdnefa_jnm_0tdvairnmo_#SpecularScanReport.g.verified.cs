@@ -16,8 +16,6 @@ internal sealed class SpecularScanReport
                 [
                     new("OtherProject"),
                     new("Specular"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
                     new("TestProject")
                 ])
         ], [],

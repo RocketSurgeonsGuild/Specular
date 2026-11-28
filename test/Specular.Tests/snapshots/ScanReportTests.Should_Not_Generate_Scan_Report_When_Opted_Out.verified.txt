@@ -1,9 +1,6 @@
 ﻿{
   Cache: {
     Requests: {
-      Microsoft.Extensions.DependencyInjection.Abstractions: {
-        ExcludeFromResolution: false
-      },
       Specular: {
         ExcludeFromResolution: false,
         InternalServiceDescriptorRequests: [
@@ -155,58 +152,16 @@
           }
         ]
       },
-      System: {
-        ExcludeFromResolution: false
-      },
-      System.Collections.Immutable: {
-        ExcludeFromResolution: false
-      },
-      System.ComponentModel: {
-        ExcludeFromResolution: false
-      },
-      System.Core: {
-        ExcludeFromResolution: false
-      },
-      System.Private.CoreLib: {
-        ExcludeFromResolution: false
-      },
-      System.Runtime: {
-        ExcludeFromResolution: false
-      },
       TestAssembly: {
-        ExcludeFromResolution: false
-      },
-      mscorlib: {
-        ExcludeFromResolution: false
-      },
-      netstandard: {
         ExcludeFromResolution: false
       }
     },
     Scans: [
       {
-        Assembly: Microsoft.Extensions.DependencyInjection.Abstractions
-      },
-      {
-        Assembly: Microsoft.Extensions.DependencyInjection.Abstractions
-      },
-      {
         Assembly: Specular
       },
       {
         Assembly: Specular
-      },
-      {
-        Assembly: System.Collections.Immutable
-      },
-      {
-        Assembly: System.Collections.Immutable
-      },
-      {
-        Assembly: System.ComponentModel
-      },
-      {
-        Assembly: System.ComponentModel
       },
       {
         Assembly: TestAssembly

@@ -111,6 +111,21 @@ public class IncrementalScanTests
         await generator.Results.Count.Should().BeEqualTo(1);
     }
 
+    [Test]
+    public async Task The_projects_assembly_scope_for_this_consumer_applies_to_its_scans()
+    {
+        var library = MetadataReference.CreateFromImage(CacheTestHelpers.EmitLibrary(LibrarySource));
+        var generator = new ScanningGenerator(ConsumerId, compilation => ScanRequest.Build(compilation, s => s.FromAssemblies().GetTypes()));
+        var excludeLib = new TestOptionsProvider(CacheTestHelpers.Options(($"build_property.{ConsumerId}ExcludeAssemblies", "Li?")));
+        var excludeLibForAnother = new TestOptionsProvider(CacheTestHelpers.Options(("build_property.AnotherGenExcludeAssemblies", "Lib")));
+
+        _ = Run(generator, CreateConsumer(library, "public class A { }"), excludeLib);
+        await Scans.AssemblyNames(generator.Results.Single()).Should().NotContain("Lib");
+
+        _ = Run(generator, CreateConsumer(library, "public class A { }"), excludeLibForAnother);
+        await Scans.AssemblyNames(generator.Results.Single()).Should().Contain("Lib");
+    }
+
     private static INamedTypeSymbol Handler(Compilation compilation) =>
         compilation.GetTypeByMetadataName("Lib.IHandler") ?? throw new InvalidOperationException("Lib.IHandler is missing.");
 

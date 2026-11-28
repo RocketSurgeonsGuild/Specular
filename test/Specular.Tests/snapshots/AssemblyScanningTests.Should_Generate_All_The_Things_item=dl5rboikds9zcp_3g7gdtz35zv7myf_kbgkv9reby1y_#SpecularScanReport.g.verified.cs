@@ -14,14 +14,6 @@ internal sealed class SpecularScanReport
         [
             new("TestProject", "z => z.FromAssemblies().NotFromAssemblyOf<ServiceRegistrationAttribute>().GetTypes(x => x.NotAssignableTo<ISpecularProvider>().NotInfoOf(TypeInfoFilter.Sealed).NotAssignableTo<Attribute>().NotInNamespaces(\"JetBrains.Annotations\", \"Polyfills\", \"System\").NotStartsWith(\"Polyfill\"))",
                 [
-                    new("System.Collections.Immutable",
-                        [
-                            new("global::FxResources.System.Collections.Immutable.SR")
-                        ]),
-                    new("System.Runtime.Serialization.Formatters",
-                        [
-                            new("global::FxResources.System.Runtime.Serialization.Formatters.SR")
-                        ]),
                     new("TestAssembly",
                         [
                             new("global::TestAssembly.GenericService"),

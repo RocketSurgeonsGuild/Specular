@@ -16,16 +16,12 @@ internal sealed class SpecularScanReport
                 [
                     new("OtherProject"),
                     new("Specular"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
                     new("TestProject")
                 ]),
             new("OtherProject", "z => z.FromAssemblies().NotFromAssemblyOf<IService>()",
                 [
                     new("OtherProject"),
                     new("Specular"),
-                    new("System.Collections.Immutable"),
-                    new("System.ComponentModel"),
                     new("TestProject")
                 ])
         ], [],

@@ -7,4 +7,5 @@ internal static class ScanTrackingNames
     public const string Run = "Specular.Scanning.Run";
     public const string Output = "Specular.Scanning.Output";
     public const string Results = "Specular.Scanning.Results";
+    public const string Scope = "Specular.Scanning.Scope";
 }
