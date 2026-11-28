@@ -15,3 +15,7 @@ _Avoid_: Own request
 **Inherited request**:
 A scan request that a referenced library declares, which every project consuming that library resolves against its own view of the assemblies.
 _Avoid_: Internal request
+
+**Assembly scope**:
+The assemblies a project's scan requests look in when a request does not name them: by default every assembly but the framework's.
+_Avoid_: Excluded assemblies, CTP exclusions

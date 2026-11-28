@@ -285,7 +285,9 @@ The rules match Specular's own generator:
 ### How assembly selections combine
 
 Several specific selections are **alternatives**. `FromAssemblies()` is the starting point they narrow, and `NotFrom…`
-always excludes:
+always excludes. All of it happens within the project's [assembly scope](../reference/assembly-scope/): by default every
+assembly but the framework's. A selection that names an assembly (`FromAssembly…`) reaches it even when it is out of scope, and
+`IncludeSystemAssemblies()` brings back what only the framework default leaves out.
 
 1. Core assemblies (`mscorlib`, `netstandard`, `System`, `System.Core`, `System.Runtime`, `System.Private.CoreLib`) are
    skipped unless you call `IncludeSystemAssemblies()`, even when you name them.
@@ -297,7 +299,7 @@ always excludes:
 
 | Selection                                         | Scans                                                                              |
 | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `FromAssemblies()`                                | Every assembly: the references and the compilation's own                           |
+| `FromAssemblies()`                                | Every assembly in scope: the references and the compilation's own                  |
 | `FromAssemblyOf(a)`                               | `a`'s assembly                                                                     |
 | `FromAssemblyOf(a).FromAssemblyOf(b)`             | `a`'s assembly **and** `b`'s assembly                                              |
 | `FromAssemblies().FromAssemblyOf(a)`              | Only `a`'s assembly                                                                |
@@ -307,7 +309,7 @@ always excludes:
 | `FromAssemblies().NotFromAssemblyOf(x)`           | Every assembly except `x`'s                                                        |
 | `NotFromAssemblyOf(x)`                            | Every assembly except `x`'s                                                        |
 | `FromAssemblyOf(a).NotFromAssemblyOf(a)`          | Nothing                                                                            |
-| `IncludeSystemAssemblies()`                       | Every assembly, core assemblies included                                           |
+| `IncludeSystemAssemblies()`                       | Every assembly, core and framework assemblies included                             |
 
 `DependenciesFromAssembly` with an assembly the compilation doesn't reference selects nothing. It still counts as a specific
 selection, so it never widens the scan to everything.
