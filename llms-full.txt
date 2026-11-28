@@ -1195,7 +1195,7 @@ The rules match Specular’s own generator:
 
 [Section titled “How assembly selections combine”](#how-assembly-selections-combine)
 
-Several specific selections are **alternatives**. `FromAssemblies()` is the starting point they narrow, and `NotFrom…` always excludes:
+Several specific selections are **alternatives**. `FromAssemblies()` is the starting point they narrow, and `NotFrom…` always excludes. All of it happens within the project’s [assembly scope](../reference/assembly-scope/): by default every assembly but the framework’s. A selection that names an assembly (`FromAssembly…`) reaches it even when it is out of scope, and `IncludeSystemAssemblies()` brings back what only the framework default leaves out.
 
 1. Core assemblies (`mscorlib`, `netstandard`, `System`, `System.Core`, `System.Runtime`, `System.Private.CoreLib`) are skipped unless you call `IncludeSystemAssemblies()`, even when you name them.
 2. An assembly named by any `NotFrom…` call is excluded, whatever else selects it.
@@ -1205,7 +1205,7 @@ Several specific selections are **alternatives**. `FromAssemblies()` is the star
 
 | Selection                                         | Scans                                                                              |
 | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `FromAssemblies()`                                | Every assembly: the references and the compilation’s own                           |
+| `FromAssemblies()`                                | Every assembly in scope: the references and the compilation’s own                  |
 | `FromAssemblyOf(a)`                               | `a`’s assembly                                                                     |
 | `FromAssemblyOf(a).FromAssemblyOf(b)`             | `a`’s assembly **and** `b`’s assembly                                              |
 | `FromAssemblies().FromAssemblyOf(a)`              | Only `a`’s assembly                                                                |
@@ -1215,7 +1215,7 @@ Several specific selections are **alternatives**. `FromAssemblies()` is the star
 | `FromAssemblies().NotFromAssemblyOf(x)`           | Every assembly except `x`’s                                                        |
 | `NotFromAssemblyOf(x)`                            | Every assembly except `x`’s                                                        |
 | `FromAssemblyOf(a).NotFromAssemblyOf(a)`          | Nothing                                                                            |
-| `IncludeSystemAssemblies()`                       | Every assembly, core assemblies included                                           |
+| `IncludeSystemAssemblies()`                       | Every assembly, core and framework assemblies included                             |
 
 `DependenciesFromAssembly` with an assembly the compilation doesn’t reference selects nothing. It still counts as a specific selection, so it never widens the scan to everything.
 
@@ -1515,7 +1515,105 @@ Specular’s public API surface is intentionally minimal — see each page below
 * [ServiceRegistrationAttribute](./service-registration/) — declaratively mark a type for dependency-injection registration with a chosen lifetime.
 * [KeyedServiceRegistrationAttribute](./keyed-service-registration/) — the keyed-service counterpart to `ServiceRegistrationAttribute`.
 * [ExcludeFromSpecularAttribute](./exclude-from-specular/) — opt a type out of scanning so the generator skips it.
+* [Assembly scope](./assembly-scope/) — which assemblies scans look in by default, and the `SpecularExcludeAssemblies` / `SpecularIncludeAssemblies` properties that change it.
 * [Type Filters](./type-filters/) — the fluent selector methods (`AddClasses`, `AsImplementedInterfaces`, namespace and attribute filters, and more) used to build a scan.
+
+# Assembly scope
+
+> Which assemblies Specular's scans look in by default, and the SpecularExcludeAssemblies and SpecularIncludeAssemblies properties that change them.
+
+# Assembly scope
+
+[Section titled “Assembly scope”](#assembly-scope)
+
+A selector that does not name its assemblies (`FromAssemblies()`, `NotFromAssemblyOf<T>()`, `DependenciesFromAssemblyOf<T>()`) looks in the project’s **assembly scope**. By default that is every assembly the project references, plus its own, **except the framework**:
+
+* assemblies signed with one of Microsoft’s framework keys (the BCL, ASP.NET Core, `Microsoft.Extensions.*`, and so on), and
+* assemblies named `netstandard`, `mscorlib`, `System`, `System.*`, `Microsoft.*` or `WindowsBase`, for builds of them without those keys.
+
+The project’s own assembly is always in scope.
+
+## Changing it
+
+[Section titled “Changing it”](#changing-it)
+
+Set two properties in the project file. Each takes patterns separated by `;` or `,`; a pattern matches the whole assembly name, ignores case, and can use `*` (any run of characters) and `?` (one character):
+
+```xml
+<PropertyGroup>
+    <!-- Leave these out of broad scans. -->
+    <SpecularExcludeAssemblies>$(SpecularExcludeAssemblies);Contoso.Legacy.*;Contoso.Tests</SpecularExcludeAssemblies>
+
+
+    <!-- Bring these in, whatever excludes them, the framework default included. -->
+    <SpecularIncludeAssemblies>$(SpecularIncludeAssemblies);Microsoft.Extensions.Logging</SpecularIncludeAssemblies>
+</PropertyGroup>
+```
+
+**An include always wins.** An assembly that matches any `SpecularIncludeAssemblies` pattern is in scope, even if an exclude pattern or the framework default would leave it out. `<SpecularIncludeAssemblies>*</SpecularIncludeAssemblies>` scans everything.
+
+These are properties rather than items because MSBuild expands `*` and `?` in an item’s `Include` as a file glob: an item pattern would quietly disappear, or turn into the names of files in your project folder.
+
+| Pattern           | Matches                                                  |
+| ----------------- | -------------------------------------------------------- |
+| `Contoso`         | `Contoso` only                                           |
+| `Contoso.*`       | `Contoso.Billing`, `Contoso.Billing.Data`, not `Contoso` |
+| `Contoso*`        | `Contoso`, `Contoso.Billing`, `ContosoTools`             |
+| `*.Tests`         | `Contoso.Tests`, `Fabrikam.Tests`                        |
+| `Contoso.?illing` | `Contoso.Billing`, `Contoso.Filling`                     |
+
+## What a selector can still reach
+
+[Section titled “What a selector can still reach”](#what-a-selector-can-still-reach)
+
+The scope decides what a selector that does not name an assembly looks in. A selector can still reach outside it for that one call:
+
+* `FromAssemblyOf<T>()` and `FromAssemblies(typeof(T))` scan `T`’s assembly even when it is out of scope.
+* `IncludeSystemAssemblies()` brings back the assemblies only the framework default leaves out. It does not bring back the ones your `SpecularExcludeAssemblies` patterns exclude.
+
+`[assembly: ExcludeFromSpecular]` (see [ExcludeFromSpecularAttribute](./exclude-from-specular/)) still takes precedence over everything: no selector scans such an assembly.
+
+An assembly out of scope also contributes none of the scans it declares itself: its `GetTypes` and `Scan` calls are not resolved again in your project.
+
+## Migrating from `ExcludeAssemblyFromCTP`
+
+[Section titled “Migrating from ExcludeAssemblyFromCTP”](#migrating-from-excludeassemblyfromctp)
+
+The `ExcludeAssemblyFromCTP` property is no longer read. It matched names by prefix, so `System` also left out `Systems.Billing`; the framework default now covers what its default value did. Move any entries you added to it into `SpecularExcludeAssemblies`, adding `*` where you relied on the prefix:
+
+```xml
+<!-- Before -->
+<ExcludeAssemblyFromCTP>$(ExcludeAssemblyFromCTP);Contoso.Legacy</ExcludeAssemblyFromCTP>
+
+
+<!-- After -->
+<SpecularExcludeAssemblies>$(SpecularExcludeAssemblies);Contoso.Legacy*</SpecularExcludeAssemblies>
+```
+
+## For generator authors
+
+[Section titled “For generator authors”](#for-generator-authors)
+
+The scope lives in `Specular.Scanning`, so a generator built on it gets the same default. `context.Scan(consumerId, ...)` reads the project’s patterns from the MSBuild properties `<consumerId>ExcludeAssemblies` and `<consumerId>IncludeAssemblies`, separated by `;` or `,`. Make them visible to the compiler and set them from whatever your package’s users write. Specular’s own, for the consumer id `SpecularProvider`:
+
+```xml
+<!-- build/YourGenerator.props -->
+<ItemGroup>
+    <CompilerVisibleProperty Include="SpecularProviderExcludeAssemblies" />
+    <CompilerVisibleProperty Include="SpecularProviderIncludeAssemblies" />
+</ItemGroup>
+
+
+<!-- build/YourGenerator.targets: in a target, so values set by later imports (Directory.Build.targets) are seen -->
+<Target Name="_SpecularAssemblyScope" BeforeTargets="GenerateMSBuildEditorConfigFileShouldRun">
+    <PropertyGroup>
+        <SpecularProviderExcludeAssemblies>$(SpecularExcludeAssemblies)</SpecularProviderExcludeAssemblies>
+        <SpecularProviderIncludeAssemblies>$(SpecularIncludeAssemblies)</SpecularProviderIncludeAssemblies>
+    </PropertyGroup>
+</Target>
+```
+
+`Scanner.Scan(compilation, request)` applies the framework default; pass a `ScanAssemblyScope` to choose another (`ScanAssemblyScope.Everything`, `ScanAssemblyScope.FromOptions(globalOptions, consumerId)`, or one built from your own patterns).
 
 # ExcludeFromSpecularAttribute
 
