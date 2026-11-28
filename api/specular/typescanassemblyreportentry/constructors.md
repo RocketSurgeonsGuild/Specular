@@ -13,7 +13,7 @@ Contains the types selected from one assembly by a type scan expression.
 ## TypeScanAssemblyReportEntry(string, ImmutableList<TypeScanReportEntry>)
 
 - Name: `Constructor(string, ImmutableList<TypeScanReportEntry>)`
-- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.77320c11b083e3a88e62cfc40b219a20663bfc08/src/Specular/Diagnostics/ScanDiagnostics.cs#L24)
+- Source: [GitHub](https://github.com/RocketSurgeonsGuild/Specular/blob/Branch.main.Sha.7198f229aa17bd9ae0e7bbde62dbec64e80e7d0a/src/Specular/Diagnostics/ScanDiagnostics.cs#L24)
 
 Contains the types selected from one assembly by a type scan expression.
 
